@@ -1,0 +1,59 @@
+---
+title: ossperks CLI
+description: Browse OSS perk programs and check if your project qualifies — right from the terminal.
+---
+
+## Overview
+
+`ossperks` is a zero-config command-line tool that lets you:
+
+- **List** every OSS perk program in one place
+- **Search** programs by keyword, provider, or category
+- **Show** full details for any program (perks, eligibility, how to apply)
+- **Check** whether your own repository qualifies for programs — automatically, by fetching live data from the GitHub or GitLab API
+
+## Installation
+
+```bash
+npm install -g ossperks
+# or
+pnpm add -g ossperks
+# or
+npx ossperks
+```
+
+## Quick start
+
+```bash
+# List all programs
+ossperks list
+
+# Check your current project
+cd /path/to/your/repo
+ossperks check
+
+# Search by keyword
+ossperks search "hosting"
+
+# Show a specific program
+ossperks show vercel
+```
+
+## How repo detection works
+
+`ossperks check` auto-detects your repository without any prompts:
+
+1. Reads the `repository` field from `package.json` in the current directory
+2. Falls back to parsing `remote.origin.url` from `.git/config`
+3. Calls the GitHub or GitLab public API to fetch live data (stars, license, activity, etc.)
+4. Matches that data against every program's eligibility rules
+
+No API tokens required for public repositories.
+
+## Next steps
+
+- [list](/cli/commands/list) — browse all programs
+- [show](/cli/commands/show) — view program details
+- [check](/cli/commands/check) — auto-check your repo eligibility
+- [search](/cli/commands/search) — find programs by keyword
+- [categories](/cli/commands/categories) — list available categories

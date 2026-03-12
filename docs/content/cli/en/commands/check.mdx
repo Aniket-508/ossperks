@@ -1,0 +1,103 @@
+---
+title: ossperks check
+description: Automatically check whether your repository qualifies for OSS perk programs.
+---
+
+## Usage
+
+```
+ossperks check [options]
+```
+
+Run this from inside any Git repository. No arguments or tokens required for public repos.
+
+## Options
+
+| Flag                   | Description                                                     |
+| ---------------------- | --------------------------------------------------------------- |
+| `-p, --program <slug>` | Check against a specific program only (e.g. `--program vercel`) |
+| `--json`               | Output raw JSON                                                 |
+| `-h, --help`           | Show help                                                       |
+
+## How it works
+
+`ossperks check` runs fully automatically:
+
+```
+ossperks check
+      │
+      ▼
+Read package.json (repository field)
+      │  ← not found?
+      ▼
+Read .git/config (remote.origin.url)
+      │
+      ▼
+Detect provider (github.com / gitlab.com)
+      │
+      ├─ GitHub → GET /repos/:owner/:repo
+      └─ GitLab → GET /api/v4/projects/:id
+      │
+      ▼
+RepoContext (stars, license, age, activity...)
+      │
+      ▼
+Match eligibility rules for every program
+      │
+      ▼
+Print results
+```
+
+### Repository detection
+
+The tool reads your repo URL from one of two places, in order:
+
+1. `repository` field in `package.json`
+2. `remote.origin.url` in `.git/config`
+
+Both GitHub and GitLab HTTPS / SSH URL formats are supported.
+
+### Eligibility matching
+
+Eligibility strings are natural-language rules like:
+
+- `"Must be an open-source project"` → checks for an OSI-approved license
+- `"Must have at least 100 GitHub stars"` → checks `stars >= 100`
+- `"Project must be at least 3 months old"` → checks repo age
+- `"Must be actively maintained"` → checks for recent commits
+
+The matching is heuristic — it parses thresholds and keywords from the rule text. Borderline cases are flagged as `?` (unknown) rather than a hard fail.
+
+## Examples
+
+```bash
+# Check all programs from your current repo
+ossperks check
+
+# Check a specific program only
+ossperks check --program vercel
+
+# JSON output for scripting
+ossperks check --json
+```
+
+## Output
+
+```
+Checking repo: github.com/acme/my-project
+  Stars: 412  License: MIT  Age: 14 months  Last push: 3 days ago
+
+PROGRAM               ELIGIBLE
+vercel                ✔ likely
+netlify               ✔ likely
+github-sponsors       ? unknown (manual review required)
+aws-activate          ✗ unlikely
+```
+
+Statuses:
+
+- **✔ likely** — all parsed eligibility rules matched
+- **? unknown** — at least one rule could not be auto-evaluated
+- **✗ unlikely** — one or more rules clearly do not match
+
+Always verify against the program's official page before applying.

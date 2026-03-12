@@ -1,17 +1,7 @@
 import Link from "next/link";
 
+import { getT } from "@/lib/get-t";
 import { withLocalePrefix } from "@/lib/i18n";
-
-const CONTENT = {
-  en: {
-    description: "and see the documentation.",
-    title: "Hello World",
-  },
-  es: {
-    description: "y ver la documentacion.",
-    title: "Hola Mundo",
-  },
-} as const;
 
 export default async function HomePage({
   params,
@@ -19,21 +9,28 @@ export default async function HomePage({
   params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
-  const content = lang === "es" ? CONTENT.es : CONTENT.en;
+  const t = await getT(lang);
 
   return (
-    <div className="flex flex-col justify-center text-center flex-1">
-      <h1 className="text-2xl font-bold mb-4">{content.title}</h1>
-      <p>
-        You can open{" "}
-        <Link
-          href={withLocalePrefix(lang, "/docs")}
-          className="font-medium underline"
-        >
-          /docs
-        </Link>{" "}
-        {content.description}
+    <div className="flex flex-col justify-center text-center flex-1 px-4">
+      <h1 className="text-4xl font-bold mb-4">{t.home.heading}</h1>
+      <p className="text-fd-muted-foreground text-lg max-w-xl mx-auto mb-8">
+        {t.home.description}
       </p>
+      <div className="flex flex-wrap gap-4 justify-center">
+        <Link
+          href={withLocalePrefix(lang, "/programs")}
+          className="rounded-lg bg-fd-primary px-5 py-2.5 text-sm font-medium text-fd-primary-foreground hover:opacity-90 transition-opacity"
+        >
+          {t.home.programsLink}
+        </Link>
+        <Link
+          href={withLocalePrefix(lang, "/cli")}
+          className="rounded-lg border px-5 py-2.5 text-sm font-medium hover:bg-fd-accent transition-colors"
+        >
+          {t.home.cliLink}
+        </Link>
+      </div>
     </div>
   );
 }

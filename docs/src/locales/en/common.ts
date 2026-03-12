@@ -1,0 +1,18 @@
+const common = {
+  categories: {
+    ai: "AI & Machine Learning",
+    analytics: "Analytics",
+    "ci-cd": "CI/CD",
+    communication: "Communication",
+    credentials: "Credentials & Secrets",
+    devtools: "Developer Tools",
+    hosting: "Hosting & Deployment",
+    infrastructure: "Infrastructure",
+    monitoring: "Monitoring & Observability",
+    security: "Security",
+    testing: "Testing",
+  },
+};
+
+export default common;
+export type CommonTranslations = typeof common;

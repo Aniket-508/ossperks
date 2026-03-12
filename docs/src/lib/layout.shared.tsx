@@ -18,8 +18,8 @@ export const baseOptions = (_locale: string): BaseLayoutProps => ({
       url: "/programs",
     },
     {
-      text: "Docs",
-      url: "/docs",
+      text: "CLI",
+      url: "/cli",
     },
   ],
   nav: {

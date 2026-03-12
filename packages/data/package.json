@@ -1,6 +1,7 @@
 {
   "name": "@ossperks/data",
   "version": "0.1.0",
+  "private": true,
   "description": "Curated data of open-source software perk programs.",
   "keywords": [
     "data",
@@ -48,14 +49,14 @@
     "validate": "node --import tsx src/validate.ts"
   },
   "dependencies": {
-    "zod": "^3.25.67"
+    "zod": "catalog:"
   },
   "devDependencies": {
-    "@types/node": "^25.3.5",
-    "tsdown": "^0.21.0",
+    "@types/node": "catalog:",
+    "tsdown": "catalog:",
     "tsx": "^4.19.4",
-    "typescript": "^5.9.3",
-    "vitest": "^4.0.18"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "engines": {
     "node": ">=22.20.0",

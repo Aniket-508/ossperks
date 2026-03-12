@@ -3,7 +3,7 @@ import { defineI18n } from "fumadocs-core/i18n";
 export const i18n = defineI18n({
   defaultLanguage: "en",
   hideLocale: "default-locale",
-  languages: ["en", "es"],
+  languages: ["en", "es", "zh-CN", "fr", "de", "pt-BR", "ja", "ko", "ru"],
   parser: "dir",
 });
 

@@ -12,6 +12,9 @@
     "**/tsconfig.tsbuildinfo"
   ],
   "rules": {
-    "vitest/prefer-called-once": "off"
+    "vitest/prefer-called-once": "off",
+    "complexity": ["error", { "max": 40 }],
+    "import/no-relative-parent-imports": "off",
+    "max-statements": ["error", { "max": 20 }]
   }
 }

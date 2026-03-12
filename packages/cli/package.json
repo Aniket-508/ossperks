@@ -1,5 +1,5 @@
 {
-  "name": "@ossperks/cli",
+  "name": "ossperks",
   "version": "0.1.0",
   "description": "CLI to check if your project qualifies for OSS perk programs based on their guidelines.",
   "keywords": [
@@ -30,9 +30,6 @@
   "sideEffects": false,
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "imports": {
-    "#core": "./src/index.ts"
-  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -48,11 +45,16 @@
     "typecheck": "tsc -p tsconfig.json --pretty && tsc -p tests/tsconfig.json --pretty",
     "test": "pnpm build && vitest run"
   },
+  "dependencies": {
+    "commander": "^14.0.0",
+    "picocolors": "^1.1.1"
+  },
   "devDependencies": {
-    "@types/node": "^25.3.5",
-    "tsdown": "^0.21.0",
-    "typescript": "^5.9.3",
-    "vitest": "^4.0.18"
+    "@ossperks/data": "workspace:*",
+    "@types/node": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "engines": {
     "node": ">=22.20.0",

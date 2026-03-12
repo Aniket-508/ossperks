@@ -3,13 +3,20 @@
   "version": "1.10",
   "locale": {
     "source": "en",
-    "targets": ["es"]
+    "targets": ["es", "zh-CN", "fr", "de", "pt-BR", "ja", "ko", "ru"]
   },
   "buckets": {
     "markdown": {
       "include": [
-        "content/docs/[locale]/**/*.mdx",
-        "content/docs/[locale]/**/*.md"
+        "content/cli/[locale]/**/*.mdx",
+        "content/programs/[locale]/**/*.mdx"
+      ]
+    },
+    "ts": {
+      "include": [
+        "src/locales/[locale]/common.ts",
+        "src/locales/[locale]/home.ts",
+        "src/locales/[locale]/programs.ts"
       ]
     }
   }

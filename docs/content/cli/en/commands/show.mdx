@@ -1,0 +1,61 @@
+---
+title: ossperks show
+description: Display full details for a specific OSS perk program.
+---
+
+## Usage
+
+```
+ossperks show <slug> [options]
+```
+
+## Arguments
+
+| Argument | Description                                      |
+| -------- | ------------------------------------------------ |
+| `<slug>` | The program slug (e.g. `vercel`, `github-pages`) |
+
+## Options
+
+| Flag         | Description     |
+| ------------ | --------------- |
+| `--json`     | Output raw JSON |
+| `-h, --help` | Show help       |
+
+## Examples
+
+```bash
+# Show the Vercel program
+ossperks show vercel
+
+# Machine-readable JSON
+ossperks show vercel --json
+```
+
+## Output
+
+```
+─────────────────────────────────────
+  Vercel for Open Source
+  by Vercel  ·  hosting
+─────────────────────────────────────
+
+Vercel provides platform credits and additional services for
+open-source projects hosted on the Vercel platform.
+
+PERKS
+  • $3,600 Platform Credits — $3,600 in Vercel platform credits
+    distributed over 12 months.
+  • OSS Starter Pack — Credits from third-party services.
+
+ELIGIBILITY
+  • Must be an open-source project actively developed and maintained.
+  • Must be hosted on (or intended to host on) Vercel.
+
+HOW TO APPLY
+  • Apply through the Vercel OSS program page when applications open.
+
+  → Apply Now: https://vercel.com/open-source-program
+```
+
+Find a slug by running [`ossperks list`](/cli/commands/list) first.

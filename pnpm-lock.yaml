@@ -4,6 +4,42 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@types/node':
+      specifier: ^25.4.0
+      version: 25.4.0
+    '@types/react':
+      specifier: ^19.2.14
+      version: 19.2.14
+    '@types/react-dom':
+      specifier: ^19.2.3
+      version: 19.2.3
+    lucide-react:
+      specifier: ^0.577.0
+      version: 0.577.0
+    react:
+      specifier: ^19.2.4
+      version: 19.2.4
+    react-dom:
+      specifier: ^19.2.4
+      version: 19.2.4
+    tailwindcss:
+      specifier: ^4.2.1
+      version: 4.2.1
+    tsdown:
+      specifier: ^0.21.0
+      version: 0.21.0
+    typescript:
+      specifier: ^5.9.3
+      version: 5.9.3
+    vitest:
+      specifier: ^4.0.18
+      version: 4.0.18
+    zod:
+      specifier: ^4.1.13
+      version: 4.3.6
+
 importers:
 
   .:
@@ -21,7 +57,7 @@ importers:
         specifier: ^1.51.0
         version: 1.51.0
       typescript:
-        specifier: ^5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
       ultracite:
         specifier: 7.2.5
@@ -45,20 +81,23 @@ importers:
         specifier: 16.6.16
         version: 16.6.16(@takumi-rs/image-response@0.71.7)(@types/mdx@2.0.13)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(fumadocs-core@16.6.16(@mdx-js/mdx@3.1.1)(@types/estree-jsx@1.0.5)(@types/hast@3.0.4)(@types/mdast@4.0.4)(@types/react@19.2.14)(lucide-react@0.577.0(react@19.2.4))(next@16.1.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zod@4.3.6))(next@16.1.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(tailwindcss@4.2.1)
       lucide-react:
-        specifier: ^0.577.0
+        specifier: 'catalog:'
         version: 0.577.0(react@19.2.4)
       next:
         specifier: 16.1.6
         version: 16.1.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react:
-        specifier: ^19.2.4
+        specifier: 'catalog:'
         version: 19.2.4
       react-dom:
-        specifier: ^19.2.4
+        specifier: 'catalog:'
         version: 19.2.4(react@19.2.4)
       tailwind-merge:
         specifier: ^3.5.0
         version: 3.5.0
+      zod:
+        specifier: 'catalog:'
+        version: 4.3.6
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4.2.1
@@ -67,59 +106,69 @@ importers:
         specifier: ^2.0.13
         version: 2.0.13
       '@types/node':
-        specifier: ^25.4.0
+        specifier: 'catalog:'
         version: 25.4.0
       '@types/react':
-        specifier: ^19.2.14
+        specifier: 'catalog:'
         version: 19.2.14
       '@types/react-dom':
-        specifier: ^19.2.3
+        specifier: 'catalog:'
         version: 19.2.3(@types/react@19.2.14)
       postcss:
         specifier: ^8.5.8
         version: 8.5.8
       tailwindcss:
-        specifier: ^4.2.1
+        specifier: 'catalog:'
         version: 4.2.1
       typescript:
-        specifier: ^5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
 
   packages/cli:
+    dependencies:
+      commander:
+        specifier: ^14.0.0
+        version: 14.0.3
+      picocolors:
+        specifier: ^1.1.1
+        version: 1.1.1
     devDependencies:
+      '@ossperks/data':
+        specifier: workspace:*
+        version: link:../data
       '@types/node':
-        specifier: ^25.3.5
+        specifier: 'catalog:'
         version: 25.4.0
       tsdown:
-        specifier: ^0.21.0
+        specifier: 'catalog:'
         version: 0.21.0(typescript@5.9.3)
       typescript:
-        specifier: ^5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
       vitest:
-        specifier: ^4.0.18
+        specifier: 'catalog:'
         version: 4.0.18(@types/node@25.4.0)(jiti@2.6.1)(lightningcss@1.31.1)(tsx@4.21.0)
 
   packages/data:
     dependencies:
       zod:
-        specifier: ^3.25.67
-        version: 3.25.76
+        specifier: 'catalog:'
+        version: 4.3.6
     devDependencies:
       '@types/node':
-        specifier: ^25.3.5
+        specifier: 'catalog:'
         version: 25.4.0
       tsdown:
-        specifier: ^0.21.0
+        specifier: 'catalog:'
         version: 0.21.0(typescript@5.9.3)
       tsx:
         specifier: ^4.19.4
         version: 4.21.0
       typescript:
-        specifier: ^5.9.3
+        specifier: 'catalog:'
         version: 5.9.3
       vitest:
-        specifier: ^4.0.18
+        specifier: 'catalog:'
         version: 4.0.18(@types/node@25.4.0)(jiti@2.6.1)(lightningcss@1.31.1)(tsx@4.21.0)
 
 packages:
@@ -3403,9 +3452,6 @@ packages:
     resolution: {integrity: sha512-hUrmaWBdVDcxvYqnyh09zunKzROWjbZTiNy8dBEjkS7ehEDQibXJ7XvlmtbwuTclUiIyN+CyXQD4Vmko8fNm8w==}
     engines: {node: '>=8'}
     hasBin: true
-
-  zod@3.25.76:
-    resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
   zod@4.3.6:
     resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
@@ -6727,8 +6773,6 @@ snapshots:
     dependencies:
       siginfo: 2.0.0
       stackback: 0.0.2
-
-  zod@3.25.76: {}
 
   zod@4.3.6: {}
 

@@ -9,11 +9,13 @@ const packageJson = JSON.parse(
 };
 
 const sharedConfig = {
+  banner: { js: "#!/usr/bin/env node" },
   dts: true,
   env: {
     VERSION: process.env.VERSION ?? packageJson.version,
   },
   fixedExtension: false,
+  noExternal: ["@ossperks/data"],
 };
 
 export default defineConfig([

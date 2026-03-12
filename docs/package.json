@@ -3,9 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "prebuild": "node scripts/generate-programs-mdx.mjs",
     "build": "next build",
-    "dev": "next dev",
+    "dev": "pnpm generate:programs && next dev",
     "start": "next start",
+    "generate:programs": "node scripts/generate-programs-mdx.mjs",
+    "generate:i18n": "pnpm generate:programs && npx lingo.dev@latest run",
     "i18n:run": "npx lingo.dev@latest run",
     "i18n:init": "npx lingo.dev@latest init",
     "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
@@ -21,16 +24,17 @@
     "next": "16.1.6",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "tailwind-merge": "^3.5.0"
+    "tailwind-merge": "^3.5.0",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.2.1",
     "@types/mdx": "^2.0.13",
-    "@types/node": "^25.4.0",
+    "@types/node": "catalog:",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "postcss": "^8.5.8",
     "tailwindcss": "^4.2.1",
-    "typescript": "^5.9.3"
+    "typescript": "catalog:"
   }
 }

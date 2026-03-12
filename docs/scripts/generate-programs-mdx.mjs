@@ -9,10 +9,23 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { programs } from "@ossperks/data";
-
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const PROGRAMS_SRC = path.join(
+  __dirname,
+  "..",
+  "..",
+  "packages",
+  "data",
+  "src",
+  "programs",
+);
 const OUT_DIR = path.join(__dirname, "..", "content", "programs", "en");
+
+const programs = fs
+  .readdirSync(PROGRAMS_SRC)
+  .filter((f) => f.endsWith(".json"))
+  .map((f) => JSON.parse(fs.readFileSync(path.join(PROGRAMS_SRC, f), "utf8")));
 
 fs.mkdirSync(OUT_DIR, { recursive: true });
 

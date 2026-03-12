@@ -2,7 +2,7 @@ import { ImageResponse } from "@takumi-rs/image-response";
 import { generate as DefaultImage } from "fumadocs-ui/og/takumi";
 import { notFound } from "next/navigation";
 
-import { getProgramPageImage, programsSource } from "@/lib/source";
+import { programsSource } from "@/lib/source";
 
 export const revalidate = false;
 
@@ -30,7 +30,11 @@ export const GET = async (
   );
 };
 
-export const generateStaticParams = () =>
-  programsSource.getPages().map((page) => ({
-    slug: getProgramPageImage(page).segments,
-  }));
+export const generateStaticParams = () => {
+  const slugs = new Set(
+    programsSource
+      .getPages()
+      .flatMap((page) => (page.slugs[0] ? [page.slugs[0]] : []))
+  );
+  return [...slugs].map((slug) => ({ slug }));
+};

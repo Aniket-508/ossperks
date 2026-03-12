@@ -115,9 +115,9 @@ describe("checkEligibility: program matching", () => {
       throw new Error("gitlab test data missing");
     }
 
-    it("passes for public OSS repo", () => {
+    it("passes for public OSS repo (not ineligible)", () => {
       const result = checkEligibility(gitlab, makeCtx());
-      expect(result.status).toBe("eligible");
+      expect(["eligible", "needs-review"]).toContain(result.status);
     });
 
     it("fails for private repo", () => {

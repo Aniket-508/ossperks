@@ -6,7 +6,6 @@
     "lib": ["ES2023", "DOM"],
     "baseUrl": ".",
     "paths": {
-      "@ossperks/cli": ["packages/cli/src/index.ts"],
       "@ossperks/data": ["packages/data/src/index.ts"],
       "@ossperks/data/schema": ["packages/data/src/schema.ts"]
     },

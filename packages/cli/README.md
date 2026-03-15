@@ -5,9 +5,9 @@ The CLI for [OSS Perks](https://github.com/Aniket-508/ossperks). It checks wheth
 ## Install
 
 ```sh
-pnpm add -g @ossperks/cli
+pnpm add -g ossperks
 # or
-npx @ossperks/cli
+npx ossperks
 ```
 
 ## Usage

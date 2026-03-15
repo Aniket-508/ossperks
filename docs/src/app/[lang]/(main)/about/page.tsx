@@ -5,8 +5,25 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { GITHUB_CONFIG } from "@/constants/links";
+import { ROUTES } from "@/constants/routes";
 import { getT } from "@/lib/get-t";
-import { withLocalePrefix } from "@/lib/i18n";
+import { i18n, withLocalePrefix } from "@/lib/i18n";
+
+export const generateStaticParams = () =>
+  i18n.languages.map((lang) => ({ lang }));
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> => {
+  const { lang } = await params;
+  const t = await getT(lang);
+  return {
+    description: t.about.intro,
+    title: t.about.heading,
+  };
+};
 
 export default async function AboutPage({
   params,
@@ -78,7 +95,7 @@ export default async function AboutPage({
           size="lg"
           nativeButton={false}
           render={
-            <Link href={withLocalePrefix(lang, "/programs")}>
+            <Link href={withLocalePrefix(lang, ROUTES.PROGRAMS)}>
               {t.about.cta.linkText}
             </Link>
           }
@@ -87,16 +104,3 @@ export default async function AboutPage({
     </>
   );
 }
-
-export const generateMetadata = async ({
-  params,
-}: {
-  params: Promise<{ lang: string }>;
-}): Promise<Metadata> => {
-  const { lang } = await params;
-  const t = await getT(lang);
-  return {
-    description: t.about.intro,
-    title: `${t.about.heading} | OSS Perks`,
-  };
-};

@@ -1,4 +1,4 @@
-export const ROUTES = {
+export const ROUTES: Record<string, `/${string}`> = {
   ABOUT: "/about",
   CLI: "/cli",
   HOME: "/",

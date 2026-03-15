@@ -5,7 +5,7 @@ const programs = {
   listing: {
     description:
       "Free tools, credits, and services available to open-source projects. Browse by category and find programs your project qualifies for.",
-    heading: "OSS Programs",
+    heading: "Programs",
   },
   more: "+{count} more",
   sections: {

@@ -8,9 +8,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { ROUTES } from "@/constants/routes";
 import { getT } from "@/lib/get-t";
 import type { Translations } from "@/lib/get-t";
-import { withLocalePrefix } from "@/lib/i18n";
+import { i18n, withLocalePrefix } from "@/lib/i18n";
+import { getProgramPageImage, programsSource } from "@/lib/source";
 
 type Program = NonNullable<ReturnType<typeof getProgramBySlug>>;
 
@@ -58,7 +60,7 @@ export default async function ProgramPage({
           size="sm"
           nativeButton={false}
           render={
-            <Link href={withLocalePrefix(lang, "/programs")}>
+            <Link href={withLocalePrefix(lang, ROUTES.PROGRAMS)}>
               <ArrowLeftIcon />
               {t.programs.backToAll}
             </Link>
@@ -203,14 +205,54 @@ export const generateMetadata = async ({
 }: {
   params: Promise<{ lang: string; slug: string }>;
 }): Promise<Metadata> => {
-  const { slug } = await params;
+  const { lang, slug } = await params;
   const program = getProgramBySlug(slug);
   if (!program) {
     notFound();
   }
 
+  const programPath = `${ROUTES.PROGRAMS}/${program.slug}` as `/${string}`;
+  const canonical = withLocalePrefix(lang, programPath);
+  const languages: Record<string, string> = Object.fromEntries(
+    i18n.languages.map((locale) => [
+      locale,
+      withLocalePrefix(locale, programPath),
+    ])
+  );
+  languages["x-default"] = withLocalePrefix(i18n.defaultLanguage, programPath);
+
+  const ogLocale = lang.replace("-", "_");
+  const programPage = programsSource.getPage([program.slug], lang);
+  const ogImage = programPage ? getProgramPageImage(programPage) : { url: "" };
+
   return {
+    alternates: {
+      canonical,
+      languages,
+    },
     description: program.description,
-    title: `${program.name} | OSS Programs`,
+    openGraph: {
+      description: program.description,
+      ...(ogImage.url && {
+        images: [
+          {
+            alt: program.name,
+            height: 630,
+            url: ogImage.url,
+            width: 1200,
+          },
+        ],
+      }),
+      locale: ogLocale,
+      title: program.name,
+      type: "article",
+    },
+    title: program.name,
+    twitter: {
+      card: "summary_large_image",
+      description: program.description,
+      ...(ogImage.url && { images: [ogImage.url] }),
+      title: program.name,
+    },
   };
 };

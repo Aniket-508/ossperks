@@ -4,9 +4,26 @@ import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ROUTES } from "@/constants/routes";
 import { getT } from "@/lib/get-t";
-import { withLocalePrefix } from "@/lib/i18n";
+import { i18n, withLocalePrefix } from "@/lib/i18n";
 import { programsSource } from "@/lib/source";
+
+export const generateStaticParams = () =>
+  i18n.languages.map((lang) => ({ lang }));
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> => {
+  const { lang } = await params;
+  const t = await getT(lang);
+  return {
+    description: t.programs.listing.description,
+    title: t.programs.listing.heading,
+  };
+};
 
 interface ProgramPageData {
   title?: string;
@@ -67,7 +84,10 @@ export default async function ProgramsPage({
                 return (
                   <Link
                     key={program.slug}
-                    href={withLocalePrefix(lang, `/programs/${program.slug}`)}
+                    href={withLocalePrefix(
+                      lang,
+                      `${ROUTES.PROGRAMS}/${program.slug}` as `/${string}`
+                    )}
                     className="group block transition-colors hover:bg-fd-accent"
                   >
                     <Card className="h-full">
@@ -107,16 +127,3 @@ export default async function ProgramsPage({
     </>
   );
 }
-
-export const generateMetadata = async ({
-  params,
-}: {
-  params: Promise<{ lang: string }>;
-}): Promise<Metadata> => {
-  const { lang } = await params;
-  const t = await getT(lang);
-  return {
-    description: t.programs.listing.description,
-    title: t.programs.listing.heading,
-  };
-};

@@ -5,6 +5,23 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { LINK } from "@/constants/links";
 import { getT } from "@/lib/get-t";
+import { i18n } from "@/lib/i18n";
+
+export const generateStaticParams = () =>
+  i18n.languages.map((lang) => ({ lang }));
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> => {
+  const { lang } = await params;
+  const t = await getT(lang);
+  return {
+    description: t.sponsors.intro,
+    title: t.sponsors.heading,
+  };
+};
 
 export default async function SponsorsPage({
   params,
@@ -96,16 +113,3 @@ export default async function SponsorsPage({
     </>
   );
 }
-
-export const generateMetadata = async ({
-  params,
-}: {
-  params: Promise<{ lang: string }>;
-}): Promise<Metadata> => {
-  const { lang } = await params;
-  const t = await getT(lang);
-  return {
-    description: t.sponsors.intro,
-    title: `${t.sponsors.heading} | OSS Perks`,
-  };
-};

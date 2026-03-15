@@ -4,8 +4,25 @@ import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ROUTES } from "@/constants/routes";
 import { getT } from "@/lib/get-t";
-import { withLocalePrefix } from "@/lib/i18n";
+import { i18n, withLocalePrefix } from "@/lib/i18n";
+
+export const generateStaticParams = () =>
+  i18n.languages.map((lang) => ({ lang }));
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> => {
+  const { lang } = await params;
+  const t = await getT(lang);
+  return {
+    description: t.people.description,
+    title: t.people.heading,
+  };
+};
 
 export default async function PeoplePage({
   params,
@@ -36,7 +53,7 @@ export default async function PeoplePage({
           {people.map(({ contact, programSlug, provider }) => {
             const programUrl = withLocalePrefix(
               lang,
-              `/programs/${programSlug}`
+              `${ROUTES.PROGRAMS}/${programSlug}`
             );
 
             return (
@@ -68,16 +85,3 @@ export default async function PeoplePage({
     </>
   );
 }
-
-export const generateMetadata = async ({
-  params,
-}: {
-  params: Promise<{ lang: string }>;
-}): Promise<Metadata> => {
-  const { lang } = await params;
-  const t = await getT(lang);
-  return {
-    description: t.people.description,
-    title: `${t.people.heading} | OSS Perks`,
-  };
-};

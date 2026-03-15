@@ -1,8 +1,12 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import { ROUTES } from "@/constants/routes";
 import { getT } from "@/lib/get-t";
-import { withLocalePrefix } from "@/lib/i18n";
+import { i18n, withLocalePrefix } from "@/lib/i18n";
+
+export const generateStaticParams = () =>
+  i18n.languages.map((lang) => ({ lang }));
 
 export default async function HomePage({
   params,
@@ -24,7 +28,7 @@ export default async function HomePage({
           size="lg"
           nativeButton={false}
           render={
-            <Link href={withLocalePrefix(lang, "/programs")}>
+            <Link href={withLocalePrefix(lang, ROUTES.PROGRAMS)}>
               {t.home.programsLink}
             </Link>
           }
@@ -34,7 +38,9 @@ export default async function HomePage({
           size="lg"
           nativeButton={false}
           render={
-            <Link href={withLocalePrefix(lang, "/cli")}>{t.home.cliLink}</Link>
+            <Link href={withLocalePrefix(lang, ROUTES.CLI)}>
+              {t.home.cliLink}
+            </Link>
           }
         />
       </div>

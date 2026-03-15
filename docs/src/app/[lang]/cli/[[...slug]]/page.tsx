@@ -12,6 +12,8 @@ import { notFound } from "next/navigation";
 
 import { getMDXComponents } from "@/components/mdx";
 import { LINK } from "@/constants/links";
+import { ROUTES } from "@/constants/routes";
+import { i18n, withLocalePrefix } from "@/lib/i18n";
 import { cliSource, getCliPageImage } from "@/lib/source";
 
 export default async function Page({
@@ -51,8 +53,7 @@ export default async function Page({
   );
 }
 
-export const generateStaticParams = () =>
-  cliSource.generateParams("slug", "lang");
+export const generateStaticParams = () => cliSource.generateParams();
 
 export const generateMetadata = async ({
   params,
@@ -65,11 +66,41 @@ export const generateMetadata = async ({
     notFound();
   }
 
+  const cliPath = `${ROUTES.CLI}/${page.slugs.join("/")}` as `/${string}`;
+  const canonical = withLocalePrefix(lang, cliPath);
+  const languages: Record<string, string> = Object.fromEntries(
+    i18n.languages.map((locale) => [locale, withLocalePrefix(locale, cliPath)])
+  );
+  languages["x-default"] = withLocalePrefix(i18n.defaultLanguage, cliPath);
+
+  const ogLocale = lang.replace("-", "_");
+
   return {
+    alternates: {
+      canonical,
+      languages,
+    },
     description: page.data.description,
     openGraph: {
-      images: getCliPageImage(page).url,
+      description: page.data.description,
+      images: [
+        {
+          alt: page.data.title,
+          height: 630,
+          url: getCliPageImage(page).url,
+          width: 1200,
+        },
+      ],
+      locale: ogLocale,
+      title: page.data.title,
+      type: "article",
     },
     title: page.data.title,
+    twitter: {
+      card: "summary_large_image",
+      description: page.data.description,
+      images: [getCliPageImage(page).url],
+      title: page.data.title,
+    },
   };
 };

@@ -1,12 +1,10 @@
-import { getPeople } from "@ossperks/data";
+import { getPeople, programs } from "@ossperks/data";
+import { ExternalLink } from "lucide-react";
 import type { Metadata } from "next";
-import Link from "next/link";
 
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ROUTES } from "@/constants/routes";
+import { ContactSubmissionDialog } from "@/components/people/contact-submission-dialog";
 import { getT } from "@/lib/get-t";
-import { i18n, withLocalePrefix } from "@/lib/i18n";
+import { i18n } from "@/lib/i18n";
 
 export const generateStaticParams = () =>
   i18n.languages.map((lang) => ({ lang }));
@@ -33,15 +31,25 @@ export default async function PeoplePage({
   const t = await getT(lang);
   const people = getPeople();
 
+  const programOptions = programs.map((p) => ({ name: p.name, slug: p.slug }));
+
   return (
     <>
-      <div className="mb-12 text-center">
-        <h1 className="text-4xl font-bold mb-4">{t.people.heading}</h1>
-        <p className="text-fd-muted-foreground text-lg max-w-2xl mx-auto">
-          {people.length > 0
-            ? `${people.length} ${t.people.description}`
-            : t.people.description}
-        </p>
+      <div className="mb-10 flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h1 className="text-4xl font-bold mb-2">{t.people.heading}</h1>
+          <p className="text-fd-muted-foreground text-lg max-w-2xl">
+            {people.length > 0
+              ? `${people.length} ${t.people.description}`
+              : t.people.description}
+          </p>
+        </div>
+        <div className="shrink-0">
+          <ContactSubmissionDialog
+            programs={programOptions}
+            translations={t.people.submit}
+          />
+        </div>
       </div>
 
       {people.length === 0 ? (
@@ -49,35 +57,38 @@ export default async function PeoplePage({
           <p className="text-fd-muted-foreground">{t.people.empty}</p>
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {people.map(({ contact, programSlug, provider }) => {
-            const programUrl = withLocalePrefix(
-              lang,
-              `${ROUTES.PROGRAMS}/${programSlug}`
-            );
+        <div className="grid gap-4 sm:grid-cols-2">
+          {people.map(({ contact, provider }) => {
+            const initial = contact.name.charAt(0).toUpperCase();
+            const roleText = t.people.roleAt
+              .replace("{role}", contact.role)
+              .replace("{provider}", provider);
 
             return (
-              <Card
-                key={`${contact.name}-${programSlug}`}
-                className="transition-colors hover:bg-fd-accent"
+              <div
+                key={`${contact.name}-${provider}`}
+                className="flex items-center gap-4 rounded-xl p-4 ring-1 ring-foreground/10 transition-colors hover:bg-fd-accent"
               >
-                <CardHeader>
-                  <CardTitle className="font-semibold">
-                    {contact.name}
-                  </CardTitle>
-                  <Badge variant="secondary" className="w-fit">
-                    {contact.role}
-                  </Badge>
-                </CardHeader>
-                <CardContent>
-                  <Link
-                    href={programUrl}
-                    className="text-sm text-fd-primary hover:underline"
+                <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-fd-muted text-fd-foreground font-semibold text-lg">
+                  {initial}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold truncate">{contact.name}</p>
+                  <p className="text-sm text-fd-muted-foreground truncate">
+                    {roleText}
+                  </p>
+                </div>
+                {contact.url && (
+                  <a
+                    href={contact.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="shrink-0 text-fd-muted-foreground hover:text-fd-foreground transition-colors"
                   >
-                    {provider}
-                  </Link>
-                </CardContent>
-              </Card>
+                    <ExternalLink className="size-4" />
+                  </a>
+                )}
+              </div>
             );
           })}
         </div>

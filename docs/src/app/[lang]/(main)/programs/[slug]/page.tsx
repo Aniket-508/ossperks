@@ -72,7 +72,7 @@ export default async function ProgramPage({
         <div className="flex items-center gap-3 mb-2">
           <Badge variant="default">{categoryLabel}</Badge>
           {program.duration && (
-            <Badge variant="secondary">{program.duration}</Badge>
+            <Badge variant="outline">{program.duration}</Badge>
           )}
         </div>
         <h1 className="text-3xl font-bold mb-2">{title}</h1>

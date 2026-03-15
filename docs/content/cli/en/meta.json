@@ -1,4 +1,13 @@
 {
   "title": "CLI",
-  "pages": ["index", "commands"]
+  "pages": [
+    "---Getting Started---",
+    "index",
+    "---Commands---",
+    "list",
+    "show",
+    "check",
+    "search",
+    "categories"
+  ]
 }

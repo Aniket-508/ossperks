@@ -1,8 +1,8 @@
 const footer = {
-  builtBy: "builtBy (ru)",
-  hostedOn: "hostedOn (ru)",
+  builtBy: "Создано",
+  hostedOn: "Хостинг",
   llms: "LLMs",
-  translationsBy: "translationsBy (ru)",
+  translationsBy: "Переводы",
   twitter: "X (Twitter)",
 };
 export default footer;

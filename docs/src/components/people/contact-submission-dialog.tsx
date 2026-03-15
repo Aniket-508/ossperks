@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { ArrowRight, CheckCircle2, Loader2, Plus } from "lucide-react";
+import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 import React, { useCallback, useState } from "react";
 import { z } from "zod";
 
@@ -135,7 +135,7 @@ const canSubmitSelector = (s: { canSubmit: boolean }) => s.canSubmit;
 
 interface ContactSubmissionDialogProps {
   programs: { slug: string; name: string }[];
-  trigger?: React.ReactNode;
+  trigger?: React.ReactElement;
   translations: {
     heading: string;
     description: string;
@@ -201,7 +201,7 @@ export const ContactSubmissionDialog = ({
   );
 
   const handleFormSubmit = useCallback(
-    (e: React.FormEvent) => {
+    (e: React.SubmitEvent) => {
       e.preventDefault();
       e.stopPropagation();
       form.handleSubmit();
@@ -211,14 +211,7 @@ export const ContactSubmissionDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger render={<Button size="lg" />}>
-        {trigger ?? (
-          <>
-            <Plus className="size-4" />
-            {translations.buttonText}
-          </>
-        )}
-      </DialogTrigger>
+      <DialogTrigger render={trigger} />
       <DialogContent>
         {step === "form" ? (
           <>

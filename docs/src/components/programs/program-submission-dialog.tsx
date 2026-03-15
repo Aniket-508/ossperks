@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { ArrowRight, CheckCircle2, Loader2, Plus } from "lucide-react";
+import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 import React, { useCallback, useState } from "react";
 import { z } from "zod";
 
@@ -185,11 +185,10 @@ const CategoryField = ({
 const canSubmitSelector = (s: { canSubmit: boolean }) => s.canSubmit;
 
 interface ProgramSubmissionDialogProps {
-  trigger?: React.ReactNode;
+  trigger?: React.ReactElement;
   translations: {
     heading: string;
     description: string;
-    buttonText: string;
   };
 }
 
@@ -244,7 +243,7 @@ export const ProgramSubmissionDialog = ({
   );
 
   const handleFormSubmit = useCallback(
-    (e: React.FormEvent) => {
+    (e: React.SubmitEvent) => {
       e.preventDefault();
       e.stopPropagation();
       form.handleSubmit();
@@ -254,14 +253,7 @@ export const ProgramSubmissionDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger render={<Button size="lg" />}>
-        {trigger ?? (
-          <>
-            <Plus className="size-4" />
-            {translations.buttonText}
-          </>
-        )}
-      </DialogTrigger>
+      <DialogTrigger render={trigger} />
       <DialogContent className="sm:max-w-lg">
         {step === "form" ? (
           <>

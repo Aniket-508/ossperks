@@ -1,29 +1,55 @@
 const home = {
-  cliLink: "Explore CLI docs",
-  cta: {
-    buttonText: "Contribute on GitHub",
+  builtFor: {
     description:
-      "Know a program that should be listed? Contributions are always welcome.",
-    heading: "Is there something missing?",
+      "Stop hunting across vendor pages. One curated list of every free tier, credit program, and sponsorship available to open-source maintainers.",
+    heading: "Everything your project qualifies for, in one place.",
+    subheading: "BUILT FOR OPEN SOURCE",
+  },
+  cta: {
+    description:
+      "Know a program or contact that should be listed? Help us grow the directory.",
+    heading: "Missing something?",
+    submitContact: "Submit a contact",
+    submitProgram: "Submit a program",
   },
   description:
-    "Discover free tools, credits, and services for your open-source project.",
+    "Free credits, tools, and infrastructure for open-source maintainers — all in one place.",
   featured: {
-    description:
-      "Explore programs offering free tools, credits, and services to open-source maintainers.",
-    heading: "Featured opportunities",
+    heading: "Featured programs",
+    viewAll: "View all",
   },
-  heading: "OSS Perks",
+  heading: "Get your OSS perks",
+  hero: {
+    browsePrograms: "Browse programs",
+    submitProgram: "Submit a program",
+  },
+  howItWorks: {
+    heading: "Simple, fast, curated.",
+    steps: [
+      {
+        description: "Find programs by category and perk type.",
+        title: "Browse",
+      },
+      {
+        description: "Check eligibility and submit your project.",
+        title: "Apply",
+      },
+      {
+        description: "Get approved and start using your perks.",
+        title: "Get perks",
+      },
+    ],
+    subheading: "HOW IT WORKS",
+  },
   people: {
-    description: "Connect with the humans who champion open-source support.",
-    heading: "People behind the programs",
+    description: "The humans behind each program, ready to help.",
+    heading: "People",
   },
-  programsLink: "Browse programs",
   stats: {
-    categories: "Categories covered",
-    people: "People & contacts",
-    perks: "Perks and benefits",
-    programs: "Programs available",
+    categories: "Categories",
+    people: "Contacts",
+    perks: "Perks",
+    programs: "Programs",
   },
 };
 

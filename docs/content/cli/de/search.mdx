@@ -1,0 +1,56 @@
+---
+title: ossperks search
+description: Durchsuchen Sie OSS-Vergünstigungsprogramme nach Schlüsselwörtern
+  in Namen, Beschreibungen und Anbietern.
+---
+
+## Verwendung
+
+```
+ossperks search <Suchbegriff> [Optionen]
+```
+
+## Argumente
+
+| Argument        | Beschreibung                                                      |
+| --------------- | ----------------------------------------------------------------- |
+| `<Suchbegriff>` | Suchbegriff (stimmt mit Name, Beschreibung oder Anbieter überein) |
+
+## Optionen
+
+| Flag                    | Beschreibung                                   |
+| ----------------------- | ---------------------------------------------- |
+| `-c, --category <slug>` | Suche auf eine bestimmte Kategorie beschränken |
+| `--json`                | Rohes JSON ausgeben                            |
+| `-h, --help`            | Hilfe anzeigen                                 |
+
+## Beispiele
+
+```bash
+
+# Suche nach "hosting"
+
+ossperks search hosting
+
+# Suche nach "credits" in der Kategorie devtools
+
+ossperks search credits --category devtools
+
+# JSON-Ausgabe
+
+ossperks search vercel --json
+```
+
+## Ausgabe
+
+```
+Ergebnisse für "hosting" (4 Programme)
+
+NAME                          ANBIETER    KATEGORIE
+Vercel for Open Source        Vercel      hosting
+Netlify OSS Plan              Netlify     hosting
+Railway OSS Program           Railway     hosting
+Render Open Source            Render      hosting
+```
+
+Verwenden Sie [`ossperks show <slug>`](/cli/commands/show), um vollständige Details zu einem beliebigen Ergebnis anzuzeigen.

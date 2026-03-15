@@ -25,7 +25,6 @@ const config = {
       },
     ];
   },
-  serverExternalPackages: ["@takumi-rs/image-response"],
   transpilePackages: ["@ossperks/data"],
 };
 

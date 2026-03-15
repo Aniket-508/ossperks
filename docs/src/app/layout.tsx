@@ -1,11 +1,8 @@
-import { Public_Sans } from "next/font/google";
-
 import "./global.css";
 import { headers } from "next/headers";
 
+import { publicSans } from "@/lib/fonts";
 import { baseMetadata } from "@/seo/metadata";
-
-const publicSans = Public_Sans({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata = baseMetadata;
 

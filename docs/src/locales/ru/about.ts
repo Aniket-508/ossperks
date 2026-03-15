@@ -1,2 +1,39 @@
-export { default } from "@/locales/en/about";
-export type { AboutTranslations } from "@/locales/en/about";
+const about = {
+  cta: {
+    heading: "Начать",
+    linkText: "Просмотреть все программы",
+  },
+  heading: "О проекте",
+  intro:
+    "OSS Perks — это тщательно подобранный каталог программ, которые предлагают open-source проектам бесплатные инструменты, кредиты и услуги. Слишком многие мейнтейнеры не знают о доступных им грантах, кредитах и программах. Информация разбросана по блогам и устаревшим таблицам. OSS Perks создан, чтобы это изменить.",
+  maintainer: {
+    description: "Этот проект поддерживает",
+    heading: "Мейнтейнер",
+    name: "Аникет",
+  },
+  principles: {
+    items: [
+      {
+        description: "Никаких скрытых мотивов. Мы не берём денег от программ.",
+        title: "Прозрачность",
+      },
+      {
+        description:
+          "Представленные программы — это те, что мы искренне рекомендуем.",
+        title: "Тщательный отбор",
+      },
+      {
+        description: "Создано вместе с open-source сообществом и для него.",
+        title: "Сообщество",
+      },
+      {
+        description:
+          "Без аккаунтов, без платных подписок, без сбора email-адресов.",
+        title: "Бесплатно навсегда",
+      },
+    ],
+    title: "Принципы",
+  },
+};
+export default about;
+export type AboutTranslations = typeof about;

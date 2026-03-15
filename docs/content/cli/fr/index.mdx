@@ -1,0 +1,61 @@
+---
+title: Interface CLI ossperks
+description: Parcourez les programmes d'avantages OSS et vérifiez si votre
+  projet est éligible — directement depuis le terminal.
+---
+
+## Aperçu
+
+`ossperks` est un outil en ligne de commande sans configuration qui vous permet de :
+
+- **Lister** tous les programmes d'avantages OSS en un seul endroit
+- **Rechercher** des programmes par mot-clé, fournisseur ou catégorie
+- **Afficher** les détails complets de n'importe quel programme (avantages, éligibilité, comment postuler)
+- **Vérifier** si votre propre dépôt remplit les conditions des programmes — automatiquement, en récupérant les données en direct depuis l'API GitHub ou GitLab
+
+## Installation
+
+```npm
+npm install -g ossperks
+```
+
+## Démarrage rapide
+
+```bash
+
+# Lister tous les programmes
+
+ossperks list
+
+# Vérifier votre projet actuel
+
+cd /path/to/your/repo
+ossperks check
+
+# Rechercher par mot-clé
+
+ossperks search "hosting"
+
+# Afficher un programme spécifique
+
+ossperks show vercel
+```
+
+## Comment fonctionne la détection de dépôt
+
+`ossperks check` détecte automatiquement votre dépôt sans aucune intervention :
+
+1. Lit le champ `repository` du fichier `package.json` dans le répertoire actuel
+2. Se replie sur l'analyse de `remote.origin.url` depuis `.git/config`
+3. Appelle l'API publique GitHub ou GitLab pour récupérer les données en direct (étoiles, licence, activité, etc.)
+4. Compare ces données aux critères d'éligibilité de chaque programme
+
+Aucun jeton d'API n'est requis pour les dépôts publics.
+
+## Étapes suivantes
+
+- [list](/cli/list) — parcourir tous les programmes
+- [show](/cli/show) — afficher les détails d'un programme
+- [check](/cli/check) — vérifier automatiquement l'éligibilité de votre dépôt
+- [search](/cli/search) — trouver des programmes par mot-clé
+- [categories](/cli/categories) — lister les catégories disponibles

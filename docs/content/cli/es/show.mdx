@@ -1,0 +1,64 @@
+---
+title: ossperks show
+description: Muestra los detalles completos de un programa específico de beneficios OSS.
+---
+
+## Uso
+
+```
+ossperks show <slug> [opciones]
+```
+
+## Argumentos
+
+| Argumento | Descripción                                         |
+| --------- | --------------------------------------------------- |
+| `<slug>`  | El slug del programa (ej. `vercel`, `github-pages`) |
+
+## Opciones
+
+| Bandera      | Descripción              |
+| ------------ | ------------------------ |
+| `--json`     | Mostrar JSON sin formato |
+| `-h, --help` | Mostrar ayuda            |
+
+## Ejemplos
+
+```bash
+
+# Mostrar el programa de Vercel
+
+ossperks show vercel
+
+# JSON legible por máquina
+
+ossperks show vercel --json
+```
+
+## Salida
+
+```
+─────────────────────────────────────
+  Vercel para Código Abierto
+  por Vercel  ·  alojamiento
+─────────────────────────────────────
+
+Vercel proporciona créditos de plataforma y servicios adicionales para
+proyectos de código abierto alojados en la plataforma Vercel.
+
+BENEFICIOS
+  • $3,600 en Créditos de Plataforma — $3,600 en créditos de la plataforma
+    Vercel distribuidos durante 12 meses.
+  • Paquete Inicial OSS — Créditos de servicios de terceros.
+
+ELEGIBILIDAD
+  • Debe ser un proyecto de código abierto activamente desarrollado y mantenido.
+  • Debe estar alojado en (o tener la intención de alojarse en) Vercel.
+
+CÓMO POSTULARSE
+  • Postularse a través de la página del programa OSS de Vercel cuando se abran las aplicaciones.
+
+  → Postular Ahora: https://vercel.com/open-source-program
+```
+
+Encuentra un slug ejecutando primero [`ossperks list`](/cli/commands/list).

@@ -5,5 +5,5 @@ const footer = {
   translationsBy: "translationsBy (ru)",
   twitter: "X (Twitter)",
 };
-
 export default footer;
+export type FooterTranslations = typeof footer;

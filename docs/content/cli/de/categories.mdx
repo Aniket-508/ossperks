@@ -1,0 +1,49 @@
+---
+title: ossperks categories
+description: Alle verfügbaren Programmkategorien und ihre Slugs auflisten.
+---
+
+## Verwendung
+
+```
+ossperks categories [optionen]
+```
+
+## Optionen
+
+| Flag         | Beschreibung        |
+| ------------ | ------------------- |
+| `--json`     | Rohes JSON ausgeben |
+| `-h, --help` | Hilfe anzeigen      |
+
+## Beispiele
+
+```bash
+
+# Alle Kategorien auflisten
+
+ossperks categories
+
+# JSON-Ausgabe
+
+ossperks categories --json
+```
+
+## Ausgabe
+
+```
+KATEGORIE SLUG     BEZEICHNUNG
+hosting            Hosting & Bereitstellung
+devtools           Entwicklertools
+security           Sicherheit
+monitoring         Monitoring & Beobachtbarkeit
+communication      Kommunikation
+ci-cd              CI/CD
+testing            Testen
+ai                 KI & Maschinelles Lernen
+analytics          Analytik
+infrastructure     Infrastruktur
+credentials        Zugangsdaten & Geheimnisse
+```
+
+Verwenden Sie Kategorie-Slugs mit [`ossperks list --category <slug>`](/cli/commands/list), um Programme zu filtern.

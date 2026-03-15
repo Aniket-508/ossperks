@@ -1,0 +1,108 @@
+---
+title: ossperks check
+description: Prüfen Sie automatisch, ob Ihr Repository für OSS-Vorteilsprogramme
+  qualifiziert ist.
+---
+
+## Verwendung
+
+```
+ossperks check [optionen]
+```
+
+Führen Sie dies in einem beliebigen Git-Repository aus. Für öffentliche Repositorys sind keine Argumente oder Token erforderlich.
+
+## Optionen
+
+| Flag                   | Beschreibung                                                        |
+| ---------------------- | ------------------------------------------------------------------- |
+| `-p, --program <slug>` | Nur gegen ein bestimmtes Programm prüfen (z. B. `--program vercel`) |
+| `--json`               | Rohes JSON ausgeben                                                 |
+| `-h, --help`           | Hilfe anzeigen                                                      |
+
+## Funktionsweise
+
+`ossperks check` läuft vollständig automatisch:
+
+```
+ossperks check
+      │
+      ▼
+Lese package.json (repository-Feld)
+      │  ← nicht gefunden?
+      ▼
+Lese .git/config (remote.origin.url)
+      │
+      ▼
+Erkenne Anbieter (github.com / gitlab.com)
+      │
+      ├─ GitHub → GET /repos/:owner/:repo
+      └─ GitLab → GET /api/v4/projects/:id
+      │
+      ▼
+RepoContext (Sterne, Lizenz, Alter, Aktivität...)
+      │
+      ▼
+Gleiche Berechtigungsregeln für jedes Programm ab
+      │
+      ▼
+Gebe Ergebnisse aus
+```
+
+### Repository-Erkennung
+
+Das Tool liest Ihre Repository-URL aus einer der beiden folgenden Quellen, in dieser Reihenfolge:
+
+1. `repository`-Feld in `package.json`
+2. `remote.origin.url` in `.git/config`
+
+Sowohl GitHub- als auch GitLab-URL-Formate (HTTPS / SSH) werden unterstützt.
+
+### Berechtigungsabgleich
+
+Berechtigungszeichenfolgen sind natürlichsprachliche Regeln wie:
+
+- `"Must be an open-source project"` → prüft auf eine OSI-anerkannte Lizenz
+- `"Must have at least 100 GitHub stars"` → prüft `stars >= 100`
+- `"Project must be at least 3 months old"` → prüft das Repository-Alter
+- `"Must be actively maintained"` → prüft auf aktuelle Commits
+
+Der Abgleich ist heuristisch – er analysiert Schwellenwerte und Schlüsselwörter aus dem Regeltext. Grenzfälle werden als `?` (unbekannt) gekennzeichnet und nicht als harter Fehler gewertet.
+
+## Beispiele
+
+```bash
+
+# Alle Programme aus Ihrem aktuellen Repository prüfen
+
+ossperks check
+
+# Nur ein bestimmtes Programm prüfen
+
+ossperks check --program vercel
+
+# JSON-Ausgabe für Skripte
+
+ossperks check --json
+```
+
+## Ausgabe
+
+```
+Prüfe Repository: github.com/acme/my-project
+  Sterne: 412  Lizenz: MIT  Alter: 14 Monate  Letzter Push: vor 3 Tagen
+
+PROGRAMM              BERECHTIGT
+vercel                ✔ wahrscheinlich
+netlify               ✔ wahrscheinlich
+github-sponsors       ? unbekannt (manuelle Prüfung erforderlich)
+aws-activate          ✗ unwahrscheinlich
+```
+
+Status:
+
+- **✔ wahrscheinlich** — alle analysierten Berechtigungsregeln erfüllt
+- **? unbekannt** — mindestens eine Regel konnte nicht automatisch ausgewertet werden
+- **✗ unwahrscheinlich** — eine oder mehrere Regeln stimmen eindeutig nicht überein
+
+Überprüfen Sie stets die offizielle Programmseite, bevor Sie sich bewerben.

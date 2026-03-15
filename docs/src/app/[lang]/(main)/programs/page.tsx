@@ -25,7 +25,25 @@ export const generateMetadata = async ({
   const t = await getT(lang);
   return {
     description: t.programs.listing.description,
+    openGraph: {
+      description: t.programs.listing.description,
+      images: [
+        {
+          alt: t.programs.listing.heading,
+          height: 630,
+          url: `/og/${lang}/programs`,
+          width: 1200,
+        },
+      ],
+      title: t.programs.listing.heading,
+    },
     title: t.programs.listing.heading,
+    twitter: {
+      card: "summary_large_image",
+      description: t.programs.listing.description,
+      images: [`/og/${lang}/programs`],
+      title: t.programs.listing.heading,
+    },
   };
 };
 

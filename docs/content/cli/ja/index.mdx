@@ -1,0 +1,60 @@
+---
+title: ossperks CLI
+description: ターミナルから直接、OSS特典プログラムを閲覧し、プロジェクトが対象かどうかを確認できます。
+---
+
+## 概要
+
+`ossperks`は設定不要のコマンドラインツールで、以下のことができます:
+
+- **一覧表示** すべてのOSS特典プログラムを一箇所で確認
+- **検索** キーワード、提供者、カテゴリーでプログラムを検索
+- **詳細表示** 任意のプログラムの完全な詳細(特典、資格要件、申請方法)を表示
+- **確認** お使いのリポジトリがプログラムの対象かどうかを自動的に確認 — GitHubまたはGitLab APIからライブデータを取得
+
+## インストール
+
+```npm
+npm install -g ossperks
+```
+
+## クイックスタート
+
+```bash
+
+# すべてのプログラムを一覧表示
+
+ossperks list
+
+# 現在のプロジェクトを確認
+
+cd /path/to/your/repo
+ossperks check
+
+# キーワードで検索
+
+ossperks search "hosting"
+
+# 特定のプログラムを表示
+
+ossperks show vercel
+```
+
+## リポジトリ検出の仕組み
+
+`ossperks check`は、プロンプトなしで自動的にリポジトリを検出します:
+
+1. 現在のディレクトリの`package.json`から`repository`フィールドを読み取り
+2. `.git/config`から`remote.origin.url`を解析してフォールバック
+3. GitHub または GitLab の公開APIを呼び出してライブデータ(スター数、ライセンス、アクティビティなど)を取得
+4. そのデータを各プログラムの資格要件ルールと照合
+
+公開リポジトリにはAPIトークンは不要です。
+
+## 次のステップ
+
+- [list](/cli/list) — すべてのプログラムを閲覧
+- [show](/cli/show) — プログラムの詳細を表示
+- [check](/cli/check) — リポジトリの資格を自動確認
+- [search](/cli/search) — キーワードでプログラムを検索
+- [categories](/cli/categories) — 利用可能なカテゴリーを一覧表示

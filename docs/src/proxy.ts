@@ -32,6 +32,6 @@ export const proxy = function proxy(
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|og|llms.txt|llms-full.txt|llms.mdx).*)",
+    "/((?!api|_next/static|_next/image|favicon\\.ico|icon\\.svg|apple-icon\\.png|robots\\.txt|sitemap\\.xml|og|llms\\.txt|llms-full\\.txt|llms\\.mdx).*)",
   ],
 };

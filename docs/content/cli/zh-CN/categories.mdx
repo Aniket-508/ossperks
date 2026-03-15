@@ -1,0 +1,49 @@
+---
+title: ossperks categories
+description: 列出所有可用的程序类别及其标识符。
+---
+
+## 用法
+
+```
+ossperks categories [options]
+```
+
+## 选项
+
+| 标志         | 描述          |
+| ------------ | ------------- |
+| `--json`     | 输出原始 JSON |
+| `-h, --help` | 显示帮助      |
+
+## 示例
+
+```bash
+
+# 列出所有类别
+
+ossperks categories
+
+# JSON 输出
+
+ossperks categories --json
+```
+
+## 输出
+
+```
+CATEGORY SLUG      LABEL
+hosting            托管与部署
+devtools           开发者工具
+security           安全
+monitoring         监控与可观测性
+communication      通信
+ci-cd              CI/CD
+testing            测试
+ai                 人工智能与机器学习
+analytics          分析
+infrastructure     基础设施
+credentials        凭证与密钥
+```
+
+使用类别标识符配合 [`ossperks list --category <slug>`](/cli/commands/list) 来筛选程序。

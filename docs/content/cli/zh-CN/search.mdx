@@ -1,0 +1,55 @@
+---
+title: ossperks search
+description: 通过关键词在名称、描述或提供方中搜索 OSS 福利项目。
+---
+
+## 用法
+
+```
+ossperks search <query> [options]
+```
+
+## 参数说明
+
+| 参数      | 说明                               |
+| --------- | ---------------------------------- |
+| `<query>` | 搜索词（可匹配名称、描述或提供方） |
+
+## 选项
+
+| 标志                    | 说明                 |
+| ----------------------- | -------------------- |
+| `-c, --category <slug>` | 限定在特定分类内搜索 |
+| `--json`                | 输出原始 JSON        |
+| `-h, --help`            | 显示帮助信息         |
+
+## 示例
+
+```bash
+
+# 搜索“hosting”
+
+ossperks search hosting
+
+# 在 devtools 分类下搜索“credits”
+
+ossperks search credits --category devtools
+
+# 输出 JSON 格式
+
+ossperks search vercel --json
+```
+
+## 输出结果
+
+```
+“hosting” 的搜索结果（共 4 个项目）
+
+NAME                          PROVIDER    CATEGORY
+Vercel for Open Source        Vercel      hosting
+Netlify OSS Plan              Netlify     hosting
+Railway OSS Program           Railway     hosting
+Render Open Source            Render      hosting
+```
+
+使用 [`ossperks show <slug>`](/cli/commands/show) 可以查看任意结果的详细信息。

@@ -1,0 +1,107 @@
+---
+title: ossperks check
+description: リポジトリがOSS特典プログラムの対象となるかどうかを自動的にチェックします。
+---
+
+## 使用方法
+
+```
+ossperks check [オプション]
+```
+
+任意のGitリポジトリ内からこのコマンドを実行してください。パブリックリポジトリの場合、引数やトークンは不要です。
+
+## オプション
+
+| フラグ                 | 説明                                                         |
+| ---------------------- | ------------------------------------------------------------ |
+| `-p, --program <slug>` | 特定のプログラムのみをチェックする（例：`--program vercel`） |
+| `--json`               | 生のJSONを出力する                                           |
+| `-h, --help`           | ヘルプを表示する                                             |
+
+## 動作の仕組み
+
+`ossperks check`は完全に自動で実行されます：
+
+```
+ossperks check
+      │
+      ▼
+package.jsonを読み込む（repositoryフィールド）
+      │  ← 見つからない場合は？
+      ▼
+.git/configを読み込む（remote.origin.url）
+      │
+      ▼
+プロバイダーを検出（github.com / gitlab.com）
+      │
+      ├─ GitHub → GET /repos/:owner/:repo
+      └─ GitLab → GET /api/v4/projects/:id
+      │
+      ▼
+RepoContext（スター数、ライセンス、経過期間、アクティビティなど）
+      │
+      ▼
+全プログラムの適格性ルールと照合
+      │
+      ▼
+結果を表示
+```
+
+### リポジトリの検出
+
+このツールは、以下の2箇所のいずれかから順にリポジトリURLを読み取ります：
+
+1. `package.json`内の`repository`フィールド
+2. `.git/config`内の`remote.origin.url`
+
+GitHubとGitLabの両方のHTTPS / SSH URL形式に対応しています。
+
+### 適格性の照合
+
+適格性文字列は、以下のような自然言語のルールです：
+
+- `「オープンソースプロジェクトである必要があります」` → OSI承認ライセンスをチェック
+- `「GitHubスターが少なくとも100以上必要です」` → `stars >= 100`をチェック
+- `「プロジェクトは少なくとも3ヶ月以上経過している必要があります」` → リポジトリの経過期間をチェック
+- `「アクティブにメンテナンスされている必要があります」` → 最近のコミットをチェック
+
+照合はヒューリスティックに行われます — ルールテキストから閾値とキーワードを解析します。判断が難しいケースは、明確な不合格ではなく`?`（不明）としてフラグが立てられます。
+
+## 使用例
+
+```bash
+
+# 現在のリポジトリから全プログラムをチェック
+
+ossperks check
+
+# 特定のプログラムのみをチェック
+
+ossperks check --program vercel
+
+# スクリプト用のJSON出力
+
+ossperks check --json
+```
+
+## 出力
+
+```
+Checking repo: github.com/acme/my-project
+  Stars: 412  License: MIT  Age: 14 months  Last push: 3 days ago
+
+PROGRAM               ELIGIBLE
+vercel                ✔ likely
+netlify               ✔ likely
+github-sponsors       ? unknown (manual review required)
+aws-activate          ✗ unlikely
+```
+
+ステータス:
+
+- **✔ likely** — 解析されたすべての適格性ルールが一致しました
+- **? unknown** — 少なくとも1つのルールが自動評価できませんでした
+- **✗ unlikely** — 1つ以上のルールが明らかに一致しませんでした
+
+申請前に必ずプログラムの公式ページで確認してください。

@@ -1,3 +1,17 @@
-// Placeholder — overwritten by `pnpm generate:i18n` (lingo.dev)
-export { default } from "@/locales/en/common";
-export type { CommonTranslations } from "@/locales/en/common";
+const common = {
+  categories: {
+    ai: "AI 및 머신러닝",
+    analytics: "애널리틱스",
+    "ci-cd": "CI/CD",
+    communication: "커뮤니케이션",
+    credentials: "자격 증명 및 시크릿",
+    devtools: "개발자 도구",
+    hosting: "호스팅 및 배포",
+    infrastructure: "인프라",
+    monitoring: "모니터링 및 관측성",
+    security: "보안",
+    testing: "테스팅",
+  },
+};
+export default common;
+export type CommonTranslations = typeof common;

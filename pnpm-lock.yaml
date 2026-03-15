@@ -59,9 +59,6 @@ importers:
       '@ossperks/data':
         specifier: workspace:*
         version: link:../packages/data
-      '@takumi-rs/image-response':
-        specifier: ^0.71.7
-        version: 0.71.7
       '@tanstack/react-form':
         specifier: ^1.28.5
         version: 1.28.5(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -80,6 +77,9 @@ importers:
       fumadocs-ui:
         specifier: 16.6.16
         version: 16.6.16(@takumi-rs/image-response@0.71.7)(@types/mdx@2.0.13)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(fumadocs-core@16.6.16(@mdx-js/mdx@3.1.1)(@types/estree-jsx@1.0.5)(@types/hast@3.0.4)(@types/mdast@4.0.4)(@types/react@19.2.14)(lucide-react@0.577.0(react@19.2.4))(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(zod@4.3.6))(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(tailwindcss@4.2.1)
+      geist:
+        specifier: ^1.7.0
+        version: 1.7.0(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))
       lucide-react:
         specifier: ^0.577.0
         version: 0.577.0(react@19.2.4)
@@ -2921,6 +2921,11 @@ packages:
 
   fuzzysort@3.1.0:
     resolution: {integrity: sha512-sR9BNCjBg6LNgwvxlBd0sBABvQitkLzoVY9MYYROQVX/FvfJ4Mai9LsGhDgd8qYdds0bY77VzYd5iuB+v5rwQQ==}
+
+  geist@1.7.0:
+    resolution: {integrity: sha512-ZaoiZwkSf0DwwB1ncdLKp+ggAldqxl5L1+SXaNIBGkPAqcu+xjVJLxlf3/S8vLt9UHx1xu5fz3lbzKCj5iOVdQ==}
+    peerDependencies:
+      next: '>=13.2.0'
 
   gensync@1.0.0-beta.2:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
@@ -6360,16 +6365,20 @@ snapshots:
       '@takumi-rs/core-linux-x64-musl': 0.71.7
       '@takumi-rs/core-win32-arm64-msvc': 0.71.7
       '@takumi-rs/core-win32-x64-msvc': 0.71.7
+    optional: true
 
-  '@takumi-rs/helpers@0.71.7': {}
+  '@takumi-rs/helpers@0.71.7':
+    optional: true
 
   '@takumi-rs/image-response@0.71.7':
     dependencies:
       '@takumi-rs/core': 0.71.7
       '@takumi-rs/helpers': 0.71.7
       '@takumi-rs/wasm': 0.71.7
+    optional: true
 
-  '@takumi-rs/wasm@0.71.7': {}
+  '@takumi-rs/wasm@0.71.7':
+    optional: true
 
   '@tanstack/devtools-event-client@0.4.3': {}
 
@@ -7196,6 +7205,10 @@ snapshots:
   function-bind@1.1.2: {}
 
   fuzzysort@3.1.0: {}
+
+  geist@1.7.0(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)):
+    dependencies:
+      next: 16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
 
   gensync@1.0.0-beta.2: {}
 

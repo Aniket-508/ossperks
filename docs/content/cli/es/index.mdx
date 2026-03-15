@@ -1,0 +1,61 @@
+---
+title: CLI de ossperks
+description: Explora programas de beneficios OSS y verifica si tu proyecto
+  califica — directamente desde la terminal.
+---
+
+## Descripción general
+
+`ossperks` es una herramienta de línea de comandos sin configuración que te permite:
+
+- **Listar** todos los programas de beneficios OSS en un solo lugar
+- **Buscar** programas por palabra clave, proveedor o categoría
+- **Mostrar** detalles completos de cualquier programa (beneficios, elegibilidad, cómo aplicar)
+- **Verificar** si tu propio repositorio califica para programas — automáticamente, obteniendo datos en vivo desde la API de GitHub o GitLab
+
+## Instalación
+
+```npm
+npm install -g ossperks
+```
+
+## Inicio rápido
+
+```bash
+
+# Listar todos los programas
+
+ossperks list
+
+# Verificar tu proyecto actual
+
+cd /ruta/a/tu/repositorio
+ossperks check
+
+# Buscar por palabra clave
+
+ossperks search "hosting"
+
+# Mostrar un programa específico
+
+ossperks show vercel
+```
+
+## Cómo funciona la detección de repositorios
+
+`ossperks check` detecta automáticamente tu repositorio sin ninguna solicitud:
+
+1. Lee el campo `repository` de `package.json` en el directorio actual
+2. Recurre al análisis de `remote.origin.url` desde `.git/config`
+3. Llama a la API pública de GitHub o GitLab para obtener datos en vivo (estrellas, licencia, actividad, etc.)
+4. Compara esos datos con las reglas de elegibilidad de cada programa
+
+No se requieren tokens de API para repositorios públicos.
+
+## Próximos pasos
+
+- [list](/cli/list) — explora todos los programas
+- [show](/cli/show) — consulta los detalles del programa
+- [check](/cli/check) — verifica automáticamente la elegibilidad de tu repositorio
+- [search](/cli/search) — encuentra programas por palabra clave
+- [categories](/cli/categories) — lista las categorías disponibles

@@ -1,0 +1,55 @@
+---
+title: ossperks search
+description: 이름, 설명 및 제공업체 전반에 걸쳐 키워드로 OSS 혜택 프로그램을 검색합니다.
+---
+
+## 사용법
+
+```
+ossperks search <query> [options]
+```
+
+## 인수
+
+| 인수      | 설명                                     |
+| --------- | ---------------------------------------- |
+| `<query>` | 검색어 (이름, 설명 또는 제공업체와 일치) |
+
+## 옵션
+
+| 플래그                  | 설명                      |
+| ----------------------- | ------------------------- |
+| `-c, --category <slug>` | 특정 카테고리로 검색 제한 |
+| `--json`                | 원시 JSON 출력            |
+| `-h, --help`            | 도움말 표시               |
+
+## 예제
+
+```bash
+
+# "hosting" 검색
+
+ossperks search hosting
+
+# devtools 카테고리에서 "credits" 검색
+
+ossperks search credits --category devtools
+
+# JSON 출력
+
+ossperks search vercel --json
+```
+
+## 출력
+
+```
+"hosting" 검색 결과 (4개 프로그램)
+
+이름                          제공업체    카테고리
+Vercel for Open Source        Vercel      hosting
+Netlify OSS Plan              Netlify     hosting
+Railway OSS Program           Railway     hosting
+Render Open Source            Render      hosting
+```
+
+결과의 전체 세부 정보를 보려면 [`ossperks show <slug>`](/cli/commands/show)를 사용하세요.

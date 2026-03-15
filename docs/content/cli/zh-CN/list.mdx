@@ -1,0 +1,46 @@
+---
+title: ossperks list
+description: 列出所有可用的开源软件福利项目，可选择按类别筛选。
+---
+
+## 用法
+
+```
+ossperks list [options]
+```
+
+## 选项
+
+| 标志                    | 描述                               |
+| ----------------------- | ---------------------------------- |
+| `-c, --category <slug>` | 按类别标识符筛选（例如 `hosting`） |
+| `--json`                | 输出原始 JSON                      |
+| `-h, --help`            | 显示帮助                           |
+
+## 示例
+
+```bash
+
+# 列出所有项目
+
+ossperks list
+
+# 仅筛选托管类项目
+
+ossperks list --category hosting
+
+# 机器可读的 JSON 输出
+
+ossperks list --json
+```
+
+## 输出
+
+```
+NAME                          PROVIDER    CATEGORY   PERKS
+Vercel for Open Source        Vercel      hosting    $3,600 credits · OSS Starter Pack
+GitHub Sponsors               GitHub      devtools   Matching fund · Sponsorship
+...
+```
+
+每行显示项目名称、提供商、类别和前两项福利标题。使用 [`ossperks show <slug>`](/cli/commands/show) 查看完整详情。

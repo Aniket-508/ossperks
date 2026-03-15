@@ -5,6 +5,7 @@ import {
   getFeaturedPrograms,
 } from "@ossperks/data";
 import { ArrowRight } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { HeroActions } from "@/components/home/hero-actions";
@@ -15,9 +16,24 @@ import { Separator } from "@/components/ui/separator";
 import { ROUTES } from "@/constants/routes";
 import { getT } from "@/lib/get-t";
 import { i18n, withLocalePrefix } from "@/lib/i18n";
+import { createMetadata } from "@/seo/metadata";
 
 export const generateStaticParams = () =>
   i18n.languages.map((lang) => ({ lang }));
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> => {
+  const { lang } = await params;
+  const t = await getT(lang);
+  return createMetadata({
+    description: t.home.description,
+    ogImage: `/og/${lang}`,
+    title: t.home.heading,
+  });
+};
 
 export default async function HomePage({
   params,

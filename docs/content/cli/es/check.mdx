@@ -1,0 +1,108 @@
+---
+title: ossperks check
+description: Verifica automáticamente si tu repositorio califica para programas
+  de beneficios OSS.
+---
+
+## Uso
+
+```
+ossperks check [opciones]
+```
+
+Ejecuta esto desde dentro de cualquier repositorio Git. No se requieren argumentos ni tokens para repositorios públicos.
+
+## Opciones
+
+| Bandera                | Descripción                                                           |
+| ---------------------- | --------------------------------------------------------------------- |
+| `-p, --program <slug>` | Verificar solo contra un programa específico (ej. `--program vercel`) |
+| `--json`               | Mostrar JSON sin formato                                              |
+| `-h, --help`           | Mostrar ayuda                                                         |
+
+## Cómo funciona
+
+`ossperks check` se ejecuta de forma completamente automática:
+
+```
+ossperks check
+      │
+      ▼
+Leer package.json (campo repository)
+      │  ← ¿no encontrado?
+      ▼
+Leer .git/config (remote.origin.url)
+      │
+      ▼
+Detectar proveedor (github.com / gitlab.com)
+      │
+      ├─ GitHub → GET /repos/:owner/:repo
+      └─ GitLab → GET /api/v4/projects/:id
+      │
+      ▼
+RepoContext (estrellas, licencia, antigüedad, actividad...)
+      │
+      ▼
+Cotejar reglas de elegibilidad para cada programa
+      │
+      ▼
+Imprimir resultados
+```
+
+### Detección de repositorio
+
+La herramienta lee la URL de tu repositorio desde uno de estos dos lugares, en orden:
+
+1. Campo `repository` en `package.json`
+2. `remote.origin.url` en `.git/config`
+
+Se admiten formatos de URL HTTPS / SSH tanto de GitHub como de GitLab.
+
+### Cotejo de elegibilidad
+
+Las cadenas de elegibilidad son reglas en lenguaje natural como:
+
+- `"Must be an open-source project"` → verifica una licencia aprobada por OSI
+- `"Must have at least 100 GitHub stars"` → verifica `stars >= 100`
+- `"Project must be at least 3 months old"` → verifica la antigüedad del repositorio
+- `"Must be actively maintained"` → verifica commits recientes
+
+El cotejo es heurístico — analiza umbrales y palabras clave del texto de la regla. Los casos límite se marcan como `?` (desconocido) en lugar de una falla definitiva.
+
+## Ejemplos
+
+```bash
+
+# Verificar todos los programas desde tu repositorio actual
+
+ossperks check
+
+# Verificar solo un programa específico
+
+ossperks check --program vercel
+
+# Salida JSON para scripting
+
+ossperks check --json
+```
+
+## Salida
+
+```
+Checking repo: github.com/acme/my-project
+  Stars: 412  License: MIT  Age: 14 months  Last push: 3 days ago
+
+PROGRAM               ELIGIBLE
+vercel                ✔ likely
+netlify               ✔ likely
+github-sponsors       ? unknown (manual review required)
+aws-activate          ✗ unlikely
+```
+
+Estados:
+
+- **✔ likely** — todas las reglas de elegibilidad analizadas coincidieron
+- **? unknown** — al menos una regla no pudo ser evaluada automáticamente
+- **✗ unlikely** — una o más reglas claramente no coinciden
+
+Siempre verifica en la página oficial del programa antes de aplicar.

@@ -1,0 +1,46 @@
+---
+title: ossperks list
+description: 사용 가능한 모든 OSS 혜택 프로그램을 나열하며, 선택적으로 카테고리별로 필터링할 수 있습니다.
+---
+
+## 사용법
+
+```
+ossperks list [options]
+```
+
+## 옵션
+
+| 플래그                  | 설명                                     |
+| ----------------------- | ---------------------------------------- |
+| `-c, --category <slug>` | 카테고리 슬러그로 필터링 (예: `hosting`) |
+| `--json`                | 원시 JSON 출력                           |
+| `-h, --help`            | 도움말 표시                              |
+
+## 예제
+
+```bash
+
+# 모든 프로그램 나열
+
+ossperks list
+
+# 호스팅 프로그램만 필터링
+
+ossperks list --category hosting
+
+# 기계 판독 가능한 JSON 출력
+
+ossperks list --json
+```
+
+## 출력
+
+```
+NAME                          PROVIDER    CATEGORY   PERKS
+Vercel for Open Source        Vercel      hosting    $3,600 credits · OSS Starter Pack
+GitHub Sponsors               GitHub      devtools   Matching fund · Sponsorship
+...
+```
+
+각 행은 프로그램 이름, 제공자, 카테고리 및 처음 두 개의 혜택 제목을 표시합니다. 전체 세부 정보를 보려면 [`ossperks show <slug>`](/cli/commands/show)를 사용하세요.

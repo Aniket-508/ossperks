@@ -1,0 +1,107 @@
+---
+title: ossperks check
+description: 귀하의 리포지토리가 OSS 혜택 프로그램 자격을 충족하는지 자동으로 확인합니다.
+---
+
+## 사용법
+
+```
+ossperks check [옵션]
+```
+
+모든 Git 저장소 내에서 실행하세요. 공개 저장소의 경우 인수나 토큰이 필요하지 않습니다.
+
+## 옵션
+
+| 플래그                 | 설명                                          |
+| ---------------------- | --------------------------------------------- |
+| `-p, --program <slug>` | 특정 프로그램만 확인 (예: `--program vercel`) |
+| `--json`               | 원시 JSON 출력                                |
+| `-h, --help`           | 도움말 표시                                   |
+
+## 작동 방식
+
+`ossperks check`는 완전히 자동으로 실행됩니다:
+
+```
+ossperks check
+      │
+      ▼
+package.json 읽기 (repository 필드)
+      │  ← 찾을 수 없음?
+      ▼
+.git/config 읽기 (remote.origin.url)
+      │
+      ▼
+제공자 감지 (github.com / gitlab.com)
+      │
+      ├─ GitHub → GET /repos/:owner/:repo
+      └─ GitLab → GET /api/v4/projects/:id
+      │
+      ▼
+RepoContext (스타, 라이선스, 연령, 활동...)
+      │
+      ▼
+모든 프로그램의 자격 요건 규칙 일치
+      │
+      ▼
+결과 출력
+```
+
+### 저장소 감지
+
+이 도구는 다음 두 위치 중 하나에서 순서대로 저장소 URL을 읽습니다:
+
+1. `package.json`의 `repository` 필드
+2. `.git/config`의 `remote.origin.url`
+
+GitHub 및 GitLab HTTPS / SSH URL 형식이 모두 지원됩니다.
+
+### 자격 요건 일치
+
+자격 요건 문자열은 다음과 같은 자연어 규칙입니다:
+
+- `"Must be an open-source project"` → OSI 승인 라이선스 확인
+- `"Must have at least 100 GitHub stars"` → `stars >= 100` 확인
+- `"Project must be at least 3 months old"` → 저장소 연령 확인
+- `"Must be actively maintained"` → 최근 커밋 확인
+
+일치는 휴리스틱 방식입니다 — 규칙 텍스트에서 임계값과 키워드를 파싱합니다. 경계 사례는 명확한 실패가 아닌 `?` (알 수 없음)으로 표시됩니다.
+
+## 예제
+
+```bash
+
+# 현재 저장소에서 모든 프로그램 확인
+
+ossperks check
+
+# 특정 프로그램만 확인하기
+
+ossperks check --program vercel
+
+# 스크립팅을 위한 JSON 출력
+
+ossperks check --json
+```
+
+## 출력
+
+```
+Checking repo: github.com/acme/my-project
+  Stars: 412  License: MIT  Age: 14 months  Last push: 3 days ago
+
+PROGRAM               ELIGIBLE
+vercel                ✔ likely
+netlify               ✔ likely
+github-sponsors       ? unknown (manual review required)
+aws-activate          ✗ unlikely
+```
+
+상태:
+
+- **✔ likely** — 파싱된 모든 자격 요건 규칙이 일치함
+- **? unknown** — 하나 이상의 규칙을 자동으로 평가할 수 없음
+- **✗ unlikely** — 하나 이상의 규칙이 명확하게 일치하지 않음
+
+신청하기 전에 항상 해당 프로그램의 공식 페이지에서 확인하세요.

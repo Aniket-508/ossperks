@@ -1,3 +1,57 @@
-// Placeholder — overwritten by `pnpm generate:i18n` (lingo.dev)
-export { default } from "@/locales/en/home";
-export type { HomeTranslations } from "@/locales/en/home";
+const home = {
+  builtFor: {
+    description:
+      "Перестаньте искать по страницам поставщиков. Один кураторский список всех бесплатных уровней, программ кредитов и спонсорства, доступных мейнтейнерам открытого кода.",
+    heading: "Всё, на что ваш проект имеет право, в одном месте.",
+    subheading: "СОЗДАНО ДЛЯ ОТКРЫТОГО КОДА",
+  },
+  cta: {
+    description:
+      "Знаете программу или контакт, которые должны быть в списке? Помогите нам расширить каталог.",
+    heading: "Чего-то не хватает?",
+    submitContact: "Предложить контакт",
+    submitProgram: "Предложить программу",
+  },
+  description:
+    "Бесплатные кредиты, инструменты и инфраструктура для мейнтейнеров открытого кода — всё в одном месте.",
+  featured: {
+    heading: "Избранные программы",
+    viewAll: "Смотреть все",
+  },
+  heading: "Получите льготы для вашего OSS",
+  hero: {
+    browsePrograms: "Обзор программ",
+    submitProgram: "Предложить программу",
+  },
+  howItWorks: {
+    heading: "Просто, быстро, кураторски.",
+    steps: [
+      {
+        description: "Находите программы по категориям и типам льгот.",
+        title: "Просмотр",
+      },
+      {
+        description:
+          "Проверьте соответствие требованиям и отправьте заявку на свой проект.",
+        title: "Подача заявки",
+      },
+      {
+        description: "Получите одобрение и начните пользоваться льготами.",
+        title: "Получение льгот",
+      },
+    ],
+    subheading: "КАК ЭТО РАБОТАЕТ",
+  },
+  people: {
+    description: "Люди, стоящие за каждой программой, готовые помочь.",
+    heading: "Люди",
+  },
+  stats: {
+    categories: "Категории",
+    people: "Контакты",
+    perks: "Привилегии",
+    programs: "Программы",
+  },
+};
+export default home;
+export type HomeTranslations = typeof home;

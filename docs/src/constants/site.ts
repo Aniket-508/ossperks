@@ -1,3 +1,8 @@
+const baseUrl =
+  process.env.VERCEL_URL !== undefined && process.env.VERCEL_URL !== null
+    ? `https://${process.env.VERCEL_URL}`
+    : (process.env.SITE_URL ?? "https://www.ossperks.com");
+
 export const SITE = {
   AUTHOR: {
     NAME: "Aniket Pawar",
@@ -10,6 +15,6 @@ export const SITE = {
   },
   KEYWORDS: ["oss", "open-source", "perks", "cli", "eligibility"],
   NAME: "OSS Perks",
-  OG_IMAGE: "/og.png",
-  URL: "https://github.com/Aniket-508/ossperks",
+  OG_IMAGE: `${baseUrl}/og`,
+  URL: baseUrl,
 } as const;

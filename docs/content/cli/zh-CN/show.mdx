@@ -1,0 +1,62 @@
+---
+title: ossperks show
+description: 显示特定开源福利项目的完整详细信息。
+---
+
+## 用法
+
+```
+ossperks show <slug> [options]
+```
+
+## 参数
+
+| 参数     | 描述                                        |
+| -------- | ------------------------------------------- |
+| `<slug>` | 程序标识符（例如 `vercel`、`github-pages`） |
+
+## 选项
+
+| 标志         | 描述          |
+| ------------ | ------------- |
+| `--json`     | 输出原始 JSON |
+| `-h, --help` | 显示帮助      |
+
+## 示例
+
+```bash
+
+# 显示 Vercel 程序
+
+ossperks show vercel
+
+# 机器可读的 JSON
+
+ossperks show vercel --json
+```
+
+## 输出
+
+```
+─────────────────────────────────────
+  Vercel for Open Source
+  by Vercel  ·  hosting
+─────────────────────────────────────
+
+Vercel 为在 Vercel 平台上托管的开源项目提供平台积分和额外服务。
+
+福利
+  • $3,600 平台积分 — 在 12 个月内分配 $3,600 的 Vercel 平台积分。
+  • OSS 入门套装 — 来自第三方服务的积分。
+
+资格要求
+  • 必须是正在积极开发和维护的开源项目。
+  • 必须托管在（或打算托管在）Vercel 上。
+
+申请方式
+  • 在申请开放时通过 Vercel OSS 项目页面申请。
+
+  → 立即申请：https://vercel.com/open-source-program
+```
+
+首先运行 [`ossperks list`](/cli/commands/list) 查找标识符。

@@ -1,0 +1,107 @@
+---
+title: ossperks check
+description: 自动检查您的仓库是否符合 OSS 福利项目的资格。
+---
+
+## 使用方法
+
+```
+ossperks check [选项]
+```
+
+在任何 Git 仓库内运行此命令。公共仓库无需参数或令牌。
+
+## 选项
+
+| 标志                   | 描述                                      |
+| ---------------------- | ----------------------------------------- |
+| `-p, --program <slug>` | 仅检查特定项目（例如 `--program vercel`） |
+| `--json`               | 输出原始 JSON                             |
+| `-h, --help`           | 显示帮助                                  |
+
+## 工作原理
+
+`ossperks check` 完全自动运行：
+
+```
+ossperks check
+      │
+      ▼
+读取 package.json（repository 字段）
+      │  ← 未找到？
+      ▼
+读取 .git/config（remote.origin.url）
+      │
+      ▼
+检测提供商（github.com / gitlab.com）
+      │
+      ├─ GitHub → GET /repos/:owner/:repo
+      └─ GitLab → GET /api/v4/projects/:id
+      │
+      ▼
+RepoContext（星标、许可证、年龄、活跃度...）
+      │
+      ▼
+匹配每个项目的资格规则
+      │
+      ▼
+打印结果
+```
+
+### 仓库检测
+
+该工具按以下顺序从两个位置之一读取您的仓库 URL：
+
+1. `package.json` 中的 `repository` 字段
+2. `.git/config` 中的 `remote.origin.url`
+
+支持 GitHub 和 GitLab 的 HTTPS / SSH URL 格式。
+
+### 资格匹配
+
+资格字符串是自然语言规则，例如：
+
+- `"Must be an open-source project"` → 检查是否具有 OSI 批准的许可证
+- `"Must have at least 100 GitHub stars"` → 检查 `stars >= 100`
+- `"Project must be at least 3 months old"` → 检查仓库年龄
+- `"Must be actively maintained"` → 检查最近的提交
+
+匹配是启发式的——它从规则文本中解析阈值和关键词。边界情况会被标记为 `?`（未知），而不是硬性失败。
+
+## 示例
+
+```bash
+
+# 从当前仓库检查所有项目
+
+ossperks check
+
+# 仅检查特定项目
+
+ossperks check --program vercel
+
+# 用于脚本的 JSON 输出
+
+ossperks check --json
+```
+
+## 输出
+
+```
+正在检查仓库:github.com/acme/my-project
+  Stars:412  许可证:MIT  存在时间:14 个月  最后推送:3 天前
+
+项目                  资格状态
+vercel                ✔ 可能符合
+netlify               ✔ 可能符合
+github-sponsors       ? 未知(需要人工审核)
+aws-activate          ✗ 可能不符合
+```
+
+状态说明:
+
+- **✔ 可能符合** — 所有解析的资格规则均已匹配
+- **? 未知** — 至少有一条规则无法自动评估
+- **✗ 可能不符合** — 一条或多条规则明显不匹配
+
+在申请之前,请务必根据项目的官方页面进行验证。

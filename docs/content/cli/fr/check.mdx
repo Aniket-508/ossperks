@@ -1,0 +1,108 @@
+---
+title: ossperks check
+description: Vérifiez automatiquement si votre dépôt est éligible aux programmes
+  d'avantages OSS.
+---
+
+## Utilisation
+
+```
+ossperks check [options]
+```
+
+Exécutez cette commande depuis n'importe quel dépôt Git. Aucun argument ni jeton requis pour les dépôts publics.
+
+## Options
+
+| Drapeau                | Description                                                              |
+| ---------------------- | ------------------------------------------------------------------------ |
+| `-p, --program <slug>` | Vérifier uniquement un programme spécifique (par ex. `--program vercel`) |
+| `--json`               | Afficher le JSON brut                                                    |
+| `-h, --help`           | Afficher l'aide                                                          |
+
+## Fonctionnement
+
+`ossperks check` s'exécute entièrement automatiquement :
+
+```
+ossperks check
+      │
+      ▼
+Lire package.json (champ repository)
+      │  ← introuvable ?
+      ▼
+Lire .git/config (remote.origin.url)
+      │
+      ▼
+Détecter le fournisseur (github.com / gitlab.com)
+      │
+      ├─ GitHub → GET /repos/:owner/:repo
+      └─ GitLab → GET /api/v4/projects/:id
+      │
+      ▼
+RepoContext (étoiles, licence, ancienneté, activité...)
+      │
+      ▼
+Correspondance des règles d'éligibilité pour chaque programme
+      │
+      ▼
+Afficher les résultats
+```
+
+### Détection du dépôt
+
+L'outil lit l'URL de votre dépôt depuis l'un de ces deux emplacements, dans l'ordre :
+
+1. Champ `repository` dans `package.json`
+2. `remote.origin.url` dans `.git/config`
+
+Les formats d'URL HTTPS et SSH de GitHub et GitLab sont tous deux pris en charge.
+
+### Correspondance d'éligibilité
+
+Les chaînes d'éligibilité sont des règles en langage naturel telles que :
+
+- `"Must be an open-source project"` → vérifie la présence d'une licence approuvée par l'OSI
+- `"Must have at least 100 GitHub stars"` → vérifie `stars >= 100`
+- `"Project must be at least 3 months old"` → vérifie l'ancienneté du dépôt
+- `"Must be actively maintained"` → vérifie la présence de commits récents
+
+La correspondance est heuristique — elle analyse les seuils et mots-clés du texte de la règle. Les cas limites sont marqués comme `?` (inconnu) plutôt que comme un échec catégorique.
+
+## Exemples
+
+```bash
+
+# Vérifier tous les programmes depuis votre dépôt actuel
+
+ossperks check
+
+# Vérifier un programme spécifique uniquement
+
+ossperks check --program vercel
+
+# Sortie JSON pour les scripts
+
+ossperks check --json
+```
+
+## Sortie
+
+```
+Vérification du dépôt : github.com/acme/my-project
+  Étoiles : 412  Licence : MIT  Âge : 14 mois  Dernière mise à jour : il y a 3 jours
+
+PROGRAMME             ÉLIGIBLE
+vercel                ✔ probable
+netlify               ✔ probable
+github-sponsors       ? inconnu (examen manuel requis)
+aws-activate          ✗ improbable
+```
+
+Statuts :
+
+- **✔ probable** — toutes les règles d'éligibilité analysées correspondent
+- **? inconnu** — au moins une règle n'a pas pu être évaluée automatiquement
+- **✗ improbable** — une ou plusieurs règles ne correspondent clairement pas
+
+Vérifiez toujours sur la page officielle du programme avant de postuler.

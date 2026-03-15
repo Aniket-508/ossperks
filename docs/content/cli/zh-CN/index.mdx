@@ -1,0 +1,60 @@
+---
+title: ossperks CLI
+description: 直接在终端浏览开源软件福利计划并检查您的项目是否符合条件。
+---
+
+## 概述
+
+`ossperks` 是一个零配置的命令行工具,可让您:
+
+- **列出**所有开源软件福利计划
+- **搜索**按关键词、提供商或类别查找计划
+- **显示**任何计划的完整详情(福利、资格要求、申请方式)
+- **检查**您自己的代码仓库是否符合计划要求——通过从 GitHub 或 GitLab API 获取实时数据自动完成
+
+## 安装
+
+```npm
+npm install -g ossperks
+```
+
+## 快速开始
+
+```bash
+
+# 列出所有计划
+
+ossperks list
+
+# 检查您当前的项目
+
+cd /path/to/your/repo
+ossperks check
+
+# 按关键词搜索
+
+ossperks search "hosting"
+
+# 显示特定计划
+
+ossperks show vercel
+```
+
+## 代码仓库检测工作原理
+
+`ossperks check` 无需任何提示即可自动检测您的代码仓库:
+
+1. 从当前目录的 `package.json` 中读取 `repository` 字段
+2. 退而解析 `.git/config` 中的 `remote.origin.url`
+3. 调用 GitHub 或 GitLab 公共 API 获取实时数据(星标、许可证、活跃度等)
+4. 将这些数据与每个计划的资格规则进行匹配
+
+公共代码仓库无需 API 令牌。
+
+## 下一步
+
+- [list](/cli/list) — 浏览所有计划
+- [show](/cli/show) — 查看计划详情
+- [check](/cli/check) — 自动检查您的代码仓库资格
+- [search](/cli/search) — 按关键词查找计划
+- [categories](/cli/categories) — 列出可用类别

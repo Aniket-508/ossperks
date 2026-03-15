@@ -1,0 +1,108 @@
+---
+title: ossperks check
+description: Verifique automaticamente se o seu repositório se qualifica para
+  programas de benefícios OSS.
+---
+
+## Uso
+
+```
+ossperks check [opções]
+```
+
+Execute isso dentro de qualquer repositório Git. Nenhum argumento ou token é necessário para repositórios públicos.
+
+## Opções
+
+| Flag                   | Descrição                                                       |
+| ---------------------- | --------------------------------------------------------------- |
+| `-p, --program <slug>` | Verifica apenas um programa específico (ex: `--program vercel`) |
+| `--json`               | Exibe JSON bruto                                                |
+| `-h, --help`           | Exibe ajuda                                                     |
+
+## Como funciona
+
+`ossperks check` executa totalmente de forma automática:
+
+```
+ossperks check
+      │
+      ▼
+Lê package.json (campo repository)
+      │  ← não encontrado?
+      ▼
+Lê .git/config (remote.origin.url)
+      │
+      ▼
+Detecta provedor (github.com / gitlab.com)
+      │
+      ├─ GitHub → GET /repos/:owner/:repo
+      └─ GitLab → GET /api/v4/projects/:id
+      │
+      ▼
+RepoContext (estrelas, licença, idade, atividade...)
+      │
+      ▼
+Corresponde regras de elegibilidade para cada programa
+      │
+      ▼
+Exibe resultados
+```
+
+### Detecção de repositório
+
+A ferramenta lê a URL do seu repositório de um dos dois lugares, nesta ordem:
+
+1. Campo `repository` no `package.json`
+2. `remote.origin.url` no `.git/config`
+
+Ambos os formatos de URL HTTPS / SSH do GitHub e GitLab são suportados.
+
+### Correspondência de elegibilidade
+
+Strings de elegibilidade são regras em linguagem natural como:
+
+- `"Must be an open-source project"` → verifica se há uma licença aprovada pela OSI
+- `"Must have at least 100 GitHub stars"` → verifica `stars >= 100`
+- `"Project must be at least 3 months old"` → verifica a idade do repositório
+- `"Must be actively maintained"` → verifica commits recentes
+
+A correspondência é heurística — ela analisa limites e palavras-chave do texto da regra. Casos limítrofes são marcados como `?` (desconhecido) em vez de uma falha definitiva.
+
+## Exemplos
+
+```bash
+
+# Verifica todos os programas do seu repositório atual
+
+ossperks check
+
+# Verificar apenas um programa específico
+
+ossperks check --program vercel
+
+# Saída JSON para scripts
+
+ossperks check --json
+```
+
+## Saída
+
+```
+Verificando repositório: github.com/acme/my-project
+  Estrelas: 412  Licença: MIT  Idade: 14 meses  Último push: 3 dias atrás
+
+PROGRAMA              ELEGÍVEL
+vercel                ✔ provável
+netlify               ✔ provável
+github-sponsors       ? desconhecido (revisão manual necessária)
+aws-activate          ✗ improvável
+```
+
+Status:
+
+- **✔ provável** — todas as regras de elegibilidade analisadas foram atendidas
+- **? desconhecido** — pelo menos uma regra não pôde ser avaliada automaticamente
+- **✗ improvável** — uma ou mais regras claramente não correspondem
+
+Sempre verifique na página oficial do programa antes de se inscrever.

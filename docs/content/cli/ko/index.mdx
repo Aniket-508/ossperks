@@ -1,0 +1,60 @@
+---
+title: ossperks CLI
+description: 터미널에서 바로 OSS 혜택 프로그램을 둘러보고 프로젝트의 자격 여부를 확인하세요.
+---
+
+## 개요
+
+`ossperks`는 설정이 필요 없는 커맨드라인 도구로 다음을 제공합니다:
+
+- **목록** - 모든 OSS 혜택 프로그램을 한 곳에서 확인
+- **검색** - 키워드, 제공자 또는 카테고리별로 프로그램 검색
+- **상세 정보** - 모든 프로그램의 전체 정보 표시(혜택, 자격 요건, 신청 방법)
+- **확인** - GitHub 또는 GitLab API에서 실시간 데이터를 가져와 본인의 저장소가 프로그램 자격을 충족하는지 자동으로 확인
+
+## 설치
+
+```npm
+npm install -g ossperks
+```
+
+## 빠른 시작
+
+```bash
+
+# 모든 프로그램 목록 보기
+
+ossperks list
+
+# 현재 프로젝트 확인
+
+cd /path/to/your/repo
+ossperks check
+
+# 키워드로 검색
+
+ossperks search "hosting"
+
+# 특정 프로그램 상세 보기
+
+ossperks show vercel
+```
+
+## 저장소 감지 작동 방식
+
+`ossperks check`는 별도의 입력 없이 자동으로 저장소를 감지합니다:
+
+1. 현재 디렉토리의 `package.json`에서 `repository` 필드를 읽습니다
+2. `.git/config`에서 `remote.origin.url`을 파싱하는 방식으로 대체합니다
+3. GitHub 또는 GitLab 공개 API를 호출하여 실시간 데이터(스타, 라이선스, 활동 등)를 가져옵니다
+4. 해당 데이터를 모든 프로그램의 자격 요건 규칙과 비교합니다
+
+공개 저장소의 경우 API 토큰이 필요하지 않습니다.
+
+## 다음 단계
+
+- [list](/cli/list) — 모든 프로그램 둘러보기
+- [show](/cli/show) — 프로그램 상세 정보 보기
+- [check](/cli/check) — 저장소 자격 자동 확인
+- [search](/cli/search) — 키워드로 프로그램 찾기
+- [categories](/cli/categories) — 사용 가능한 카테고리 목록 보기

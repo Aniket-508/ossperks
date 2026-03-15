@@ -1,0 +1,49 @@
+---
+title: ossperks categories
+description: 利用可能な全プログラムカテゴリーとそのスラッグを一覧表示します。
+---
+
+## 使用方法
+
+```
+ossperks categories [options]
+```
+
+## オプション
+
+| フラグ       | 説明           |
+| ------------ | -------------- |
+| `--json`     | 生のJSONを出力 |
+| `-h, --help` | ヘルプを表示   |
+
+## 例
+
+```bash
+
+# 全カテゴリーを一覧表示
+
+ossperks categories
+
+# JSON出力
+
+ossperks categories --json
+```
+
+## 出力
+
+```
+CATEGORY SLUG      LABEL
+hosting            ホスティング & デプロイ
+devtools           開発者ツール
+security           セキュリティ
+monitoring         モニタリング & 可観測性
+communication      コミュニケーション
+ci-cd              CI/CD
+testing            テスト
+ai                 AI & 機械学習
+analytics          アナリティクス
+infrastructure     インフラストラクチャ
+credentials        認証情報 & シークレット
+```
+
+プログラムをフィルタリングするには、[`ossperks list --category <slug>`](/cli/commands/list)でカテゴリースラッグを使用してください。

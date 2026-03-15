@@ -1,0 +1,55 @@
+---
+title: ossperks search
+description: 名前、説明、プロバイダーを横断してキーワードでOSSパークプログラムを検索します。
+---
+
+## 使用方法
+
+```
+ossperks search <query> [options]
+```
+
+## 引数
+
+| 引数      | 説明                                                 |
+| --------- | ---------------------------------------------------- |
+| `<query>` | 検索キーワード(名前、説明、またはプロバイダーに一致) |
+
+## オプション
+
+| フラグ                  | 説明                         |
+| ----------------------- | ---------------------------- |
+| `-c, --category <slug>` | 特定のカテゴリーに検索を限定 |
+| `--json`                | 生のJSONを出力               |
+| `-h, --help`            | ヘルプを表示                 |
+
+## 使用例
+
+```bash
+
+# 「hosting」を検索
+
+ossperks search hosting
+
+# devtoolsカテゴリー内で「credits」を検索
+
+ossperks search credits --category devtools
+
+# JSON出力
+
+ossperks search vercel --json
+```
+
+## 出力結果
+
+```
+「hosting」の検索結果(4件のプログラム)
+
+名前                          プロバイダー    カテゴリー
+Vercel for Open Source        Vercel      hosting
+Netlify OSS Plan              Netlify     hosting
+Railway OSS Program           Railway     hosting
+Render Open Source            Render      hosting
+```
+
+結果の詳細を表示するには、[`ossperks show <slug>`](/cli/commands/show)を使用してください。

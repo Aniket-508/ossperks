@@ -1,0 +1,47 @@
+---
+title: ossperks list
+description: Alle verfügbaren OSS-Vorteilsprogramme auflisten, optional nach
+  Kategorie gefiltert.
+---
+
+## Verwendung
+
+```
+ossperks list [options]
+```
+
+## Optionen
+
+| Flag                    | Beschreibung                                  |
+| ----------------------- | --------------------------------------------- |
+| `-c, --category <slug>` | Nach Kategorie-Slug filtern (z. B. `hosting`) |
+| `--json`                | Rohes JSON ausgeben                           |
+| `-h, --help`            | Hilfe anzeigen                                |
+
+## Beispiele
+
+```bash
+
+# Alle Programme auflisten
+
+ossperks list
+
+# Nur Hosting-Programme filtern
+
+ossperks list --category hosting
+
+# Maschinenlesbare JSON-Ausgabe
+
+ossperks list --json
+```
+
+## Ausgabe
+
+```
+NAME                          PROVIDER    CATEGORY   PERKS
+Vercel for Open Source        Vercel      hosting    $3,600 credits · OSS Starter Pack
+GitHub Sponsors               GitHub      devtools   Matching fund · Sponsorship
+...
+```
+
+Jede Zeile zeigt den Programmnamen, Anbieter, Kategorie und die ersten zwei Vorteilstitel. Verwenden Sie [`ossperks show <slug>`](/cli/commands/show), um vollständige Details zu sehen.

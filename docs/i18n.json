@@ -1,6 +1,6 @@
 {
   "$schema": "https://lingo.dev/schema/i18n.json",
-  "version": "1.10",
+  "version": "1.15",
   "locale": {
     "source": "en",
     "targets": ["es", "zh-CN", "fr", "de", "pt-BR", "ja", "ko", "ru"]
@@ -8,11 +8,11 @@
   "buckets": {
     "markdown": {
       "include": [
-        "content/cli/[locale]/**/*.mdx",
-        "content/programs/[locale]/**/*.mdx"
+        "content/cli/[locale]/*.mdx",
+        "content/programs/[locale]/*.mdx"
       ]
     },
-    "ts": {
+    "typescript": {
       "include": [
         "src/locales/[locale]/about.ts",
         "src/locales/[locale]/common.ts",

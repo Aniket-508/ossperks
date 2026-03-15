@@ -1,7 +1,9 @@
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 
+import { LogoMark } from "@/components/logo";
 import { LINK } from "@/constants/links";
 import { ROUTES } from "@/constants/routes";
+import { SITE } from "@/constants/site";
 import { i18n } from "@/lib/i18n";
 
 export const baseOptions = (_locale: string): BaseLayoutProps => ({
@@ -30,6 +32,11 @@ export const baseOptions = (_locale: string): BaseLayoutProps => ({
     // },
   ],
   nav: {
-    title: "OSS Perks",
+    title: (
+      <>
+        <LogoMark className="h-6" />
+        {SITE.NAME}
+      </>
+    ),
   },
 });

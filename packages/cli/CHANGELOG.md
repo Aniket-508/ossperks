@@ -1,5 +1,11 @@
 # ossperks
 
+## 0.1.1
+
+### Patch Changes
+
+- b5a1008: Fix missing dist files in published package
+
 ## 0.1.0
 
 ### Minor Changes

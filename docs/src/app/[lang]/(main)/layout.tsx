@@ -16,11 +16,11 @@ export default async function Layout({
   const translation = await getT(lang);
 
   return (
-    <>
-      <HomeLayout {...baseOptions(lang)}>
-        <div className="container max-w-3xl py-12 px-4 mx-auto">{children}</div>
-      </HomeLayout>
+    <HomeLayout {...baseOptions(lang)}>
+      <div className="max-w-(--fd-layout-width) flex-1 flex flex-col w-full py-12 px-4 mx-auto">
+        {children}
+      </div>
       <Footer translation={translation.footer} />
-    </>
+    </HomeLayout>
   );
 }

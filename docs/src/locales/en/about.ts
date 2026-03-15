@@ -7,7 +7,7 @@ const about = {
   intro:
     "OSS Perks is a curated directory of programs that offer open-source projects free tools, credits, and services. Too many maintainers don't know about the grants, credits, and programs available to them. Information is scattered across blog posts and outdated spreadsheets. OSS Perks aims to change that.",
   maintainer: {
-    description: "This project is maintained by Aniket.",
+    description: "This project is maintained by",
     heading: "Maintainer",
     name: "Aniket",
   },

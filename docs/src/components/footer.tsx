@@ -10,7 +10,7 @@ interface FooterProps {
 
 export const Footer = ({ translation }: FooterProps) => (
   <footer className="border-t border-fd-border mt-auto">
-    <div className="mx-auto flex max-w-fd-container flex-col items-center justify-between gap-4 px-4 md:px-12 py-6 text-sm text-fd-muted-foreground sm:flex-row">
+    <div className="mx-auto flex w-full max-w-(--fd-layout-width) flex-col items-center justify-between gap-4 px-4 py-6 text-sm text-fd-muted-foreground sm:flex-row">
       <p className="text-center sm:text-left">
         {translation.builtBy}{" "}
         <a

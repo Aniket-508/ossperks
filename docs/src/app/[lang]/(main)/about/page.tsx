@@ -54,16 +54,16 @@ export default async function AboutPage({
           {t.about.maintainer.heading}
         </h2>
         <p className="text-fd-muted-foreground mb-4">
-          {t.about.maintainer.description}
+          {t.about.maintainer.description}{" "}
+          <a
+            href={`https://github.com/${GITHUB_CONFIG.user}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-fd-primary hover:underline font-medium"
+          >
+            @{GITHUB_CONFIG.user}
+          </a>
         </p>
-        <a
-          href={`https://github.com/${GITHUB_CONFIG.user}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-fd-primary hover:underline font-medium"
-        >
-          @{GITHUB_CONFIG.user}
-        </a>
       </section>
 
       <Separator className="mb-10" />

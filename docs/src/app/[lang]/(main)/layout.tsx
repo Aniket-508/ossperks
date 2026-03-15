@@ -1,6 +1,8 @@
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import type { ReactNode } from "react";
 
+import { Footer } from "@/components/footer";
+import { getT } from "@/lib/get-t";
 import { baseOptions } from "@/lib/layout.shared";
 
 export default async function Layout({
@@ -11,6 +13,14 @@ export default async function Layout({
   params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
+  const translation = await getT(lang);
 
-  return <HomeLayout {...baseOptions(lang)}>{children}</HomeLayout>;
+  return (
+    <>
+      <HomeLayout {...baseOptions(lang)}>
+        <div className="container max-w-3xl py-12 px-4 mx-auto">{children}</div>
+      </HomeLayout>
+      <Footer translation={translation.footer} />
+    </>
+  );
 }

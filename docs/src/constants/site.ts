@@ -1,7 +1,6 @@
-const baseUrl =
-  process.env.VERCEL_URL !== undefined && process.env.VERCEL_URL !== null
-    ? `https://${process.env.VERCEL_URL}`
-    : (process.env.SITE_URL ?? "https://www.ossperks.com");
+const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : (process.env.SITE_URL ?? "https://www.ossperks.com");
 
 export const SITE = {
   AUTHOR: {

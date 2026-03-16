@@ -1,4 +1,4 @@
-import { getProgramBySlug, programs } from "@ossperks/data";
+import { getProgramBySlug, programs } from "@ossperks/core";
 import { notFound } from "next/navigation";
 import { ImageResponse } from "next/og";
 

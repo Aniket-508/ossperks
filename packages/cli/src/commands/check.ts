@@ -1,13 +1,9 @@
-import { programs } from "@ossperks/data";
+import { programs, checkAllPrograms, fetchRepoContext } from "@ossperks/core";
+import type { ProgramEligibility, RepoContext, RepoRef } from "@ossperks/core";
 import { Command } from "commander";
 import pc from "picocolors";
 
-import type { RepoRef } from "../utils/detect.js";
 import { detectRepo } from "../utils/detect.js";
-import type { ProgramEligibility } from "../utils/eligibility.js";
-import { checkAllPrograms } from "../utils/eligibility.js";
-import type { RepoContext } from "../utils/fetch.js";
-import { fetchRepoContext } from "../utils/fetch.js";
 import {
   eligibilityRow,
   error as displayError,

@@ -1,4 +1,4 @@
-import { programs, getCategories, getPeople } from "@ossperks/data";
+import { programs, getCategories, getPeople } from "@ossperks/core";
 import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -58,19 +58,15 @@ export default async function HomePage({
   return (
     <div className="container flex-1 flex flex-col w-full py-12 px-4 mx-auto">
       {/* Hero */}
-      <section className="pt-8 pb-16 sm:pt-24 sm:pb-32">
+      <section className="pt-8 pb-16 sm:pt-24 sm:pb-32 text-center">
         <h1 className="text-5xl font-bold tracking-tight mb-4">
           {t.home.heading}
           <span className="text-fd-primary">.</span>
         </h1>
-        <p className="text-fd-muted-foreground text-lg max-w-xl mb-8">
-          {t.home.description}
-        </p>
+        <p className="text-fd-muted-foreground mb-8">{t.home.description}</p>
         <HeroActions
           lang={lang}
           browseProgramsLabel={t.home.hero.browsePrograms}
-          submitProgramLabel={t.home.hero.submitProgram}
-          programDialogTranslations={t.programs.submit}
         />
       </section>
 

@@ -3,8 +3,8 @@ import {
   getProgramsByCategory,
   getCategories,
   CATEGORY_LABELS,
-} from "@ossperks/data";
-import type { Category } from "@ossperks/data";
+} from "@ossperks/core";
+import type { Category } from "@ossperks/core";
 import { Command } from "commander";
 
 import { header, programRow, maxSlugLength, error } from "../utils/format.js";

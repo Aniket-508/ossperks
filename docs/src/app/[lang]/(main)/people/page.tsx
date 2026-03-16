@@ -1,4 +1,4 @@
-import { getPeople, programs } from "@ossperks/data";
+import { getPeople, programs } from "@ossperks/core";
 import { ExternalLink, Plus } from "lucide-react";
 import type { Metadata } from "next";
 

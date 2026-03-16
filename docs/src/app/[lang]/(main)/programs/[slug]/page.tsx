@@ -1,4 +1,4 @@
-import { programs } from "@ossperks/data";
+import { programs } from "@ossperks/core";
 import { ArrowRightIcon, ArrowLeftIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -47,7 +47,7 @@ export default async function ProgramPage({
       </div>
 
       <div className="mb-8">
-        <div className="flex items-center gap-3 mb-2">
+        <div className="flex flex-wrap items-center gap-2 mb-2">
           <Badge variant="default">{categoryLabel}</Badge>
           {program.duration && (
             <Badge variant="outline">{program.duration}</Badge>
@@ -58,7 +58,7 @@ export default async function ProgramPage({
           {t.programs.by} {program.provider}
         </p>
         <p className="mt-4 text-fd-foreground">{program.description}</p>
-        <div className="mt-6 flex gap-3">
+        <div className="mt-6 flex flex-col sm:flex-row gap-3">
           <Button
             variant="default"
             size="sm"

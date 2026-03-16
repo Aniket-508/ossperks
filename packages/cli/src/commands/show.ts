@@ -1,4 +1,4 @@
-import { programs, getProgramBySlug } from "@ossperks/data";
+import { programs, getProgramBySlug } from "@ossperks/core";
 import { Command } from "commander";
 
 import { programDetail, error } from "../utils/format.js";

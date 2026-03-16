@@ -1,4 +1,4 @@
-import { programs } from "@ossperks/data";
+import { programs } from "@ossperks/core";
 import { Command } from "commander";
 import pc from "picocolors";
 

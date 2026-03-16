@@ -1,5 +1,6 @@
 export const ROUTES: Record<string, `/${string}`> = {
   ABOUT: "/about",
+  CHECK: "/check",
   CLI: "/cli",
   HOME: "/",
   LLMS: "/llms.txt",

@@ -1,18 +1,9 @@
-import type { Program } from "@ossperks/data";
-
-import type { RepoContext } from "./fetch.js";
-
-export type EligibilityStatus = "eligible" | "needs-review" | "ineligible";
-
-export interface EligibilityResult {
-  status: EligibilityStatus;
-  reasons: string[];
-}
-
-export interface ProgramEligibility {
-  program: Program;
-  result: EligibilityResult;
-}
+import type { Program } from "./schema";
+import type {
+  EligibilityResult,
+  ProgramEligibility,
+  RepoContext,
+} from "./types";
 
 const OSI_PERMISSIVE = new Set([
   "MIT",

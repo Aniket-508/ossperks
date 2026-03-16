@@ -96,3 +96,14 @@ export const getAllPerkTypes = (): PerkType[] =>
 export { programSchema, type Category, type Program } from "./schema";
 export { type Contact, type PerkType } from "./schema";
 export { CATEGORY_LABELS, getPerkType, PERK_TYPES } from "./schema";
+
+export { checkEligibility, checkAllPrograms } from "./eligibility";
+export { fetchGitHub, fetchGitLab, fetchRepoContext } from "./fetch";
+export { parseRepoUrl } from "./parse";
+export type {
+  EligibilityResult,
+  EligibilityStatus,
+  ProgramEligibility,
+  RepoContext,
+  RepoRef,
+} from "./types";

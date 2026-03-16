@@ -8,7 +8,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   resolve: {
     alias: {
-      "@ossperks/data": join(__dirname, "dist", "index.js"),
+      "@ossperks/core": join(__dirname, "dist", "index.js"),
     },
   },
   test: {

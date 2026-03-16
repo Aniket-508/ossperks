@@ -1,10 +1,10 @@
 import "server-only";
-import type { Program } from "@ossperks/data";
+import type { Program } from "@ossperks/core";
 import {
   programs as allPrograms,
   getProgramBySlug,
   getFeaturedPrograms as getFeaturedProgramsBase,
-} from "@ossperks/data";
+} from "@ossperks/core";
 
 import { i18n } from "@/lib/i18n";
 import { programsSource } from "@/lib/source";

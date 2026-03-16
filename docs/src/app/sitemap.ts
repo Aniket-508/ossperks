@@ -1,4 +1,4 @@
-import { programs } from "@ossperks/data";
+import { programs } from "@ossperks/core";
 import type { MetadataRoute } from "next";
 
 import { ROUTES } from "@/constants/routes";

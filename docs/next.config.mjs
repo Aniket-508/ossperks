@@ -25,7 +25,7 @@ const config = {
       },
     ];
   },
-  transpilePackages: ["@ossperks/data"],
+  transpilePackages: ["@ossperks/core"],
 };
 
 export default withMDX(config);

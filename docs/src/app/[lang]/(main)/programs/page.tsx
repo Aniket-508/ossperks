@@ -2,7 +2,7 @@ import {
   getCategories,
   getAllPerkTypes,
   getProgramPerkTypes,
-} from "@ossperks/data";
+} from "@ossperks/core";
 import { Plus } from "lucide-react";
 import type { Metadata } from "next";
 

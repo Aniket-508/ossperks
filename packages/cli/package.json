@@ -50,7 +50,7 @@
     "picocolors": "^1.1.1"
   },
   "devDependencies": {
-    "@ossperks/data": "workspace:*",
+    "@ossperks/core": "workspace:*",
     "@types/node": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:",

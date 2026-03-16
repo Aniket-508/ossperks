@@ -1,6 +1,6 @@
 "use client";
 
-import type { Category, PerkType, Program } from "@ossperks/data";
+import type { Category, PerkType, Program } from "@ossperks/core";
 import { useCallback, useMemo, useState } from "react";
 
 import { ProgramCard } from "@/components/programs/program-card";

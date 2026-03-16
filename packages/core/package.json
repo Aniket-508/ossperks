@@ -1,16 +1,16 @@
 {
-  "name": "@ossperks/data",
+  "name": "@ossperks/core",
   "version": "0.1.0",
   "private": true,
-  "description": "Curated data of open-source software perk programs.",
+  "description": "Core data, types, and eligibility checking logic for OSS Perks.",
   "keywords": [
     "data",
+    "eligibility",
     "open-source",
     "oss",
-    "perks",
-    "programs"
+    "perks"
   ],
-  "homepage": "https://github.com/Aniket-508/ossperks/tree/main/packages/data#readme",
+  "homepage": "https://github.com/Aniket-508/ossperks/tree/main/packages/core#readme",
   "bugs": {
     "url": "https://github.com/Aniket-508/ossperks/issues"
   },
@@ -18,7 +18,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Aniket-508/ossperks.git",
-    "directory": "packages/data"
+    "directory": "packages/core"
   },
   "files": [
     "dist",

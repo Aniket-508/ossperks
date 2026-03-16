@@ -2,7 +2,7 @@ import {
   getCategories,
   CATEGORY_LABELS,
   getProgramsByCategory,
-} from "@ossperks/data";
+} from "@ossperks/core";
 import { Command } from "commander";
 import pc from "picocolors";
 

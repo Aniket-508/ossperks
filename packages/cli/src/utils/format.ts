@@ -1,7 +1,9 @@
-import type { Program } from "@ossperks/data";
+import type {
+  EligibilityResult,
+  EligibilityStatus,
+  Program,
+} from "@ossperks/core";
 import pc from "picocolors";
-
-import type { EligibilityResult, EligibilityStatus } from "./eligibility.js";
 
 export const header = (text: string): void => {
   console.log();

@@ -4,9 +4,9 @@ import {
   getProgramsByCategory,
   getCategories,
   programSchema,
-} from "@ossperks/data";
+} from "@ossperks/core";
 
-describe("@ossperks/data", () => {
+describe("@ossperks/core", () => {
   it("exports at least 15 programs", () => {
     expect(programs.length).toBeGreaterThanOrEqual(15);
   });

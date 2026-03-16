@@ -1,20 +1,4 @@
-import type { RepoRef } from "./detect.js";
-
-export interface RepoContext {
-  provider: "github" | "gitlab";
-  owner: string;
-  repo: string;
-  name: string;
-  stars: number;
-  license: string | null;
-  isFork: boolean;
-  isPrivate: boolean;
-  isOrgOwned: boolean;
-  pushedAt: Date;
-  createdAt: Date;
-  topics: string[];
-  description: string | null;
-}
+import type { RepoContext, RepoRef } from "./types";
 
 interface GitHubRepo {
   name: string;

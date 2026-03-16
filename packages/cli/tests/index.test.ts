@@ -1,11 +1,11 @@
-import { programs, getProgramBySlug } from "@ossperks/data";
-
-import { parseRepoUrl } from "../src/utils/detect.js";
 import {
+  programs,
+  getProgramBySlug,
+  parseRepoUrl,
   checkEligibility,
   checkAllPrograms,
-} from "../src/utils/eligibility.js";
-import type { RepoContext } from "../src/utils/fetch.js";
+} from "@ossperks/core";
+import type { RepoContext } from "@ossperks/core";
 
 // ---------------------------------------------------------------------------
 // detect — parseRepoUrl

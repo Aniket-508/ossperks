@@ -6,8 +6,8 @@
     "lib": ["ES2023", "DOM"],
     "baseUrl": ".",
     "paths": {
-      "@ossperks/data": ["packages/data/src/index.ts"],
-      "@ossperks/data/schema": ["packages/data/src/schema.ts"]
+      "@ossperks/core": ["packages/core/src/index.ts"],
+      "@ossperks/core/schema": ["packages/core/src/schema.ts"]
     },
     "strict": true,
     "declaration": true,

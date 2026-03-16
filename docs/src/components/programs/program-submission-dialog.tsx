@@ -205,7 +205,7 @@ const CategoryField = ({
 const canSubmitSelector = (s: { canSubmit: boolean }) => s.canSubmit;
 
 interface ProgramSubmissionDialogProps {
-  trigger?: React.ReactElement;
+  trigger: React.ReactElement;
   translations: {
     heading: string;
     description: string;
@@ -291,14 +291,7 @@ export const ProgramSubmissionDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger>
-        {trigger ?? (
-          <Button size="lg">
-            <Plus className="size-4" />
-            Submit a program
-          </Button>
-        )}
-      </DialogTrigger>
+      <DialogTrigger render={trigger} />
       <DialogContent className="sm:max-w-lg">
         {step === "form" ? (
           <form

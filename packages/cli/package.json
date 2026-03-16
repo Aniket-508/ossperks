@@ -46,7 +46,7 @@
     "test": "pnpm build && vitest run"
   },
   "dependencies": {
-    "commander": "^14.0.0",
+    "commander": "^14.0.3",
     "picocolors": "^1.1.1"
   },
   "devDependencies": {

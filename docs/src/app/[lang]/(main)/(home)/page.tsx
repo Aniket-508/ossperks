@@ -26,7 +26,8 @@ export const generateMetadata = async ({
   const t = await getT(lang);
   return createMetadata({
     description: t.home.description,
-    ogImage: `/og/${lang}`,
+    lang,
+    path: "/",
     title: t.home.heading,
   });
 };

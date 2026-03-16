@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { LINK } from "@/constants/links";
 import { getT } from "@/lib/get-t";
 import { i18n } from "@/lib/i18n";
+import { createMetadata } from "@/seo/metadata";
 
 export const generateStaticParams = () =>
   i18n.languages.map((lang) => ({ lang }));
@@ -17,28 +18,12 @@ export const generateMetadata = async ({
 }): Promise<Metadata> => {
   const { lang } = await params;
   const t = await getT(lang);
-  return {
+  return createMetadata({
     description: t.sponsors.intro,
-    openGraph: {
-      description: t.sponsors.intro,
-      images: [
-        {
-          alt: t.sponsors.heading,
-          height: 630,
-          url: `/og/${lang}/sponsors`,
-          width: 1200,
-        },
-      ],
-      title: t.sponsors.heading,
-    },
+    lang,
+    path: "/sponsors",
     title: t.sponsors.heading,
-    twitter: {
-      card: "summary_large_image",
-      description: t.sponsors.intro,
-      images: [`/og/${lang}/sponsors`],
-      title: t.sponsors.heading,
-    },
-  };
+  });
 };
 
 export default async function SponsorsPage({

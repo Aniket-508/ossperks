@@ -6,6 +6,7 @@ import { ContactSubmissionDialog } from "@/components/people/contact-submission-
 import { Button } from "@/components/ui/button";
 import { getT } from "@/lib/get-t";
 import { i18n } from "@/lib/i18n";
+import { createMetadata } from "@/seo/metadata";
 
 export const generateStaticParams = () =>
   i18n.languages.map((lang) => ({ lang }));
@@ -17,28 +18,12 @@ export const generateMetadata = async ({
 }): Promise<Metadata> => {
   const { lang } = await params;
   const t = await getT(lang);
-  return {
+  return createMetadata({
     description: t.people.description,
-    openGraph: {
-      description: t.people.description,
-      images: [
-        {
-          alt: t.people.heading,
-          height: 630,
-          url: `/og/${lang}/people`,
-          width: 1200,
-        },
-      ],
-      title: t.people.heading,
-    },
+    lang,
+    path: "/people",
     title: t.people.heading,
-    twitter: {
-      card: "summary_large_image",
-      description: t.people.description,
-      images: [`/og/${lang}/people`],
-      title: t.people.heading,
-    },
-  };
+  });
 };
 
 export default async function PeoplePage({

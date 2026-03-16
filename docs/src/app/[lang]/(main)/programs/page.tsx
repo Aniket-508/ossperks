@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { getT } from "@/lib/get-t";
 import { i18n } from "@/lib/i18n";
 import { getPrograms } from "@/lib/programs";
+import { createMetadata } from "@/seo/metadata";
 
 export const generateStaticParams = () =>
   i18n.languages.map((lang) => ({ lang }));
@@ -23,28 +24,12 @@ export const generateMetadata = async ({
 }): Promise<Metadata> => {
   const { lang } = await params;
   const t = await getT(lang);
-  return {
+  return createMetadata({
     description: t.programs.listing.description,
-    openGraph: {
-      description: t.programs.listing.description,
-      images: [
-        {
-          alt: t.programs.listing.heading,
-          height: 630,
-          url: `/og/${lang}/programs`,
-          width: 1200,
-        },
-      ],
-      title: t.programs.listing.heading,
-    },
+    lang,
+    path: "/programs",
     title: t.programs.listing.heading,
-    twitter: {
-      card: "summary_large_image",
-      description: t.programs.listing.description,
-      images: [`/og/${lang}/programs`],
-      title: t.programs.listing.heading,
-    },
-  };
+  });
 };
 
 export default async function ProgramsPage({

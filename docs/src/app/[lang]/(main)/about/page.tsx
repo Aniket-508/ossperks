@@ -8,6 +8,7 @@ import { GITHUB_CONFIG } from "@/constants/links";
 import { ROUTES } from "@/constants/routes";
 import { getT } from "@/lib/get-t";
 import { i18n, withLocalePrefix } from "@/lib/i18n";
+import { createMetadata } from "@/seo/metadata";
 
 export const generateStaticParams = () =>
   i18n.languages.map((lang) => ({ lang }));
@@ -19,28 +20,12 @@ export const generateMetadata = async ({
 }): Promise<Metadata> => {
   const { lang } = await params;
   const t = await getT(lang);
-  return {
+  return createMetadata({
     description: t.about.intro,
-    openGraph: {
-      description: t.about.intro,
-      images: [
-        {
-          alt: t.about.heading,
-          height: 630,
-          url: `/og/${lang}/about`,
-          width: 1200,
-        },
-      ],
-      title: t.about.heading,
-    },
+    lang,
+    path: "/about",
     title: t.about.heading,
-    twitter: {
-      card: "summary_large_image",
-      description: t.about.intro,
-      images: [`/og/${lang}/about`],
-      title: t.about.heading,
-    },
-  };
+  });
 };
 
 export default async function AboutPage({

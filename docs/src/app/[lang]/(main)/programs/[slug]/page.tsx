@@ -10,9 +10,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { ROUTES } from "@/constants/routes";
 import { getT } from "@/lib/get-t";
-import { i18n, withLocalePrefix } from "@/lib/i18n";
+import { withLocalePrefix } from "@/lib/i18n";
 import { getProgram } from "@/lib/programs";
 import { getProgramPageImage, programsSource } from "@/lib/source";
+import { createMetadata } from "@/seo/metadata";
 
 export default async function ProgramPage({
   params,
@@ -189,47 +190,15 @@ export const generateMetadata = async ({
   }
 
   const programPath = `${ROUTES.PROGRAMS}/${program.slug}` as `/${string}`;
-  const canonical = withLocalePrefix(lang, programPath);
-  const languages: Record<string, string> = Object.fromEntries(
-    i18n.languages.map((locale) => [
-      locale,
-      withLocalePrefix(locale, programPath),
-    ])
-  );
-  languages["x-default"] = withLocalePrefix(i18n.defaultLanguage, programPath);
-
-  const ogLocale = lang.replace("-", "_");
   const programPage = programsSource.getPage([program.slug], lang);
-  const ogImage = programPage ? getProgramPageImage(programPage) : { url: "" };
+  const ogImage = programPage ? getProgramPageImage(programPage) : undefined;
 
-  return {
-    alternates: {
-      canonical,
-      languages,
-    },
+  return createMetadata({
     description: program.description,
-    openGraph: {
-      description: program.description,
-      ...(ogImage.url && {
-        images: [
-          {
-            alt: program.name,
-            height: 630,
-            url: ogImage.url,
-            width: 1200,
-          },
-        ],
-      }),
-      locale: ogLocale,
-      title: program.name,
-      type: "article",
-    },
+    lang,
+    ...(ogImage?.url && { ogImage: ogImage.url }),
+    ogType: "article",
+    path: programPath,
     title: program.name,
-    twitter: {
-      card: "summary_large_image",
-      description: program.description,
-      ...(ogImage.url && { images: [ogImage.url] }),
-      title: program.name,
-    },
-  };
+  });
 };

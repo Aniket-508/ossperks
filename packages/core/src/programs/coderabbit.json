@@ -1,0 +1,33 @@
+{
+  "slug": "coderabbit",
+  "name": "CodeRabbit for Open Source",
+  "provider": "CodeRabbit",
+  "url": "https://www.coderabbit.ai/blog/coderabbit-commits-1-million-to-open-source",
+  "applicationUrl": "https://docs.google.com/forms/d/e/1FAIpQLScBYzbvjENJLHnMreturAwXZI_90mUPIBonseala1ZAcTeOGw/viewform",
+  "category": "ai",
+  "description": "CodeRabbit provides free AI-driven code reviews for public repositories on GitHub and GitLab, backed by a $1 million commitment to open-source sponsorships.",
+  "perks": [
+    {
+      "title": "Free AI Code Reviews",
+      "description": "Full access to CodeRabbit's AI code review platform for all open-source projects at no cost."
+    },
+    {
+      "title": "Sponsorship Funding",
+      "description": "Financial sponsorship as part of CodeRabbit's $1M open-source commitment for qualifying projects."
+    },
+    {
+      "title": "PR Spam Filtering",
+      "description": "AI-powered tools to filter out low-quality and AI-generated PR spam, reducing maintainer workload."
+    }
+  ],
+  "eligibility": [
+    "Must be an open-source project with a publicly available repository.",
+    "Repository must be hosted on GitHub or GitLab.",
+    "Must demonstrate active development and community engagement."
+  ],
+  "applicationProcess": [
+    "Fill out the CodeRabbit OSS Program application form.",
+    "CodeRabbit reviews the application and reserves the right to approve or deny sponsorship."
+  ],
+  "tags": ["ai", "code-review", "developer-tools", "sponsorship"]
+}

@@ -398,3 +398,89 @@ checksums:
     tiers/gold/name: 80b26e91a3ebd5460557176848f9e524
     tiers/silver/description: 358a2c0a7f8d4f5f8eb7f47d4ee72a31
     tiers/silver/name: 35f45fb4e01b490774f4f1433b867ef8
+  4d63bb88542a5fecfbfcfcfa64a128a0:
+    md-section-0: 90121e7e2b7be5b5cb1ee48f3e68ec03
+    md-section-1: b936b863996ea4c6fe1cc4811d3fca5b
+    md-section-2: 7294bf61884c8342a55c58bb359736c2
+    md-section-3: bdd97f4c6b46aab001604491f6fe085c
+    md-section-4: e2c6cbd820ed89079b2eac7dadef9957
+    md-section-5: e04972f7ced5ae54f5db271c9bf0d5dc
+    md-section-6: 89eb92434a0f957cdc7d4aad312db58b
+    md-section-7: 4b98c83d7c5114b61e7cad0c77ccdd2a
+    md-section-8: 8ad0f8b4b968cab0a58f93e0030cddd1
+    fm-attr-title: 2a29d872b818045abe41537a5bda4438
+    fm-attr-description: f9aae78414784e95eec28c373f3292b5
+  a0c59826687ecac39a602546f564507a:
+    md-section-0: 4e9052591fdf0cac33eaef50625ac45f
+    md-section-1: b936b863996ea4c6fe1cc4811d3fca5b
+    md-section-2: 110bac7966d1424b9e423e4d3aa9b6c3
+    md-section-3: bdd97f4c6b46aab001604491f6fe085c
+    md-section-4: d30ec8e62d49c351795ebad7e34e6863
+    md-section-5: e04972f7ced5ae54f5db271c9bf0d5dc
+    md-section-6: cff90fcc1350514870482af60ec171ee
+    md-section-7: 4b98c83d7c5114b61e7cad0c77ccdd2a
+    md-section-8: 485131232ea3b981cc3cf5f884468376
+    fm-attr-title: 918475d7345162916db59e59a3d56114
+    fm-attr-description: 5dee66424cabb54cdc14e080fc5b3ea2
+  6565b006af3b26c2bea0934d78aa3e6e:
+    md-section-0: 8556ea6be2255683535f34aee70ad59e
+    md-section-1: b936b863996ea4c6fe1cc4811d3fca5b
+    md-section-2: 6389cb9177a0620627b2f959d0f42e03
+    md-section-3: bdd97f4c6b46aab001604491f6fe085c
+    md-section-4: 8f732e6b0148c08bb81ffdb113799ba9
+    md-section-5: e04972f7ced5ae54f5db271c9bf0d5dc
+    md-section-6: 2a2b4e2507c26601b5b8565b4435420d
+    md-section-7: 4b98c83d7c5114b61e7cad0c77ccdd2a
+    md-section-8: a2698c41b6d189832c82422fe5744530
+    fm-attr-title: afcd2afee7efc0a40f558b4143f87647
+    fm-attr-description: 1549895f6fa820b769a0cb138d492261
+  e64c7a6ef421356b84d1f02ffe31c3c5:
+    md-section-0: b1ac59b69e2d047a82ef39dab1b2579d
+    md-section-1: b936b863996ea4c6fe1cc4811d3fca5b
+    md-section-2: 6162108e3820fe259478c24654ffb440
+    md-section-3: bdd97f4c6b46aab001604491f6fe085c
+    md-section-4: 1d31444a4839862bd1a2e11d7651afcf
+    md-section-5: e04972f7ced5ae54f5db271c9bf0d5dc
+    md-section-6: 65c9ec91805c2ccc1f566e448af3fe0b
+    md-section-7: 4b98c83d7c5114b61e7cad0c77ccdd2a
+    md-section-8: 19e3508e2031cce8e3f524b0b6109a02
+    fm-attr-title: da766a6433f1e81d0282e2f9472f3015
+    fm-attr-description: 64c3b9c8c184304a67bcfb074f94eead
+  ff6d20701a44359db36f7d5ed065782e:
+    md-section-0: 20510f0985ba1a941c56ce4cc5d57963
+    md-section-1: b936b863996ea4c6fe1cc4811d3fca5b
+    md-section-2: d0e40ffa45ef15802736d13cd1cde75d
+    md-section-3: bdd97f4c6b46aab001604491f6fe085c
+    md-section-4: 16197a421830cbf3a660068f4d701570
+    md-section-5: e04972f7ced5ae54f5db271c9bf0d5dc
+    md-section-6: 77b647db11f038cb09192de2ce62528c
+    md-section-7: 4b98c83d7c5114b61e7cad0c77ccdd2a
+    md-section-8: b4182b2d4760623c25f90df9e015d2a7
+    fm-attr-title: 51d0224693124258182c23aeb5eaef04
+    fm-attr-description: 09045f03be1fc2a2a48ddb603e14409a
+  24ee6e02f9168fe1b0d7050bbeb464d4:
+    md-section-0: d24ab8ffa5062c53507f090fafca1117
+    md-section-1: b936b863996ea4c6fe1cc4811d3fca5b
+    md-section-2: 0fdd848264e261e6d64f96ff488179b6
+    md-section-3: bdd97f4c6b46aab001604491f6fe085c
+    md-section-4: 5c0ffec02aa373975ccc6fcc409189cf
+    md-section-5: e04972f7ced5ae54f5db271c9bf0d5dc
+    md-section-6: cbf84c754b87240db4b69770d148c067
+    md-section-7: 4b98c83d7c5114b61e7cad0c77ccdd2a
+    md-section-8: 98476b81c0d8d24153bed292ac06e41d
+    fm-attr-title: 194b982665ff1393aa61a24e553ac2c7
+    fm-attr-description: 01d6d33804ce9f943419f4e46d01fe4c
+  5d9475a28fdd028b32c6eb54871fefed:
+    md-section-0: 98c7f044755405687adbc12d3aaa5c48
+    md-section-1: b936b863996ea4c6fe1cc4811d3fca5b
+    md-section-2: dbad8f503facf84e89fe9832238bb388
+    md-section-3: bdd97f4c6b46aab001604491f6fe085c
+    md-section-4: f7b606e544bfaa55a21ca9b11ea2b3d1
+    md-section-5: d62c9575cc66feec7589fba95c9f7aee
+    md-section-6: 9a960299df55bca9d687a743e812a207
+    md-section-7: e04972f7ced5ae54f5db271c9bf0d5dc
+    md-section-8: 9f2189c2e9c373401f57299f74f26368
+    md-section-9: 4b98c83d7c5114b61e7cad0c77ccdd2a
+    md-section-10: 9cfbec244d99e00b5650b3f323925733
+    fm-attr-title: 8bf0499bd67e909d8bdc89b79acda23a
+    fm-attr-description: bb9de0bb45c0c527bb8eaea80372fe8f

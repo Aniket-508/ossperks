@@ -1,0 +1,36 @@
+{
+  "slug": "signpath",
+  "name": "SignPath for Open Source Projects",
+  "provider": "SignPath",
+  "url": "https://signpath.io/solutions/open-source-community",
+  "applicationUrl": "https://signpath.io/solutions/open-source-community",
+  "category": "security",
+  "description": "Open-source projects can apply for a free code signing certificate through the SignPath Foundation, with secure signing, pipeline integrity, and full audit trails at no cost.",
+  "perks": [
+    {
+      "title": "Free Code Signing Certificate",
+      "description": "Sponsored code signing certificate for open-source projects at no cost through the SignPath Foundation."
+    },
+    {
+      "title": "Pipeline Integrity",
+      "description": "Source and build provenance verification, policy enforcement, and protection against compromised pipelines with CI/CD-native connectors."
+    },
+    {
+      "title": "Format-Aware Signing",
+      "description": "Deep signing support for EXE, MSI, JAR, XML, Docker, Office Macros, and nested artifacts."
+    },
+    {
+      "title": "Automatic Audit Trails",
+      "description": "Detailed logs tracking every signed artifact for auditors and regulatory compliance reporting."
+    }
+  ],
+  "eligibility": [
+    "Must be an open-source project with a publicly available codebase.",
+    "Must use a recognized open-source license."
+  ],
+  "applicationProcess": [
+    "Apply through the SignPath open-source community page.",
+    "SignPath Foundation reviews the application."
+  ],
+  "tags": ["code-signing", "security", "supply-chain", "compliance"]
+}

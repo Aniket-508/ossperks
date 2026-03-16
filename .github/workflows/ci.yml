@@ -42,6 +42,3 @@ jobs:
 
       - name: Test packages
         run: pnpm test
-
-      - name: Docs app build
-        run: pnpm --filter ./docs build

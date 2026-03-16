@@ -77,7 +77,7 @@ export default async function HomePage({
 
       {/* Built for open source + Stats */}
       <section>
-        <div className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0 flex-1 py-16">
             <p className="text-xs font-medium uppercase tracking-wider text-fd-muted-foreground mb-2">
               {t.home.builtFor.subheading}
@@ -89,8 +89,8 @@ export default async function HomePage({
               {t.home.builtFor.description}
             </p>
           </div>
-          <div className="relative grid grid-cols-1 self-stretch sm:w-[30%] sm:grid-cols-2">
-            <div className="pointer-events-none absolute inset-0 hidden sm:block">
+          <div className="relative grid self-stretch sm:w-[30%] grid-cols-2">
+            <div className="pointer-events-none absolute inset-0">
               <div className="absolute left-1/2 top-[15%] bottom-[15%] w-px -translate-x-1/2 bg-linear-to-b from-transparent via-fd-border to-transparent" />
               <div className="absolute top-1/2 left-[15%] right-[15%] h-px -translate-y-1/2 bg-linear-to-r from-transparent via-fd-border to-transparent" />
             </div>
@@ -113,8 +113,8 @@ export default async function HomePage({
 
       {/* Featured Programs */}
       <section className="py-16">
-        <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <h2 className="text-2xl font-bold mb-2">{t.home.featured.heading}</h2>
+        <div className="mb-4 flex gap-2 items-center justify-between">
+          <h2 className="text-2xl font-bold">{t.home.featured.heading}</h2>
           <Button
             variant="ghost"
             size="sm"

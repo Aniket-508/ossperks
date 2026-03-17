@@ -111,13 +111,22 @@ export { programSchema, type Category, type Program } from "./schema";
 export { type Contact, type PerkType } from "./schema";
 export { CATEGORY_LABELS, getPerkType, PERK_TYPES } from "./schema";
 
-export { checkEligibility, checkAllPrograms } from "./eligibility";
+export {
+  checkEligibility,
+  checkEligibilityDetailed,
+  checkAllPrograms,
+  checkAllProgramsDetailed,
+} from "./eligibility";
 export { fetchGitHub, fetchGitLab, fetchRepoContext } from "./fetch";
 export { parseRepoUrl } from "./parse";
 export type {
+  EligibilityReason,
+  EligibilityReasonCode,
   EligibilityResult,
+  EligibilityResultDetailed,
   EligibilityStatus,
   ProgramEligibility,
+  ProgramEligibilityDetailed,
   RepoContext,
   RepoRef,
 } from "./types";

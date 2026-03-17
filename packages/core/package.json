@@ -49,6 +49,8 @@
     "validate": "node --import tsx src/validate.ts"
   },
   "dependencies": {
+    "@gitbeaker/rest": "^43.8.0",
+    "@octokit/rest": "^22.0.1",
     "zod": "catalog:"
   },
   "devDependencies": {

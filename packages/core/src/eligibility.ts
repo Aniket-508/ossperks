@@ -1,7 +1,10 @@
 import type { Program } from "./schema";
 import type {
+  EligibilityReason,
   EligibilityResult,
+  EligibilityResultDetailed,
   ProgramEligibility,
+  ProgramEligibilityDetailed,
   RepoContext,
 } from "./types";
 
@@ -86,8 +89,20 @@ const extractAgeDays = (text: string): number | null => {
 type RuleResult = "pass" | "fail" | "unknown";
 interface RuleVerdict {
   verdict: RuleResult;
-  reason?: string;
+  reason?: EligibilityReason;
 }
+
+const formatCount = (value: number): string => value.toLocaleString("en-US");
+
+const makeReason = (
+  code: EligibilityReason["code"],
+  message: string,
+  params?: EligibilityReason["params"]
+): EligibilityReason => ({
+  code,
+  message,
+  ...(params ? { params } : {}),
+});
 
 const checkSubjective = (rule: string): RuleVerdict | null => {
   if (
@@ -96,19 +111,28 @@ const checkSubjective = (rule: string): RuleVerdict | null => {
     )
   ) {
     return {
-      reason: "non-commercial requirement cannot be auto-verified",
+      reason: makeReason(
+        "nonCommercial",
+        "non-commercial requirement cannot be auto-verified"
+      ),
       verdict: "unknown",
     };
   }
   if (/hosted\s+on|intend.*host/i.test(rule)) {
     return {
-      reason: "hosting platform requirement cannot be auto-verified",
+      reason: makeReason(
+        "hostingPlatform",
+        "hosting platform requirement cannot be auto-verified"
+      ),
       verdict: "unknown",
     };
   }
   if (/code\s+of\s+conduct/i.test(rule)) {
     return {
-      reason: "Code of Conduct cannot be auto-verified",
+      reason: makeReason(
+        "codeOfConduct",
+        "Code of Conduct cannot be auto-verified"
+      ),
       verdict: "unknown",
     };
   }
@@ -118,12 +142,15 @@ const checkSubjective = (rule: string): RuleVerdict | null => {
     )
   ) {
     return {
-      reason: "role requirement cannot be auto-verified",
+      reason: makeReason("role", "role requirement cannot be auto-verified"),
       verdict: "unknown",
     };
   }
   if (/create\s+or\s+access|invite|14[\s-]?day|trial/i.test(rule)) {
-    return { reason: "procedural step — apply manually", verdict: "unknown" };
+    return {
+      reason: makeReason("procedural", "procedural step — apply manually"),
+      verdict: "unknown",
+    };
   }
   if (
     /measurable\s+impact|quality|innovation|community\s+impact|stand\s+out|valuable\s+contributions|prioritized\s+based/i.test(
@@ -131,12 +158,21 @@ const checkSubjective = (rule: string): RuleVerdict | null => {
     )
   ) {
     return {
-      reason: "subjective criteria cannot be auto-verified",
+      reason: makeReason(
+        "subjective",
+        "subjective criteria cannot be auto-verified"
+      ),
       verdict: "unknown",
     };
   }
   if (/welcome\s+open\s+collaboration|open\s+reuse/i.test(rule)) {
-    return { reason: "criteria cannot be auto-verified", verdict: "unknown" };
+    return {
+      reason: makeReason(
+        "criteriaUnverifiable",
+        "criteria cannot be auto-verified"
+      ),
+      verdict: "unknown",
+    };
   }
   return null;
 };
@@ -147,13 +183,19 @@ const checkProvider = (rule: string, ctx: RepoContext): RuleVerdict | null => {
     /\bon\s+github\b|github\.com|github\s+repository/i.test(lower) &&
     ctx.provider !== "github"
   ) {
-    return { reason: "requires a GitHub repository", verdict: "fail" };
+    return {
+      reason: makeReason("requiresGithub", "requires a GitHub repository"),
+      verdict: "fail",
+    };
   }
   if (
     /\bon\s+gitlab\b|gitlab\.com|gitlab\s+repository/i.test(lower) &&
     ctx.provider !== "gitlab"
   ) {
-    return { reason: "requires a GitLab repository", verdict: "fail" };
+    return {
+      reason: makeReason("requiresGitlab", "requires a GitLab repository"),
+      verdict: "fail",
+    };
   }
   return null;
 };
@@ -163,7 +205,10 @@ const checkStars = (rule: string, ctx: RepoContext): RuleVerdict | null => {
     /popularity.*threshold|activity.*threshold|threshold.*popularit/i.test(rule)
   ) {
     return {
-      reason: "popularity threshold is determined by the provider",
+      reason: makeReason(
+        "popularityThreshold",
+        "popularity threshold is determined by the provider"
+      ),
       verdict: "unknown",
     };
   }
@@ -173,12 +218,20 @@ const checkStars = (rule: string, ctx: RepoContext): RuleVerdict | null => {
   }
   if (ctx.stars < threshold) {
     return {
-      reason: `requires ${threshold.toLocaleString()}+ stars (you have ${ctx.stars.toLocaleString()})`,
+      reason: makeReason(
+        "starsBelow",
+        `requires ${formatCount(threshold)}+ stars (you have ${formatCount(ctx.stars)})`,
+        { current: ctx.stars, threshold }
+      ),
       verdict: "fail",
     };
   }
   return {
-    reason: `${ctx.stars.toLocaleString()} stars meets the ${threshold.toLocaleString()}+ threshold`,
+    reason: makeReason(
+      "starsMet",
+      `${formatCount(ctx.stars)} stars meets the ${formatCount(threshold)}+ threshold`,
+      { current: ctx.stars, threshold }
+    ),
     verdict: "pass",
   };
 };
@@ -186,8 +239,13 @@ const checkStars = (rule: string, ctx: RepoContext): RuleVerdict | null => {
 const checkActivity = (rule: string, ctx: RepoContext): RuleVerdict | null => {
   const ageDays = extractAgeDays(rule);
   if (ageDays !== null && daysSince(ctx.createdAt) < ageDays) {
+    const current = daysSince(ctx.createdAt);
     return {
-      reason: `project must be at least ${ageDays} days old (yours is ${daysSince(ctx.createdAt)} days old)`,
+      reason: makeReason(
+        "projectTooNew",
+        `project must be at least ${ageDays} days old (yours is ${current} days old)`,
+        { current, required: ageDays }
+      ),
       verdict: "fail",
     };
   }
@@ -199,7 +257,11 @@ const checkActivity = (rule: string, ctx: RepoContext): RuleVerdict | null => {
     const age = daysSince(ctx.pushedAt);
     return age > 180
       ? {
-          reason: `last commit was ${age} days ago (project may be inactive)`,
+          reason: makeReason(
+            "inactive",
+            `last commit was ${age} days ago (project may be inactive)`,
+            { days: age }
+          ),
           verdict: "fail",
         }
       : { verdict: "pass" };
@@ -213,7 +275,11 @@ const checkLicense = (rule: string, ctx: RepoContext): RuleVerdict | null => {
     return isPermissive(ctx.license)
       ? { verdict: "pass" }
       : {
-          reason: `requires a permissive license (detected: ${label})`,
+          reason: makeReason(
+            "permissiveLicense",
+            `requires a permissive license (detected: ${label})`,
+            { license: label }
+          ),
           verdict: "fail",
         };
   }
@@ -225,7 +291,11 @@ const checkLicense = (rule: string, ctx: RepoContext): RuleVerdict | null => {
     return isOsiApproved(ctx.license)
       ? { verdict: "pass" }
       : {
-          reason: `requires an OSI-approved license (detected: ${label})`,
+          reason: makeReason(
+            "osiLicense",
+            `requires an OSI-approved license (detected: ${label})`,
+            { license: label }
+          ),
           verdict: "fail",
         };
   }
@@ -237,7 +307,11 @@ const checkLicense = (rule: string, ctx: RepoContext): RuleVerdict | null => {
     return isOsiApproved(ctx.license)
       ? { verdict: "pass" }
       : {
-          reason: `no OSI-approved license detected (detected: ${label})`,
+          reason: makeReason(
+            "noOsiLicense",
+            `no OSI-approved license detected (detected: ${label})`,
+            { license: label }
+          ),
           verdict: "fail",
         };
   }
@@ -249,56 +323,81 @@ const checkRepoAttrs = (rule: string, ctx: RepoContext): RuleVerdict | null => {
     /publicly\s+available|public\s+repositor|publicly\s+accessible/i.test(rule)
   ) {
     return ctx.isPrivate
-      ? { reason: "repository is private", verdict: "fail" }
+      ? {
+          reason: makeReason("repoPrivate", "repository is private"),
+          verdict: "fail",
+        }
       : { verdict: "pass" };
   }
   if (/not\s+a\s+fork|original\s+project/i.test(rule)) {
     return ctx.isFork
-      ? { reason: "repository is a fork", verdict: "fail" }
+      ? {
+          reason: makeReason("repoFork", "repository is a fork"),
+          verdict: "fail",
+        }
       : { verdict: "pass" };
   }
   if (/dedicated\s+community/i.test(rule)) {
     return {
-      reason: "community size cannot be auto-verified",
+      reason: makeReason(
+        "communitySize",
+        "community size cannot be auto-verified"
+      ),
       verdict: "unknown",
     };
   }
   if (/credits?\s+must\s+be\s+used|used\s+exclusively/i.test(rule)) {
     return {
-      reason: "usage restriction cannot be auto-verified",
+      reason: makeReason(
+        "usageRestriction",
+        "usage restriction cannot be auto-verified"
+      ),
       verdict: "unknown",
     };
   }
   if (/align\s+with.*mission|project.*mission/i.test(rule)) {
     return {
-      reason: "mission alignment cannot be auto-verified",
+      reason: makeReason(
+        "missionAlignment",
+        "mission alignment cannot be auto-verified"
+      ),
       verdict: "unknown",
     };
   }
   return null;
 };
 
-const matchRule = (rule: string, ctx: RepoContext): RuleVerdict =>
+const matchRule = (rule: string, ctx: RepoContext): RuleVerdict | null =>
   checkSubjective(rule) ??
   checkProvider(rule, ctx) ??
   checkStars(rule, ctx) ??
   checkActivity(rule, ctx) ??
   checkLicense(rule, ctx) ??
-  checkRepoAttrs(rule, ctx) ?? { reason: rule, verdict: "unknown" };
+  checkRepoAttrs(rule, ctx);
 
-export const checkEligibility = (
+export const checkEligibilityDetailed = (
   program: Program,
   ctx: RepoContext
-): EligibilityResult => {
-  const failReasons: string[] = [];
-  const unknownReasons: string[] = [];
+): EligibilityResultDetailed => {
+  const failReasons: EligibilityReason[] = [];
+  const unknownReasons: EligibilityReason[] = [];
 
-  for (const rule of program.eligibility) {
-    const { verdict, reason } = matchRule(rule, ctx);
-    if (verdict === "fail" && reason) {
-      failReasons.push(reason);
-    } else if (verdict === "unknown" && reason) {
-      unknownReasons.push(reason);
+  for (const [ruleIndex, rule] of program.eligibility.entries()) {
+    const verdict = matchRule(rule, ctx) ?? {
+      reason: {
+        code: "rule" as const,
+        message: rule,
+        ruleIndex,
+      },
+      verdict: "unknown" as const,
+    };
+    const { reason } = verdict;
+    const reasonWithIndex =
+      reason && reason.code !== "rule" ? { ...reason, ruleIndex } : reason;
+    if (verdict.verdict === "fail" && reasonWithIndex) {
+      failReasons.push(reasonWithIndex);
+    } else if (verdict.verdict === "unknown" && reasonWithIndex) {
+      unknownReasons.push(reasonWithIndex);
     }
   }
 
@@ -310,6 +409,31 @@ export const checkEligibility = (
   }
   return { reasons: [], status: "eligible" };
 };
+
+export const checkEligibility = (
+  program: Program,
+  ctx: RepoContext
+): EligibilityResult => {
+  const detailed = checkEligibilityDetailed(program, ctx);
+  return {
+    reasons: detailed.reasons.map((reason) => reason.message),
+    status: detailed.status,
+  };
+};
+
+export const checkAllProgramsDetailed = (
+  programs: Program[],
+  ctx: RepoContext
+): ProgramEligibilityDetailed[] =>
+  programs
+    .map((program) => ({
+      program,
+      result: checkEligibilityDetailed(program, ctx),
+    }))
+    .toSorted((a, b) => {
+      const order = { eligible: 0, ineligible: 2, "needs-review": 1 };
+      return order[a.result.status] - order[b.result.status];
+    });
 
 export const checkAllPrograms = (
   programs: Program[],

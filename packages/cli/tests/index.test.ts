@@ -15,6 +15,7 @@ describe("parseRepoUrl: URL detection", () => {
   it("parses HTTPS GitHub URL", () => {
     expect(parseRepoUrl("https://github.com/vercel/next.js")).toStrictEqual({
       owner: "vercel",
+      path: "vercel/next.js",
       provider: "github",
       repo: "next.js",
     });
@@ -24,6 +25,7 @@ describe("parseRepoUrl: URL detection", () => {
     expect(parseRepoUrl("git+https://github.com/owner/repo.git")).toStrictEqual(
       {
         owner: "owner",
+        path: "owner/repo",
         provider: "github",
         repo: "repo",
       }
@@ -33,6 +35,7 @@ describe("parseRepoUrl: URL detection", () => {
   it("parses SSH GitHub URL", () => {
     expect(parseRepoUrl("git@github.com:owner/repo.git")).toStrictEqual({
       owner: "owner",
+      path: "owner/repo",
       provider: "github",
       repo: "repo",
     });
@@ -41,9 +44,28 @@ describe("parseRepoUrl: URL detection", () => {
   it("parses HTTPS GitLab URL", () => {
     expect(parseRepoUrl("https://gitlab.com/user/project.git")).toStrictEqual({
       owner: "user",
+      path: "user/project",
       provider: "gitlab",
       repo: "project",
     });
+  });
+
+  it("parses GitLab subgroup URLs", () => {
+    expect(
+      parseRepoUrl("https://gitlab.com/group/subgroup/project/-/tree/main")
+    ).toStrictEqual({
+      owner: "group",
+      path: "group/subgroup/project",
+      provider: "gitlab",
+      repo: "project",
+    });
+  });
+
+  it("rejects malformed hosts that contain github.com as a substring", () => {
+    expect(parseRepoUrl("https://notgithub.com/vercel/next.js")).toBeNull();
+    expect(
+      parseRepoUrl("https://example.com/path/github.com/vercel/next.js")
+    ).toBeNull();
   });
 
   it("returns null for unknown hosts", () => {
@@ -68,6 +90,7 @@ const makeCtx = (overrides: Partial<RepoContext> = {}): RepoContext => ({
   license: "MIT",
   name: "my-lib",
   owner: "test",
+  path: "test/my-lib",
   provider: "github",
   pushedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
   repo: "my-lib",
@@ -124,6 +147,79 @@ describe("checkEligibility: program matching", () => {
       const result = checkEligibility(gitlab, makeCtx({ isPrivate: true }));
       expect(result.status).toBe("ineligible");
       expect(result.reasons[0]).toMatch(/private/i);
+    });
+  });
+
+  describe("provider alternatives and mixed rules", () => {
+    const sourcery = getProgramBySlug("sourcery");
+    const anthropic = getProgramBySlug("anthropic-claude");
+    const chromatic = getProgramBySlug("chromatic");
+    const circleci = getProgramBySlug("circleci");
+
+    if (!sourcery || !anthropic || !chromatic || !circleci) {
+      throw new Error("test data missing for provider/threshold cases");
+    }
+
+    it("does not fail GitHub-or-GitLab rules for GitHub repos", () => {
+      const result = checkEligibility(
+        sourcery,
+        makeCtx({ provider: "github" })
+      );
+      expect(result.status).not.toBe("ineligible");
+    });
+
+    it("does not fail GitHub-or-GitLab rules for GitLab repos", () => {
+      const result = checkEligibility(
+        sourcery,
+        makeCtx({
+          license: "mit",
+          owner: "group",
+          path: "group/subgroup/project",
+          provider: "gitlab",
+          repo: "project",
+        })
+      );
+      expect(result.status).not.toBe("ineligible");
+    });
+
+    it("fails hard requirements even when a rule also has subjective criteria", () => {
+      const result = checkEligibility(anthropic, makeCtx({ isPrivate: true }));
+      expect(result.status).toBe("ineligible");
+      expect(
+        result.reasons.some((reason) => /private|public/i.test(reason))
+      ).toBe(true);
+    });
+
+    it("keeps alternative threshold rules reviewable instead of ineligible", () => {
+      const result = checkEligibility(chromatic, makeCtx({ stars: 100 }));
+      expect(result.status).toBe("needs-review");
+    });
+
+    it("matches public-repo wording variants", () => {
+      const result = checkEligibility(circleci, makeCtx({ isPrivate: true }));
+      expect(result.status).toBe("ineligible");
+      expect(result.reasons[0]).toMatch(/private/i);
+    });
+  });
+
+  describe("license normalization", () => {
+    const sentry = getProgramBySlug("sentry");
+    if (!sentry) {
+      throw new Error("sentry test data missing");
+    }
+
+    it("accepts lowercase GitLab license identifiers", () => {
+      const result = checkEligibility(
+        sentry,
+        makeCtx({
+          license: "mit",
+          owner: "group",
+          path: "group/project",
+          provider: "gitlab",
+          repo: "project",
+        })
+      );
+      expect(result.status).toBe("eligible");
     });
   });
 

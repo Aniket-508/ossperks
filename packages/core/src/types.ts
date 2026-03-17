@@ -1,14 +1,38 @@
-import type { Program } from "./schema";
+import type { Category, Contact, Program } from "./schema";
+
+export interface ProgramSummary {
+  category: Category;
+  description: string;
+  name: string;
+  perks: Program["perks"];
+  provider: string;
+  slug: string;
+  tags?: string[];
+}
+
+export interface PersonWithProgram {
+  contact: Contact;
+  programSlug: string;
+  provider: string;
+}
+
+export interface PersonDetail {
+  contact: Contact;
+  slug: string;
+  programs: ProgramSummary[];
+}
 
 export interface RepoRef {
   provider: "github" | "gitlab";
   owner: string;
+  path: string;
   repo: string;
 }
 
 export interface RepoContext {
   provider: "github" | "gitlab";
   owner: string;
+  path: string;
   repo: string;
   name: string;
   stars: number;

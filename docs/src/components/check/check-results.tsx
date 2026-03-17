@@ -46,9 +46,7 @@ export const CheckResults = ({
   return (
     <>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">
-          {repo.owner}/{repo.repo}
-        </h1>
+        <h1 className="text-3xl font-bold mb-2">{repo.path}</h1>
         {repo.description && (
           <p className="text-fd-muted-foreground mb-4">{repo.description}</p>
         )}

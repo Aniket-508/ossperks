@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { isCanonicalSlug } from "./slug";
+
 export const categoryEnum = z.enum([
   "hosting",
   "devtools",
@@ -26,17 +28,17 @@ export type Perk = z.infer<typeof perkSchema>;
 
 export const contactSchema = z.object({
   bio: z.string().optional(),
-  linkedin: z.string().url().optional(),
+  linkedin: z.url().optional(),
   name: z.string(),
   role: z.string().optional(),
-  url: z.string().url().optional(),
+  url: z.url().optional(),
 });
 
 export type Contact = z.infer<typeof contactSchema>;
 
 export const programSchema = z.object({
   applicationProcess: z.array(z.string()).optional(),
-  applicationUrl: z.string().url().optional(),
+  applicationUrl: z.url().optional(),
   category: categoryEnum,
   contact: contactSchema.optional(),
   description: z.string(),
@@ -46,9 +48,12 @@ export const programSchema = z.object({
   perks: z.array(perkSchema),
   provider: z.string(),
   requirements: z.array(z.string()).optional(),
-  slug: z.string(),
+  slug: z
+    .string()
+    .min(1)
+    .refine(isCanonicalSlug, "Program slug must already be canonical"),
   tags: z.array(z.string()).optional(),
-  url: z.string().url(),
+  url: z.url(),
 });
 
 export type Program = z.infer<typeof programSchema>;

@@ -48,7 +48,7 @@ export const RepoCheckInput = ({
       if (!ref) {
         return;
       }
-      const search = `?provider=${encodeURIComponent(ref.provider)}&owner=${encodeURIComponent(ref.owner)}&repo=${encodeURIComponent(ref.repo)}`;
+      const search = `?provider=${encodeURIComponent(ref.provider)}&owner=${encodeURIComponent(ref.owner)}&repo=${encodeURIComponent(ref.repo)}&path=${encodeURIComponent(ref.path)}`;
       router.push(`${withLocalePrefix(lang, ROUTES.CHECK)}${search}`);
     },
     validators: {

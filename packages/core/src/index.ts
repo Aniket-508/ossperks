@@ -43,7 +43,9 @@ import upstash from "./programs/upstash.json" with { type: "json" };
 import vercel from "./programs/vercel.json" with { type: "json" };
 import zulip from "./programs/zulip.json" with { type: "json" };
 import { programSchema, getPerkType, PERK_TYPES } from "./schema";
-import type { Category, Contact, PerkType, Program } from "./schema";
+import type { Category, PerkType, Program } from "./schema";
+import { formatSlug } from "./slug";
+import type { PersonDetail, PersonWithProgram, ProgramSummary } from "./types";
 
 const raw = [
   _1password,
@@ -94,8 +96,51 @@ const raw = [
 
 export const programs: Program[] = raw.map((p) => programSchema.parse(p));
 
+const toProgramSummary = (program: Program): ProgramSummary => ({
+  category: program.category,
+  description: program.description,
+  name: program.name,
+  perks: program.perks,
+  provider: program.provider,
+  slug: program.slug,
+  tags: program.tags,
+});
+
+const programsBySlug = new Map(
+  programs.map((program) => [program.slug, program] as const)
+);
+
+const peopleBySlug = new Map<string, PersonDetail>();
+for (const program of programs) {
+  if (!program.contact) {
+    continue;
+  }
+  const slug = formatSlug(program.contact.name);
+  const existing = peopleBySlug.get(slug);
+  if (existing) {
+    existing.programs.push(toProgramSummary(program));
+    continue;
+  }
+  peopleBySlug.set(slug, {
+    contact: program.contact,
+    programs: [toProgramSummary(program)],
+    slug,
+  });
+}
+
+const people: PersonWithProgram[] = Array.from(
+  peopleBySlug.values(),
+  (person) => ({
+    contact: person.contact,
+    programSlug: person.programs[0]?.slug ?? "",
+    provider: person.programs[0]?.provider ?? "",
+  })
+);
+
 export const getProgramBySlug = (slug: string): Program | undefined =>
-  programs.find((p) => p.slug === slug);
+  programsBySlug.get(slug);
+
+export const getAllProgramSlugs = (): string[] => [...programsBySlug.keys()];
 
 export const FEATURED_PROGRAM_SLUGS: string[] = [
   "vercel",
@@ -107,9 +152,9 @@ export const FEATURED_PROGRAM_SLUGS: string[] = [
 ];
 
 export const getFeaturedPrograms = (): Program[] =>
-  FEATURED_PROGRAM_SLUGS.map((slug) => getProgramBySlug(slug))
-    .filter((p): p is Program => p !== undefined)
-    .slice(0, 6);
+  FEATURED_PROGRAM_SLUGS.map((slug) => getProgramBySlug(slug)).filter(
+    (p): p is Program => p !== undefined
+  );
 
 export const getProgramsByCategory = (category: Category): Program[] =>
   programs.filter((p) => p.category === category);
@@ -117,79 +162,16 @@ export const getProgramsByCategory = (category: Category): Program[] =>
 export const getCategories = (): Category[] =>
   [...new Set(programs.map((p) => p.category))].toSorted();
 
-export interface PersonWithProgram {
-  contact: Contact;
-  programSlug: string;
-  provider: string;
-}
+export const getPersonSlug = (name: string): string => formatSlug(name);
 
-export const getPersonSlug = (name: string): string =>
-  name
-    .toLowerCase()
-    .replaceAll(/\s+/g, "-")
-    .replaceAll(/[^a-z0-9-]/g, "");
-
-export const getPeople = (): PersonWithProgram[] => {
-  const seen = new Set<string>();
-  const result: PersonWithProgram[] = [];
-  for (const program of programs) {
-    if (!program.contact) {
-      continue;
-    }
-    const key = program.contact.name.toLowerCase();
-    if (seen.has(key)) {
-      continue;
-    }
-    seen.add(key);
-    result.push({
-      contact: program.contact,
-      programSlug: program.slug,
-      provider: program.provider,
-    });
-  }
-  return result;
-};
-
-export interface PersonDetail {
-  contact: Contact;
-  slug: string;
-  programs: {
-    category: string;
-    description: string;
-    name: string;
-    perks: Program["perks"];
-    provider: string;
-    slug: string;
-    tags?: string[];
-  }[];
-}
+export const getPeople = (): PersonWithProgram[] => people;
 
 export const getPersonBySlug = (slug: string): PersonDetail | undefined => {
-  const matchingPrograms = programs.filter(
-    (p) => p.contact && getPersonSlug(p.contact.name) === slug
-  );
-  const [first] = matchingPrograms;
-  if (!first?.contact) {
-    return undefined;
-  }
-  const { contact } = first;
-  return {
-    contact,
-    programs: matchingPrograms.map((p) => ({
-      category: p.category,
-      description: p.description,
-      name: p.name,
-      perks: p.perks,
-      provider: p.provider,
-      slug: p.slug,
-      tags: p.tags,
-    })),
-    slug,
-  };
+  const normalizedSlug = formatSlug(slug);
+  return peopleBySlug.get(normalizedSlug);
 };
 
-export const getAllPeopleSlugs = (): string[] =>
-  getPeople().map(({ contact }) => getPersonSlug(contact.name));
+export const getAllPeopleSlugs = (): string[] => [...peopleBySlug.keys()];
 
 export const getProgramPerkTypes = (program: Program): PerkType[] => [
   ...new Set(program.perks.map((p) => getPerkType(p.title))),
@@ -210,14 +192,18 @@ export {
 } from "./eligibility";
 export { fetchGitHub, fetchGitLab, fetchRepoContext } from "./fetch";
 export { parseRepoUrl } from "./parse";
+export { formatSlug } from "./slug";
 export type {
   EligibilityReason,
   EligibilityReasonCode,
   EligibilityResult,
   EligibilityResultDetailed,
   EligibilityStatus,
+  PersonDetail,
+  PersonWithProgram,
   ProgramEligibility,
   ProgramEligibilityDetailed,
+  ProgramSummary,
   RepoContext,
   RepoRef,
 } from "./types";

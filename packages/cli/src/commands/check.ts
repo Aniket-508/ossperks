@@ -58,13 +58,24 @@ const resolveRef = (opts: CheckOpts): RepoRef | null => {
   if (!opts.repo) {
     return detectRepo();
   }
-  const parts = opts.repo.split("/");
-  if (parts.length !== 2 || !parts[0] || !parts[1]) {
-    displayError('--repo must be in the format "owner/repo"');
+  const provider = opts.provider === "gitlab" ? "gitlab" : "github";
+  const parts = opts.repo.split("/").filter(Boolean);
+  const isValid =
+    provider === "github" ? parts.length === 2 : parts.length >= 2;
+  if (!isValid || !parts[0] || !parts.at(-1)) {
+    displayError(
+      provider === "gitlab"
+        ? '--repo must be in the format "owner/repo" or "group/subgroup/repo"'
+        : '--repo must be in the format "owner/repo"'
+    );
     process.exit(1);
   }
-  const provider = opts.provider === "gitlab" ? "gitlab" : "github";
-  return { owner: parts[0], provider, repo: parts[1] };
+  return {
+    owner: parts[0],
+    path: parts.join("/"),
+    provider,
+    repo: parts.at(-1) ?? "",
+  };
 };
 
 const printEligibilitySection = (
@@ -144,9 +155,7 @@ export const checkCommand = new Command("check")
     }
 
     if (!opts.json) {
-      info(
-        `Fetching repo info for ${ref.provider}.com/${ref.owner}/${ref.repo}...`
-      );
+      info(`Fetching repo info for ${ref.provider}.com/${ref.path}...`);
     }
 
     let ctx: RepoContext;
@@ -168,6 +177,7 @@ export const checkCommand = new Command("check")
               isPrivate: ctx.isPrivate,
               license: ctx.license,
               owner: ctx.owner,
+              path: ctx.path,
               provider: ctx.provider,
               repo: ctx.repo,
               stars: ctx.stars,

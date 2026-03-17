@@ -32,12 +32,10 @@ const CheckPageFallback = () => (
   </div>
 );
 
-const CheckSkeleton = ({ owner, repo }: { owner: string; repo: string }) => (
+const CheckSkeleton = ({ name }: { name: string }) => (
   <div className={`${CHECK_PAGE_CONTAINER} animate-pulse`}>
     <div className="mb-8">
-      <h1 className="text-3xl font-bold mb-2">
-        {owner}/{repo}
-      </h1>
+      <h1 className="text-3xl font-bold mb-2">{name}</h1>
       <div className="h-5 w-2/3 bg-fd-muted rounded mb-4" />
       <div className="flex gap-2">
         <div className="h-6 w-24 bg-fd-muted rounded-full" />
@@ -69,26 +67,31 @@ const CheckPageInner = ({
   const searchParams = useSearchParams();
   const provider = searchParams.get("provider") ?? DEFAULT_PROVIDER;
   const owner = searchParams.get("owner");
+  const path = searchParams.get("path");
   const repo = searchParams.get("repo");
 
   const { data, error, loading } = useCheckData({
     owner,
+    path,
     provider,
     repo,
     translations,
   });
 
+  const repoName = path ?? [owner, repo].filter(Boolean).join("/");
+
   const currentData = useMemo(() => {
     if (
       !data ||
       data.repo.owner !== owner ||
+      data.repo.path !== (path ?? [owner, repo].filter(Boolean).join("/")) ||
       data.repo.provider !== provider ||
       data.repo.repo !== repo
     ) {
       return null;
     }
     return data;
-  }, [data, owner, provider, repo]);
+  }, [data, owner, path, provider, repo]);
 
   const translatedData = useMemo(() => {
     if (!currentData) {
@@ -118,7 +121,7 @@ const CheckPageInner = ({
   }, [currentData, lang, programTranslations, translations.reasons]);
 
   if (loading) {
-    return <CheckSkeleton owner={owner ?? ""} repo={repo ?? ""} />;
+    return <CheckSkeleton name={repoName} />;
   }
 
   if (error) {
@@ -137,7 +140,7 @@ const CheckPageInner = ({
   }
 
   if (!translatedData) {
-    return <CheckSkeleton owner={owner ?? ""} repo={repo ?? ""} />;
+    return <CheckSkeleton name={repoName} />;
   }
 
   return (

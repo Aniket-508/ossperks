@@ -8,52 +8,66 @@ import type {
   RepoContext,
 } from "./types";
 
-const OSI_PERMISSIVE = new Set([
-  "MIT",
-  "Apache-2.0",
-  "BSD-2-Clause",
-  "BSD-3-Clause",
-  "ISC",
-  "Artistic-2.0",
-  "Zlib",
-  "BSL-1.0",
-  "MIT-0",
-  "0BSD",
-  "BlueOak-1.0.0",
-  "UPL-1.0",
-]);
+const normalizeLicense = (spdx: string | null): string | null =>
+  spdx?.toLowerCase() ?? null;
 
-const OSI_COPYLEFT = new Set([
-  "GPL-2.0",
-  "GPL-2.0-only",
-  "GPL-2.0-or-later",
-  "GPL-3.0",
-  "GPL-3.0-only",
-  "GPL-3.0-or-later",
-  "AGPL-3.0",
-  "AGPL-3.0-only",
-  "AGPL-3.0-or-later",
-  "LGPL-2.0",
-  "LGPL-2.1",
-  "LGPL-2.1-only",
-  "LGPL-2.1-or-later",
-  "LGPL-3.0",
-  "LGPL-3.0-only",
-  "LGPL-3.0-or-later",
-  "MPL-2.0",
-  "EUPL-1.1",
-  "EUPL-1.2",
-  "CDDL-1.0",
-  "EPL-1.0",
-  "EPL-2.0",
-  "OSL-3.0",
-]);
+const OSI_PERMISSIVE = new Set(
+  [
+    "MIT",
+    "Apache-2.0",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "Artistic-2.0",
+    "Zlib",
+    "BSL-1.0",
+    "MIT-0",
+    "0BSD",
+    "BlueOak-1.0.0",
+    "UPL-1.0",
+  ].map((license) => license.toLowerCase())
+);
 
-const isOsiApproved = (spdx: string | null): boolean =>
-  Boolean(spdx && (OSI_PERMISSIVE.has(spdx) || OSI_COPYLEFT.has(spdx)));
+const OSI_COPYLEFT = new Set(
+  [
+    "GPL-2.0",
+    "GPL-2.0-only",
+    "GPL-2.0-or-later",
+    "GPL-3.0",
+    "GPL-3.0-only",
+    "GPL-3.0-or-later",
+    "AGPL-3.0",
+    "AGPL-3.0-only",
+    "AGPL-3.0-or-later",
+    "LGPL-2.0",
+    "LGPL-2.1",
+    "LGPL-2.1-only",
+    "LGPL-2.1-or-later",
+    "LGPL-3.0",
+    "LGPL-3.0-only",
+    "LGPL-3.0-or-later",
+    "MPL-2.0",
+    "EUPL-1.1",
+    "EUPL-1.2",
+    "CDDL-1.0",
+    "EPL-1.0",
+    "EPL-2.0",
+    "OSL-3.0",
+  ].map((license) => license.toLowerCase())
+);
 
-const isPermissive = (spdx: string | null): boolean =>
-  Boolean(spdx && OSI_PERMISSIVE.has(spdx));
+const isOsiApproved = (spdx: string | null): boolean => {
+  const normalized = normalizeLicense(spdx);
+  return Boolean(
+    normalized &&
+    (OSI_PERMISSIVE.has(normalized) || OSI_COPYLEFT.has(normalized))
+  );
+};
+
+const isPermissive = (spdx: string | null): boolean => {
+  const normalized = normalizeLicense(spdx);
+  return Boolean(normalized && OSI_PERMISSIVE.has(normalized));
+};
 
 const daysSince = (date: Date): number =>
   Math.floor((Date.now() - date.getTime()) / (1000 * 60 * 60 * 24));
@@ -118,7 +132,7 @@ const checkSubjective = (rule: string): RuleVerdict | null => {
       verdict: "unknown",
     };
   }
-  if (/hosted\s+on|intend.*host/i.test(rule)) {
+  if (/intend.*host/i.test(rule)) {
     return {
       reason: makeReason(
         "hostingPlatform",
@@ -178,20 +192,26 @@ const checkSubjective = (rule: string): RuleVerdict | null => {
 };
 
 const checkProvider = (rule: string, ctx: RepoContext): RuleVerdict | null => {
-  const lower = rule.toLowerCase();
-  if (
-    /\bon\s+github\b|github\.com|github\s+repository/i.test(lower) &&
-    ctx.provider !== "github"
-  ) {
+  const providers = new Set<RepoContext["provider"]>();
+  if (/\bgithub\b|github\.com/i.test(rule)) {
+    providers.add("github");
+  }
+  if (/\bgitlab\b|gitlab\.com/i.test(rule)) {
+    providers.add("gitlab");
+  }
+  if (providers.size === 0) {
+    return null;
+  }
+  if (providers.has(ctx.provider)) {
+    return { verdict: "pass" };
+  }
+  if (providers.size === 1 && providers.has("github")) {
     return {
       reason: makeReason("requiresGithub", "requires a GitHub repository"),
       verdict: "fail",
     };
   }
-  if (
-    /\bon\s+gitlab\b|gitlab\.com|gitlab\s+repository/i.test(lower) &&
-    ctx.provider !== "gitlab"
-  ) {
+  if (providers.size === 1 && providers.has("gitlab")) {
     return {
       reason: makeReason("requiresGitlab", "requires a GitLab repository"),
       verdict: "fail",
@@ -215,6 +235,17 @@ const checkStars = (rule: string, ctx: RepoContext): RuleVerdict | null => {
   const threshold = extractStarThreshold(rule);
   if (threshold === null) {
     return null;
+  }
+  const hasAlternativeThresholds =
+    /\bor\b/i.test(rule) && /(downloads|contributors?|installs?)/i.test(rule);
+  if (hasAlternativeThresholds && ctx.stars < threshold) {
+    return {
+      reason: makeReason(
+        "popularityThreshold",
+        "eligibility may also depend on downloads or contributors"
+      ),
+      verdict: "unknown",
+    };
   }
   if (ctx.stars < threshold) {
     return {
@@ -320,7 +351,9 @@ const checkLicense = (rule: string, ctx: RepoContext): RuleVerdict | null => {
 
 const checkRepoAttrs = (rule: string, ctx: RepoContext): RuleVerdict | null => {
   if (
-    /publicly\s+available|public\s+repositor|publicly\s+accessible/i.test(rule)
+    /publicly\s+available|public\s+repo(?:sitory)?|public\s+repositor|publicly\s+accessible|repository\s+must\s+be\s+public|repo\s+must\s+be\s+public|public\s+on\s+(?:github|gitlab|bitbucket)/i.test(
+      rule
+    )
   ) {
     return ctx.isPrivate
       ? {
@@ -367,13 +400,34 @@ const checkRepoAttrs = (rule: string, ctx: RepoContext): RuleVerdict | null => {
   return null;
 };
 
-const matchRule = (rule: string, ctx: RepoContext): RuleVerdict | null =>
-  checkSubjective(rule) ??
-  checkProvider(rule, ctx) ??
-  checkStars(rule, ctx) ??
-  checkActivity(rule, ctx) ??
-  checkLicense(rule, ctx) ??
-  checkRepoAttrs(rule, ctx);
+const OBJECTIVE_CHECKS = [
+  checkProvider,
+  checkStars,
+  checkActivity,
+  checkLicense,
+  checkRepoAttrs,
+] as const;
+
+const matchRule = (rule: string, ctx: RepoContext): RuleVerdict | null => {
+  const verdicts = OBJECTIVE_CHECKS.map((check) => check(rule, ctx)).filter(
+    (verdict): verdict is RuleVerdict => verdict !== null
+  );
+  const failVerdict = verdicts.find((verdict) => verdict.verdict === "fail");
+  if (failVerdict) {
+    return failVerdict;
+  }
+  const subjectiveVerdict = checkSubjective(rule);
+  if (subjectiveVerdict) {
+    return subjectiveVerdict;
+  }
+  const unknownVerdict = verdicts.find(
+    (verdict) => verdict.verdict === "unknown"
+  );
+  if (unknownVerdict) {
+    return unknownVerdict;
+  }
+  return verdicts.find((verdict) => verdict.verdict === "pass") ?? null;
+};
 
 export const checkEligibilityDetailed = (
   program: Program,

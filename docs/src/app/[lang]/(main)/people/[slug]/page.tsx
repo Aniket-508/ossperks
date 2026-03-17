@@ -1,9 +1,5 @@
-import {
-  getAllPeopleSlugs,
-  getPersonBySlug,
-  CATEGORY_LABELS,
-} from "@ossperks/core";
-import type { Category, Program } from "@ossperks/core";
+import { getAllPeopleSlugs, getPersonBySlug } from "@ossperks/core";
+import type { Program } from "@ossperks/core";
 import { ArrowLeftIcon, ExternalLink } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -17,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ROUTES } from "@/constants/routes";
 import { getT } from "@/lib/get-t";
 import { i18n, withLocalePrefix } from "@/lib/i18n";
+import { getProgram } from "@/lib/programs";
 import { getUnavatarUrl } from "@/lib/unavatar";
 import { createMetadata } from "@/seo/metadata";
 
@@ -30,7 +27,13 @@ export default async function PersonPage({
   if (!person) {
     notFound();
   }
-  const t = await getT(lang);
+  const [t, translatedPrograms] = await Promise.all([
+    getT(lang),
+    Promise.all(person.programs.map((p) => getProgram(p.slug, lang))),
+  ]);
+  const programs = translatedPrograms.filter(
+    (p): p is Program => p !== undefined
+  );
 
   const { contact } = person;
   const primaryProvider = person.programs[0]?.provider ?? "";
@@ -132,13 +135,15 @@ export default async function PersonPage({
         <h2 className="text-lg font-semibold">{t.people.associatedWith}</h2>
       </div>
 
-      {person.programs.length === 0 ? (
+      {programs.length === 0 ? (
         <p className="text-fd-muted-foreground">{t.people.detail.noPrograms}</p>
       ) : (
         <div className="flex flex-col gap-4">
-          {person.programs.map((program) => {
+          {programs.map((program) => {
             const categoryLabel =
-              CATEGORY_LABELS[program.category as Category] ?? program.category;
+              t.common.categories[
+                program.category as keyof typeof t.common.categories
+              ] ?? program.category;
             const programHref = withLocalePrefix(
               lang,
               `${ROUTES.PROGRAMS}/${program.slug}` as `/${string}`
@@ -146,7 +151,7 @@ export default async function PersonPage({
             return (
               <ProgramCard
                 key={program.slug}
-                program={program as Program}
+                program={program}
                 programHref={programHref}
                 categoryLabel={categoryLabel}
                 learnMore={t.programs.learnMore}

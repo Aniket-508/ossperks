@@ -1,12 +1,37 @@
 import {
+  getAllPeopleSlugs,
   programs,
+  getPeople,
+  getPersonBySlug,
   getProgramBySlug,
+  getAllProgramSlugs,
   getProgramsByCategory,
   getCategories,
+  formatSlug,
   programSchema,
 } from "@ossperks/core";
 
 describe("@ossperks/core", () => {
+  it("formatSlug normalizes to lowercase hyphenated slug", () => {
+    expect(formatSlug("Foo Bar")).toBe("foo-bar");
+    expect(formatSlug("  Peer  Richelsen  ")).toBe("peer-richelsen");
+  });
+
+  it("formatSlug strips non-alphanumeric chars except hyphen", () => {
+    expect(formatSlug("GitHub Copilot!")).toBe("github-copilot");
+  });
+
+  it("getAllProgramSlugs returns one slug per program", () => {
+    const slugs = getAllProgramSlugs();
+    expect(slugs.length).toBe(programs.length);
+    expect(slugs).toContain("vercel");
+    expect(slugs).toContain("github-copilot");
+  });
+
+  it("getProgramBySlug stays strict", () => {
+    expect(getProgramBySlug("Vercel")).toBeUndefined();
+  });
+
   it("exports at least 15 programs", () => {
     expect(programs.length).toBeGreaterThanOrEqual(15);
   });
@@ -18,8 +43,20 @@ describe("@ossperks/core", () => {
   });
 
   it("every program has a unique slug", () => {
-    const slugs = programs.map((p) => p.slug);
+    const slugs = getAllProgramSlugs();
     expect(new Set(slugs).size).toBe(slugs.length);
+  });
+
+  it("every program slug is canonical", () => {
+    for (const program of programs) {
+      expect(program.slug).toBe(formatSlug(program.slug));
+    }
+  });
+
+  it("programSchema rejects non-canonical slugs", () => {
+    expect(() =>
+      programSchema.parse({ ...programs[0], slug: "Not Canonical" })
+    ).toThrow();
   });
 
   it("every program has at least one perk", () => {
@@ -42,6 +79,19 @@ describe("@ossperks/core", () => {
 
   it("getProgramBySlug returns undefined for unknown slug", () => {
     expect(getProgramBySlug("nonexistent")).toBeUndefined();
+  });
+
+  it("people helpers stay in sync", () => {
+    const people = getPeople();
+    const slugs = getAllPeopleSlugs();
+
+    expect(people.length).toBeGreaterThan(0);
+    expect(slugs).toHaveLength(people.length);
+
+    const [firstSlug] = slugs;
+    const person = getPersonBySlug(firstSlug);
+    expect(person?.slug).toBe(firstSlug);
+    expect(person?.programs.length).toBeGreaterThan(0);
   });
 
   it("getProgramsByCategory returns only matching programs", () => {

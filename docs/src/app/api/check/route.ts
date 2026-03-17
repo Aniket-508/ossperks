@@ -42,6 +42,7 @@ const setCache = (key: string, body: Record<string, unknown>) => {
 
 const validateParams = (searchParams: URLSearchParams) => {
   const owner = searchParams.get("owner");
+  const path = searchParams.get("path");
   const repo = searchParams.get("repo");
   const provider = searchParams.get("provider") ?? DEFAULT_PROVIDER;
 
@@ -69,7 +70,12 @@ const validateParams = (searchParams: URLSearchParams) => {
     };
   }
 
-  return { owner, provider: provider as "github" | "gitlab", repo };
+  return {
+    owner,
+    path: path ?? `${owner}/${repo}`,
+    provider: provider as "github" | "gitlab",
+    repo,
+  };
 };
 
 const applyRateLimit = async () => {
@@ -96,6 +102,7 @@ const fetchAndCheck = async (ref: RepoRef) => {
       license: ctx.license,
       name: ctx.name,
       owner: ctx.owner,
+      path: ctx.path,
       provider: ctx.provider,
       pushedAt: ctx.pushedAt.toISOString(),
       repo: ctx.repo,
@@ -130,10 +137,11 @@ export const GET = async (req: NextRequest) => {
 
   const ref: RepoRef = {
     owner: params.owner,
+    path: params.path,
     provider: params.provider,
     repo: params.repo,
   };
-  const cacheKey = `${ref.provider}/${ref.owner.toLowerCase()}/${ref.repo.toLowerCase()}`;
+  const cacheKey = `${ref.provider}/${ref.path.toLowerCase()}`;
 
   const cached = getCached(cacheKey);
   if (cached) {

@@ -20,6 +20,7 @@ export interface RepoInfo {
   license: string | null;
   name: string;
   owner: string;
+  path: string;
   provider: string;
   pushedAt: string;
   repo: string;

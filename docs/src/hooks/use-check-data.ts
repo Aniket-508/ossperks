@@ -31,6 +31,7 @@ const getErrorMessage = (
 
 interface UseCheckDataProps {
   owner: string | null;
+  path?: string | null;
   provider: string | null;
   repo: string | null;
   translations: CheckTranslations;
@@ -38,6 +39,7 @@ interface UseCheckDataProps {
 
 export const useCheckData = ({
   owner,
+  path,
   provider,
   repo,
   translations,
@@ -64,7 +66,9 @@ export const useCheckData = ({
     const fetchResults = async () => {
       try {
         const res = await fetch(
-          `/api/check?owner=${encodeURIComponent(owner)}&repo=${encodeURIComponent(repo)}&provider=${encodeURIComponent(provider)}`,
+          `/api/check?owner=${encodeURIComponent(owner)}&repo=${encodeURIComponent(repo)}&provider=${encodeURIComponent(provider)}${
+            path ? `&path=${encodeURIComponent(path)}` : ""
+          }`,
           { signal: controller.signal }
         );
         const json = (await res.json()) as
@@ -105,7 +109,14 @@ export const useCheckData = ({
       cancelled = true;
       controller.abort();
     };
-  }, [owner, provider, repo, translations.errors, translations.fetchError]);
+  }, [
+    owner,
+    path,
+    provider,
+    repo,
+    translations.errors,
+    translations.fetchError,
+  ]);
 
   return { data, error, loading };
 };

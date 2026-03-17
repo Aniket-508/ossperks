@@ -1,6 +1,6 @@
 # OSS Perks CLI
 
-The CLI for [OSS Perks](https://github.com/Aniket-508/ossperks). It checks whether your project qualifies for a particular open-source perk program based on that program’s guidelines.
+The CLI for [OSS Perks](https://github.com/Aniket-508/awesome-oss-perks). It checks whether your project qualifies for a particular open-source perk program based on that program’s guidelines.
 
 ## Install
 
@@ -20,4 +20,4 @@ ossperks check
 
 ## Development
 
-See the [root CONTRIBUTING.md](https://github.com/Aniket-508/ossperks/blob/main/CONTRIBUTING.md) for development setup and commands.
+See the [root CONTRIBUTING.md](https://github.com/Aniket-508/awesome-oss-perks/blob/main/CONTRIBUTING.md) for development setup and commands.

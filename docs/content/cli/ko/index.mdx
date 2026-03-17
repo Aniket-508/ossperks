@@ -42,26 +42,25 @@ ossperks show vercel
 
 ## 저장소 감지 작동 방식
 
-`ossperks check`는 별도의 입력 없이 자동으로 저장소를 감지합니다:
+`ossperks check`는 아무런 프롬프트 없이 리포지토리를 자동으로 감지합니다:
 
 1. 현재 디렉토리의 `package.json`에서 `repository` 필드를 읽습니다
-2. `.git/config`에서 `remote.origin.url`을 파싱하는 방식으로 대체합니다
+2. `.git/config`의 `remote.origin.url` 파싱으로 대체합니다
 3. GitHub 또는 GitLab 공개 API를 호출하여 실시간 데이터(스타, 라이선스, 활동 등)를 가져옵니다
-4. 해당 데이터를 모든 프로그램의 자격 요건 규칙과 비교합니다
+4. 해당 데이터를 모든 프로그램의 자격 요건 규칙과 대조합니다
 
-공개 저장소의 경우 API 토큰이 필요하지 않습니다.
-
-## 다음 단계
+공개 리포지토리에는 API 토큰이 필요하지 않습니다.
 
 import { DynamicLink } from "fumadocs-core/dynamic-link";
 
-- <DynamicLink href="/[lang]/cli/list">list</DynamicLink> — 모든 프로그램
-  둘러보기
-- <DynamicLink href="/[lang]/cli/show">show</DynamicLink> — 프로그램 상세 정보
+## 다음 단계
+
+- <DynamicLink href="/[lang]/cli/list">list</DynamicLink> — 모든 프로그램 탐색
+- <DynamicLink href="/[lang]/cli/show">show</DynamicLink> — 프로그램 세부 정보
   보기
-- <DynamicLink href="/[lang]/cli/check">check</DynamicLink> — 저장소 자격 자동
-  확인
+- <DynamicLink href="/[lang]/cli/check">check</DynamicLink> — 리포지토리 자격
+  요건 자동 확인
 - <DynamicLink href="/[lang]/cli/search">search</DynamicLink> — 키워드로
   프로그램 찾기
 - <DynamicLink href="/[lang]/cli/categories">categories</DynamicLink> — 사용
-  가능한 카테고리 목록 보기
+  가능한 카테고리 목록

@@ -43,26 +43,26 @@ ossperks show vercel
 
 ## Funktionsweise der Repository-Erkennung
 
-`ossperks check` erkennt Ihr Repository automatisch ohne Nachfragen:
+`ossperks check` erkennt Ihr Repository automatisch ohne jegliche Eingabeaufforderungen:
 
 1. Liest das Feld `repository` aus der `package.json` im aktuellen Verzeichnis
-2. Greift zurück auf das Parsen von `remote.origin.url` aus `.git/config`
+2. Greift ersatzweise auf das Parsen von `remote.origin.url` aus `.git/config` zurück
 3. Ruft die öffentliche API von GitHub oder GitLab auf, um Live-Daten abzurufen (Sterne, Lizenz, Aktivität usw.)
-4. Gleicht diese Daten mit den Berechtigungs­regeln aller Programme ab
+4. Gleicht diese Daten mit den Teilnahmevoraussetzungen aller Programme ab
 
-Für öffentliche Repositories sind keine API-Tokens erforderlich.
+Für öffentliche Repositories sind keine API-Token erforderlich.
 
 import { DynamicLink } from "fumadocs-core/dynamic-link";
 
 ## Nächste Schritte
 
-- <DynamicLink href="/[lang]/cli/list">list</DynamicLink> – alle Programme
+- <DynamicLink href="/[lang]/cli/list">list</DynamicLink> — alle Programme
   durchsuchen
-- <DynamicLink href="/[lang]/cli/show">show</DynamicLink> – Programm­details
+- <DynamicLink href="/[lang]/cli/show">show</DynamicLink> — Programmdetails
   anzeigen
-- <DynamicLink href="/[lang]/cli/check">check</DynamicLink> – Berechtigung Ihres
-  Repos automatisch prüfen
-- <DynamicLink href="/[lang]/cli/search">search</DynamicLink> – Programme nach
+- <DynamicLink href="/[lang]/cli/check">check</DynamicLink> — Berechtigung Ihres
+  Repositorys automatisch prüfen
+- <DynamicLink href="/[lang]/cli/search">search</DynamicLink> — Programme nach
   Stichwort finden
-- <DynamicLink href="/[lang]/cli/categories">categories</DynamicLink> –
+- <DynamicLink href="/[lang]/cli/categories">categories</DynamicLink> —
   verfügbare Kategorien auflisten

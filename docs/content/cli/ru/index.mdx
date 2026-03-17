@@ -43,23 +43,23 @@ ossperks show vercel
 
 ## Как работает определение репозитория
 
-`ossperks check` автоматически определяет ваш репозиторий без дополнительных запросов:
+`ossperks check` автоматически определяет ваш репозиторий без каких-либо запросов:
 
 1. Читает поле `repository` из `package.json` в текущей директории
-2. В качестве резервного варианта парсит `remote.origin.url` из `.git/config`
-3. Вызывает публичный API GitHub или GitLab для получения актуальных данных (звёзды, лицензия, активность и т. д.)
-4. Сопоставляет эти данные с критериями соответствия каждой программы
+2. В случае отсутствия обращается к парсингу `remote.origin.url` из `.git/config`
+3. Вызывает публичный API GitHub или GitLab для получения актуальных данных (звёзды, лицензия, активность и т.д.)
+4. Сопоставляет эти данные с правилами соответствия каждой программы
 
 Для публичных репозиториев токены API не требуются.
 
-## Следующие шаги
-
 import { DynamicLink } from "fumadocs-core/dynamic-link";
+
+## Следующие шаги
 
 - <DynamicLink href="/[lang]/cli/list">list</DynamicLink> — просмотр всех
   программ
-- <DynamicLink href="/[lang]/cli/show">show</DynamicLink> — просмотр информации
-  о программе
+- <DynamicLink href="/[lang]/cli/show">show</DynamicLink> — просмотр сведений о
+  программе
 - <DynamicLink href="/[lang]/cli/check">check</DynamicLink> — автоматическая
   проверка соответствия вашего репозитория
 - <DynamicLink href="/[lang]/cli/search">search</DynamicLink> — поиск программ

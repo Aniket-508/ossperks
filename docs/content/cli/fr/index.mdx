@@ -43,14 +43,14 @@ ossperks show vercel
 
 ## Comment fonctionne la détection de dépôt
 
-`ossperks check` détecte automatiquement votre dépôt sans aucune intervention :
+`ossperks check` détecte automatiquement votre dépôt sans aucune invite :
 
-1. Lit le champ `repository` du fichier `package.json` dans le répertoire actuel
+1. Lit le champ `repository` du fichier `package.json` dans le répertoire courant
 2. Se replie sur l'analyse de `remote.origin.url` depuis `.git/config`
-3. Appelle l'API publique GitHub ou GitLab pour récupérer les données en direct (étoiles, licence, activité, etc.)
-4. Compare ces données aux critères d'éligibilité de chaque programme
+3. Appelle l'API publique de GitHub ou GitLab pour récupérer les données en direct (étoiles, licence, activité, etc.)
+4. Compare ces données aux règles d'éligibilité de chaque programme
 
-Aucun jeton d'API n'est requis pour les dépôts publics.
+Aucun jeton d'API requis pour les dépôts publics.
 
 import { DynamicLink } from "fumadocs-core/dynamic-link";
 
@@ -62,7 +62,7 @@ import { DynamicLink } from "fumadocs-core/dynamic-link";
   d'un programme
 - <DynamicLink href="/[lang]/cli/check">check</DynamicLink> — vérifier
   automatiquement l'éligibilité de votre dépôt
-- <DynamicLink href="/[lang]/cli/search">search</DynamicLink> — trouver des
+- <DynamicLink href="/[lang]/cli/search">search</DynamicLink> — rechercher des
   programmes par mot-clé
 - <DynamicLink href="/[lang]/cli/categories">categories</DynamicLink> — lister
   les catégories disponibles

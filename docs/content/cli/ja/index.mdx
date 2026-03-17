@@ -42,26 +42,26 @@ ossperks show vercel
 
 ## リポジトリ検出の仕組み
 
-`ossperks check`は、プロンプトなしで自動的にリポジトリを検出します:
+`ossperks check` はプロンプトなしでリポジトリを自動検出します:
 
-1. 現在のディレクトリの`package.json`から`repository`フィールドを読み取り
-2. `.git/config`から`remote.origin.url`を解析してフォールバック
-3. GitHub または GitLab の公開APIを呼び出してライブデータ(スター数、ライセンス、アクティビティなど)を取得
-4. そのデータを各プログラムの資格要件ルールと照合
+1. 現在のディレクトリの `package.json` から `repository` フィールドを読み取ります
+2. `.git/config` から `remote.origin.url` を解析してフォールバックします
+3. GitHub または GitLab の公開 API を呼び出して、ライブデータ(スター数、ライセンス、アクティビティなど)を取得します
+4. そのデータをすべてのプログラムの適格性ルールと照合します
 
-公開リポジトリにはAPIトークンは不要です。
-
-## 次のステップ
+公開リポジトリには API トークンは不要です。
 
 import { DynamicLink } from "fumadocs-core/dynamic-link";
+
+## 次のステップ
 
 - <DynamicLink href="/[lang]/cli/list">list</DynamicLink> —
   すべてのプログラムを閲覧
 - <DynamicLink href="/[lang]/cli/show">show</DynamicLink> —
   プログラムの詳細を表示
 - <DynamicLink href="/[lang]/cli/check">check</DynamicLink> —
-  リポジトリの資格を自動確認
+  リポジトリの適格性を自動チェック
 - <DynamicLink href="/[lang]/cli/search">search</DynamicLink> —
   キーワードでプログラムを検索
 - <DynamicLink href="/[lang]/cli/categories">categories</DynamicLink> —
-  利用可能なカテゴリーを一覧表示
+  利用可能なカテゴリを一覧表示

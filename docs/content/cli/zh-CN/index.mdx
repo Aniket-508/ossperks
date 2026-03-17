@@ -42,23 +42,23 @@ ossperks show vercel
 
 ## 代码仓库检测工作原理
 
-`ossperks check` 无需任何提示即可自动检测您的代码仓库:
+`ossperks check` 无需任何提示即可自动检测您的仓库：
 
 1. 从当前目录的 `package.json` 中读取 `repository` 字段
-2. 退而解析 `.git/config` 中的 `remote.origin.url`
-3. 调用 GitHub 或 GitLab 公共 API 获取实时数据(星标、许可证、活跃度等)
-4. 将这些数据与每个计划的资格规则进行匹配
+2. 若未找到则从 `.git/config` 解析 `remote.origin.url`
+3. 调用 GitHub 或 GitLab 公共 API 获取实时数据（星标、许可证、活跃度等）
+4. 将该数据与每个项目的资格规则进行匹配
 
-公共代码仓库无需 API 令牌。
+公共仓库无需 API 令牌。
 
 import { DynamicLink } from "fumadocs-core/dynamic-link";
 
 ## 下一步
 
-- <DynamicLink href="/[lang]/cli/list">list</DynamicLink> — 浏览所有计划
-- <DynamicLink href="/[lang]/cli/show">show</DynamicLink> — 查看计划详情
+- <DynamicLink href="/[lang]/cli/list">list</DynamicLink> — 浏览所有项目
+- <DynamicLink href="/[lang]/cli/show">show</DynamicLink> — 查看项目详情
 - <DynamicLink href="/[lang]/cli/check">check</DynamicLink> —
-  自动检查您的代码仓库资格
-- <DynamicLink href="/[lang]/cli/search">search</DynamicLink> — 按关键词查找计划
+  自动检查您的仓库资格
+- <DynamicLink href="/[lang]/cli/search">search</DynamicLink> — 按关键词查找项目
 - <DynamicLink href="/[lang]/cli/categories">categories</DynamicLink> —
-  列出可用类别
+  列出可用分类

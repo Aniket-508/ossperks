@@ -4,31 +4,31 @@ import { LogoMark } from "@/components/logo";
 import { LINK } from "@/constants/links";
 import { ROUTES } from "@/constants/routes";
 import { SITE } from "@/constants/site";
-import { i18n } from "@/lib/i18n";
+import { i18n, withLocalePrefix } from "@/lib/i18n";
 
-export const baseOptions = (_locale: string): BaseLayoutProps => ({
+export const baseOptions = (locale: string): BaseLayoutProps => ({
   githubUrl: LINK.GITHUB,
   i18n,
   links: [
     {
       text: "Programs",
-      url: ROUTES.PROGRAMS,
+      url: withLocalePrefix(locale, ROUTES.PROGRAMS),
     },
     {
       text: "People",
-      url: ROUTES.PEOPLE,
+      url: withLocalePrefix(locale, ROUTES.PEOPLE),
     },
     {
       text: "CLI",
-      url: ROUTES.CLI,
+      url: withLocalePrefix(locale, ROUTES.CLI),
     },
     {
       text: "About",
-      url: ROUTES.ABOUT,
+      url: withLocalePrefix(locale, ROUTES.ABOUT),
     },
     // {
     //   text: "Sponsors",
-    //   url: ROUTES.SPONSORS,
+    //   url: withLocalePrefix(locale, ROUTES.SPONSORS),
     // },
   ],
   nav: {
@@ -38,5 +38,6 @@ export const baseOptions = (_locale: string): BaseLayoutProps => ({
         {SITE.NAME}
       </>
     ),
+    url: withLocalePrefix(locale, ROUTES.HOME),
   },
 });

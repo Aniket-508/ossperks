@@ -6,6 +6,7 @@ const common = {
     communication: "Comunicación",
     credentials: "Credenciales y Secretos",
     devtools: "Herramientas de Desarrollo",
+    funding: "Financiación",
     hosting: "Alojamiento y Despliegue",
     infrastructure: "Infraestructura",
     monitoring: "Monitoreo y Observabilidad",

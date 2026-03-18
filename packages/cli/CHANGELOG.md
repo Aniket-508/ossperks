@@ -1,5 +1,11 @@
 # ossperks
 
+## 0.1.4
+
+### Patch Changes
+
+- 807e48a: Fix GitLab repo check: request license data via API and pass through topics
+
 ## 0.1.3
 
 ### Patch Changes

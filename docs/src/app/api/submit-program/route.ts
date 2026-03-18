@@ -1,21 +1,15 @@
 import { Octokit } from "@octokit/rest";
+import type { Program } from "@ossperks/core";
 import { formatSlug } from "@ossperks/core";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 import { GITHUB_CONFIG } from "@/constants/links";
 
-interface ProgramSubmission {
-  name: string;
-  provider: string;
-  url: string;
-  category: string;
-  description: string;
-  eligibility: string[];
-  perks: { title: string; description: string }[];
-  applicationProcess?: string[];
-  tags?: string[];
-}
+type ProgramSubmission = Omit<
+  Program,
+  "slug" | "contact" | "duration" | "requirements"
+>;
 
 const PRINT_WIDTH = 80;
 
@@ -52,6 +46,9 @@ const buildProgramJson = (
 
   const program: Record<string, unknown> = {
     ...(applicationProcess.length > 0 && { applicationProcess }),
+    ...(submission.applicationUrl?.trim() && {
+      applicationUrl: submission.applicationUrl.trim(),
+    }),
     category: submission.category,
     description: submission.description,
     eligibility,
@@ -68,6 +65,7 @@ const buildProgramJson = (
     "name",
     "provider",
     "url",
+    "applicationUrl",
     "category",
     "description",
     "perks",

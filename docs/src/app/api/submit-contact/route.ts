@@ -1,15 +1,12 @@
 import { Octokit } from "@octokit/rest";
+import type { Contact } from "@ossperks/core";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 import { GITHUB_CONFIG } from "@/constants/links";
 
-interface ContactSubmission {
-  name: string;
-  role: string;
-  url?: string;
-  programSlug: string;
-}
+type ContactSubmission = Pick<Contact, "name" | "url"> &
+  Required<Pick<Contact, "role">> & { programSlug: string };
 
 const buildPRBody = (
   submission: ContactSubmission

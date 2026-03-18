@@ -3,7 +3,7 @@ import {
   fetchRepoContext,
   programs,
 } from "@ossperks/core";
-import type { RepoRef } from "@ossperks/core";
+import type { RepoProvider, RepoRef } from "@ossperks/core";
 import { headers } from "next/headers";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
@@ -73,7 +73,7 @@ const validateParams = (searchParams: URLSearchParams) => {
   return {
     owner,
     path: path ?? `${owner}/${repo}`,
-    provider: provider as "github" | "gitlab",
+    provider: provider as RepoProvider,
     repo,
   };
 };

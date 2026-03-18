@@ -42,9 +42,11 @@
   },
   "scripts": {
     "dev": "tsdown --watch",
-    "build": "pnpm clean && NODE_ENV=production tsdown",
+    "generate": "node --import tsx src/generate-programs.ts",
+    "generate:watch": "node --import tsx src/generate-programs.ts --watch",
+    "build": "pnpm generate && pnpm clean && NODE_ENV=production tsdown",
     "clean": "rm -rf dist tsconfig.tsbuildinfo",
-    "typecheck": "tsc -p tsconfig.json --pretty",
+    "typecheck": "pnpm generate && tsc -p tsconfig.json --pretty",
     "test": "pnpm build && vitest run",
     "validate": "node --import tsx src/validate.ts"
   },

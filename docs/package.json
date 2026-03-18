@@ -5,7 +5,7 @@
   "scripts": {
     "prebuild": "node scripts/generate-programs-mdx.mjs",
     "build": "next build",
-    "dev": "pnpm generate:programs && next dev",
+    "dev": "pnpm --filter @ossperks/core generate && pnpm generate:programs && next dev",
     "start": "next start",
     "generate:programs": "node scripts/generate-programs-mdx.mjs",
     "generate:i18n": "pnpm generate:programs && npx lingo.dev@latest run",

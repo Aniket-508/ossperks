@@ -4,22 +4,9 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 
 ## Adding a New Program
 
-To suggest a new OSS perk program, please submit a pull request with the following:
+To suggest a new OSS perk program, please submit a pull request with a single JSON file. CI will automatically generate the README entry, English MDX documentation, and translations for all supported languages.
 
-### 1. Add the entry to the README
-
-Add a line in the appropriate category section of `README.md` in the format:
-
-```
-- [Program Name](https://program-url.example) - Short description of what the program offers.
-```
-
-- **Name**: Use the product/company name (not the full program name with "for Open Source" suffix).
-- **URL**: Link directly to the program's open-source page.
-- **Description**: Start with an uppercase letter, end with a period. Describe what is offered, not what the company does. Keep it to one sentence.
-- **Placement**: Add the entry alphabetically within its category.
-
-### 2. Add the program data
+### Add the program data
 
 Create a JSON file at `packages/core/src/programs/<slug>.json` following the existing schema:
 
@@ -47,15 +34,12 @@ Validate the schema:
 pnpm --filter @ossperks/core validate
 ```
 
-### 3. Generate documentation
-
-Generate the MDX files and translate to all supported languages:
-
-```bash
-cd docs && pnpm generate:i18n
-```
-
-This requires a `LINGO_API_KEY` environment variable. If you don't have one, just add the JSON file and README entry -- a maintainer will generate the translations.
+> **Note:** You only need to add the JSON file. When your PR is opened, CI will automatically generate:
+>
+> - The README entry in the appropriate category
+> - The English MDX documentation page
+> - Translated MDX files for all 8 supported locales
+> - The `programs.generated.ts` barrel file
 
 ### What makes a program "awesome"?
 
@@ -110,6 +94,7 @@ pnpm fix             # Fix lint and format issues
 ```bash
 pnpm --filter docs dev              # Start dev server
 pnpm --filter docs generate:i18n    # Generate + translate program MDX
+pnpm generate:readme                # Regenerate README from program data
 ```
 
 ## Pull Requests

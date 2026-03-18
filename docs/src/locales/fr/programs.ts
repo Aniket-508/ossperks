@@ -33,6 +33,10 @@ const programs = {
       applicationProcessLabel: "Comment postuler",
       applicationProcessPlaceholder:
         "ex., Postuler via le site web du programme",
+      applicationUrlCheckbox:
+        "L'URL de candidature est différente de l'URL du programme",
+      applicationUrlLabel: "URL de candidature",
+      applicationUrlPlaceholder: "https://... or mailto:...",
       categoryLabel: "Catégorie",
       categoryPlaceholder: "Sélectionnez une catégorie",
       descriptionLabel: "Description",
@@ -75,6 +79,7 @@ const programs = {
       categoryRequired: "La catégorie est requise",
       descriptionRequired: "La description est requise",
       eligibilityRequired: "Au moins un critère d'éligibilité est requis",
+      invalidApplicationUrl: "Doit être une URL valide",
       invalidUrl: "Doit être une URL valide",
       nameRequired: "Le nom du programme est requis",
       perkRequired: "Au moins un avantage avec titre et description est requis",

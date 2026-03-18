@@ -31,6 +31,9 @@ const programs = {
       applicationProcessHelp: "Descreva cada etapa do processo de inscrição.",
       applicationProcessLabel: "Como se inscrever",
       applicationProcessPlaceholder: "ex., Inscrever-se pelo site do programa",
+      applicationUrlCheckbox: "URL de inscrição é diferente da URL do programa",
+      applicationUrlLabel: "URL de inscrição",
+      applicationUrlPlaceholder: "https://... or mailto:...",
       categoryLabel: "Categoria",
       categoryPlaceholder: "Selecione uma categoria",
       descriptionLabel: "Descrição",
@@ -74,6 +77,7 @@ const programs = {
       descriptionRequired: "A descrição é obrigatória",
       eligibilityRequired:
         "Pelo menos um critério de elegibilidade é necessário",
+      invalidApplicationUrl: "Deve ser uma URL válida",
       invalidUrl: "Deve ser uma URL válida",
       nameRequired: "O nome do programa é obrigatório",
       perkRequired:

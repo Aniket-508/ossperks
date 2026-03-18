@@ -32,6 +32,10 @@ const programs = {
       applicationProcessLabel: "Cómo aplicar",
       applicationProcessPlaceholder:
         "ej., Solicitar a través del sitio web del programa",
+      applicationUrlCheckbox:
+        "La URL de solicitud es diferente de la URL del programa",
+      applicationUrlLabel: "URL de solicitud",
+      applicationUrlPlaceholder: "https://... or mailto:...",
       categoryLabel: "Categoría",
       categoryPlaceholder: "Selecciona una categoría",
       descriptionLabel: "Descripción",
@@ -74,6 +78,7 @@ const programs = {
       categoryRequired: "La categoría es obligatoria",
       descriptionRequired: "La descripción es obligatoria",
       eligibilityRequired: "Se requiere al menos un criterio de elegibilidad",
+      invalidApplicationUrl: "Debe ser una URL válida",
       invalidUrl: "Debe ser una URL válida",
       nameRequired: "El nombre del programa es obligatorio",
       perkRequired:

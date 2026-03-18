@@ -32,6 +32,9 @@ const programs = {
       applicationProcessLabel: "Как подать заявку",
       applicationProcessPlaceholder:
         "напр., Подать заявку через сайт программы",
+      applicationUrlCheckbox: "URL заявки отличается от URL программы",
+      applicationUrlLabel: "URL заявки",
+      applicationUrlPlaceholder: "https://... or mailto:...",
       categoryLabel: "Категория",
       categoryPlaceholder: "Выберите категорию",
       descriptionLabel: "Описание",
@@ -73,6 +76,7 @@ const programs = {
       categoryRequired: "Категория обязательна",
       descriptionRequired: "Описание обязательно",
       eligibilityRequired: "Необходимо хотя бы одно условие участия",
+      invalidApplicationUrl: "Должен быть действительный URL",
       invalidUrl: "Должен быть действительный URL",
       nameRequired: "Название программы обязательно",
       perkRequired:

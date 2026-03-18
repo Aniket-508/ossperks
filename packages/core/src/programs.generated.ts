@@ -32,6 +32,7 @@ import netlify from "./programs/netlify.json" with { type: "json" };
 import openaiCodexFund from "./programs/openai-codex-fund.json" with { type: "json" };
 import openaiCodex from "./programs/openai-codex.json" with { type: "json" };
 import openpanel from "./programs/openpanel.json" with { type: "json" };
+import posthogForOpenSource from "./programs/posthog-for-open-source.json" with { type: "json" };
 import sanity from "./programs/sanity.json" with { type: "json" };
 import semaphore from "./programs/semaphore.json" with { type: "json" };
 import sentry from "./programs/sentry.json" with { type: "json" };
@@ -79,6 +80,7 @@ export const rawPrograms = [
   openaiCodexFund,
   openaiCodex,
   openpanel,
+  posthogForOpenSource,
   sanity,
   semaphore,
   sentry,

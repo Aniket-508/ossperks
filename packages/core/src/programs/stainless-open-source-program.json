@@ -2,7 +2,7 @@
   "category": "devtools",
   "description": "Free SDK, documentation site, and MCP server generation from OpenAPI specs for open-source projects, with up to 5 generators and 100 preview builds per month.",
   "eligibility": [
-    "Project must have a public OpenAPI specification.\n",
+    "Project must have a public OpenAPI specification.",
     "Must be publicly available under a recognized open-source license."
   ],
   "name": "Stainless Open Source Program",
@@ -22,11 +22,7 @@
   ],
   "provider": "Stainless",
   "slug": "stainless-open-source-program",
-  "tags": [
-    "open-source",
-    "developer-tools",
-    "api"
-  ],
+  "tags": ["open-source", "developer-tools", "api"],
   "url": "https://stainless.com/pricing",
   "applicationProcess": [
     "Sign up at stainless.com with your GitHub account.",

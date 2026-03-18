@@ -71,6 +71,7 @@ export default async function ProgramsPage({
               </Button>
             }
             translations={t.programs.submit}
+            categoryLabels={t.common.categories}
           />
         </div>
       </div>

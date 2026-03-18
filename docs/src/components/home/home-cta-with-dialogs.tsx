@@ -5,6 +5,9 @@ import { ArrowRight } from "lucide-react";
 import { ContactSubmissionDialog } from "@/components/people/contact-submission-dialog";
 import { ProgramSubmissionDialog } from "@/components/programs/program-submission-dialog";
 import { Button } from "@/components/ui/button";
+import type { CommonTranslations } from "@/locales/en/common";
+import type { PeopleTranslations } from "@/locales/en/people";
+import type { ProgramsTranslations } from "@/locales/en/programs";
 
 interface HomeCtaWithDialogsProps {
   programOptions: { slug: string; name: string }[];
@@ -14,16 +17,9 @@ interface HomeCtaWithDialogsProps {
     submitProgram: string;
     submitContact: string;
   };
-  programDialogTranslations: {
-    heading: string;
-    description: string;
-    buttonText: string;
-  };
-  contactDialogTranslations: {
-    heading: string;
-    description: string;
-    buttonText: string;
-  };
+  programDialogTranslations: ProgramsTranslations["submit"];
+  contactDialogTranslations: PeopleTranslations["submit"];
+  categoryLabels: CommonTranslations["categories"];
 }
 
 export const HomeCtaWithDialogs = ({
@@ -31,6 +27,7 @@ export const HomeCtaWithDialogs = ({
   translations,
   programDialogTranslations,
   contactDialogTranslations,
+  categoryLabels,
 }: HomeCtaWithDialogsProps) => (
   <section className="pt-16 pb-8 text-center">
     <h2 className="text-2xl font-bold mb-2">{translations.heading}</h2>
@@ -46,6 +43,7 @@ export const HomeCtaWithDialogs = ({
           </Button>
         }
         translations={programDialogTranslations}
+        categoryLabels={categoryLabels}
       />
       <ContactSubmissionDialog
         trigger={

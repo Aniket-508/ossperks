@@ -282,6 +282,7 @@ export default async function HomePage({
         translations={t.home.cta}
         programDialogTranslations={t.programs.submit}
         contactDialogTranslations={t.people.submit}
+        categoryLabels={t.common.categories}
       />
     </div>
   );

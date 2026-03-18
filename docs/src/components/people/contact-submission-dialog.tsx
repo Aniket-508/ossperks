@@ -2,7 +2,7 @@
 
 import { useForm } from "@tanstack/react-form";
 import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -26,13 +26,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useSubmission } from "@/hooks/use-submission";
-
-const contactSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  programSlug: z.string().min(1, "Program is required"),
-  role: z.string().min(1, "Role is required"),
-  url: z.string().url("Must be a valid URL").or(z.literal("")),
-});
 
 interface FormField {
   state: {
@@ -95,54 +88,43 @@ const TextField = ({
   );
 };
 
-const ProgramSelectField = ({
-  field,
-  programs,
-  disabled,
-}: {
-  field: FormField;
-  programs: { slug: string; name: string }[];
-  disabled: boolean;
-}) => {
-  const handleChange = useCallback(
-    (val: string | number | null) => field.handleChange(val as string),
-    [field]
-  );
-
-  return (
-    <div className="space-y-2">
-      <Label>Program</Label>
-      <Select
-        value={field.state.value}
-        onValueChange={handleChange}
-        disabled={disabled}
-      >
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select a program" />
-        </SelectTrigger>
-        <SelectContent>
-          {programs.map((p) => (
-            <SelectItem key={p.slug} value={p.slug}>
-              {p.name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-      <FieldError errors={field.state.meta.errors} />
-    </div>
-  );
-};
-
 const canSubmitSelector = (s: { canSubmit: boolean }) => s.canSubmit;
+
+interface ContactSubmissionTranslations {
+  heading: string;
+  description: string;
+  buttonText: string;
+  form: {
+    nameLabel: string;
+    namePlaceholder: string;
+    roleLabel: string;
+    rolePlaceholder: string;
+    urlLabel: string;
+    urlPlaceholder: string;
+    programLabel: string;
+    programPlaceholder: string;
+  };
+  validation: {
+    nameRequired: string;
+    programRequired: string;
+    roleRequired: string;
+    invalidUrl: string;
+  };
+  submitButton: string;
+  submitting: string;
+  submitError: string;
+  success: {
+    heading: string;
+    message: string;
+    viewPr: string;
+    close: string;
+  };
+}
 
 interface ContactSubmissionDialogProps {
   programs: { slug: string; name: string }[];
   trigger?: React.ReactElement;
-  translations: {
-    heading: string;
-    description: string;
-    buttonText: string;
-  };
+  translations: ContactSubmissionTranslations;
 }
 
 export const ContactSubmissionDialog = ({
@@ -157,8 +139,24 @@ export const ContactSubmissionDialog = ({
     prUrl?: string;
   } | null>(null);
 
+  const t = translations;
+
+  const contactSchema = useMemo(
+    () =>
+      z.object({
+        name: z.string().min(1, t.validation.nameRequired),
+        programSlug: z.string().min(1, t.validation.programRequired),
+        role: z.string().min(1, t.validation.roleRequired),
+        url: z.string().url(t.validation.invalidUrl).or(z.literal("")),
+      }),
+    [t.validation]
+  );
+
   const { isSubmitting, submissionError, submissionStatus, submit } =
-    useSubmission("/api/submit-contact");
+    useSubmission("/api/submit-contact", {
+      error: t.submitError,
+      submitting: t.submitting,
+    });
 
   const form = useForm({
     defaultValues: {
@@ -222,11 +220,12 @@ export const ContactSubmissionDialog = ({
             className="contents"
           >
             <DialogHeader>
-              <DialogTitle>{translations.heading}</DialogTitle>
-              <DialogDescription>{translations.description}</DialogDescription>
+              <DialogTitle>{t.heading}</DialogTitle>
+              <DialogDescription>{t.description}</DialogDescription>
             </DialogHeader>
 
             <DialogBody>
+              {/* eslint-disable react-perf/jsx-no-new-function-as-prop */}
               <div className="grid gap-4">
                 <div className="grid grid-cols-2 gap-4">
                   <form.Field name="name">
@@ -234,8 +233,8 @@ export const ContactSubmissionDialog = ({
                       <TextField
                         field={field}
                         id="contact-name"
-                        label="Name"
-                        placeholder="e.g., Jane Doe"
+                        label={t.form.nameLabel}
+                        placeholder={t.form.namePlaceholder}
                         disabled={isSubmitting}
                       />
                     )}
@@ -245,8 +244,8 @@ export const ContactSubmissionDialog = ({
                       <TextField
                         field={field}
                         id="contact-role"
-                        label="Role"
-                        placeholder="e.g., OSS Program Manager"
+                        label={t.form.roleLabel}
+                        placeholder={t.form.rolePlaceholder}
                         disabled={isSubmitting}
                       />
                     )}
@@ -258,8 +257,8 @@ export const ContactSubmissionDialog = ({
                     <TextField
                       field={field}
                       id="contact-url"
-                      label="URL (optional)"
-                      placeholder="https://..."
+                      label={t.form.urlLabel}
+                      placeholder={t.form.urlPlaceholder}
                       type="url"
                       disabled={isSubmitting}
                     />
@@ -267,19 +266,41 @@ export const ContactSubmissionDialog = ({
                 </form.Field>
 
                 <form.Field name="programSlug">
-                  {(field) => (
-                    <ProgramSelectField
-                      field={field}
-                      programs={programs}
-                      disabled={isSubmitting}
-                    />
-                  )}
+                  {(field) => {
+                    const handleChange = (val: string | number | null) =>
+                      field.handleChange(val as string);
+                    return (
+                      <div className="space-y-2">
+                        <Label>{t.form.programLabel}</Label>
+                        <Select
+                          value={field.state.value}
+                          onValueChange={handleChange}
+                          disabled={isSubmitting}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue
+                              placeholder={t.form.programPlaceholder}
+                            />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {programs.map((p) => (
+                              <SelectItem key={p.slug} value={p.slug}>
+                                {p.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FieldError errors={field.state.meta.errors} />
+                      </div>
+                    );
+                  }}
                 </form.Field>
 
                 {submissionError && (
                   <p className="text-sm text-destructive">{submissionError}</p>
                 )}
               </div>
+              {/* eslint-enable react-perf/jsx-no-new-function-as-prop */}
             </DialogBody>
 
             <DialogFooter>
@@ -297,7 +318,7 @@ export const ContactSubmissionDialog = ({
                       </>
                     ) : (
                       <>
-                        Submit PR
+                        {t.submitButton}
                         <ArrowRight />
                       </>
                     )}
@@ -310,9 +331,9 @@ export const ContactSubmissionDialog = ({
           <div className="flex flex-col items-center gap-4 text-center">
             <CheckCircle2 className="size-12 text-green-500" />
             <div>
-              <h3 className="text-lg font-semibold">PR Created!</h3>
+              <h3 className="text-lg font-semibold">{t.success.heading}</h3>
               <p className="text-sm text-fd-muted-foreground">
-                Your pull request has been created and will be reviewed.
+                {t.success.message}
               </p>
             </div>
             {result && (
@@ -326,13 +347,16 @@ export const ContactSubmissionDialog = ({
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      View PR #{result.prNumber}
+                      {t.success.viewPr.replace(
+                        "{prNumber}",
+                        String(result.prNumber)
+                      )}
                       <ArrowRight />
                     </a>
                   }
                 />
                 <Button onClick={handleClose} className="w-full">
-                  Close
+                  {t.success.close}
                 </Button>
               </div>
             )}

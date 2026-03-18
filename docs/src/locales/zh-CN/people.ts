@@ -12,7 +12,32 @@ const people = {
   submit: {
     buttonText: "提交联系人",
     description: "认识某个计划背后的人员?提交他们的详细信息,我们将添加他们。",
+    form: {
+      nameLabel: "姓名",
+      namePlaceholder: "例如 张三",
+      programLabel: "项目",
+      programPlaceholder: "选择项目",
+      roleLabel: "职位",
+      rolePlaceholder: "例如 开源项目经理",
+      urlLabel: "URL(可选)",
+      urlPlaceholder: "https://...",
+    },
     heading: "提交联系人",
+    submitButton: "提交 PR",
+    submitError: "提交失败",
+    submitting: "提交中...",
+    success: {
+      close: "关闭",
+      heading: "PR 已创建!",
+      message: "您的 Pull Request 已创建,将会被审核。",
+      viewPr: "查看 PR #{prNumber}",
+    },
+    validation: {
+      invalidUrl: "必须是有效的 URL",
+      nameRequired: "姓名为必填项",
+      programRequired: "项目为必填项",
+      roleRequired: "职位为必填项",
+    },
   },
 };
 export default people;

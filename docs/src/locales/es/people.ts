@@ -15,7 +15,32 @@ const people = {
     buttonText: "Enviar un contacto",
     description:
       "¿Conoces a alguien detrás de un programa? Envía sus datos y los añadiremos.",
+    form: {
+      nameLabel: "Nombre",
+      namePlaceholder: "ej., María García",
+      programLabel: "Programa",
+      programPlaceholder: "Selecciona un programa",
+      roleLabel: "Rol",
+      rolePlaceholder: "ej., Gerente de programas OSS",
+      urlLabel: "URL (opcional)",
+      urlPlaceholder: "https://...",
+    },
     heading: "Enviar un contacto",
+    submitButton: "Enviar PR",
+    submitError: "Error al enviar",
+    submitting: "Enviando...",
+    success: {
+      close: "Cerrar",
+      heading: "¡PR creada!",
+      message: "Tu pull request ha sido creada y será revisada.",
+      viewPr: "Ver PR #{prNumber}",
+    },
+    validation: {
+      invalidUrl: "Debe ser una URL válida",
+      nameRequired: "El nombre es obligatorio",
+      programRequired: "El programa es obligatorio",
+      roleRequired: "El rol es obligatorio",
+    },
   },
 };
 export default people;

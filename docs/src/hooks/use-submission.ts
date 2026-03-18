@@ -9,7 +9,20 @@ export interface SubmissionResult {
   error?: string;
 }
 
-export const useSubmission = (endpoint: string) => {
+interface SubmissionLabels {
+  submitting: string;
+  error: string;
+}
+
+const defaultLabels: SubmissionLabels = {
+  error: "Failed to submit",
+  submitting: "Submitting...",
+};
+
+export const useSubmission = (
+  endpoint: string,
+  labels: SubmissionLabels = defaultLabels
+) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
   const [submissionStatus, setSubmissionStatus] = useState<string | null>(null);
@@ -18,7 +31,7 @@ export const useSubmission = (endpoint: string) => {
     async (data: Record<string, unknown>): Promise<SubmissionResult> => {
       setIsSubmitting(true);
       setSubmissionError(null);
-      setSubmissionStatus("Submitting...");
+      setSubmissionStatus(labels.submitting);
 
       try {
         const response = await fetch(endpoint, {
@@ -30,7 +43,7 @@ export const useSubmission = (endpoint: string) => {
         const result = await response.json();
 
         if (!response.ok) {
-          throw new Error(result.error || "Failed to submit");
+          throw new Error(result.error || labels.error);
         }
 
         return {
@@ -39,8 +52,7 @@ export const useSubmission = (endpoint: string) => {
           success: true,
         };
       } catch (error) {
-        const message =
-          error instanceof Error ? error.message : "Failed to submit";
+        const message = error instanceof Error ? error.message : labels.error;
         setSubmissionError(message);
         return { error: message, success: false };
       } finally {
@@ -48,7 +60,7 @@ export const useSubmission = (endpoint: string) => {
         setSubmissionStatus(null);
       }
     },
-    [endpoint]
+    [endpoint, labels]
   );
 
   return { isSubmitting, submissionError, submissionStatus, submit };

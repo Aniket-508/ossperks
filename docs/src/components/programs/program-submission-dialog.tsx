@@ -2,9 +2,10 @@
 
 import { useForm } from "@tanstack/react-form";
 import { ArrowRight, CheckCircle2, Loader2, Plus, Trash2 } from "lucide-react";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { z } from "zod";
 
+import { TagsInput } from "@/components/programs/tags-input";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -28,47 +29,35 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useSubmission } from "@/hooks/use-submission";
 
-const CATEGORIES = [
-  { label: "AI & Machine Learning", value: "ai" },
-  { label: "Analytics", value: "analytics" },
-  { label: "CI/CD", value: "ci-cd" },
-  { label: "Communication", value: "communication" },
-  { label: "Credentials & Secrets", value: "credentials" },
-  { label: "Developer Tools", value: "devtools" },
-  { label: "Hosting & Deployment", value: "hosting" },
-  { label: "Infrastructure", value: "infrastructure" },
-  { label: "Monitoring & Observability", value: "monitoring" },
-  { label: "Security", value: "security" },
-  { label: "Testing", value: "testing" },
+const COMMON_TAGS = [
+  "ai",
+  "analytics",
+  "api-credits",
+  "automation",
+  "backend",
+  "cdn",
+  "ci-cd",
+  "cloud",
+  "code-quality",
+  "community",
+  "containers",
+  "credits",
+  "database",
+  "deployment",
+  "developer-tools",
+  "devops",
+  "documentation",
+  "hosting",
+  "infrastructure",
+  "monitoring",
+  "observability",
+  "open-source",
+  "performance",
+  "security",
+  "serverless",
+  "storage",
+  "testing",
 ];
-
-const programSchema = z.object({
-  category: z.string().min(1, "Category is required"),
-  description: z.string().min(1, "Description is required"),
-  eligibility: z
-    .array(z.string())
-    .refine(
-      (arr) => arr.some((s) => s.trim().length > 0),
-      "At least one eligibility item is required"
-    ),
-  name: z.string().min(1, "Program name is required"),
-  perks: z
-    .array(
-      z.object({
-        description: z.string(),
-        title: z.string(),
-      })
-    )
-    .refine(
-      (arr) =>
-        arr.some(
-          (p) => p.title.trim().length > 0 && p.description.trim().length > 0
-        ),
-      "At least one perk with title and description is required"
-    ),
-  provider: z.string().min(1, "Provider is required"),
-  url: z.string().url("Must be a valid URL"),
-});
 
 interface FormField {
   state: {
@@ -166,55 +155,88 @@ const TextareaField = ({
   );
 };
 
-const CategoryField = ({
-  field,
-  disabled,
-}: {
-  field: FormField;
-  disabled: boolean;
-}) => {
-  const handleChange = useCallback(
-    (val: string | number | null) => field.handleChange(val as string),
-    [field]
-  );
-
-  return (
-    <div className="space-y-2">
-      <Label>Category</Label>
-      <Select
-        value={field.state.value}
-        onValueChange={handleChange}
-        disabled={disabled}
-      >
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select a category" />
-        </SelectTrigger>
-        <SelectContent>
-          {CATEGORIES.map((cat) => (
-            <SelectItem key={cat.value} value={cat.value}>
-              {cat.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-      <FieldError errors={field.state.meta.errors} />
-    </div>
-  );
-};
+const CATEGORY_VALUES = [
+  "ai",
+  "analytics",
+  "ci-cd",
+  "communication",
+  "credentials",
+  "devtools",
+  "hosting",
+  "infrastructure",
+  "monitoring",
+  "security",
+  "testing",
+] as const;
 
 const canSubmitSelector = (s: { canSubmit: boolean }) => s.canSubmit;
 
+interface ProgramSubmissionTranslations {
+  heading: string;
+  description: string;
+  form: {
+    nameLabel: string;
+    namePlaceholder: string;
+    providerLabel: string;
+    providerPlaceholder: string;
+    urlLabel: string;
+    urlPlaceholder: string;
+    categoryLabel: string;
+    categoryPlaceholder: string;
+    descriptionLabel: string;
+    descriptionPlaceholder: string;
+    eligibilityLabel: string;
+    eligibilityHelp: string;
+    eligibilityPlaceholder: string;
+    requirementLabel: string;
+    addRequirement: string;
+    perksLabel: string;
+    perksHelp: string;
+    perkLabel: string;
+    perkTitlePlaceholder: string;
+    perkDescriptionPlaceholder: string;
+    addPerk: string;
+    applicationProcessLabel: string;
+    applicationProcessHelp: string;
+    applicationProcessPlaceholder: string;
+    stepLabel: string;
+    addStep: string;
+    tagsLabel: string;
+    tagsHelp: string;
+    tagsPlaceholder: string;
+    tagsAddNew: string;
+    tagsNoResults: string;
+  };
+  validation: {
+    categoryRequired: string;
+    descriptionRequired: string;
+    eligibilityRequired: string;
+    nameRequired: string;
+    perkRequired: string;
+    providerRequired: string;
+    invalidUrl: string;
+  };
+  submitButton: string;
+  submitting: string;
+  submitError: string;
+  success: {
+    heading: string;
+    message: string;
+    viewPr: string;
+    close: string;
+  };
+}
+
 interface ProgramSubmissionDialogProps {
   trigger: React.ReactElement;
-  translations: {
-    heading: string;
-    description: string;
-  };
+  translations: ProgramSubmissionTranslations;
+  categoryLabels: Record<string, string>;
 }
 
 export const ProgramSubmissionDialog = ({
   trigger,
   translations,
+  categoryLabels,
 }: ProgramSubmissionDialogProps) => {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<"form" | "success">("form");
@@ -225,18 +247,58 @@ export const ProgramSubmissionDialog = ({
   const nextIdRef = useRef(0);
   const [eligibilityKeys, setEligibilityKeys] = useState<number[]>([0]);
   const [perkKeys, setPerkKeys] = useState<number[]>([0]);
+  const [applicationProcessKeys, setApplicationProcessKeys] = useState<
+    number[]
+  >([0]);
+
+  const t = translations;
+
+  const programSchema = useMemo(
+    () =>
+      z.object({
+        applicationProcess: z.array(z.string()),
+        category: z.string().min(1, t.validation.categoryRequired),
+        description: z.string().min(1, t.validation.descriptionRequired),
+        eligibility: z
+          .array(z.string())
+          .refine(
+            (arr) => arr.some((s) => s.trim().length > 0),
+            t.validation.eligibilityRequired
+          ),
+        name: z.string().min(1, t.validation.nameRequired),
+        perks: z
+          .array(z.object({ description: z.string(), title: z.string() }))
+          .refine(
+            (arr) =>
+              arr.some(
+                (p) =>
+                  p.title.trim().length > 0 && p.description.trim().length > 0
+              ),
+            t.validation.perkRequired
+          ),
+        provider: z.string().min(1, t.validation.providerRequired),
+        tags: z.array(z.string()),
+        url: z.string().url(t.validation.invalidUrl),
+      }),
+    [t.validation]
+  );
 
   const { isSubmitting, submissionError, submissionStatus, submit } =
-    useSubmission("/api/submit-program");
+    useSubmission("/api/submit-program", {
+      error: t.submitError,
+      submitting: t.submitting,
+    });
 
   const form = useForm({
     defaultValues: {
+      applicationProcess: [""],
       category: "",
       description: "",
       eligibility: [""],
       name: "",
       perks: [{ description: "", title: "" }],
       provider: "",
+      tags: [] as string[],
       url: "",
     },
     onSubmit: async ({ value }) => {
@@ -244,13 +306,18 @@ export const ProgramSubmissionDialog = ({
       const perks = value.perks.filter(
         (p) => p.title.trim().length > 0 && p.description.trim().length > 0
       );
+      const applicationProcess = value.applicationProcess.filter(
+        (s) => s.trim().length > 0
+      );
       const res = await submit({
+        applicationProcess,
         category: value.category,
         description: value.description,
         eligibility,
         name: value.name,
         perks,
         provider: value.provider,
+        tags: value.tags,
         url: value.url,
       });
       if (res.success) {
@@ -268,6 +335,7 @@ export const ProgramSubmissionDialog = ({
     nextIdRef.current = 0;
     setEligibilityKeys([0]);
     setPerkKeys([0]);
+    setApplicationProcessKeys([0]);
     setTimeout(() => {
       setStep("form");
       form.reset();
@@ -300,8 +368,8 @@ export const ProgramSubmissionDialog = ({
             className="contents"
           >
             <DialogHeader>
-              <DialogTitle>{translations.heading}</DialogTitle>
-              <DialogDescription>{translations.description}</DialogDescription>
+              <DialogTitle>{t.heading}</DialogTitle>
+              <DialogDescription>{t.description}</DialogDescription>
             </DialogHeader>
 
             <DialogBody>
@@ -314,8 +382,8 @@ export const ProgramSubmissionDialog = ({
                       <TextField
                         field={field}
                         id="prog-name"
-                        label="Program name"
-                        placeholder="e.g., Vercel"
+                        label={t.form.nameLabel}
+                        placeholder={t.form.namePlaceholder}
                         disabled={isSubmitting}
                       />
                     )}
@@ -325,8 +393,8 @@ export const ProgramSubmissionDialog = ({
                       <TextField
                         field={field}
                         id="prog-provider"
-                        label="Provider"
-                        placeholder="e.g., Vercel Inc."
+                        label={t.form.providerLabel}
+                        placeholder={t.form.providerPlaceholder}
                         disabled={isSubmitting}
                       />
                     )}
@@ -338,8 +406,8 @@ export const ProgramSubmissionDialog = ({
                     <TextField
                       field={field}
                       id="prog-url"
-                      label="URL"
-                      placeholder="https://..."
+                      label={t.form.urlLabel}
+                      placeholder={t.form.urlPlaceholder}
                       type="url"
                       disabled={isSubmitting}
                     />
@@ -347,9 +415,34 @@ export const ProgramSubmissionDialog = ({
                 </form.Field>
 
                 <form.Field name="category">
-                  {(field) => (
-                    <CategoryField field={field} disabled={isSubmitting} />
-                  )}
+                  {(field) => {
+                    const handleChange = (val: string | number | null) =>
+                      field.handleChange(val as string);
+                    return (
+                      <div className="space-y-2">
+                        <Label>{t.form.categoryLabel}</Label>
+                        <Select
+                          value={field.state.value}
+                          onValueChange={handleChange}
+                          disabled={isSubmitting}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue
+                              placeholder={t.form.categoryPlaceholder}
+                            />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {CATEGORY_VALUES.map((val) => (
+                              <SelectItem key={val} value={val}>
+                                {categoryLabels[val] ?? val}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FieldError errors={field.state.meta.errors} />
+                      </div>
+                    );
+                  }}
                 </form.Field>
 
                 <form.Field name="description">
@@ -357,8 +450,8 @@ export const ProgramSubmissionDialog = ({
                     <TextareaField
                       field={field}
                       id="prog-desc"
-                      label="Description"
-                      placeholder="What does this program offer?"
+                      label={t.form.descriptionLabel}
+                      placeholder={t.form.descriptionPlaceholder}
                       disabled={isSubmitting}
                     />
                   )}
@@ -369,10 +462,9 @@ export const ProgramSubmissionDialog = ({
                     const value = field.state.value as string[];
                     return (
                       <div className="space-y-2">
-                        <Label>Eligibility</Label>
+                        <Label>{t.form.eligibilityLabel}</Label>
                         <p className="text-xs text-fd-muted-foreground">
-                          Add one requirement per field (e.g. &quot;Open-source
-                          projects&quot;, &quot;Public GitHub repo&quot;).
+                          {t.form.eligibilityHelp}
                         </p>
                         <div className="space-y-4">
                           {value.map((item, index) => (
@@ -402,11 +494,14 @@ export const ProgramSubmissionDialog = ({
                               )}
                               <div className="pr-9">
                                 <span className="text-xs font-medium text-fd-muted-foreground">
-                                  Requirement {index + 1}
+                                  {t.form.requirementLabel.replace(
+                                    "{index}",
+                                    String(index + 1)
+                                  )}
                                 </span>
                               </div>
                               <Textarea
-                                placeholder="e.g., Open-source projects"
+                                placeholder={t.form.eligibilityPlaceholder}
                                 value={item}
                                 onChange={(e) => {
                                   const next = [...value];
@@ -435,9 +530,91 @@ export const ProgramSubmissionDialog = ({
                           }}
                         >
                           <Plus />
-                          Add another
+                          {t.form.addRequirement}
                         </Button>
                         <FieldError errors={field.state.meta.errors} />
+                      </div>
+                    );
+                  }}
+                </form.Field>
+
+                <form.Field name="applicationProcess">
+                  {(field) => {
+                    const value = field.state.value as string[];
+                    return (
+                      <div className="space-y-2">
+                        <Label>{t.form.applicationProcessLabel}</Label>
+                        <p className="text-xs text-fd-muted-foreground">
+                          {t.form.applicationProcessHelp}
+                        </p>
+                        <div className="space-y-4">
+                          {value.map((item, index) => (
+                            <div
+                              key={applicationProcessKeys[index]}
+                              className="relative rounded-lg border border-fd-border bg-fd-muted/20 p-3 space-y-2"
+                            >
+                              {value.length > 1 && (
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="icon-xs"
+                                  className="absolute top-3 right-3 text-fd-muted-foreground hover:text-destructive"
+                                  disabled={isSubmitting}
+                                  onClick={() => {
+                                    const next = value.filter(
+                                      (_, i) => i !== index
+                                    );
+                                    field.handleChange(next);
+                                    setApplicationProcessKeys((prev) =>
+                                      prev.filter((_, i) => i !== index)
+                                    );
+                                  }}
+                                >
+                                  <Trash2 />
+                                </Button>
+                              )}
+                              <div className="pr-9">
+                                <span className="text-xs font-medium text-fd-muted-foreground">
+                                  {t.form.stepLabel.replace(
+                                    "{index}",
+                                    String(index + 1)
+                                  )}
+                                </span>
+                              </div>
+                              <Textarea
+                                placeholder={
+                                  t.form.applicationProcessPlaceholder
+                                }
+                                value={item}
+                                onChange={(e) => {
+                                  const next = [...value];
+                                  next[index] = e.target.value;
+                                  field.handleChange(next);
+                                }}
+                                onBlur={field.handleBlur}
+                                disabled={isSubmitting}
+                                className="min-h-[60px] resize-y"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          disabled={isSubmitting}
+                          onClick={() => {
+                            field.handleChange([...value, ""]);
+                            nextIdRef.current += 1;
+                            setApplicationProcessKeys((prev) => [
+                              ...prev,
+                              nextIdRef.current,
+                            ]);
+                          }}
+                        >
+                          <Plus />
+                          {t.form.addStep}
+                        </Button>
                       </div>
                     );
                   }}
@@ -451,9 +628,9 @@ export const ProgramSubmissionDialog = ({
                     }[];
                     return (
                       <div className="space-y-2">
-                        <Label>Perks</Label>
+                        <Label>{t.form.perksLabel}</Label>
                         <p className="text-xs text-fd-muted-foreground">
-                          Add each perk with a title and description.
+                          {t.form.perksHelp}
                         </p>
                         <div className="space-y-4">
                           {perksValue.map((perk, index) => (
@@ -483,12 +660,15 @@ export const ProgramSubmissionDialog = ({
                               )}
                               <div className="pr-9">
                                 <span className="text-xs font-medium text-fd-muted-foreground">
-                                  Perk {index + 1}
+                                  {t.form.perkLabel.replace(
+                                    "{index}",
+                                    String(index + 1)
+                                  )}
                                 </span>
                               </div>
                               <div className="grid gap-2">
                                 <Input
-                                  placeholder="Title (e.g., Free Credits)"
+                                  placeholder={t.form.perkTitlePlaceholder}
                                   value={perk.title}
                                   onChange={(e) => {
                                     const next = [...perksValue];
@@ -502,7 +682,9 @@ export const ProgramSubmissionDialog = ({
                                   disabled={isSubmitting}
                                 />
                                 <Textarea
-                                  placeholder="Description (e.g., $100/month in credits)"
+                                  placeholder={
+                                    t.form.perkDescriptionPlaceholder
+                                  }
                                   value={perk.description}
                                   onChange={(e) => {
                                     const next = [...perksValue];
@@ -535,12 +717,32 @@ export const ProgramSubmissionDialog = ({
                           }}
                         >
                           <Plus />
-                          Add perk
+                          {t.form.addPerk}
                         </Button>
                         <FieldError errors={field.state.meta.errors} />
                       </div>
                     );
                   }}
+                </form.Field>
+
+                <form.Field name="tags">
+                  {(field) => (
+                    <div className="space-y-2">
+                      <Label>{t.form.tagsLabel}</Label>
+                      <p className="text-xs text-fd-muted-foreground">
+                        {t.form.tagsHelp}
+                      </p>
+                      <TagsInput
+                        items={COMMON_TAGS}
+                        value={field.state.value as string[]}
+                        onChange={(tags) => field.handleChange(tags)}
+                        placeholder={t.form.tagsPlaceholder}
+                        disabled={isSubmitting}
+                        addNewLabel={t.form.tagsAddNew}
+                        noResultsLabel={t.form.tagsNoResults}
+                      />
+                    </div>
+                  )}
                 </form.Field>
 
                 {submissionError && (
@@ -565,7 +767,7 @@ export const ProgramSubmissionDialog = ({
                       </>
                     ) : (
                       <>
-                        Submit PR
+                        {t.submitButton}
                         <ArrowRight />
                       </>
                     )}
@@ -578,9 +780,9 @@ export const ProgramSubmissionDialog = ({
           <div className="flex flex-col items-center gap-4 text-center">
             <CheckCircle2 className="size-12 text-green-500" />
             <div>
-              <h3 className="text-lg font-semibold">PR Created!</h3>
+              <h3 className="text-lg font-semibold">{t.success.heading}</h3>
               <p className="text-sm text-fd-muted-foreground">
-                Your pull request has been created and will be reviewed.
+                {t.success.message}
               </p>
             </div>
             {result && (
@@ -594,13 +796,16 @@ export const ProgramSubmissionDialog = ({
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      View PR #{result.prNumber}
+                      {t.success.viewPr.replace(
+                        "{prNumber}",
+                        String(result.prNumber)
+                      )}
                       <ArrowRight />
                     </a>
                   }
                 />
                 <Button onClick={handleClose} className="w-full">
-                  Close
+                  {t.success.close}
                 </Button>
               </div>
             )}

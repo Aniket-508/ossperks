@@ -1,4 +1,5 @@
 import { Octokit } from "@octokit/rest";
+import { formatSlug } from "@ossperks/core";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
@@ -12,19 +13,23 @@ interface ProgramSubmission {
   description: string;
   eligibility: string[];
   perks: { title: string; description: string }[];
+  applicationProcess?: string[];
+  tags?: string[];
 }
-
-const slugify = (name: string): string =>
-  name
-    .toLowerCase()
-    .replaceAll(/[^a-z0-9]+/g, "-")
-    .replaceAll(/(^-|-$)/g, "");
 
 const buildProgramJson = (
   submission: ProgramSubmission,
   slug: string
 ): string => {
-  const program = {
+  const applicationProcess = (submission.applicationProcess ?? []).filter(
+    (s) => s.trim().length > 0
+  );
+  const tags =
+    submission.tags && submission.tags.length > 0
+      ? submission.tags
+      : ["open-source"];
+
+  const program: Record<string, unknown> = {
     category: submission.category,
     description: submission.description,
     eligibility: submission.eligibility.filter((s) => s.trim().length > 0),
@@ -34,9 +39,14 @@ const buildProgramJson = (
     ),
     provider: submission.provider,
     slug,
-    tags: ["open-source"],
+    tags,
     url: submission.url,
   };
+
+  if (applicationProcess.length > 0) {
+    program.applicationProcess = applicationProcess;
+  }
+
   return `${JSON.stringify(program, null, 2)}\n`;
 };
 
@@ -52,18 +62,29 @@ const buildPRBody = (submission: ProgramSubmission): string => {
     .filter((p) => p.title.trim().length > 0 && p.description.trim().length > 0)
     .map((p) => `- **${p.title}**: ${p.description}`)
     .join("\n");
+  const applicationProcessList = (submission.applicationProcess ?? [])
+    .filter((s) => s.trim().length > 0)
+    .map((s, i) => `${i + 1}. ${s}`)
+    .join("\n");
+  const tags =
+    submission.tags && submission.tags.length > 0
+      ? submission.tags.map((t) => `\`${t}\``).join(", ")
+      : "(none)";
+
   return `## New Program Submission
 
 **Program:** ${submission.name}
 **Provider:** ${submission.provider}
 **Category:** ${submission.category}
 **URL:** ${submission.url}
+**Tags:** ${tags}
 
 ### Description
 ${submission.description}
 
 ### Eligibility
 ${eligibilityList}
+${applicationProcessList ? `\n### How to Apply\n${applicationProcessList}` : ""}
 
 ### Perks
 ${perksList || "- (none)"}
@@ -78,7 +99,7 @@ const createProgramPR = async (
   githubToken: string
 ) => {
   const octokit = new Octokit({ auth: githubToken });
-  const slug = slugify(submission.name);
+  const slug = formatSlug(submission.name);
   const filePath = `packages/data/src/programs/${slug}.json`;
   const branchName = `add-program-${slug}-${Date.now()}`;
 

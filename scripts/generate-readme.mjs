@@ -37,7 +37,7 @@ const programs = fs
 const byCategory = new Map();
 for (const p of programs) {
   const list = byCategory.get(p.category) ?? [];
-  list.push(`- [${p.name}](${p.url}) - ${p.description}`);
+  list.push(`- [${p.provider}](${p.url}) - ${p.description}`);
   byCategory.set(p.category, list);
 }
 

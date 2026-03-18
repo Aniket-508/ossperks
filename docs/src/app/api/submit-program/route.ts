@@ -67,6 +67,7 @@ const buildProgramJson = (
     "url",
     "applicationUrl",
     "category",
+    "title",
     "description",
     "perks",
     "eligibility",

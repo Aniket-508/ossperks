@@ -52,8 +52,5 @@ jobs:
 
       - name: Translate
         uses: lingodotdev/lingo.dev@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          LINGODOTDEV_API_KEY: ${{ secrets.LINGODOTDEV_API_KEY }}
         with:
           working-directory: docs

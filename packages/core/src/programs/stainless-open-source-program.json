@@ -1,0 +1,35 @@
+{
+  "category": "devtools",
+  "description": "Free SDK, documentation site, and MCP server generation from OpenAPI specs for open-source projects, with up to 5 generators and 100 preview builds per month.",
+  "eligibility": [
+    "Project must have a public OpenAPI specification.\n",
+    "Must be publicly available under a recognized open-source license."
+  ],
+  "name": "Stainless Open Source Program",
+  "perks": [
+    {
+      "description": "Up to 5 generators for TypeScript, Python, Go, Java, Kotlin, Ruby, and C# SDKs at no cost.",
+      "title": "SDK Generation"
+    },
+    {
+      "description": "Auto-generated API documentation and MCP servers from your OpenAPI spec.",
+      "title": "Documentation Sites"
+    },
+    {
+      "description": "100 preview builds per month with a 25/day rate limit for testing SDK changes.",
+      "title": "Preview Builds"
+    }
+  ],
+  "provider": "Stainless",
+  "slug": "stainless-open-source-program",
+  "tags": [
+    "open-source",
+    "developer-tools",
+    "api"
+  ],
+  "url": "https://stainless.com/pricing",
+  "applicationProcess": [
+    "Sign up at stainless.com with your GitHub account.",
+    "Connect your OpenAPI spec and configure your generators on the free Hobby plan."
+  ]
+}

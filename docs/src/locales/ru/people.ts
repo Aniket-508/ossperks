@@ -1,20 +1,17 @@
 const people = {
   associatedWith: "Связано с",
   backToPeople: "Вернуться к людям",
-  description:
-    "операторы/контакты программ, которые поддерживают проекты с открытым исходным кодом.",
+  description: "операторы/контакты программ, которые поддерживают проекты с открытым исходным кодом.",
   detail: {
     about: "О программе",
-    noPrograms: "Связанные программы не найдены.",
+    noPrograms: "Связанные программы не найдены."
   },
-  empty:
-    "Контакты программы еще не добавлены. Добавьте контакт в данные программы, чтобы увидеть их здесь.",
+  empty: "Контакты программы еще не добавлены. Добавьте контакт в данные программы, чтобы увидеть их здесь.",
   heading: "Люди",
   roleAt: "{role} в {provider}",
   submit: {
     buttonText: "Отправить контакт",
-    description:
-      "Знаете кого-то из команды программы? Отправьте его данные, и мы добавим их.",
+    description: "Знаете кого-то из команды программы? Отправьте его данные, и мы добавим их.",
     form: {
       nameLabel: "Имя",
       namePlaceholder: "напр., Иван Петров",
@@ -23,7 +20,7 @@ const people = {
       roleLabel: "Роль",
       rolePlaceholder: "напр., Менеджер OSS-программ",
       urlLabel: "URL (необязательно)",
-      urlPlaceholder: "https://...",
+      urlPlaceholder: "https://..."
     },
     heading: "Отправить контакт",
     submitButton: "Отправить PR",
@@ -33,15 +30,15 @@ const people = {
       close: "Закрыть",
       heading: "PR создан!",
       message: "Ваш pull request создан и будет рассмотрен.",
-      viewPr: "Просмотреть PR #{prNumber}",
+      viewPr: "Просмотреть PR #{prNumber}"
     },
     validation: {
       invalidUrl: "Должен быть действительный URL",
       nameRequired: "Имя обязательно",
       programRequired: "Программа обязательна",
-      roleRequired: "Роль обязательна",
-    },
-  },
+      roleRequired: "Роль обязательна"
+    }
+  }
 };
 export default people;
 export type PeopleTranslations = typeof people;

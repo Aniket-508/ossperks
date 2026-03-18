@@ -1,20 +1,17 @@
 const people = {
   associatedWith: "Verknüpft mit",
   backToPeople: "Zurück zu Personen",
-  description:
-    "Betreiber/Kontakte hinter den Programmen, die Open-Source-Projekte unterstützen.",
+  description: "Betreiber/Kontakte hinter den Programmen, die Open-Source-Projekte unterstützen.",
   detail: {
     about: "Über",
-    noPrograms: "Keine verknüpften Programme gefunden.",
+    noPrograms: "Keine verknüpften Programme gefunden."
   },
-  empty:
-    "Es wurden noch keine Programm-Ansprechpartner hinzugefügt. Fügen Sie einen Kontakt zu den Programmdaten hinzu, um ihn hier zu sehen.",
+  empty: "Es wurden noch keine Programm-Ansprechpartner hinzugefügt. Fügen Sie einen Kontakt zu den Programmdaten hinzu, um ihn hier zu sehen.",
   heading: "Personen",
   roleAt: "{role} bei {provider}",
   submit: {
     buttonText: "Kontakt einreichen",
-    description:
-      "Kennen Sie jemanden hinter einem Programm? Reichen Sie dessen Details ein und wir fügen sie hinzu.",
+    description: "Kennen Sie jemanden hinter einem Programm? Reichen Sie dessen Details ein und wir fügen sie hinzu.",
     form: {
       nameLabel: "Name",
       namePlaceholder: "z.B. Max Mustermann",
@@ -23,7 +20,7 @@ const people = {
       roleLabel: "Rolle",
       rolePlaceholder: "z.B. OSS-Programmmanager",
       urlLabel: "URL (optional)",
-      urlPlaceholder: "https://...",
+      urlPlaceholder: "https://..."
     },
     heading: "Kontakt einreichen",
     submitButton: "PR einreichen",
@@ -33,15 +30,15 @@ const people = {
       close: "Schließen",
       heading: "PR erstellt!",
       message: "Ihr Pull Request wurde erstellt und wird überprüft.",
-      viewPr: "PR #{prNumber} anzeigen",
+      viewPr: "PR #{prNumber} anzeigen"
     },
     validation: {
       invalidUrl: "Muss eine gültige URL sein",
       nameRequired: "Name ist erforderlich",
       programRequired: "Programm ist erforderlich",
-      roleRequired: "Rolle ist erforderlich",
-    },
-  },
+      roleRequired: "Rolle ist erforderlich"
+    }
+  }
 };
 export default people;
 export type PeopleTranslations = typeof people;

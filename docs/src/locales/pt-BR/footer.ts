@@ -3,7 +3,7 @@ const footer = {
   hostedOn: "Hospedado em",
   llms: "LLMs",
   translationsBy: "Traduções por",
-  twitter: "X (Twitter)",
+  twitter: "X (Twitter)"
 };
 export default footer;
 export type FooterTranslations = typeof footer;

@@ -320,6 +320,7 @@ checksums:
     categories/communication: 478f3ecaf6419fa9f11f2a83639188c6
     categories/credentials: d1ed05b5b14d51838ce850357b440d71
     categories/devtools: b315a200d53ec84e176d3368f5a821bf
+    categories/funding: 246f101c132408b0822006386d6ae2e1
     categories/hosting: ccc4c1b256674fc4434cb12e6e738c84
     categories/infrastructure: 1a2786f84d5ac41ab942b7cf4ab4b36a
     categories/monitoring: d5d60642f01ebd1b1175d4a94d1f7cf7
@@ -371,7 +372,26 @@ checksums:
     roleAt: ce45928e283e07fae98e2e3aac55bb56
     submit/buttonText: 8ebcb3816847eb9fceb11653c3281ee9
     submit/description: b447e43af290c870c53286f206d45492
+    submit/form/nameLabel: 9368b5a047572b6051f334af5aa76819
+    submit/form/namePlaceholder: 4198690151fdaf89b23977cd6630388e
+    submit/form/programLabel: 706fa8470a8fbf4374855ee7e794dee2
+    submit/form/programPlaceholder: 39e148b272c92b45af0edeeef2f89d15
+    submit/form/roleLabel: 53743bbb6ca938f5b893552e839d067f
+    submit/form/rolePlaceholder: 6d11da07c15481f96b7baa4d04b69425
+    submit/form/urlLabel: 31fdea320fa091605cde7da6a82f3e61
+    submit/form/urlPlaceholder: 49c66a225e48182785a6957de2c405bd
     submit/heading: 8ebcb3816847eb9fceb11653c3281ee9
+    submit/submitButton: eae686aada1b0c9dbbed6adae53e478a
+    submit/submitError: 651acb987009048c7b8973a18abb9bc0
+    submit/submitting: 6845d212e994f3023c5287bdd3b74875
+    submit/success/close: 2c2e22f8424a1031de89063bd0022e16
+    submit/success/heading: ab37f3e798303995b799bdc67568a5fd
+    submit/success/message: 091bb785985b1a32ed941ded4edc07a7
+    submit/success/viewPr: 3f7b1daa999bba5fb0b1b45cda69ab6e
+    submit/validation/invalidUrl: 8537728f12ac2fd0ff7db4f4e8d5b19f
+    submit/validation/nameRequired: 9cfb07618c3bfb2d8d50f93c983e9ae6
+    submit/validation/programRequired: 0b43f9a266233314799425641ec3f143
+    submit/validation/roleRequired: 91a8560570f48a2df6e52b685b7d42fb
   13243acbfeb8b32e5a3e6cab5806841b:
     applyNow: dda0f525ab0d2571977c49edea557ee9
     backToAll: cd30f7decca30718db2d749ee104b8aa
@@ -389,7 +409,56 @@ checksums:
     sections/tags: 97813c8ae67d69575fd04e35a88aed0c
     submit/buttonText: dfb3d0a897a8107d62acd7ec2b120905
     submit/description: ea75f769757ac33d855e2bbac32861be
+    submit/form/addPerk: d3e56475241e1dbe832d037fecd997f0
+    submit/form/addRequirement: 26ee6c7439e99431bd4e8d6181e23ac0
+    submit/form/addStep: a2feffd01d0e793021996eb437249e7b
+    submit/form/applicationProcessHelp: 8a91d6eab3e2daa9a5b7199b35421ff5
+    submit/form/applicationProcessLabel: a99f6bc59f4b62ef7a03f58b512ded6d
+    submit/form/applicationProcessPlaceholder: bfdea6f521d67560ae401a90a1ca4ed9
+    submit/form/applicationUrlCheckbox: 4fd3b2cdca943fbf081dec9df1242ceb
+    submit/form/applicationUrlLabel: c461e4b795f94990e862b6a9caf078fa
+    submit/form/applicationUrlPlaceholder: e04bdb74f3897c39529606dd141c4d44
+    submit/form/categoryLabel: 1b0340cd175aa5a2be745a0d54908466
+    submit/form/categoryPlaceholder: 3c6fd489766d33c9c717b33fb4b0de26
+    submit/form/descriptionLabel: e17686a22ffad04cc7bb70524ed4478b
+    submit/form/descriptionPlaceholder: 84930d128127e7e53aafb5ff9f2b6dbc
+    submit/form/eligibilityHelp: 1fdef5b5b07f80c937a31b080b400596
+    submit/form/eligibilityLabel: a895f9c2afd359f5f525b176d1c6010e
+    submit/form/eligibilityPlaceholder: 6d84087758adb733b799154ae8527ede
+    submit/form/nameLabel: 9c39c0ea2876c7c3c56e6cbb8ee4ab2b
+    submit/form/namePlaceholder: 42a30802555f06fb139d3a73a898383e
+    submit/form/perkDescriptionPlaceholder: bf924ce77db322d201866d1421e45bcc
+    submit/form/perkLabel: 501d514fe22b8cf1d55ebafcbdb68164
+    submit/form/perkTitlePlaceholder: efe4a8044f9023045926d9f61b062716
+    submit/form/perksHelp: a71da7e0be0cf36d8c69b49c0ffafa28
+    submit/form/perksLabel: eb427698ebe9ae6b8557dc5fa6d7df22
+    submit/form/providerLabel: d7bb643922dba7960bfb99ec1d746bdd
+    submit/form/providerPlaceholder: ff11708568878555f7532a743431ff51
+    submit/form/requirementLabel: e5b25e3bcf67f5411713af073d2fbaf0
+    submit/form/stepLabel: 47528557e8a3cb4a59e08a3f82cd2ad5
+    submit/form/tagsAddNew: dd1bc27c10bd45dfab24730831e4d25a
+    submit/form/tagsHelp: 57b1a373e132a291cf8bdd162a19b37a
+    submit/form/tagsLabel: 97813c8ae67d69575fd04e35a88aed0c
+    submit/form/tagsNoResults: 1bf4fe21ae483c05c583b26b3011f2b7
+    submit/form/tagsPlaceholder: c816e274d8304985bd6b05a4ee3f2939
+    submit/form/urlLabel: ca97457614226960d41dd18c3c29c86b
+    submit/form/urlPlaceholder: 49c66a225e48182785a6957de2c405bd
     submit/heading: dfb3d0a897a8107d62acd7ec2b120905
+    submit/submitButton: eae686aada1b0c9dbbed6adae53e478a
+    submit/submitError: 651acb987009048c7b8973a18abb9bc0
+    submit/submitting: 6845d212e994f3023c5287bdd3b74875
+    submit/success/close: 2c2e22f8424a1031de89063bd0022e16
+    submit/success/heading: ab37f3e798303995b799bdc67568a5fd
+    submit/success/message: 091bb785985b1a32ed941ded4edc07a7
+    submit/success/viewPr: 3f7b1daa999bba5fb0b1b45cda69ab6e
+    submit/validation/categoryRequired: 3652c72f89c0a6c0f305be0a4eea6740
+    submit/validation/descriptionRequired: 226a0a9ce2cb508d3044b8057fb12afe
+    submit/validation/eligibilityRequired: 6718d246c0919af87b8814c43a84d649
+    submit/validation/invalidApplicationUrl: 8537728f12ac2fd0ff7db4f4e8d5b19f
+    submit/validation/invalidUrl: 8537728f12ac2fd0ff7db4f4e8d5b19f
+    submit/validation/nameRequired: 938d04e63f999c7c9f8128c50a2a307c
+    submit/validation/perkRequired: bf655f2b2dd96c8caed7a24c0c2bf578
+    submit/validation/providerRequired: fc2dc4b572eb864d493fa0ed5d8fd5fb
     viewDetails: 127861f6c1e4c11da005fc373137fe5c
   c360dce988b3de0edd3ecb747c4b169a:
     cta/description: 3f023c755ee401ec2b5c721e95818c27
@@ -765,3 +834,15 @@ checksums:
     md-section-8: 52310c6bb1dc0049bcc09f15e98ad8f6
     fm-attr-title: ac73569c272a688fac9e610b76bd7407
     fm-attr-description: ada527c3b6101e2dd58fc855724dc6d7
+  31390097d415ecf5c37e34f1d3e2b5a2:
+    md-section-0: 31eeaba270ea7f94ad059719a9922333
+    md-section-1: b936b863996ea4c6fe1cc4811d3fca5b
+    md-section-2: 45c4cead912a3743a76329fb04824741
+    md-section-3: bdd97f4c6b46aab001604491f6fe085c
+    md-section-4: f1d23dc7c3400c5e9dbd8bca636a335f
+    md-section-5: e04972f7ced5ae54f5db271c9bf0d5dc
+    md-section-6: f49b2c731cb01b03fcf910f7d921c838
+    md-section-7: 4b98c83d7c5114b61e7cad0c77ccdd2a
+    md-section-8: 70e0c7ba402f6a511f6b30eaf72b56dd
+    fm-attr-title: 555ee97ba9c39531dba62d7411533117
+    fm-attr-description: fb252b6ab9ec20d74a542b0177c3b5f5

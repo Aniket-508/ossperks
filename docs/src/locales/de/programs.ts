@@ -4,13 +4,12 @@ const programs = {
   by: "von",
   filters: {
     allCategories: "Alle Kategorien",
-    allTypes: "Alle Typen",
+    allTypes: "Alle Typen"
   },
   learnMore: "mehr erfahren",
   listing: {
-    description:
-      "Kostenlose Tools, Guthaben und Dienste, die für Open-Source-Projekte verfügbar sind. Durchsuchen Sie nach Kategorie und finden Sie Programme, für die Ihr Projekt qualifiziert ist.",
-    heading: "Programme",
+    description: "Kostenlose Tools, Guthaben und Dienste, die für Open-Source-Projekte verfügbar sind. Durchsuchen Sie nach Kategorie und finden Sie Programme, für die Ihr Projekt qualifiziert ist.",
+    heading: "Programme"
   },
   more: "+{count} weitere",
   sections: {
@@ -18,30 +17,26 @@ const programs = {
     howToApply: "Bewerbungsverfahren",
     perks: "Vorteile",
     requirements: "Anforderungen",
-    tags: "Tags",
+    tags: "Tags"
   },
   submit: {
     buttonText: "Programm einreichen",
-    description:
-      "Haben Sie ein Programm vorzuschlagen? Reichen Sie die Details ein und wir fügen es der Liste hinzu.",
+    description: "Haben Sie ein Programm vorzuschlagen? Reichen Sie die Details ein und wir fügen es der Liste hinzu.",
     form: {
       addPerk: "Vorteil hinzufügen",
       addRequirement: "Weitere hinzufügen",
       addStep: "Schritt hinzufügen",
-      applicationProcessHelp:
-        "Beschreiben Sie jeden Schritt des Bewerbungsprozesses.",
+      applicationProcessHelp: "Beschreiben Sie jeden Schritt des Bewerbungsprozesses.",
       applicationProcessLabel: "Bewerbungsverfahren",
       applicationProcessPlaceholder: "z.B. Über die Programmwebsite bewerben",
-      applicationUrlCheckbox:
-        "Bewerbungs-URL unterscheidet sich von der Programm-URL",
+      applicationUrlCheckbox: "Bewerbungs-URL unterscheidet sich von der Programm-URL",
       applicationUrlLabel: "Bewerbungs-URL",
       applicationUrlPlaceholder: "https://... or mailto:...",
       categoryLabel: "Kategorie",
       categoryPlaceholder: "Kategorie auswählen",
       descriptionLabel: "Beschreibung",
       descriptionPlaceholder: "Was bietet dieses Programm?",
-      eligibilityHelp:
-        'Fügen Sie pro Feld eine Anforderung hinzu (z.B. "Open-Source-Projekte", "Öffentliches GitHub-Repository").',
+      eligibilityHelp: "Fügen Sie pro Feld eine Anforderung hinzu (z.B. \"Open-Source-Projekte\", \"Öffentliches GitHub-Repository\").",
       eligibilityLabel: "Teilnahmeberechtigung",
       eligibilityPlaceholder: "z.B. Open-Source-Projekte",
       nameLabel: "Programmname",
@@ -55,14 +50,13 @@ const programs = {
       providerPlaceholder: "z.B. Vercel Inc.",
       requirementLabel: "Anforderung {index}",
       stepLabel: "Schritt {index}",
-      tagsAddNew: '"{value}" hinzufügen',
-      tagsHelp:
-        "Wählen oder tippen Sie, um Tags hinzuzufügen, die dieses Programm beschreiben.",
+      tagsAddNew: "\"{value}\" hinzufügen",
+      tagsHelp: "Wählen oder tippen Sie, um Tags hinzuzufügen, die dieses Programm beschreiben.",
       tagsLabel: "Tags",
       tagsNoResults: "Keine Tags gefunden.",
       tagsPlaceholder: "Tags suchen oder hinzufügen...",
       urlLabel: "URL",
-      urlPlaceholder: "https://...",
+      urlPlaceholder: "https://..."
     },
     heading: "Programm einreichen",
     submitButton: "PR einreichen",
@@ -72,7 +66,7 @@ const programs = {
       close: "Schließen",
       heading: "PR erstellt!",
       message: "Ihr Pull Request wurde erstellt und wird überprüft.",
-      viewPr: "PR #{prNumber} anzeigen",
+      viewPr: "PR #{prNumber} anzeigen"
     },
     validation: {
       categoryRequired: "Kategorie ist erforderlich",
@@ -81,12 +75,11 @@ const programs = {
       invalidApplicationUrl: "Muss eine gültige URL sein",
       invalidUrl: "Muss eine gültige URL sein",
       nameRequired: "Programmname ist erforderlich",
-      perkRequired:
-        "Mindestens ein Vorteil mit Titel und Beschreibung ist erforderlich",
-      providerRequired: "Anbieter ist erforderlich",
-    },
+      perkRequired: "Mindestens ein Vorteil mit Titel und Beschreibung ist erforderlich",
+      providerRequired: "Anbieter ist erforderlich"
+    }
   },
-  viewDetails: "Details zum {provider}-Programm anzeigen",
+  viewDetails: "Details zum {provider}-Programm anzeigen"
 };
 export default programs;
 export type ProgramsTranslations = typeof programs;

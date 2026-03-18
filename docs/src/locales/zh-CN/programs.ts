@@ -4,13 +4,12 @@ const programs = {
   by: "由",
   filters: {
     allCategories: "所有类别",
-    allTypes: "所有类型",
+    allTypes: "所有类型"
   },
   learnMore: "了解更多",
   listing: {
-    description:
-      "为开源项目提供的免费工具、额度和服务。按类别浏览,找到您的项目符合条件的项目。",
-    heading: "项目",
+    description: "为开源项目提供的免费工具、额度和服务。按类别浏览,找到您的项目符合条件的项目。",
+    heading: "项目"
   },
   more: "还有 {count} 个",
   sections: {
@@ -18,7 +17,7 @@ const programs = {
     howToApply: "如何申请",
     perks: "福利",
     requirements: "要求",
-    tags: "标签",
+    tags: "标签"
   },
   submit: {
     buttonText: "提交项目",
@@ -37,8 +36,7 @@ const programs = {
       categoryPlaceholder: "选择类别",
       descriptionLabel: "描述",
       descriptionPlaceholder: "该项目提供什么?",
-      eligibilityHelp:
-        '每个字段添加一个要求(例如"开源项目"、"公开的 GitHub 仓库")。',
+      eligibilityHelp: "每个字段添加一个要求(例如\"开源项目\"、\"公开的 GitHub 仓库\")。",
       eligibilityLabel: "资格要求",
       eligibilityPlaceholder: "例如 开源项目",
       nameLabel: "项目名称",
@@ -52,13 +50,13 @@ const programs = {
       providerPlaceholder: "例如 Vercel Inc.",
       requirementLabel: "要求 {index}",
       stepLabel: "步骤 {index}",
-      tagsAddNew: '添加 "{value}"',
+      tagsAddNew: "添加 \"{value}\"",
       tagsHelp: "选择或输入标签来描述此项目。",
       tagsLabel: "标签",
       tagsNoResults: "未找到标签。",
       tagsPlaceholder: "搜索或添加标签...",
       urlLabel: "URL",
-      urlPlaceholder: "https://...",
+      urlPlaceholder: "https://..."
     },
     heading: "提交项目",
     submitButton: "提交 PR",
@@ -68,7 +66,7 @@ const programs = {
       close: "关闭",
       heading: "PR 已创建!",
       message: "您的 Pull Request 已创建,将会被审核。",
-      viewPr: "查看 PR #{prNumber}",
+      viewPr: "查看 PR #{prNumber}"
     },
     validation: {
       categoryRequired: "类别为必填项",
@@ -78,10 +76,10 @@ const programs = {
       invalidUrl: "必须是有效的 URL",
       nameRequired: "项目名称为必填项",
       perkRequired: "至少需要一个包含标题和描述的福利",
-      providerRequired: "提供方为必填项",
-    },
+      providerRequired: "提供方为必填项"
+    }
   },
-  viewDetails: "查看 {provider} 项目详情",
+  viewDetails: "查看 {provider} 项目详情"
 };
 export default programs;
 export type ProgramsTranslations = typeof programs;

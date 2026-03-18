@@ -4,13 +4,12 @@ const programs = {
   by: "提供元:",
   filters: {
     allCategories: "すべてのカテゴリー",
-    allTypes: "すべてのタイプ",
+    allTypes: "すべてのタイプ"
   },
   learnMore: "詳細を見る",
   listing: {
-    description:
-      "オープンソースプロジェクト向けの無料ツール、クレジット、サービスをご紹介します。カテゴリー別に参照して、あなたのプロジェクトが対象となるプログラムを見つけましょう。",
-    heading: "プログラム一覧",
+    description: "オープンソースプロジェクト向けの無料ツール、クレジット、サービスをご紹介します。カテゴリー別に参照して、あなたのプロジェクトが対象となるプログラムを見つけましょう。",
+    heading: "プログラム一覧"
   },
   more: "他{count}件",
   sections: {
@@ -18,12 +17,11 @@ const programs = {
     howToApply: "応募方法",
     perks: "特典",
     requirements: "要件",
-    tags: "タグ",
+    tags: "タグ"
   },
   submit: {
     buttonText: "プログラムを提案",
-    description:
-      "提案したいプログラムはありますか?詳細を送信していただければ、リストに追加いたします。",
+    description: "提案したいプログラムはありますか?詳細を送信していただければ、リストに追加いたします。",
     form: {
       addPerk: "特典を追加",
       addRequirement: "追加する",
@@ -38,8 +36,7 @@ const programs = {
       categoryPlaceholder: "カテゴリーを選択",
       descriptionLabel: "説明",
       descriptionPlaceholder: "このプログラムは何を提供しますか?",
-      eligibilityHelp:
-        "各フィールドに1つの要件を追加してください（例:「オープンソースプロジェクト」「公開GitHubリポジトリ」）。",
+      eligibilityHelp: "各フィールドに1つの要件を追加してください（例:「オープンソースプロジェクト」「公開GitHubリポジトリ」）。",
       eligibilityLabel: "応募資格",
       eligibilityPlaceholder: "例: オープンソースプロジェクト",
       nameLabel: "プログラム名",
@@ -59,7 +56,7 @@ const programs = {
       tagsNoResults: "タグが見つかりません。",
       tagsPlaceholder: "タグを検索または追加...",
       urlLabel: "URL",
-      urlPlaceholder: "https://...",
+      urlPlaceholder: "https://..."
     },
     heading: "プログラムを提案",
     submitButton: "PRを送信",
@@ -69,7 +66,7 @@ const programs = {
       close: "閉じる",
       heading: "PRが作成されました！",
       message: "プルリクエストが作成され、レビューされます。",
-      viewPr: "PR #{prNumber} を表示",
+      viewPr: "PR #{prNumber} を表示"
     },
     validation: {
       categoryRequired: "カテゴリーは必須です",
@@ -79,10 +76,10 @@ const programs = {
       invalidUrl: "有効なURLを入力してください",
       nameRequired: "プログラム名は必須です",
       perkRequired: "タイトルと説明を含む特典が少なくとも1つ必要です",
-      providerRequired: "提供元は必須です",
-    },
+      providerRequired: "提供元は必須です"
+    }
   },
-  viewDetails: "{provider}のプログラム詳細を見る",
+  viewDetails: "{provider}のプログラム詳細を見る"
 };
 export default programs;
 export type ProgramsTranslations = typeof programs;

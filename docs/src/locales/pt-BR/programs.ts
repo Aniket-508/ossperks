@@ -4,13 +4,12 @@ const programs = {
   by: "por",
   filters: {
     allCategories: "Todas as categorias",
-    allTypes: "Todos os tipos",
+    allTypes: "Todos os tipos"
   },
   learnMore: "saiba mais",
   listing: {
-    description:
-      "Ferramentas gratuitas, créditos e serviços disponíveis para projetos de código aberto. Navegue por categoria e encontre programas para os quais seu projeto se qualifica.",
-    heading: "Programas",
+    description: "Ferramentas gratuitas, créditos e serviços disponíveis para projetos de código aberto. Navegue por categoria e encontre programas para os quais seu projeto se qualifica.",
+    heading: "Programas"
   },
   more: "+{count} mais",
   sections: {
@@ -18,12 +17,11 @@ const programs = {
     howToApply: "Como se inscrever",
     perks: "Benefícios",
     requirements: "Requisitos",
-    tags: "Tags",
+    tags: "Tags"
   },
   submit: {
     buttonText: "Enviar um programa",
-    description:
-      "Tem um programa para sugerir? Envie os detalhes e nós o adicionaremos à lista.",
+    description: "Tem um programa para sugerir? Envie os detalhes e nós o adicionaremos à lista.",
     form: {
       addPerk: "Adicionar benefício",
       addRequirement: "Adicionar outro",
@@ -38,8 +36,7 @@ const programs = {
       categoryPlaceholder: "Selecione uma categoria",
       descriptionLabel: "Descrição",
       descriptionPlaceholder: "O que este programa oferece?",
-      eligibilityHelp:
-        'Adicione um requisito por campo (ex. "Projetos de código aberto", "Repositório público no GitHub").',
+      eligibilityHelp: "Adicione um requisito por campo (ex. \"Projetos de código aberto\", \"Repositório público no GitHub\").",
       eligibilityLabel: "Elegibilidade",
       eligibilityPlaceholder: "ex., Projetos de código aberto",
       nameLabel: "Nome do programa",
@@ -53,14 +50,13 @@ const programs = {
       providerPlaceholder: "ex., Vercel Inc.",
       requirementLabel: "Requisito {index}",
       stepLabel: "Etapa {index}",
-      tagsAddNew: 'Adicionar "{value}"',
-      tagsHelp:
-        "Selecione ou digite para adicionar tags que descrevam este programa.",
+      tagsAddNew: "Adicionar \"{value}\"",
+      tagsHelp: "Selecione ou digite para adicionar tags que descrevam este programa.",
       tagsLabel: "Tags",
       tagsNoResults: "Nenhuma tag encontrada.",
       tagsPlaceholder: "Pesquisar ou adicionar tags...",
       urlLabel: "URL",
-      urlPlaceholder: "https://...",
+      urlPlaceholder: "https://..."
     },
     heading: "Enviar um programa",
     submitButton: "Enviar PR",
@@ -70,22 +66,20 @@ const programs = {
       close: "Fechar",
       heading: "PR criado!",
       message: "Seu pull request foi criado e será revisado.",
-      viewPr: "Ver PR #{prNumber}",
+      viewPr: "Ver PR #{prNumber}"
     },
     validation: {
       categoryRequired: "A categoria é obrigatória",
       descriptionRequired: "A descrição é obrigatória",
-      eligibilityRequired:
-        "Pelo menos um critério de elegibilidade é necessário",
+      eligibilityRequired: "Pelo menos um critério de elegibilidade é necessário",
       invalidApplicationUrl: "Deve ser uma URL válida",
       invalidUrl: "Deve ser uma URL válida",
       nameRequired: "O nome do programa é obrigatório",
-      perkRequired:
-        "Pelo menos um benefício com título e descrição é necessário",
-      providerRequired: "O provedor é obrigatório",
-    },
+      perkRequired: "Pelo menos um benefício com título e descrição é necessário",
+      providerRequired: "O provedor é obrigatório"
+    }
   },
-  viewDetails: "Ver detalhes do programa {provider}",
+  viewDetails: "Ver detalhes do programa {provider}"
 };
 export default programs;
 export type ProgramsTranslations = typeof programs;

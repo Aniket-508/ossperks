@@ -11,8 +11,8 @@ const common = {
     infrastructure: "Infraestructura",
     monitoring: "Monitoreo y Observabilidad",
     security: "Seguridad",
-    testing: "Pruebas",
-  },
+    testing: "Pruebas"
+  }
 };
 export default common;
 export type CommonTranslations = typeof common;

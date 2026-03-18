@@ -60,6 +60,7 @@ Free tools, services, and credits offered to open-source projects and their main
 - [JetBrains](https://www.jetbrains.com/community/opensource/) - Free All Products Pack IDE subscriptions for core project teams.
 - [Mintlify](https://www.mintlify.com/oss-program) - Free Pro plan for non-commercial OSS projects (custom domains, analytics, API playground, AI chat).
 - [Sanity](https://www.sanity.io/docs/open-source-plan) - Free Growth plan for non-monetized OSS projects with 3 datasets, 25 users, and SAML SSO.
+- [Stainless](https://stainless.com/pricing) - Free SDK, documentation site, and MCP server generation from OpenAPI specs for open-source projects, with up to 5 generators and 100 preview builds per month.
 
 ## Funding
 

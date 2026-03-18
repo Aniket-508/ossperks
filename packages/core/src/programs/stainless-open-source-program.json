@@ -1,31 +1,32 @@
 {
+  "applicationUrl": "mailto:opensource@stainless.com",
+  "applicationProcess": [
+    "Create a free Stainless account at stainless.com with your GitHub account.",
+    "Email opensource@stainless.com with details about your project to get set up on the free Starter plan."
+  ],
   "category": "devtools",
-  "description": "Free SDK, documentation site, and MCP server generation from OpenAPI specs for open-source projects, with up to 5 generators and 100 preview builds per month.",
+  "description": "Free Starter plan (normally $79/mo per generator) for qualifying non-commercial open-source projects, including SDK, documentation site, and MCP server generation from OpenAPI specs.",
   "eligibility": [
-    "Project must have a public OpenAPI specification.",
-    "Must be publicly available under a recognized open-source license."
+    "Project must be a non-commercial open-source (FOSS) project.",
+    "Project must have a public OpenAPI specification."
   ],
   "name": "Stainless Open Source Program",
   "perks": [
     {
-      "description": "Up to 5 generators for TypeScript, Python, Go, Java, Kotlin, Ruby, and C# SDKs at no cost.",
+      "description": "Generate TypeScript, Python, Go, Java, Kotlin, Ruby, and C# SDKs from your OpenAPI spec at no cost.",
       "title": "SDK Generation"
     },
     {
-      "description": "Auto-generated API documentation and MCP servers from your OpenAPI spec.",
-      "title": "Documentation Sites"
+      "description": "Auto-generated API documentation sites and MCP servers from your OpenAPI spec.",
+      "title": "Documentation & MCP Servers"
     },
     {
-      "description": "100 preview builds per month with a 25/day rate limit for testing SDK changes.",
-      "title": "Preview Builds"
+      "description": "Starter plan features including 50 endpoints, 300 preview builds per month, SSE streaming, and OAuth 2.0 auth support.",
+      "title": "Starter Plan Features"
     }
   ],
   "provider": "Stainless",
   "slug": "stainless-open-source-program",
   "tags": ["open-source", "developer-tools", "api"],
-  "url": "https://stainless.com/pricing",
-  "applicationProcess": [
-    "Sign up at stainless.com with your GitHub account.",
-    "Connect your OpenAPI spec and configure your generators on the free Hobby plan."
-  ]
+  "url": "https://stainless.com/pricing"
 }

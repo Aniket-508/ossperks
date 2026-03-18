@@ -2,7 +2,9 @@
 
 [<img src="https://ossperks.com/icon.svg" width="80" align="right" alt="OSS Perks">](https://ossperks.com)
 
-> Free tools, services, and credits offered to open-source projects and their maintainers.
+Free tools, services, and credits offered to open-source projects and their maintainers.
+
+<br>
 
 ## Contents
 
@@ -103,8 +105,20 @@
 
 Contributions welcome! Read the [contribution guidelines](CONTRIBUTING.md) first.
 
-## Footnotes
+## License
+
+[![CC0](https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/cc-zero.svg)](https://creativecommons.org/publicdomain/zero/1.0)
+
+## Star History
+
+<a href="https://www.star-history.com/?repos=Aniket-508%2Fawesome-oss-perks&type=date&legend=bottom-right">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=Aniket-508/awesome-oss-perks&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=Aniket-508/awesome-oss-perks&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=Aniket-508/awesome-oss-perks&type=date&legend=top-left" />
+ </picture>
+</a>
+
+## More Links
 
 [Eligibility Checker](https://ossperks.com/check) · [CLI](https://www.npmjs.com/package/ossperks) · [Sponsor](https://github.com/sponsors/Aniket-508)
-
-<a href="https://star-history.com/#Aniket-508/awesome-oss-perks&Date"><img src="https://api.star-history.com/svg?repos=Aniket-508/awesome-oss-perks&type=Date" width="600" alt="Star History"></a>

@@ -1,5 +1,6 @@
 "use client";
 
+import { getProgramBySlug } from "@ossperks/core";
 import { useForm } from "@tanstack/react-form";
 import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 import React, { useCallback, useMemo, useState } from "react";
@@ -280,7 +281,9 @@ export const ContactSubmissionDialog = ({
                           <SelectTrigger className="w-full">
                             <SelectValue
                               placeholder={t.form.programPlaceholder}
-                            />
+                            >
+                              {getProgramBySlug(field.state.value)?.name}
+                            </SelectValue>
                           </SelectTrigger>
                           <SelectContent>
                             {programs.map((p) => (

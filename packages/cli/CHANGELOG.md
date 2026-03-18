@@ -1,5 +1,11 @@
 # ossperks
 
+## 0.1.3
+
+### Patch Changes
+
+- 2e64494: Add PostHog for Open Source program and fix perk title serialization in submission API
+
 ## 0.1.2
 
 ### Patch Changes

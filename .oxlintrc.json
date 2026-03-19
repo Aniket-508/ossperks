@@ -3,18 +3,28 @@
   "extends": [
     "./node_modules/ultracite/config/oxlint/core/.oxlintrc.json",
     "./node_modules/ultracite/config/oxlint/next/.oxlintrc.json",
-    "./node_modules/ultracite/config/oxlint/react/.oxlintrc.json"
+    "./node_modules/ultracite/config/oxlint/react/.oxlintrc.json",
+    "./node_modules/ultracite/config/oxlint/vitest/.oxlintrc.json"
   ],
   "ignorePatterns": [
     "**/dist/**",
     "**/.next/**",
     "**/node_modules/**",
-    "**/tsconfig.tsbuildinfo"
+    "**/tsconfig.tsbuildinfo",
+    "docs/src/locales/**"
   ],
-  "rules": {
-    "vitest/prefer-called-once": "off",
-    "complexity": ["error", { "max": 40 }],
-    "import/no-relative-parent-imports": "off",
-    "max-statements": ["error", { "max": 20 }]
+  "settings": {
+    "react": {
+      "version": "19"
+    },
+    "next": {
+      "rootDir": "docs/"
+    },
+    "jsx-a11y": {
+      "components": {
+        "Link": "a",
+        "Button": "button"
+      }
+    }
   }
 }

@@ -187,7 +187,7 @@ describe("checkEligibility: program matching", () => {
       expect(result.status).toBe("ineligible");
       expect(
         result.reasons.some((reason) => /private|public/i.test(reason)),
-      ).toBe(true);
+      ).toBeTruthy();
     });
 
     it("keeps alternative threshold rules reviewable instead of ineligible", () => {

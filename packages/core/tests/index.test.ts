@@ -23,7 +23,7 @@ describe("@ossperks/core", () => {
 
   it("getAllProgramSlugs returns one slug per program", () => {
     const slugs = getAllProgramSlugs();
-    expect(slugs.length).toBe(programs.length);
+    expect(slugs).toHaveLength(programs.length);
     expect(slugs).toContain("vercel");
     expect(slugs).toContain("github-copilot");
   });
@@ -56,7 +56,7 @@ describe("@ossperks/core", () => {
   it("programSchema rejects non-canonical slugs", () => {
     expect(() =>
       programSchema.parse({ ...programs[0], slug: "Not Canonical" }),
-    ).toThrow();
+    ).toThrow(/slug/i);
   });
 
   it("every program has at least one perk", () => {

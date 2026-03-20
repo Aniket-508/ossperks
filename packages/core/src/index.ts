@@ -102,8 +102,13 @@ export {
   checkAllPrograms,
   checkAllProgramsDetailed,
 } from "./eligibility";
-export { fetchGitHub, fetchGitLab, fetchRepoContext } from "./fetch";
-export { parseRepoUrl } from "./parse";
+export {
+  fetchGitHub,
+  fetchGitLab,
+  fetchGitea,
+  fetchRepoContext,
+} from "./fetch";
+export { parseRepoUrl, PROVIDER_HOSTS } from "./parse";
 export { formatSlug } from "./slug";
 export type {
   EligibilityReason,

@@ -22,7 +22,7 @@ export interface PersonDetail {
   programs: ProgramSummary[];
 }
 
-export type RepoProvider = "github" | "gitlab";
+export type RepoProvider = "github" | "gitlab" | "codeberg" | "gitea";
 
 export interface RepoRef {
   provider: RepoProvider;

@@ -68,8 +68,46 @@ describe("parseRepoUrl: URL detection", () => {
     ).toBeNull();
   });
 
+  it("parses HTTPS Codeberg URL", () => {
+    expect(parseRepoUrl("https://codeberg.org/user/project")).toStrictEqual({
+      owner: "user",
+      path: "user/project",
+      provider: "codeberg",
+      repo: "project",
+    });
+  });
+
+  it("parses Codeberg URL with .git suffix", () => {
+    expect(parseRepoUrl("https://codeberg.org/user/project.git")).toStrictEqual(
+      {
+        owner: "user",
+        path: "user/project",
+        provider: "codeberg",
+        repo: "project",
+      },
+    );
+  });
+
+  it("parses SSH Codeberg URL", () => {
+    expect(parseRepoUrl("git@codeberg.org:user/project.git")).toStrictEqual({
+      owner: "user",
+      path: "user/project",
+      provider: "codeberg",
+      repo: "project",
+    });
+  });
+
+  it("parses HTTPS Gitea URL", () => {
+    expect(parseRepoUrl("https://gitea.com/owner/repo")).toStrictEqual({
+      owner: "owner",
+      path: "owner/repo",
+      provider: "gitea",
+      repo: "repo",
+    });
+  });
+
   it("returns null for unknown hosts", () => {
-    expect(parseRepoUrl("https://bitbucket.org/user/repo")).toBeNull();
+    expect(parseRepoUrl("https://example.com/user/repo")).toBeNull();
   });
 
   it("returns null for empty string", () => {
@@ -293,6 +331,21 @@ describe("checkEligibility: program matching", () => {
     it("passes provider check for github repos", () => {
       const result = checkEligibility(copilot, makeCtx({ provider: "github" }));
       expect(result.status).not.toBe("ineligible");
+    });
+  });
+
+  describe("codeberg provider eligibility", () => {
+    const sentry = getProgramBySlug("sentry");
+    if (!sentry) {
+      throw new Error("sentry test data missing");
+    }
+
+    it("works with codeberg provider for provider-agnostic programs", () => {
+      const result = checkEligibility(
+        sentry,
+        makeCtx({ provider: "codeberg" }),
+      );
+      expect(result.status).toBe("eligible");
     });
   });
 });

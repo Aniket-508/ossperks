@@ -2,7 +2,7 @@ const check = {
   checkAnother: "別のリポジトリを確認",
   checkFailed: "確認に失敗しました",
   description:
-    "GitHubまたはGitLabのリポジトリURLを貼り付けて、プロジェクトが対象となるオープンソースプログラムや特典を即座に確認できます。",
+    "GitHub、GitLab、またはCodebergのリポジトリURLを貼り付けて、プロジェクトが対象となるオープンソースプログラムや特典を即座に確認できます。",
   eligible: "対象",
   errors: {
     invalidRequest: "無効な確認リクエストです。",
@@ -17,8 +17,8 @@ const check = {
   heading: "プロジェクトの適格性を確認",
   ineligible: "対象外",
   input: {
-    invalidUrl: "有効なGitHubまたはGitLabのリポジトリURLを入力してください",
-    placeholder: "GitHubまたはGitLabのリポジトリURLを貼り付け...",
+    invalidUrl: "有効なGitHub、GitLab、またはCodebergのリポジトリURLを入力してください",
+    placeholder: "GitHub、GitLab、またはCodebergのリポジトリURLを貼り付け...",
     required: "リポジトリURLを貼り付けてください",
   },
   lastPush: "最終プッシュ",

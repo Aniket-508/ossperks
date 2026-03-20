@@ -2,7 +2,7 @@ const check = {
   checkAnother: "Weiteres Repository prüfen",
   checkFailed: "Prüfung fehlgeschlagen",
   description:
-    "Füge die URL eines GitHub- oder GitLab-Repositorys ein, um sofort zu sehen, für welche Open-Source-Programme und Vorteile dein Projekt in Frage kommt.",
+    "Füge die URL eines GitHub-, GitLab- oder Codeberg-Repositorys ein, um sofort zu sehen, für welche Open-Source-Programme und Vorteile dein Projekt in Frage kommt.",
   eligible: "Berechtigt",
   errors: {
     invalidRequest: "Ungültige Prüfanfrage.",
@@ -19,8 +19,8 @@ const check = {
   heading: "Prüfe die Berechtigung deines Projekts",
   ineligible: "Nicht berechtigt",
   input: {
-    invalidUrl: "Bitte gib eine gültige GitHub- oder GitLab-Repository-URL ein",
-    placeholder: "GitHub- oder GitLab-Repository-URL einfügen...",
+    invalidUrl: "Bitte gib eine gültige GitHub-, GitLab- oder Codeberg-Repository-URL ein",
+    placeholder: "GitHub-, GitLab- oder Codeberg-Repository-URL einfügen...",
     required: "Repository-URL einfügen",
   },
   lastPush: "Letzter Push",

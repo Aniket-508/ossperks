@@ -2,7 +2,7 @@ const check = {
   checkAnother: "Vérifier un autre dépôt",
   checkFailed: "Vérification échouée",
   description:
-    "Collez l'URL d'un dépôt GitHub ou GitLab pour voir instantanément à quels programmes et avantages open source votre projet est éligible.",
+    "Collez l'URL d'un dépôt GitHub, GitLab ou Codeberg pour voir instantanément à quels programmes et avantages open source votre projet est éligible.",
   eligible: "Éligible",
   errors: {
     invalidRequest: "Requête de vérification invalide.",
@@ -18,8 +18,8 @@ const check = {
   heading: "Vérifiez l'éligibilité de votre projet",
   ineligible: "Non éligible",
   input: {
-    invalidUrl: "Veuillez entrer une URL valide de dépôt GitHub ou GitLab",
-    placeholder: "Collez l'URL d'un dépôt GitHub ou GitLab...",
+    invalidUrl: "Veuillez entrer une URL valide de dépôt GitHub, GitLab ou Codeberg",
+    placeholder: "Collez l'URL d'un dépôt GitHub, GitLab ou Codeberg...",
     required: "Collez l'URL d'un dépôt",
   },
   lastPush: "Dernier push",

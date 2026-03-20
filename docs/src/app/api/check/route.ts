@@ -2,6 +2,7 @@ import {
   checkAllProgramsDetailed,
   fetchRepoContext,
   programs,
+  PROVIDER_HOSTS,
 } from "@ossperks/core";
 import type { RepoProvider, RepoRef } from "@ossperks/core";
 import { headers } from "next/headers";
@@ -12,7 +13,7 @@ import { DEFAULT_PROVIDER } from "@/lib/check";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { CheckApiErrorCode } from "@/types/check";
 
-const VALID_PROVIDERS = new Set(["github", "gitlab"]);
+const VALID_PROVIDERS = new Set(Object.keys(PROVIDER_HOSTS));
 
 const CACHE_TTL_MS = 5 * 60 * 1000;
 const CACHE_MAX_AGE_S = Math.floor(CACHE_TTL_MS / 1000);
@@ -62,7 +63,8 @@ const validateParams = (searchParams: URLSearchParams) => {
     return {
       error: NextResponse.json(
         {
-          error: 'Invalid provider. Must be "github" or "gitlab".',
+          error:
+            'Invalid provider. Must be "github", "gitlab", "codeberg", or "gitea".',
           errorCode: CheckApiErrorCode.InvalidProvider,
         },
         { status: 400 },

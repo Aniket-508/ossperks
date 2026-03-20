@@ -1,5 +1,15 @@
-import { programs, checkAllPrograms, fetchRepoContext } from "@ossperks/core";
-import type { ProgramEligibility, RepoContext, RepoRef } from "@ossperks/core";
+import {
+  programs,
+  checkAllPrograms,
+  fetchRepoContext,
+  PROVIDER_HOSTS,
+} from "@ossperks/core";
+import type {
+  ProgramEligibility,
+  RepoContext,
+  RepoProvider,
+  RepoRef,
+} from "@ossperks/core";
 import { Command } from "commander";
 import pc from "picocolors";
 
@@ -54,14 +64,22 @@ const printRepoSummary = (ctx: RepoContext): void => {
   success(`${pc.bold(ctx.name)} ${pc.dim("—")} ${parts.join(pc.dim(" · "))}`);
 };
 
+const VALID_PROVIDERS = new Set<RepoProvider>(
+  Object.keys(PROVIDER_HOSTS) as RepoProvider[],
+);
+
 const resolveRef = (opts: CheckOpts): RepoRef | null => {
   if (!opts.repo) {
     return detectRepo();
   }
-  const provider = opts.provider === "gitlab" ? "gitlab" : "github";
+  const provider: RepoProvider = VALID_PROVIDERS.has(
+    opts.provider as RepoProvider,
+  )
+    ? (opts.provider as RepoProvider)
+    : "github";
   const parts = opts.repo.split("/").filter(Boolean);
   const isValid =
-    provider === "github" ? parts.length === 2 : parts.length >= 2;
+    provider === "gitlab" ? parts.length >= 2 : parts.length === 2;
   if (!isValid || !parts[0] || !parts.at(-1)) {
     displayError(
       provider === "gitlab"
@@ -135,11 +153,11 @@ export const checkCommand = new Command("check")
   )
   .option(
     "--repo <owner/repo>",
-    "explicitly specify a GitHub/GitLab repo (e.g. vercel/next.js)",
+    "explicitly specify a repo (e.g. vercel/next.js)",
   )
   .option(
     "--provider <provider>",
-    'git provider to use with --repo: "github" or "gitlab"',
+    'git provider to use with --repo: "github", "gitlab", "codeberg", or "gitea"',
     "github",
   )
   .option("--json", "output results as JSON")
@@ -148,14 +166,16 @@ export const checkCommand = new Command("check")
 
     if (!ref) {
       displayError(
-        "Could not detect a GitHub or GitLab repository.\n" +
+        "Could not detect a repository.\n" +
           "  Make sure your package.json has a repository field, or use --repo <owner/repo>.",
       );
       process.exit(1);
     }
 
     if (!opts.json) {
-      info(`Fetching repo info for ${ref.provider}.com/${ref.path}...`);
+      info(
+        `Fetching repo info for ${PROVIDER_HOSTS[ref.provider]}/${ref.path}...`,
+      );
     }
 
     let ctx: RepoContext;

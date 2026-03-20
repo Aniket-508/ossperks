@@ -1,6 +1,7 @@
 import { Gitlab } from "@gitbeaker/rest";
 import { Octokit } from "@octokit/rest";
 
+import { PROVIDER_HOSTS } from "./parse";
 import type { RepoContext, RepoRef } from "./types";
 
 const githubClient = new Octokit({
@@ -141,5 +142,71 @@ export const fetchGitLab = async (ref: RepoRef): Promise<RepoContext> => {
   }
 };
 
-export const fetchRepoContext = (ref: RepoRef): Promise<RepoContext> =>
-  ref.provider === "github" ? fetchGitHub(ref) : fetchGitLab(ref);
+interface GiteaRepoResponse {
+  created_at: string;
+  description: string;
+  fork: boolean;
+  internal: boolean;
+  name: string;
+  owner: { type: string };
+  private: boolean;
+  stars_count: number;
+  topics: string[];
+  updated_at: string;
+  license: { spdx_id: string } | null;
+}
+
+const throwGiteaError = (status: number, host: string, ref: RepoRef): never => {
+  if (status === 404) {
+    throw new Error(
+      `Repository ${ref.path} not found on ${host} (is it public?)`,
+    );
+  }
+  throw new Error(`${host} API error: ${status}`);
+};
+
+export const fetchGitea = async (ref: RepoRef): Promise<RepoContext> => {
+  const host = PROVIDER_HOSTS[ref.provider];
+
+  const url = `https://${host}/api/v1/repos/${ref.owner}/${ref.repo}`;
+  const res = await fetch(url, {
+    headers: { Accept: "application/json" },
+  });
+
+  if (!res.ok) {
+    throwGiteaError(res.status, host, ref);
+  }
+
+  const data = (await res.json()) as GiteaRepoResponse;
+  const createdAt = new Date(data.created_at);
+
+  return {
+    createdAt,
+    description: data.description || null,
+    isFork: data.fork,
+    isOrgOwned: data.owner.type === "Organization",
+    isPrivate: data.private,
+    license:
+      data.license?.spdx_id && data.license.spdx_id !== "NOASSERTION"
+        ? data.license.spdx_id
+        : null,
+    name: data.name,
+    owner: ref.owner,
+    path: ref.path,
+    provider: ref.provider,
+    pushedAt: new Date(data.updated_at),
+    repo: ref.repo,
+    stars: data.stars_count,
+    topics: data.topics ?? [],
+  };
+};
+
+export const fetchRepoContext = (ref: RepoRef): Promise<RepoContext> => {
+  if (ref.provider === "github") {
+    return fetchGitHub(ref);
+  }
+  if (ref.provider === "gitlab") {
+    return fetchGitLab(ref);
+  }
+  return fetchGitea(ref);
+};

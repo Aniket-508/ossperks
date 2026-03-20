@@ -1,4 +1,15 @@
-import type { RepoRef } from "./types";
+import type { RepoProvider, RepoRef } from "./types";
+
+export const PROVIDER_HOSTS: Record<RepoProvider, string> = {
+  codeberg: "codeberg.org",
+  gitea: "gitea.com",
+  github: "github.com",
+  gitlab: "gitlab.com",
+};
+
+const HOST_TO_PROVIDER = Object.fromEntries(
+  Object.entries(PROVIDER_HOSTS).map(([provider, host]) => [host, provider]),
+) as Record<string, RepoProvider>;
 
 const normalizeRawUrl = (raw: string): string =>
   raw
@@ -52,6 +63,17 @@ const parseGitLab = (segments: string[]): RepoRef | null => {
   };
 };
 
+const parseGitea = (
+  segments: string[],
+  provider: RepoProvider,
+): RepoRef | null => {
+  if (segments.length < 2) {
+    return null;
+  }
+  const [owner, repo] = segments;
+  return { owner, path: `${owner}/${repo}`, provider, repo };
+};
+
 export const parseRepoUrl = (raw: string): RepoRef | null => {
   const url = toUrl(raw);
   if (!url) {
@@ -67,5 +89,11 @@ export const parseRepoUrl = (raw: string): RepoRef | null => {
   if (host === "gitlab.com" || host === "www.gitlab.com") {
     return parseGitLab(segments);
   }
+
+  const giteaProvider = HOST_TO_PROVIDER[host];
+  if (giteaProvider) {
+    return parseGitea(segments, giteaProvider);
+  }
+
   return null;
 };

@@ -2,7 +2,7 @@ const check = {
   checkAnother: "Проверить другой репозиторий",
   checkFailed: "Проверка не удалась",
   description:
-    "Вставьте URL репозитория GitHub или GitLab, чтобы мгновенно узнать, на какие программы и бонусы для открытого ПО может претендовать ваш проект.",
+    "Вставьте URL репозитория GitHub, GitLab или Codeberg, чтобы мгновенно узнать, на какие программы и бонусы для открытого ПО может претендовать ваш проект.",
   eligible: "Подходит",
   errors: {
     invalidRequest: "Некорректный запрос на проверку.",
@@ -17,8 +17,8 @@ const check = {
   heading: "Проверьте соответствие вашего проекта",
   ineligible: "Не подходит",
   input: {
-    invalidUrl: "Введите корректный URL репозитория GitHub или GitLab",
-    placeholder: "Вставьте URL репозитория GitHub или GitLab...",
+    invalidUrl: "Введите корректный URL репозитория GitHub, GitLab или Codeberg",
+    placeholder: "Вставьте URL репозитория GitHub, GitLab или Codeberg...",
     required: "Вставьте URL репозитория",
   },
   lastPush: "Последний пуш",

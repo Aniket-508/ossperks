@@ -2,7 +2,7 @@ const check = {
   checkAnother: "다른 저장소 확인",
   checkFailed: "확인 실패",
   description:
-    "GitHub 또는 GitLab 저장소 URL을 붙여넣어 프로젝트가 받을 수 있는 오픈소스 프로그램과 혜택을 즉시 확인하세요.",
+    "GitHub, GitLab 또는 Codeberg 저장소 URL을 붙여넣어 프로젝트가 받을 수 있는 오픈소스 프로그램과 혜택을 즉시 확인하세요.",
   eligible: "대상",
   errors: {
     invalidRequest: "유효하지 않은 확인 요청입니다.",
@@ -16,8 +16,8 @@ const check = {
   heading: "프로젝트 자격 확인",
   ineligible: "대상 외",
   input: {
-    invalidUrl: "유효한 GitHub 또는 GitLab 저장소 URL을 입력해 주세요",
-    placeholder: "GitHub 또는 GitLab 저장소 URL을 붙여넣으세요...",
+    invalidUrl: "유효한 GitHub, GitLab 또는 Codeberg 저장소 URL을 입력해 주세요",
+    placeholder: "GitHub, GitLab 또는 Codeberg 저장소 URL을 붙여넣으세요...",
     required: "저장소 URL을 붙여넣으세요",
   },
   lastPush: "마지막 푸시",

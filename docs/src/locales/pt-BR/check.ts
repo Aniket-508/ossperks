@@ -2,7 +2,7 @@ const check = {
   checkAnother: "Verificar outro repositório",
   checkFailed: "Verificação falhou",
   description:
-    "Cole a URL de um repositório do GitHub ou GitLab para ver instantaneamente quais programas e benefícios de código aberto seu projeto pode receber.",
+    "Cole a URL de um repositório do GitHub, GitLab ou Codeberg para ver instantaneamente quais programas e benefícios de código aberto seu projeto pode receber.",
   eligible: "Elegível",
   errors: {
     invalidRequest: "Solicitação de verificação inválida.",
@@ -18,8 +18,8 @@ const check = {
   heading: "Verifique a elegibilidade do seu projeto",
   ineligible: "Não elegível",
   input: {
-    invalidUrl: "Insira uma URL válida de um repositório do GitHub ou GitLab",
-    placeholder: "Cole a URL de um repositório do GitHub ou GitLab...",
+    invalidUrl: "Insira uma URL válida de um repositório do GitHub, GitLab ou Codeberg",
+    placeholder: "Cole a URL de um repositório do GitHub, GitLab ou Codeberg...",
     required: "Cole a URL de um repositório",
   },
   lastPush: "Último push",

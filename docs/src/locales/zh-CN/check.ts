@@ -2,7 +2,7 @@ const check = {
   checkAnother: "检查另一个仓库",
   checkFailed: "检查失败",
   description:
-    "粘贴 GitHub 或 GitLab 仓库链接，即时查看您的项目可以获得哪些开源计划和福利。",
+    "粘贴 GitHub、GitLab 或 Codeberg 仓库链接，即时查看您的项目可以获得哪些开源计划和福利。",
   eligible: "符合条件",
   errors: {
     invalidRequest: "检查请求无效。",
@@ -16,8 +16,8 @@ const check = {
   heading: "检查项目资格",
   ineligible: "不符合条件",
   input: {
-    invalidUrl: "请输入有效的 GitHub 或 GitLab 仓库链接",
-    placeholder: "粘贴 GitHub 或 GitLab 仓库链接...",
+    invalidUrl: "请输入有效的 GitHub、GitLab 或 Codeberg 仓库链接",
+    placeholder: "粘贴 GitHub、GitLab 或 Codeberg 仓库链接...",
     required: "请粘贴仓库链接",
   },
   lastPush: "最近推送",

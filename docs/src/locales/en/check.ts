@@ -2,7 +2,7 @@ const check = {
   checkAnother: "Check another repository",
   checkFailed: "Check Failed",
   description:
-    "Paste a GitHub or GitLab repository URL to instantly see which open-source programs and perks your project qualifies for.",
+    "Paste a GitHub, GitLab, or Codeberg repository URL to instantly see which open-source programs and perks your project qualifies for.",
   eligible: "Eligible",
   errors: {
     invalidRequest: "Invalid repository check request.",
@@ -16,8 +16,8 @@ const check = {
   heading: "Check your project's eligibility",
   ineligible: "Ineligible",
   input: {
-    invalidUrl: "Please enter a valid GitHub or GitLab repository URL",
-    placeholder: "Paste a GitHub or GitLab repo URL...",
+    invalidUrl: "Please enter a valid GitHub, GitLab, or Codeberg repository URL",
+    placeholder: "Paste a GitHub, GitLab, or Codeberg repo URL...",
     required: "Paste a repository URL",
   },
   lastPush: "Last push",

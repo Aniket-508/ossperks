@@ -93,46 +93,52 @@ const findRepoRoot = (cwd: string): string => {
   }
 };
 
-const collectPackageJsonPaths = (
-  rootDir: string,
-  collected: string[] = [],
-): string[] => {
-  if (collected.length >= MAX_PACKAGE_JSON_FILES) {
-    return collected;
-  }
+interface LocalScanResult {
+  packageJsonPaths: string[];
+  filePaths: string[];
+}
 
+const collectFilePaths = (
+  rootDir: string,
+  basePath: string,
+  result: LocalScanResult,
+): void => {
   let entries: fs.Dirent[];
   try {
     entries = fs.readdirSync(rootDir, { withFileTypes: true });
   } catch {
-    return collected;
+    return;
   }
 
   for (const entry of entries) {
-    if (collected.length >= MAX_PACKAGE_JSON_FILES) {
-      break;
-    }
-    if (entry.isFile() && entry.name === "package.json") {
-      collected.push(path.join(rootDir, entry.name));
+    const relativePath = basePath ? `${basePath}/${entry.name}` : entry.name;
+    if (entry.isFile()) {
+      result.filePaths.push(relativePath);
+      if (
+        entry.name === "package.json" &&
+        result.packageJsonPaths.length < MAX_PACKAGE_JSON_FILES
+      ) {
+        result.packageJsonPaths.push(path.join(rootDir, entry.name));
+      }
     } else if (entry.isDirectory() && !SKIP_DIRS.has(entry.name)) {
-      collectPackageJsonPaths(path.join(rootDir, entry.name), collected);
+      collectFilePaths(path.join(rootDir, entry.name), relativePath, result);
     }
   }
-
-  return collected;
 };
 
-export const detectDependencies = (cwd = process.cwd()): string[] => {
+export const detectLocalTree = (
+  cwd = process.cwd(),
+): { dependencies: string[]; filePaths: string[] } => {
   const repoRoot = findRepoRoot(cwd);
-  const pkgPaths = collectPackageJsonPaths(repoRoot);
+  const result: LocalScanResult = { filePaths: [], packageJsonPaths: [] };
+  collectFilePaths(repoRoot, "", result);
 
-  if (pkgPaths.length === 0) {
-    return [];
-  }
-
-  const pkgs = pkgPaths
+  const pkgs = result.packageJsonPaths
     .map((p) => safeReadPkg(p))
     .filter((pkg): pkg is Record<string, unknown> => pkg !== null);
 
-  return aggregateDependencies(pkgs);
+  return {
+    dependencies: aggregateDependencies(pkgs),
+    filePaths: result.filePaths,
+  };
 };

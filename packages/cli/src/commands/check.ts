@@ -13,7 +13,7 @@ import type {
 import { Command } from "commander";
 import pc from "picocolors";
 
-import { detectDependencies, detectRepo } from "../utils/detect.js";
+import { detectLocalTree, detectRepo } from "../utils/detect.js";
 import {
   eligibilityRow,
   error as displayError,
@@ -186,10 +186,15 @@ export const checkCommand = new Command("check")
       process.exit(1);
     }
 
-    const localDeps = detectDependencies();
+    const localTree = detectLocalTree();
     ctx = {
       ...ctx,
-      dependencies: [...new Set([...ctx.dependencies, ...localDeps])],
+      dependencies: [
+        ...new Set([...ctx.dependencies, ...localTree.dependencies]),
+      ],
+      filePaths: [
+        ...new Set([...(ctx.filePaths ?? []), ...localTree.filePaths]),
+      ],
     };
 
     const results = checkAllPrograms(programs, ctx);

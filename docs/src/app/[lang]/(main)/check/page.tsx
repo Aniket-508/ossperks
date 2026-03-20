@@ -15,13 +15,39 @@ import { CheckPageClient } from "./page.client";
 export const generateStaticParams = () =>
   i18n.languages.map((lang) => ({ lang }));
 
+type CheckPageSearchParams = Record<string, string | string[] | undefined>;
+
+const getSearchParam = (
+  value: string | string[] | undefined,
+): string | undefined => (Array.isArray(value) ? value[0] : value);
+
 export const generateMetadata = async ({
   params,
+  searchParams,
 }: {
   params: Promise<{ lang: string }>;
+  searchParams: Promise<CheckPageSearchParams>;
 }): Promise<Metadata> => {
-  const { lang } = await params;
+  const [{ lang }, query] = await Promise.all([params, searchParams]);
   const t = await getT(lang);
+
+  const owner = getSearchParam(query.owner);
+  const repo = getSearchParam(query.repo);
+  const provider = getSearchParam(query.provider) ?? "github";
+
+  if (owner && repo) {
+    const repoPath = `${owner}/${repo}`;
+    const ogParams = new URLSearchParams({ owner, provider, repo });
+    return createMetadata({
+      description: t.check.description,
+      lang,
+      ogImage: `/og/${lang}/check?${ogParams.toString()}`,
+      ogTitle: `${repoPath} — Eligibility Check`,
+      path: "/check",
+      title: t.check.heading,
+    });
+  }
+
   return createMetadata({
     description: t.check.description,
     lang,
@@ -29,12 +55,6 @@ export const generateMetadata = async ({
     title: t.check.heading,
   });
 };
-
-type CheckPageSearchParams = Record<string, string | string[] | undefined>;
-
-const getSearchParam = (
-  value: string | string[] | undefined,
-): string | undefined => (Array.isArray(value) ? value[0] : value);
 
 const buildProgramTranslations = async (
   lang: string,

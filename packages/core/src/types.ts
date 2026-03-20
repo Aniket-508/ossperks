@@ -47,6 +47,7 @@ export interface RepoContext {
   topics: string[];
   description: string | null;
   dependencies: string[];
+  filePaths?: string[];
 }
 
 export type EligibilityStatus = "eligible" | "needs-review" | "ineligible";
@@ -54,6 +55,8 @@ export type EligibilityStatus = "eligible" | "needs-review" | "ineligible";
 export type EligibilityReasonCode =
   | "codeOfConduct"
   | "communitySize"
+  | "configFileMet"
+  | "configFileUnknown"
   | "criteriaUnverifiable"
   | "hostingPlatform"
   | "inactive"

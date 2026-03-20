@@ -32,5 +32,6 @@
     "Applications are reviewed in seasonal cohorts."
   ],
   "duration": "12 months",
-  "tags": ["hosting", "deployment", "serverless", "credits"]
+  "tags": ["hosting", "deployment", "serverless", "credits"],
+  "configFiles": ["vercel.json", ".vercel/project.json"]
 }

@@ -1,5 +1,7 @@
 import {
   aggregateDependencies,
+  checkEligibility,
+  checkEligibilityDetailed,
   extractDependencyNames,
   getAllPeopleSlugs,
   programs,
@@ -12,6 +14,8 @@ import {
   formatSlug,
   programSchema,
 } from "@ossperks/core";
+import type { RepoContext } from "@ossperks/core";
+import spdxLicenseList from "spdx-license-list";
 
 describe("@ossperks/core", () => {
   it("formatSlug normalizes to lowercase hyphenated slug", () => {
@@ -165,6 +169,179 @@ describe(extractDependencyNames, () => {
       devDependencies: null,
     });
     expect(names).toStrictEqual([]);
+  });
+});
+
+const makeCtx = (overrides: Partial<RepoContext> = {}): RepoContext => ({
+  createdAt: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
+  dependencies: [],
+  description: "A test library",
+  isFork: false,
+  isOrgOwned: false,
+  isPrivate: false,
+  license: "MIT",
+  name: "my-lib",
+  owner: "test",
+  path: "test/my-lib",
+  provider: "github",
+  pushedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+  repo: "my-lib",
+  stars: 2000,
+  topics: ["library", "typescript"],
+  ...overrides,
+});
+
+describe("isOsiApproved via spdx-license-list", () => {
+  const sentry = getProgramBySlug("sentry");
+  if (!sentry) {
+    throw new Error("sentry test data missing");
+  }
+
+  it("spdx-license-list has at least 100 OSI-approved licenses", () => {
+    const osiCount = Object.values(spdxLicenseList).filter(
+      (entry) => entry.osiApproved,
+    ).length;
+    expect(osiCount).toBeGreaterThanOrEqual(100);
+  });
+
+  it("recognizes Unlicense as OSI-approved", () => {
+    const result = checkEligibility(sentry, makeCtx({ license: "Unlicense" }));
+    expect(result.status).toBe("eligible");
+  });
+
+  it("recognizes PostgreSQL license as OSI-approved", () => {
+    const result = checkEligibility(sentry, makeCtx({ license: "PostgreSQL" }));
+    expect(result.status).toBe("eligible");
+  });
+
+  it("recognizes OFL-1.1 as OSI-approved", () => {
+    const result = checkEligibility(sentry, makeCtx({ license: "OFL-1.1" }));
+    expect(result.status).toBe("eligible");
+  });
+
+  it("recognizes CAL-1.0 as OSI-approved", () => {
+    const result = checkEligibility(
+      sentry,
+      makeCtx({ license: "CAL-1.0-Combined-Work-Exception" }),
+    );
+    expect(result.status).toBe("eligible");
+  });
+
+  it("rejects unknown/non-OSI license", () => {
+    const result = checkEligibility(
+      sentry,
+      makeCtx({ license: "PROPRIETARY" }),
+    );
+    expect(result.status).toBe("ineligible");
+  });
+});
+
+describe("keyword-set intent classification", () => {
+  it('"The project must be open source." passes for MIT-licensed repo', () => {
+    const program = {
+      ...getProgramBySlug("sentry"),
+      eligibility: ["The project must be open source."],
+    } as ReturnType<typeof getProgramBySlug> & { eligibility: string[] };
+    const result = checkEligibility(program, makeCtx({ license: "MIT" }));
+    expect(result.status).not.toBe("ineligible");
+  });
+
+  it('"approved license from an open-source initiative" passes for MIT', () => {
+    const program = {
+      ...getProgramBySlug("sentry"),
+      eligibility: [
+        "The project is licensed under an approved license from an open-source initiative.",
+      ],
+    } as ReturnType<typeof getProgramBySlug> & { eligibility: string[] };
+    const result = checkEligibility(program, makeCtx({ license: "MIT" }));
+    expect(result.status).not.toBe("ineligible");
+  });
+
+  it('"Fully open source (FOSS)." passes for OSI-licensed repo', () => {
+    const program = {
+      ...getProgramBySlug("sentry"),
+      eligibility: ["Fully open source (FOSS)."],
+    } as ReturnType<typeof getProgramBySlug> & { eligibility: string[] };
+    const result = checkEligibility(
+      program,
+      makeCtx({ license: "Apache-2.0" }),
+    );
+    expect(result.status).not.toBe("ineligible");
+  });
+
+  it("multi-intent rule checks BOTH open-source AND public repo", () => {
+    const program = {
+      ...getProgramBySlug("sentry"),
+      eligibility: ["Must be an open source project with a public repository."],
+    } as ReturnType<typeof getProgramBySlug> & { eligibility: string[] };
+
+    const publicResult = checkEligibility(
+      program,
+      makeCtx({ isPrivate: false, license: "MIT" }),
+    );
+    expect(publicResult.status).not.toBe("ineligible");
+
+    const privateResult = checkEligibility(
+      program,
+      makeCtx({ isPrivate: true, license: "MIT" }),
+    );
+    expect(privateResult.status).toBe("ineligible");
+    expect(privateResult.reasons[0]).toMatch(/private/i);
+  });
+
+  it("non-commercial rule is detected as needs-review", () => {
+    const program = {
+      ...getProgramBySlug("sentry"),
+      eligibility: ["Must operate solely on a non-profit basis."],
+    } as ReturnType<typeof getProgramBySlug> & { eligibility: string[] };
+    const result = checkEligibility(program, makeCtx());
+    expect(result.status).toBe("needs-review");
+  });
+});
+
+describe("config-file detection", () => {
+  const vercel = getProgramBySlug("vercel");
+  if (!vercel) {
+    throw new Error("vercel test data missing");
+  }
+
+  it("passes hosting check when vercel.json is in filePaths", () => {
+    const result = checkEligibilityDetailed(
+      vercel,
+      makeCtx({
+        filePaths: ["package.json", "vercel.json", "src/index.ts"],
+      }),
+    );
+    const configReasons = result.reasons.filter(
+      (r) => r.code === "configFileUnknown" || r.code === "hostingPlatform",
+    );
+    expect(configReasons).toHaveLength(0);
+  });
+
+  it("returns unknown when no config file is found but filePaths are available", () => {
+    const result = checkEligibilityDetailed(
+      vercel,
+      makeCtx({
+        filePaths: ["package.json", "src/index.ts"],
+      }),
+    );
+    const configReason = result.reasons.find(
+      (r) => r.code === "configFileUnknown",
+    );
+    expect(configReason).toBeDefined();
+  });
+
+  it("passes with .vercel/project.json in filePaths", () => {
+    const result = checkEligibilityDetailed(
+      vercel,
+      makeCtx({
+        filePaths: ["package.json", ".vercel/project.json"],
+      }),
+    );
+    const configReasons = result.reasons.filter(
+      (r) => r.code === "configFileUnknown" || r.code === "hostingPlatform",
+    );
+    expect(configReasons).toHaveLength(0);
   });
 });
 

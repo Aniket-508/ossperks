@@ -1,3 +1,5 @@
+import spdxLicenseList from "spdx-license-list";
+
 import type { Program } from "./schema";
 import type {
   EligibilityReason,
@@ -8,10 +10,7 @@ import type {
   RepoContext,
 } from "./types";
 
-const normalizeLicense = (spdx: string | null): string | null =>
-  spdx?.toLowerCase() ?? null;
-
-const OSI_PERMISSIVE = new Set(
+const PERMISSIVE_IDS = new Set(
   [
     "MIT",
     "Apache-2.0",
@@ -25,52 +24,65 @@ const OSI_PERMISSIVE = new Set(
     "0BSD",
     "BlueOak-1.0.0",
     "UPL-1.0",
-  ].map((license) => license.toLowerCase()),
-);
-
-const OSI_COPYLEFT = new Set(
-  [
-    "GPL-2.0",
-    "GPL-2.0-only",
-    "GPL-2.0-or-later",
-    "GPL-3.0",
-    "GPL-3.0-only",
-    "GPL-3.0-or-later",
-    "AGPL-3.0",
-    "AGPL-3.0-only",
-    "AGPL-3.0-or-later",
-    "LGPL-2.0",
-    "LGPL-2.1",
-    "LGPL-2.1-only",
-    "LGPL-2.1-or-later",
-    "LGPL-3.0",
-    "LGPL-3.0-only",
-    "LGPL-3.0-or-later",
-    "MPL-2.0",
-    "EUPL-1.1",
-    "EUPL-1.2",
-    "CDDL-1.0",
-    "EPL-1.0",
-    "EPL-2.0",
-    "OSL-3.0",
-  ].map((license) => license.toLowerCase()),
+  ].map((id) => id.toLowerCase()),
 );
 
 const isOsiApproved = (spdx: string | null): boolean => {
-  const normalized = normalizeLicense(spdx);
-  return Boolean(
-    normalized &&
-    (OSI_PERMISSIVE.has(normalized) || OSI_COPYLEFT.has(normalized)),
-  );
+  if (!spdx) {
+    return false;
+  }
+  const entry =
+    spdxLicenseList[spdx as keyof typeof spdxLicenseList] ??
+    spdxLicenseList[spdx.toUpperCase() as keyof typeof spdxLicenseList];
+  return entry?.osiApproved === true;
 };
 
 const isPermissive = (spdx: string | null): boolean => {
-  const normalized = normalizeLicense(spdx);
-  return Boolean(normalized && OSI_PERMISSIVE.has(normalized));
+  if (!spdx) {
+    return false;
+  }
+  return PERMISSIVE_IDS.has(spdx.toLowerCase());
 };
 
 const daysSince = (date: Date): number =>
   Math.floor((Date.now() - date.getTime()) / (1000 * 60 * 60 * 24));
+
+const formatCount = (value: number): string => value.toLocaleString("en-US");
+
+type RuleResult = "pass" | "fail" | "unknown";
+interface RuleVerdict {
+  verdict: RuleResult;
+  reason?: EligibilityReason;
+}
+
+const makeReason = (
+  code: EligibilityReason["code"],
+  message: string,
+  params?: EligibilityReason["params"],
+): EligibilityReason => ({
+  code,
+  message,
+  ...(params ? { params } : {}),
+});
+
+const normalizeRule = (text: string): string =>
+  text
+    .toLowerCase()
+    .replaceAll("-", " ")
+    .replaceAll(/[^\w\s]/g, " ")
+    .replaceAll(/\s+/g, " ")
+    .trim();
+
+const containsAll = (text: string, keywords: string[]): boolean =>
+  keywords.every((kw) => text.includes(kw));
+
+const matchesAny = (text: string, keywordSets: string[][]): boolean =>
+  keywordSets.some((kws) => containsAll(text, kws));
+
+interface RuleIntent {
+  keywordSets: string[][];
+  check: (rule: string, ctx: RepoContext, program: Program) => RuleVerdict;
+}
 
 const extractStarThreshold = (text: string): number | null => {
   const patterns = [
@@ -93,103 +105,394 @@ const extractAgeDays = (text: string): number | null => {
   if (dayMatch) {
     return Number.parseInt(dayMatch[1], 10);
   }
-  const monthMatch = text.match(/(\d+)\s+months?\s+old/i);
+  const monthMatch = text.match(/(\d+)\s+months?\b/i);
   if (monthMatch) {
     return Number.parseInt(monthMatch[1], 10) * 30;
   }
   return null;
 };
 
-type RuleResult = "pass" | "fail" | "unknown";
-interface RuleVerdict {
-  verdict: RuleResult;
-  reason?: EligibilityReason;
-}
+const INTENTS: RuleIntent[] = [
+  {
+    check: (_, ctx) => {
+      const label = ctx.license ?? "no detected license";
+      return isPermissive(ctx.license)
+        ? { verdict: "pass" }
+        : {
+            reason: makeReason(
+              "permissiveLicense",
+              `Requires a permissive license (detected: ${label})`,
+              { license: label },
+            ),
+            verdict: "fail",
+          };
+    },
+    keywordSets: [["permissive", "license"]],
+  },
 
-const formatCount = (value: number): string => value.toLocaleString("en-US");
+  {
+    check: (_, ctx) => {
+      const label = ctx.license ?? "no detected license";
+      return isOsiApproved(ctx.license)
+        ? { verdict: "pass" }
+        : {
+            reason: makeReason(
+              "osiLicense",
+              `Requires an OSI-approved license (detected: ${label})`,
+              { license: label },
+            ),
+            verdict: "fail",
+          };
+    },
+    keywordSets: [
+      ["open", "source", "license"],
+      ["oss", "license"],
+      ["recognized", "license"],
+      ["approved", "license", "open", "source"],
+      ["osi", "approved"],
+      ["osi", "definition"],
+      ["osi", "license"],
+    ],
+  },
 
-const makeReason = (
-  code: EligibilityReason["code"],
-  message: string,
-  params?: EligibilityReason["params"],
-): EligibilityReason => ({
-  code,
-  message,
-  ...(params ? { params } : {}),
-});
+  {
+    check: (_, ctx) => {
+      const label = ctx.license ?? "no detected license";
+      return isOsiApproved(ctx.license)
+        ? { verdict: "pass" }
+        : {
+            reason: makeReason(
+              "noOsiLicense",
+              `No OSI-approved license detected (detected: ${label})`,
+              { license: label },
+            ),
+            verdict: "fail",
+          };
+    },
+    keywordSets: [
+      ["open", "source", "project"],
+      ["open", "source", "must"],
+      ["must", "be", "open", "source"],
+      ["definition", "open", "source"],
+      ["fully", "open", "source"],
+      ["foss"],
+      ["open", "source", "repositor"],
+      ["oss", "project"],
+    ],
+  },
 
-const checkSubjective = (rule: string): RuleVerdict | null => {
-  if (
-    /non[\s-]?commercial|non[\s-]?profit|not\s+for\s+commercial|solely\s+on\s+a\s+non/i.test(
-      rule,
-    )
-  ) {
-    return {
+  {
+    check: (_, ctx) =>
+      ctx.isPrivate
+        ? {
+            reason: makeReason("repoPrivate", "Repository is private"),
+            verdict: "fail",
+          }
+        : { verdict: "pass" },
+    keywordSets: [
+      ["public", "repository"],
+      ["publicly", "available"],
+      ["publicly", "accessible"],
+      ["public", "on", "github"],
+      ["public", "on", "gitlab"],
+      ["public", "on", "bitbucket"],
+      ["source", "code", "publicly"],
+      ["repository", "must", "be", "public"],
+      ["repo", "must", "be", "public"],
+      ["public", "codebase"],
+    ],
+  },
+
+  {
+    check: (_, ctx) =>
+      ctx.isFork
+        ? {
+            reason: makeReason("repoFork", "Repository is a fork"),
+            verdict: "fail",
+          }
+        : { verdict: "pass" },
+    keywordSets: [
+      ["not", "a", "fork"],
+      ["original", "project"],
+    ],
+  },
+
+  {
+    check: (rule, ctx) => {
+      if (!/\bgithub\b/i.test(rule)) {
+        return { verdict: "pass" };
+      }
+      const wantsGitlab = /\bgitlab\b/i.test(rule);
+      if (
+        ctx.provider === "github" ||
+        (wantsGitlab && ctx.provider === "gitlab")
+      ) {
+        return { verdict: "pass" };
+      }
+      if (wantsGitlab) {
+        return { verdict: "pass" };
+      }
+      return {
+        reason: makeReason("requiresGithub", "Requires a GitHub repository"),
+        verdict: "fail",
+      };
+    },
+    keywordSets: [["github"]],
+  },
+
+  {
+    check: (rule, ctx) => {
+      if (
+        /popularity.*threshold|activity.*threshold|threshold.*popularit/i.test(
+          rule,
+        )
+      ) {
+        return {
+          reason: makeReason(
+            "popularityThreshold",
+            "Popularity threshold is determined by the provider",
+          ),
+          verdict: "unknown",
+        };
+      }
+      const threshold = extractStarThreshold(rule);
+      if (threshold === null) {
+        return { verdict: "pass" };
+      }
+      const hasAlternativeThresholds =
+        /\bor\b/i.test(rule) &&
+        /(downloads|contributors?|installs?)/i.test(rule);
+      if (hasAlternativeThresholds && ctx.stars < threshold) {
+        return {
+          reason: makeReason(
+            "popularityThreshold",
+            "Eligibility may also depend on downloads or contributors",
+          ),
+          verdict: "unknown",
+        };
+      }
+      if (ctx.stars < threshold) {
+        return {
+          reason: makeReason(
+            "starsBelow",
+            `Requires ${formatCount(threshold)}+ stars (you have ${formatCount(ctx.stars)})`,
+            { current: ctx.stars, threshold },
+          ),
+          verdict: "fail",
+        };
+      }
+      return {
+        reason: makeReason(
+          "starsMet",
+          `${formatCount(ctx.stars)} stars meets the ${formatCount(threshold)}+ threshold`,
+          { current: ctx.stars, threshold },
+        ),
+        verdict: "pass",
+      };
+    },
+    keywordSets: [
+      ["stars"],
+      ["popularity", "threshold"],
+      ["activity", "threshold"],
+    ],
+  },
+
+  {
+    check: (_, ctx) => {
+      const age = daysSince(ctx.pushedAt);
+      return age > 180
+        ? {
+            reason: makeReason(
+              "inactive",
+              `Last commit was ${age} days ago (project may be inactive)`,
+              { days: age },
+            ),
+            verdict: "fail",
+          }
+        : { verdict: "pass" };
+    },
+    keywordSets: [
+      ["actively", "maintained"],
+      ["actively", "developed"],
+      ["active", "open", "source"],
+      ["active", "project"],
+      ["active", "development"],
+    ],
+  },
+
+  {
+    check: (rule, ctx) => {
+      const ageDays = extractAgeDays(rule);
+      if (ageDays === null) {
+        return { verdict: "pass" };
+      }
+      const current = daysSince(ctx.createdAt);
+      if (current < ageDays) {
+        return {
+          reason: makeReason(
+            "projectTooNew",
+            `Project must be at least ${ageDays} days old (yours is ${current} days old)`,
+            { current, required: ageDays },
+          ),
+          verdict: "fail",
+        };
+      }
+      return { verdict: "pass" };
+    },
+    keywordSets: [["days", "old"], ["months"]],
+  },
+
+  {
+    check: (_, _ctx, program) => {
+      if (program.configFiles && program.configFiles.length > 0) {
+        return { verdict: "pass" };
+      }
+      return {
+        reason: makeReason(
+          "hostingPlatform",
+          "Hosting platform requirement cannot be auto-verified",
+        ),
+        verdict: "unknown",
+      };
+    },
+    keywordSets: [
+      ["hosted", "on"],
+      ["host", "on"],
+      ["intend", "host"],
+    ],
+  },
+
+  {
+    check: () => ({
       reason: makeReason(
         "nonCommercial",
-        "non-commercial requirement cannot be auto-verified",
+        "Non-commercial requirement cannot be auto-verified",
       ),
       verdict: "unknown",
-    };
-  }
-  if (/intend.*host/i.test(rule)) {
-    return {
-      reason: makeReason(
-        "hostingPlatform",
-        "hosting platform requirement cannot be auto-verified",
-      ),
-      verdict: "unknown",
-    };
-  }
-  if (/code\s+of\s+conduct/i.test(rule)) {
-    return {
+    }),
+    keywordSets: [
+      ["non", "commercial"],
+      ["non", "profit"],
+      ["not", "commercial"],
+      ["not", "for", "commercial"],
+      ["commercialization"],
+    ],
+  },
+
+  {
+    check: () => ({
       reason: makeReason(
         "codeOfConduct",
         "Code of Conduct cannot be auto-verified",
       ),
       verdict: "unknown",
-    };
-  }
-  if (
-    /applicant\s+must\s+be|must\s+be\s+a\s+(core|maintainer|owner|contributor)/i.test(
-      rule,
-    )
-  ) {
-    return {
-      reason: makeReason("role", "role requirement cannot be auto-verified"),
+    }),
+    keywordSets: [["code", "of", "conduct"]],
+  },
+
+  {
+    check: () => ({
+      reason: makeReason("role", "Role requirement cannot be auto-verified"),
       verdict: "unknown",
-    };
-  }
-  if (/create\s+or\s+access|invite|14[\s-]?day|trial/i.test(rule)) {
-    return {
-      reason: makeReason("procedural", "procedural step — apply manually"),
+    }),
+    keywordSets: [
+      ["maintainer"],
+      ["core", "contributor"],
+      ["project", "owner"],
+      ["project", "lead"],
+      ["applicant", "must", "be"],
+    ],
+  },
+
+  {
+    check: () => ({
+      reason: makeReason("procedural", "Procedural step — apply manually"),
       verdict: "unknown",
-    };
-  }
-  if (
-    /measurable\s+impact|quality|innovation|community\s+impact|stand\s+out|valuable\s+contributions|prioritized\s+based/i.test(
-      rule,
-    )
-  ) {
-    return {
+    }),
+    keywordSets: [
+      ["create", "account"],
+      ["create", "or", "access"],
+      ["14", "day"],
+      ["trial"],
+    ],
+  },
+
+  {
+    check: () => ({
       reason: makeReason(
         "subjective",
-        "subjective criteria cannot be auto-verified",
+        "Subjective criteria cannot be auto-verified",
       ),
       verdict: "unknown",
-    };
-  }
-  if (/welcome\s+open\s+collaboration|open\s+reuse/i.test(rule)) {
-    return {
+    }),
+    keywordSets: [
+      ["measurable", "impact"],
+      ["growth", "potential"],
+      ["quality"],
+      ["innovation"],
+      ["community", "impact"],
+      ["stand", "out"],
+      ["valuable", "contributions"],
+      ["prioritized", "based"],
+    ],
+  },
+
+  {
+    check: () => ({
+      reason: makeReason(
+        "communitySize",
+        "Community size cannot be auto-verified",
+      ),
+      verdict: "unknown",
+    }),
+    keywordSets: [
+      ["dedicated", "community"],
+      ["active", "community"],
+    ],
+  },
+
+  {
+    check: () => ({
+      reason: makeReason(
+        "usageRestriction",
+        "Usage restriction cannot be auto-verified",
+      ),
+      verdict: "unknown",
+    }),
+    keywordSets: [
+      ["credits", "must", "be", "used"],
+      ["used", "exclusively"],
+    ],
+  },
+
+  {
+    check: () => ({
+      reason: makeReason(
+        "missionAlignment",
+        "Mission alignment cannot be auto-verified",
+      ),
+      verdict: "unknown",
+    }),
+    keywordSets: [
+      ["align", "mission"],
+      ["project", "mission"],
+    ],
+  },
+
+  {
+    check: () => ({
       reason: makeReason(
         "criteriaUnverifiable",
-        "criteria cannot be auto-verified",
+        "Criteria cannot be auto-verified",
       ),
       verdict: "unknown",
-    };
-  }
-  return null;
-};
+    }),
+    keywordSets: [
+      ["welcome", "open", "collaboration"],
+      ["open", "reuse"],
+    ],
+  },
+];
 
 const checkProvider = (rule: string, ctx: RepoContext): RuleVerdict | null => {
   const providers = new Set<RepoContext["provider"]>();
@@ -207,226 +510,49 @@ const checkProvider = (rule: string, ctx: RepoContext): RuleVerdict | null => {
   }
   if (providers.size === 1 && providers.has("github")) {
     return {
-      reason: makeReason("requiresGithub", "requires a GitHub repository"),
+      reason: makeReason("requiresGithub", "Requires a GitHub repository"),
       verdict: "fail",
     };
   }
   if (providers.size === 1 && providers.has("gitlab")) {
     return {
-      reason: makeReason("requiresGitlab", "requires a GitLab repository"),
+      reason: makeReason("requiresGitlab", "Requires a GitLab repository"),
       verdict: "fail",
     };
   }
   return null;
 };
 
-const checkStars = (rule: string, ctx: RepoContext): RuleVerdict | null => {
-  if (
-    /popularity.*threshold|activity.*threshold|threshold.*popularit/i.test(rule)
-  ) {
-    return {
-      reason: makeReason(
-        "popularityThreshold",
-        "popularity threshold is determined by the provider",
-      ),
-      verdict: "unknown",
-    };
-  }
-  const threshold = extractStarThreshold(rule);
-  if (threshold === null) {
-    return null;
-  }
-  const hasAlternativeThresholds =
-    /\bor\b/i.test(rule) && /(downloads|contributors?|installs?)/i.test(rule);
-  if (hasAlternativeThresholds && ctx.stars < threshold) {
-    return {
-      reason: makeReason(
-        "popularityThreshold",
-        "eligibility may also depend on downloads or contributors",
-      ),
-      verdict: "unknown",
-    };
-  }
-  if (ctx.stars < threshold) {
-    return {
-      reason: makeReason(
-        "starsBelow",
-        `requires ${formatCount(threshold)}+ stars (you have ${formatCount(ctx.stars)})`,
-        { current: ctx.stars, threshold },
-      ),
-      verdict: "fail",
-    };
-  }
-  return {
-    reason: makeReason(
-      "starsMet",
-      `${formatCount(ctx.stars)} stars meets the ${formatCount(threshold)}+ threshold`,
-      { current: ctx.stars, threshold },
-    ),
-    verdict: "pass",
-  };
-};
+const matchRule = (
+  rule: string,
+  ctx: RepoContext,
+  program: Program,
+): RuleVerdict | null => {
+  const normalized = normalizeRule(rule);
+  const verdicts: RuleVerdict[] = [];
 
-const checkActivity = (rule: string, ctx: RepoContext): RuleVerdict | null => {
-  const ageDays = extractAgeDays(rule);
-  if (ageDays !== null && daysSince(ctx.createdAt) < ageDays) {
-    const current = daysSince(ctx.createdAt);
-    return {
-      reason: makeReason(
-        "projectTooNew",
-        `project must be at least ${ageDays} days old (yours is ${current} days old)`,
-        { current, required: ageDays },
-      ),
-      verdict: "fail",
-    };
+  const providerVerdict = checkProvider(rule, ctx);
+  if (providerVerdict) {
+    verdicts.push(providerVerdict);
   }
-  if (
-    /actively\s+maintained|actively\s+developed|active\s+open[\s-]?source|active\s+project/i.test(
-      rule,
-    )
-  ) {
-    const age = daysSince(ctx.pushedAt);
-    return age > 180
-      ? {
-          reason: makeReason(
-            "inactive",
-            `last commit was ${age} days ago (project may be inactive)`,
-            { days: age },
-          ),
-          verdict: "fail",
-        }
-      : { verdict: "pass" };
-  }
-  return null;
-};
 
-const checkLicense = (rule: string, ctx: RepoContext): RuleVerdict | null => {
-  const label = ctx.license ?? "no detected license";
-  if (/permissive\s+(?:open[\s-]?source\s+)?licen[sc]e/i.test(rule)) {
-    return isPermissive(ctx.license)
-      ? { verdict: "pass" }
-      : {
-          reason: makeReason(
-            "permissiveLicense",
-            `requires a permissive license (detected: ${label})`,
-            { license: label },
-          ),
-          verdict: "fail",
-        };
+  for (const intent of INTENTS) {
+    if (matchesAny(normalized, intent.keywordSets)) {
+      verdicts.push(intent.check(rule, ctx, program));
+    }
   }
-  if (
-    /open[\s-]?source\s+licen[sc]e|oss\s+licen[sc]e|recognized\s+licen[sc]e/i.test(
-      rule,
-    )
-  ) {
-    return isOsiApproved(ctx.license)
-      ? { verdict: "pass" }
-      : {
-          reason: makeReason(
-            "osiLicense",
-            `requires an OSI-approved license (detected: ${label})`,
-            { license: label },
-          ),
-          verdict: "fail",
-        };
-  }
-  if (
-    /open[\s-]?source\s+project|oss\s+project|open[\s-]?source\s+repositor/i.test(
-      rule,
-    )
-  ) {
-    return isOsiApproved(ctx.license)
-      ? { verdict: "pass" }
-      : {
-          reason: makeReason(
-            "noOsiLicense",
-            `no OSI-approved license detected (detected: ${label})`,
-            { license: label },
-          ),
-          verdict: "fail",
-        };
-  }
-  return null;
-};
 
-const checkRepoAttrs = (rule: string, ctx: RepoContext): RuleVerdict | null => {
-  if (
-    /publicly\s+available|public\s+repo(?:sitory)?|public\s+repositor|publicly\s+accessible|repository\s+must\s+be\s+public|repo\s+must\s+be\s+public|public\s+on\s+(?:github|gitlab|bitbucket)/i.test(
-      rule,
-    )
-  ) {
-    return ctx.isPrivate
-      ? {
-          reason: makeReason("repoPrivate", "repository is private"),
-          verdict: "fail",
-        }
-      : { verdict: "pass" };
-  }
-  if (/not\s+a\s+fork|original\s+project/i.test(rule)) {
-    return ctx.isFork
-      ? {
-          reason: makeReason("repoFork", "repository is a fork"),
-          verdict: "fail",
-        }
-      : { verdict: "pass" };
-  }
-  if (/dedicated\s+community/i.test(rule)) {
-    return {
-      reason: makeReason(
-        "communitySize",
-        "community size cannot be auto-verified",
-      ),
-      verdict: "unknown",
-    };
-  }
-  if (/credits?\s+must\s+be\s+used|used\s+exclusively/i.test(rule)) {
-    return {
-      reason: makeReason(
-        "usageRestriction",
-        "usage restriction cannot be auto-verified",
-      ),
-      verdict: "unknown",
-    };
-  }
-  if (/align\s+with.*mission|project.*mission/i.test(rule)) {
-    return {
-      reason: makeReason(
-        "missionAlignment",
-        "mission alignment cannot be auto-verified",
-      ),
-      verdict: "unknown",
-    };
-  }
-  return null;
-};
-
-const OBJECTIVE_CHECKS = [
-  checkProvider,
-  checkStars,
-  checkActivity,
-  checkLicense,
-  checkRepoAttrs,
-] as const;
-
-const matchRule = (rule: string, ctx: RepoContext): RuleVerdict | null => {
-  const verdicts = OBJECTIVE_CHECKS.map((check) => check(rule, ctx)).filter(
-    (verdict): verdict is RuleVerdict => verdict !== null,
-  );
-  const failVerdict = verdicts.find((verdict) => verdict.verdict === "fail");
+  const failVerdict = verdicts.find((v) => v.verdict === "fail");
   if (failVerdict) {
     return failVerdict;
   }
-  const subjectiveVerdict = checkSubjective(rule);
-  if (subjectiveVerdict) {
-    return subjectiveVerdict;
-  }
-  const unknownVerdict = verdicts.find(
-    (verdict) => verdict.verdict === "unknown",
-  );
+
+  const unknownVerdict = verdicts.find((v) => v.verdict === "unknown");
   if (unknownVerdict) {
     return unknownVerdict;
   }
-  return verdicts.find((verdict) => verdict.verdict === "pass") ?? null;
+
+  return verdicts.find((v) => v.verdict === "pass") ?? null;
 };
 
 const checkTechStack = (
@@ -440,7 +566,7 @@ const checkTechStack = (
     return {
       reason: makeReason(
         "techStackUnknown",
-        `could not detect project dependencies (requires ${program.techPackages.join(" or ")})`,
+        `Could not detect project dependencies (requires ${program.techPackages.join(" or ")})`,
       ),
       verdict: "unknown",
     };
@@ -451,7 +577,7 @@ const checkTechStack = (
     return {
       reason: makeReason(
         "techStackMet",
-        `technology dependency detected (${matched})`,
+        `Technology dependency detected (${matched})`,
         { matched },
       ),
       verdict: "pass",
@@ -460,10 +586,67 @@ const checkTechStack = (
   return {
     reason: makeReason(
       "techStackMissing",
-      `no matching technology dependency found in package.json (requires ${program.techPackages.join(" or ")})`,
+      `No matching technology dependency found in package.json (requires ${program.techPackages.join(" or ")})`,
     ),
     verdict: "fail",
   };
+};
+
+const checkConfigFiles = (
+  program: Program,
+  ctx: RepoContext,
+): RuleVerdict | null => {
+  if (!program.configFiles || program.configFiles.length === 0) {
+    return null;
+  }
+  const paths = ctx.filePaths ?? [];
+  if (paths.length === 0) {
+    return {
+      reason: makeReason(
+        "configFileUnknown",
+        `Could not detect project files (looking for ${program.configFiles.join(" or ")})`,
+      ),
+      verdict: "unknown",
+    };
+  }
+  const matched = program.configFiles.find((cf) =>
+    paths.some((fp) => fp === cf || fp.endsWith(`/${cf}`)),
+  );
+  if (matched) {
+    return {
+      reason: makeReason("configFileMet", `Config file detected (${matched})`, {
+        matched,
+      }),
+      verdict: "pass",
+    };
+  }
+  return {
+    reason: makeReason(
+      "configFileUnknown",
+      `No config file found (looking for ${program.configFiles.join(" or ")})`,
+    ),
+    verdict: "unknown",
+  };
+};
+
+const collectVerdict = (
+  verdict: RuleVerdict | null,
+  failReasons: EligibilityReason[],
+  unknownReasons: EligibilityReason[],
+  ruleIndex?: number,
+): void => {
+  if (!verdict?.reason) {
+    return;
+  }
+  const reason =
+    ruleIndex !== undefined && verdict.reason.code !== "rule"
+      ? { ...verdict.reason, ruleIndex }
+      : verdict.reason;
+  if (verdict.verdict === "fail") {
+    failReasons.push(reason);
+  } else if (verdict.verdict === "unknown") {
+    unknownReasons.push(reason);
+  }
 };
 
 export const checkEligibilityDetailed = (
@@ -473,15 +656,11 @@ export const checkEligibilityDetailed = (
   const failReasons: EligibilityReason[] = [];
   const unknownReasons: EligibilityReason[] = [];
 
-  const techVerdict = checkTechStack(program, ctx);
-  if (techVerdict?.verdict === "fail" && techVerdict.reason) {
-    failReasons.push(techVerdict.reason);
-  } else if (techVerdict?.verdict === "unknown" && techVerdict.reason) {
-    unknownReasons.push(techVerdict.reason);
-  }
+  collectVerdict(checkTechStack(program, ctx), failReasons, unknownReasons);
+  collectVerdict(checkConfigFiles(program, ctx), failReasons, unknownReasons);
 
   for (const [ruleIndex, rule] of program.eligibility.entries()) {
-    const verdict = matchRule(rule, ctx) ?? {
+    const verdict = matchRule(rule, ctx, program) ?? {
       reason: {
         code: "rule" as const,
         message: rule,
@@ -489,14 +668,7 @@ export const checkEligibilityDetailed = (
       },
       verdict: "unknown" as const,
     };
-    const { reason } = verdict;
-    const reasonWithIndex =
-      reason && reason.code !== "rule" ? { ...reason, ruleIndex } : reason;
-    if (verdict.verdict === "fail" && reasonWithIndex) {
-      failReasons.push(reasonWithIndex);
-    } else if (verdict.verdict === "unknown" && reasonWithIndex) {
-      unknownReasons.push(reasonWithIndex);
-    }
+    collectVerdict(verdict, failReasons, unknownReasons, ruleIndex);
   }
 
   if (failReasons.length > 0) {

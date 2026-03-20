@@ -1,5 +1,6 @@
 import { Gitlab } from "@gitbeaker/rest";
 import { Octokit } from "@octokit/rest";
+import { identifyLicense } from "license-similarity";
 
 import { PROVIDER_HOSTS } from "./parse";
 import type { RepoContext, RepoRef } from "./types";
@@ -112,7 +113,12 @@ const throwGitHubError = (
   throw new Error(`GitHub API error: ${status} ${statusText}`);
 };
 
-const fetchGitHubDependencies = async (ref: RepoRef): Promise<string[]> => {
+interface TreeScanResult {
+  dependencies: string[];
+  filePaths: string[];
+}
+
+const fetchGitHubTree = async (ref: RepoRef): Promise<TreeScanResult> => {
   try {
     const { data: tree } = await githubClient.git.getTree({
       headers: { "X-GitHub-Api-Version": "2022-11-28" },
@@ -121,19 +127,17 @@ const fetchGitHubDependencies = async (ref: RepoRef): Promise<string[]> => {
       repo: ref.repo,
       tree_sha: "HEAD",
     });
-    const pkgPaths = tree.tree
-      .filter(
-        (entry) =>
-          entry.type === "blob" &&
-          entry.path &&
-          isPackageJsonPath(entry.path) &&
-          isNotInNodeModules(entry.path),
-      )
-      .map((entry) => entry.path as string)
+
+    const filePaths = tree.tree
+      .filter((entry) => entry.type === "blob" && entry.path)
+      .map((entry) => entry.path as string);
+
+    const pkgPaths = filePaths
+      .filter((p) => isPackageJsonPath(p) && isNotInNodeModules(p))
       .slice(0, MAX_PACKAGE_JSON_FILES);
 
     if (pkgPaths.length === 0) {
-      return [];
+      return { dependencies: [], filePaths };
     }
 
     const pkgs = await Promise.all(
@@ -155,17 +159,20 @@ const fetchGitHubDependencies = async (ref: RepoRef): Promise<string[]> => {
       }),
     );
 
-    return aggregateDependencies(
-      pkgs.filter((pkg): pkg is Record<string, unknown> => pkg !== null),
-    );
+    return {
+      dependencies: aggregateDependencies(
+        pkgs.filter((pkg): pkg is Record<string, unknown> => pkg !== null),
+      ),
+      filePaths,
+    };
   } catch {
-    return [];
+    return { dependencies: [], filePaths: [] };
   }
 };
 
 export const fetchGitHub = async (ref: RepoRef): Promise<RepoContext> => {
   try {
-    const [{ data }, dependencies] = await Promise.all([
+    const [{ data }, treeScan] = await Promise.all([
       githubClient.repos.get({
         headers: {
           "X-GitHub-Api-Version": "2022-11-28",
@@ -173,15 +180,16 @@ export const fetchGitHub = async (ref: RepoRef): Promise<RepoContext> => {
         owner: ref.owner,
         repo: ref.repo,
       }),
-      fetchGitHubDependencies(ref),
+      fetchGitHubTree(ref),
     ]);
     const createdAt = new Date(data.created_at);
     const pushedAt = data.pushed_at ? new Date(data.pushed_at) : createdAt;
 
     return {
       createdAt,
-      dependencies,
+      dependencies: treeScan.dependencies,
       description: data.description,
+      filePaths: treeScan.filePaths,
       isFork: data.fork,
       isOrgOwned: data.owner.type === "Organization",
       isPrivate: data.private,
@@ -218,24 +226,23 @@ const throwGitLabError = (
   throw new Error(`GitLab API error: ${status} ${statusText}`);
 };
 
-const fetchGitLabDependencies = async (ref: RepoRef): Promise<string[]> => {
+const fetchGitLabTree = async (ref: RepoRef): Promise<TreeScanResult> => {
   try {
     const treeEntries = await gitlabClient.Repositories.allRepositoryTrees(
       ref.path,
       { recursive: true },
     );
-    const pkgPaths = treeEntries
-      .filter(
-        (entry) =>
-          entry.type === "blob" &&
-          isPackageJsonPath(entry.path) &&
-          isNotInNodeModules(entry.path),
-      )
-      .map((entry) => entry.path)
+
+    const filePaths = treeEntries
+      .filter((entry) => entry.type === "blob")
+      .map((entry) => entry.path);
+
+    const pkgPaths = filePaths
+      .filter((p) => isPackageJsonPath(p) && isNotInNodeModules(p))
       .slice(0, MAX_PACKAGE_JSON_FILES);
 
     if (pkgPaths.length === 0) {
-      return [];
+      return { dependencies: [], filePaths };
     }
 
     const pkgs = await Promise.all(
@@ -256,25 +263,29 @@ const fetchGitLabDependencies = async (ref: RepoRef): Promise<string[]> => {
       }),
     );
 
-    return aggregateDependencies(
-      pkgs.filter((pkg): pkg is Record<string, unknown> => pkg !== null),
-    );
+    return {
+      dependencies: aggregateDependencies(
+        pkgs.filter((pkg): pkg is Record<string, unknown> => pkg !== null),
+      ),
+      filePaths,
+    };
   } catch {
-    return [];
+    return { dependencies: [], filePaths: [] };
   }
 };
 
 export const fetchGitLab = async (ref: RepoRef): Promise<RepoContext> => {
   try {
-    const [data, dependencies] = await Promise.all([
+    const [data, treeScan] = await Promise.all([
       gitlabClient.Projects.show(ref.path, { license: true }),
-      fetchGitLabDependencies(ref),
+      fetchGitLabTree(ref),
     ]);
 
     return {
       createdAt: new Date(data.created_at),
-      dependencies,
+      dependencies: treeScan.dependencies,
       description: data.description,
+      filePaths: treeScan.filePaths,
       isFork: Boolean(data.forked_from_project),
       isOrgOwned: data.namespace.kind === "group",
       isPrivate: data.visibility !== "public",
@@ -311,6 +322,53 @@ interface GiteaRepoResponse {
   license: { spdx_id: string } | null;
 }
 
+const detectLicenseFromText = (text: string): string | null => {
+  try {
+    const result = identifyLicense(text);
+    return typeof result === "string" ? result : null;
+  } catch {
+    return null;
+  }
+};
+
+const LICENSE_FILE_NAMES = [
+  "LICENSE",
+  "LICENSE.md",
+  "LICENSE.txt",
+  "LICENCE",
+  "LICENCE.md",
+  "LICENCE.txt",
+];
+
+const fetchGiteaLicense = async (
+  ref: RepoRef,
+  host: string,
+): Promise<string | null> => {
+  for (const fileName of LICENSE_FILE_NAMES) {
+    try {
+      const url = `https://${host}/api/v1/repos/${ref.owner}/${ref.repo}/contents/${fileName}`;
+      const res = await fetch(url, {
+        headers: { Accept: "application/json" },
+      });
+      if (!res.ok) {
+        continue;
+      }
+      const file = (await res.json()) as { content?: string };
+      if (!file.content) {
+        continue;
+      }
+      const text = Buffer.from(file.content, "base64").toString("utf8");
+      const spdxId = detectLicenseFromText(text);
+      if (spdxId) {
+        return spdxId;
+      }
+    } catch {
+      continue;
+    }
+  }
+  return null;
+};
+
 const throwGiteaError = (status: number, host: string, ref: RepoRef): never => {
   if (status === 404) {
     throw new Error(
@@ -325,33 +383,31 @@ interface GiteaTreeEntry {
   type?: string;
 }
 
-const fetchGiteaDependencies = async (
+const fetchGiteaTree = async (
   ref: RepoRef,
   host: string,
-): Promise<string[]> => {
+): Promise<TreeScanResult> => {
   try {
     const treeUrl = `https://${host}/api/v1/repos/${ref.owner}/${ref.repo}/git/trees/HEAD?recursive=true`;
     const treeRes = await fetch(treeUrl, {
       headers: { Accept: "application/json" },
     });
     if (!treeRes.ok) {
-      return [];
+      return { dependencies: [], filePaths: [] };
     }
     const treeData = (await treeRes.json()) as { tree?: GiteaTreeEntry[] };
     const entries = treeData.tree ?? [];
-    const pkgPaths = entries
-      .filter(
-        (entry) =>
-          entry.type === "blob" &&
-          entry.path &&
-          isPackageJsonPath(entry.path) &&
-          isNotInNodeModules(entry.path),
-      )
-      .map((entry) => entry.path as string)
+
+    const filePaths = entries
+      .filter((entry) => entry.type === "blob" && entry.path)
+      .map((entry) => entry.path as string);
+
+    const pkgPaths = filePaths
+      .filter((p) => isPackageJsonPath(p) && isNotInNodeModules(p))
       .slice(0, MAX_PACKAGE_JSON_FILES);
 
     if (pkgPaths.length === 0) {
-      return [];
+      return { dependencies: [], filePaths };
     }
 
     const pkgs = await Promise.all(
@@ -375,11 +431,14 @@ const fetchGiteaDependencies = async (
       }),
     );
 
-    return aggregateDependencies(
-      pkgs.filter((pkg): pkg is Record<string, unknown> => pkg !== null),
-    );
+    return {
+      dependencies: aggregateDependencies(
+        pkgs.filter((pkg): pkg is Record<string, unknown> => pkg !== null),
+      ),
+      filePaths,
+    };
   } catch {
-    return [];
+    return { dependencies: [], filePaths: [] };
   }
 };
 
@@ -387,9 +446,9 @@ export const fetchGitea = async (ref: RepoRef): Promise<RepoContext> => {
   const host = PROVIDER_HOSTS[ref.provider];
 
   const repoUrl = `https://${host}/api/v1/repos/${ref.owner}/${ref.repo}`;
-  const [repoRes, dependencies] = await Promise.all([
+  const [repoRes, treeScan] = await Promise.all([
     fetch(repoUrl, { headers: { Accept: "application/json" } }),
-    fetchGiteaDependencies(ref, host),
+    fetchGiteaTree(ref, host),
   ]);
 
   if (!repoRes.ok) {
@@ -399,17 +458,24 @@ export const fetchGitea = async (ref: RepoRef): Promise<RepoContext> => {
   const data = (await repoRes.json()) as GiteaRepoResponse;
   const createdAt = new Date(data.created_at);
 
+  let license: string | null =
+    data.license?.spdx_id && data.license.spdx_id !== "NOASSERTION"
+      ? data.license.spdx_id
+      : null;
+
+  if (!license) {
+    license = await fetchGiteaLicense(ref, host);
+  }
+
   return {
     createdAt,
-    dependencies,
+    dependencies: treeScan.dependencies,
     description: data.description || null,
+    filePaths: treeScan.filePaths,
     isFork: data.fork,
     isOrgOwned: data.owner.type === "Organization",
     isPrivate: data.private,
-    license:
-      data.license?.spdx_id && data.license.spdx_id !== "NOASSERTION"
-        ? data.license.spdx_id
-        : null,
+    license,
     name: data.name,
     owner: ref.owner,
     path: ref.path,

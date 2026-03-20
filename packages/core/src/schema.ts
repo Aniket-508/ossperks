@@ -40,6 +40,7 @@ export const programSchema = z.object({
   applicationProcess: z.array(z.string()).optional(),
   applicationUrl: z.url().optional(),
   category: categoryEnum,
+  configFiles: z.array(z.string()).optional(),
   contact: contactSchema.optional(),
   description: z.string(),
   duration: z.string().optional(),

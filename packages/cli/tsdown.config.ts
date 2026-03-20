@@ -12,6 +12,7 @@ const sharedConfig = {
   banner: { js: "#!/usr/bin/env node" },
   deps: {
     alwaysBundle: ["@ossperks/core"],
+    externals: ["license-similarity"],
     onlyAllowBundle: false,
   },
   dts: true,

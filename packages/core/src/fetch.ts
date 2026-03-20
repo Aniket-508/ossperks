@@ -26,6 +26,36 @@ export const extractDependencyNames = (
   return [...names];
 };
 
+export const aggregateDependencies = (
+  pkgs: Record<string, unknown>[],
+): string[] => {
+  const names = new Set<string>();
+  for (const pkg of pkgs) {
+    for (const name of extractDependencyNames(pkg)) {
+      names.add(name);
+    }
+  }
+  return [...names];
+};
+
+const MAX_PACKAGE_JSON_FILES = 20;
+
+const isPackageJsonPath = (filePath: string): boolean =>
+  filePath.endsWith("/package.json") || filePath === "package.json";
+
+const isNotInNodeModules = (filePath: string): boolean =>
+  !filePath.includes("node_modules");
+
+const parseBase64Json = (content: string): Record<string, unknown> | null => {
+  try {
+    return JSON.parse(
+      Buffer.from(content, "base64").toString("utf8"),
+    ) as Record<string, unknown>;
+  } catch {
+    return null;
+  }
+};
+
 const githubClient = new Octokit({
   userAgent: "ossperks-cli",
   ...(process.env.GITHUB_TOKEN ? { auth: process.env.GITHUB_TOKEN } : {}),
@@ -84,19 +114,50 @@ const throwGitHubError = (
 
 const fetchGitHubDependencies = async (ref: RepoRef): Promise<string[]> => {
   try {
-    const { data } = await githubClient.repos.getContent({
+    const { data: tree } = await githubClient.git.getTree({
       headers: { "X-GitHub-Api-Version": "2022-11-28" },
       owner: ref.owner,
-      path: "package.json",
+      recursive: "1",
       repo: ref.repo,
+      tree_sha: "HEAD",
     });
-    if (!("content" in data) || typeof data.content !== "string") {
+    const pkgPaths = tree.tree
+      .filter(
+        (entry) =>
+          entry.type === "blob" &&
+          entry.path &&
+          isPackageJsonPath(entry.path) &&
+          isNotInNodeModules(entry.path),
+      )
+      .map((entry) => entry.path as string)
+      .slice(0, MAX_PACKAGE_JSON_FILES);
+
+    if (pkgPaths.length === 0) {
       return [];
     }
-    const pkg = JSON.parse(
-      Buffer.from(data.content, "base64").toString("utf8"),
-    ) as Record<string, unknown>;
-    return extractDependencyNames(pkg);
+
+    const pkgs = await Promise.all(
+      pkgPaths.map(async (filePath) => {
+        try {
+          const { data } = await githubClient.repos.getContent({
+            headers: { "X-GitHub-Api-Version": "2022-11-28" },
+            owner: ref.owner,
+            path: filePath,
+            repo: ref.repo,
+          });
+          if (!("content" in data) || typeof data.content !== "string") {
+            return null;
+          }
+          return parseBase64Json(data.content);
+        } catch {
+          return null;
+        }
+      }),
+    );
+
+    return aggregateDependencies(
+      pkgs.filter((pkg): pkg is Record<string, unknown> => pkg !== null),
+    );
   } catch {
     return [];
   }
@@ -159,18 +220,45 @@ const throwGitLabError = (
 
 const fetchGitLabDependencies = async (ref: RepoRef): Promise<string[]> => {
   try {
-    const data = await gitlabClient.RepositoryFiles.show(
+    const treeEntries = await gitlabClient.Repositories.allRepositoryTrees(
       ref.path,
-      "package.json",
-      "HEAD",
+      { recursive: true },
     );
-    if (typeof data.content !== "string") {
+    const pkgPaths = treeEntries
+      .filter(
+        (entry) =>
+          entry.type === "blob" &&
+          isPackageJsonPath(entry.path) &&
+          isNotInNodeModules(entry.path),
+      )
+      .map((entry) => entry.path)
+      .slice(0, MAX_PACKAGE_JSON_FILES);
+
+    if (pkgPaths.length === 0) {
       return [];
     }
-    const pkg = JSON.parse(
-      Buffer.from(data.content, "base64").toString("utf8"),
-    ) as Record<string, unknown>;
-    return extractDependencyNames(pkg);
+
+    const pkgs = await Promise.all(
+      pkgPaths.map(async (filePath) => {
+        try {
+          const data = await gitlabClient.RepositoryFiles.show(
+            ref.path,
+            filePath,
+            "HEAD",
+          );
+          if (typeof data.content !== "string") {
+            return null;
+          }
+          return parseBase64Json(data.content);
+        } catch {
+          return null;
+        }
+      }),
+    );
+
+    return aggregateDependencies(
+      pkgs.filter((pkg): pkg is Record<string, unknown> => pkg !== null),
+    );
   } catch {
     return [];
   }
@@ -232,26 +320,64 @@ const throwGiteaError = (status: number, host: string, ref: RepoRef): never => {
   throw new Error(`${host} API error: ${status}`);
 };
 
+interface GiteaTreeEntry {
+  path?: string;
+  type?: string;
+}
+
 const fetchGiteaDependencies = async (
   ref: RepoRef,
   host: string,
 ): Promise<string[]> => {
   try {
-    const url = `https://${host}/api/v1/repos/${ref.owner}/${ref.repo}/contents/package.json`;
-    const res = await fetch(url, {
+    const treeUrl = `https://${host}/api/v1/repos/${ref.owner}/${ref.repo}/git/trees/HEAD?recursive=true`;
+    const treeRes = await fetch(treeUrl, {
       headers: { Accept: "application/json" },
     });
-    if (!res.ok) {
+    if (!treeRes.ok) {
       return [];
     }
-    const file = (await res.json()) as { content?: string };
-    if (!file.content) {
+    const treeData = (await treeRes.json()) as { tree?: GiteaTreeEntry[] };
+    const entries = treeData.tree ?? [];
+    const pkgPaths = entries
+      .filter(
+        (entry) =>
+          entry.type === "blob" &&
+          entry.path &&
+          isPackageJsonPath(entry.path) &&
+          isNotInNodeModules(entry.path),
+      )
+      .map((entry) => entry.path as string)
+      .slice(0, MAX_PACKAGE_JSON_FILES);
+
+    if (pkgPaths.length === 0) {
       return [];
     }
-    const pkg = JSON.parse(
-      Buffer.from(file.content, "base64").toString("utf8"),
-    ) as Record<string, unknown>;
-    return extractDependencyNames(pkg);
+
+    const pkgs = await Promise.all(
+      pkgPaths.map(async (filePath) => {
+        try {
+          const url = `https://${host}/api/v1/repos/${ref.owner}/${ref.repo}/contents/${filePath}`;
+          const res = await fetch(url, {
+            headers: { Accept: "application/json" },
+          });
+          if (!res.ok) {
+            return null;
+          }
+          const file = (await res.json()) as { content?: string };
+          if (!file.content) {
+            return null;
+          }
+          return parseBase64Json(file.content);
+        } catch {
+          return null;
+        }
+      }),
+    );
+
+    return aggregateDependencies(
+      pkgs.filter((pkg): pkg is Record<string, unknown> => pkg !== null),
+    );
   } catch {
     return [];
   }

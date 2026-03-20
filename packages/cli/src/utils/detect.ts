@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import { extractDependencyNames, parseRepoUrl } from "@ossperks/core";
+import { aggregateDependencies, parseRepoUrl } from "@ossperks/core";
 import type { RepoRef } from "@ossperks/core";
 
 const extractRepoUrl = (repo: unknown): string | null => {
@@ -66,10 +66,73 @@ const fromGitConfig = (cwd: string): RepoRef | null => {
 export const detectRepo = (cwd = process.cwd()): RepoRef | null =>
   fromPackageJson(cwd) ?? fromGitConfig(cwd);
 
+const MAX_PACKAGE_JSON_FILES = 20;
+
+const SKIP_DIRS = new Set([
+  "node_modules",
+  ".git",
+  ".next",
+  ".turbo",
+  "dist",
+  "build",
+  "out",
+  ".cache",
+]);
+
+const findRepoRoot = (cwd: string): string => {
+  let dir = path.resolve(cwd);
+  while (true) {
+    if (fs.existsSync(path.join(dir, ".git"))) {
+      return dir;
+    }
+    const parent = path.dirname(dir);
+    if (parent === dir) {
+      return cwd;
+    }
+    dir = parent;
+  }
+};
+
+const collectPackageJsonPaths = (
+  rootDir: string,
+  collected: string[] = [],
+): string[] => {
+  if (collected.length >= MAX_PACKAGE_JSON_FILES) {
+    return collected;
+  }
+
+  let entries: fs.Dirent[];
+  try {
+    entries = fs.readdirSync(rootDir, { withFileTypes: true });
+  } catch {
+    return collected;
+  }
+
+  for (const entry of entries) {
+    if (collected.length >= MAX_PACKAGE_JSON_FILES) {
+      break;
+    }
+    if (entry.isFile() && entry.name === "package.json") {
+      collected.push(path.join(rootDir, entry.name));
+    } else if (entry.isDirectory() && !SKIP_DIRS.has(entry.name)) {
+      collectPackageJsonPaths(path.join(rootDir, entry.name), collected);
+    }
+  }
+
+  return collected;
+};
+
 export const detectDependencies = (cwd = process.cwd()): string[] => {
-  const pkg = safeReadPkg(path.join(cwd, "package.json"));
-  if (!pkg) {
+  const repoRoot = findRepoRoot(cwd);
+  const pkgPaths = collectPackageJsonPaths(repoRoot);
+
+  if (pkgPaths.length === 0) {
     return [];
   }
-  return extractDependencyNames(pkg);
+
+  const pkgs = pkgPaths
+    .map((p) => safeReadPkg(p))
+    .filter((pkg): pkg is Record<string, unknown> => pkg !== null);
+
+  return aggregateDependencies(pkgs);
 };

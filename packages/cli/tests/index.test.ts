@@ -1,4 +1,5 @@
 import {
+  aggregateDependencies,
   programs,
   getProgramBySlug,
   parseRepoUrl,
@@ -455,6 +456,54 @@ describe("checkEligibility: tech stack detection", () => {
       );
       expect(techReasons).toHaveLength(0);
     });
+  });
+});
+
+// ---------------------------------------------------------------------------
+// monorepo — aggregateDependencies across multiple package.json
+// ---------------------------------------------------------------------------
+
+describe("aggregateDependencies: monorepo-style merging", () => {
+  it("aggregates dependencies from root and workspace packages", () => {
+    const rootPkg = {
+      devDependencies: { turbo: "^2.0.0", typescript: "^5.0.0" },
+    };
+    const appPkg = {
+      dependencies: { convex: "^1.0.0", react: "^18.0.0" },
+      devDependencies: { typescript: "^5.0.0" },
+    };
+    const libPkg = {
+      dependencies: { zod: "^3.0.0" },
+      peerDependencies: { react: ">=17" },
+    };
+
+    const result = aggregateDependencies([rootPkg, appPkg, libPkg]);
+    expect(result).toContain("turbo");
+    expect(result).toContain("convex");
+    expect(result).toContain("react");
+    expect(result).toContain("zod");
+    expect(result).toContain("typescript");
+    expect(result.filter((n) => n === "react")).toHaveLength(1);
+    expect(result.filter((n) => n === "typescript")).toHaveLength(1);
+  });
+
+  it("detects convex tech stack from a workspace sub-package", () => {
+    const convex = getProgramBySlug("convex");
+    if (!convex) {
+      throw new Error("convex test data missing");
+    }
+    const deps = aggregateDependencies([
+      { devDependencies: { turbo: "^2.0.0" } },
+      { dependencies: { convex: "^1.0.0", next: "^14.0.0" } },
+    ]);
+    const result = checkEligibilityDetailed(
+      convex,
+      makeCtx({ dependencies: deps }),
+    );
+    const techReasons = result.reasons.filter(
+      (r) => r.code === "techStackMissing" || r.code === "techStackUnknown",
+    );
+    expect(techReasons).toHaveLength(0);
   });
 });
 

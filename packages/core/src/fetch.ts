@@ -3,7 +3,15 @@ import { Octokit } from "@octokit/rest";
 import { identifyLicense } from "license-similarity";
 
 import { PROVIDER_HOSTS } from "./parse";
-import type { RepoContext, RepoRef } from "./types";
+import type {
+  GiteaFileContentResponse,
+  GiteaRepoResponse,
+  GiteaTreeEntry,
+  GiteaTreeResponse,
+  RepoContext,
+  RepoRef,
+  TreeScanResult,
+} from "./types";
 
 const DEP_FIELDS = [
   "dependencies",
@@ -112,11 +120,6 @@ const throwGitHubError = (
   }
   throw new Error(`GitHub API error: ${status} ${statusText}`);
 };
-
-interface TreeScanResult {
-  dependencies: string[];
-  filePaths: string[];
-}
 
 const fetchGitHubTree = async (ref: RepoRef): Promise<TreeScanResult> => {
   try {
@@ -230,7 +233,7 @@ const fetchGitLabTree = async (ref: RepoRef): Promise<TreeScanResult> => {
   try {
     const treeEntries = await gitlabClient.Repositories.allRepositoryTrees(
       ref.path,
-      { recursive: true },
+      { perPage: 100, recursive: true },
     );
 
     const filePaths = treeEntries
@@ -308,20 +311,6 @@ export const fetchGitLab = async (ref: RepoRef): Promise<RepoContext> => {
   }
 };
 
-interface GiteaRepoResponse {
-  created_at: string;
-  description: string;
-  fork: boolean;
-  internal: boolean;
-  name: string;
-  owner: { type: string };
-  private: boolean;
-  stars_count: number;
-  topics: string[];
-  updated_at: string;
-  license: { spdx_id: string } | null;
-}
-
 const detectLicenseFromText = (text: string): string | null => {
   try {
     const result = identifyLicense(text);
@@ -353,7 +342,7 @@ const fetchGiteaLicense = async (
       if (!res.ok) {
         continue;
       }
-      const file = (await res.json()) as { content?: string };
+      const file = (await res.json()) as GiteaFileContentResponse;
       if (!file.content) {
         continue;
       }
@@ -378,27 +367,41 @@ const throwGiteaError = (status: number, host: string, ref: RepoRef): never => {
   throw new Error(`${host} API error: ${status}`);
 };
 
-interface GiteaTreeEntry {
-  path?: string;
-  type?: string;
-}
+const MAX_TREE_PAGES = 15;
 
 const fetchGiteaTree = async (
   ref: RepoRef,
   host: string,
 ): Promise<TreeScanResult> => {
   try {
-    const treeUrl = `https://${host}/api/v1/repos/${ref.owner}/${ref.repo}/git/trees/HEAD?recursive=true`;
-    const treeRes = await fetch(treeUrl, {
-      headers: { Accept: "application/json" },
-    });
-    if (!treeRes.ok) {
+    const baseUrl = `https://${host}/api/v1/repos/${ref.owner}/${ref.repo}/git/trees/HEAD?recursive=true`;
+    const allEntries: GiteaTreeEntry[] = [];
+
+    let page = 1;
+    let truncated = true;
+    while (truncated && page <= MAX_TREE_PAGES) {
+      const url = page === 1 ? baseUrl : `${baseUrl}&page=${page}`;
+      const res = await fetch(url, {
+        headers: { Accept: "application/json" },
+      });
+      if (!res.ok) {
+        break;
+      }
+      const data = (await res.json()) as GiteaTreeResponse;
+      const entries = data.tree ?? [];
+      if (entries.length === 0) {
+        break;
+      }
+      allEntries.push(...entries);
+      truncated = data.truncated === true;
+      page += 1;
+    }
+
+    if (allEntries.length === 0) {
       return { dependencies: [], filePaths: [] };
     }
-    const treeData = (await treeRes.json()) as { tree?: GiteaTreeEntry[] };
-    const entries = treeData.tree ?? [];
 
-    const filePaths = entries
+    const filePaths = allEntries
       .filter((entry) => entry.type === "blob" && entry.path)
       .map((entry) => entry.path as string);
 
@@ -413,14 +416,14 @@ const fetchGiteaTree = async (
     const pkgs = await Promise.all(
       pkgPaths.map(async (filePath) => {
         try {
-          const url = `https://${host}/api/v1/repos/${ref.owner}/${ref.repo}/contents/${filePath}`;
-          const res = await fetch(url, {
+          const contentUrl = `https://${host}/api/v1/repos/${ref.owner}/${ref.repo}/contents/${filePath}`;
+          const res = await fetch(contentUrl, {
             headers: { Accept: "application/json" },
           });
           if (!res.ok) {
             return null;
           }
-          const file = (await res.json()) as { content?: string };
+          const file = (await res.json()) as GiteaFileContentResponse;
           if (!file.content) {
             return null;
           }

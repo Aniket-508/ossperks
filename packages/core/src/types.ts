@@ -50,6 +50,39 @@ export interface RepoContext {
   filePaths?: string[];
 }
 
+export interface TreeScanResult {
+  dependencies: string[];
+  filePaths: string[];
+}
+
+export interface GiteaRepoResponse {
+  created_at: string;
+  description: string;
+  fork: boolean;
+  internal: boolean;
+  name: string;
+  owner: { type: string };
+  private: boolean;
+  stars_count: number;
+  topics: string[];
+  updated_at: string;
+  license: { spdx_id: string } | null;
+}
+
+export interface GiteaTreeEntry {
+  path?: string;
+  type?: string;
+}
+
+export interface GiteaTreeResponse {
+  tree?: GiteaTreeEntry[];
+  truncated?: boolean;
+}
+
+export interface GiteaFileContentResponse {
+  content?: string;
+}
+
 export type EligibilityStatus = "eligible" | "needs-review" | "ineligible";
 
 export type EligibilityReasonCode =
@@ -87,6 +120,18 @@ export interface EligibilityReason {
   message: string;
   params?: Record<string, number | string>;
   ruleIndex?: number;
+}
+
+export type RuleResult = "pass" | "fail" | "unknown";
+
+export interface RuleVerdict {
+  verdict: RuleResult;
+  reason?: EligibilityReason;
+}
+
+export interface RuleIntent {
+  keywordSets: string[][];
+  check: (rule: string, ctx: RepoContext, program: Program) => RuleVerdict;
 }
 
 export interface EligibilityResult {

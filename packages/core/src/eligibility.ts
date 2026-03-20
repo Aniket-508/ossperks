@@ -8,6 +8,8 @@ import type {
   ProgramEligibility,
   ProgramEligibilityDetailed,
   RepoContext,
+  RuleIntent,
+  RuleVerdict,
 } from "./types";
 
 const PERMISSIVE_IDS = new Set(
@@ -49,12 +51,6 @@ const daysSince = (date: Date): number =>
 
 const formatCount = (value: number): string => value.toLocaleString("en-US");
 
-type RuleResult = "pass" | "fail" | "unknown";
-interface RuleVerdict {
-  verdict: RuleResult;
-  reason?: EligibilityReason;
-}
-
 const makeReason = (
   code: EligibilityReason["code"],
   message: string,
@@ -78,11 +74,6 @@ const containsAll = (text: string, keywords: string[]): boolean =>
 
 const matchesAny = (text: string, keywordSets: string[][]): boolean =>
   keywordSets.some((kws) => containsAll(text, kws));
-
-interface RuleIntent {
-  keywordSets: string[][];
-  check: (rule: string, ctx: RepoContext, program: Program) => RuleVerdict;
-}
 
 const extractStarThreshold = (text: string): number | null => {
   const patterns = [

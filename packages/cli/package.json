@@ -1,6 +1,6 @@
 {
   "name": "ossperks",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "CLI to check if your project qualifies for OSS perk programs based on their guidelines.",
   "keywords": [
     "cli",

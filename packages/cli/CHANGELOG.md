@@ -1,5 +1,11 @@
 # ossperks
 
+## 0.3.2
+
+### Patch Changes
+
+- f04e82e: - Enhance README with logo, correct CC0-1.0 license badge, expanded command examples, environment variables reference, and auto-detected vs. manual-review eligibility criteria
+
 ## 0.3.1
 
 ### Patch Changes

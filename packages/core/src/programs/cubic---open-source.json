@@ -1,10 +1,11 @@
 {
   "slug": "cubic---open-source",
-  "name": "cubic - open source ",
+  "name": "cubic - open source",
   "provider": "cubic",
   "url": "https://cubic.dev",
+  "applicationUrl": "https://www.cubic.dev/sign-up?invite=oss",
   "category": "devtools",
-  "description": "The leading AI code review platform – used by teams like Resend, n8n, Better Auth, and thousands of other open source teams.",
+  "description": "The leading AI code review platform – used by teams like Resend, n8n, Better Auth, and thousands of other open source teams.",
   "perks": [
     {
       "title": "Free AI code reviews in Github + CLI",

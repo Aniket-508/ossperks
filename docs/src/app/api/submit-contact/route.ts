@@ -4,6 +4,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 import { GITHUB_CONFIG } from "@/constants/links";
+import { collapseShortArrays } from "@/lib/json";
 
 type ContactSubmission = Pick<Contact, "name" | "url"> &
   Required<Pick<Contact, "role">> & { programSlug: string };
@@ -55,7 +56,9 @@ const createContactPR = async (
   };
   programData.contact = contact;
 
-  const updatedContent = `${JSON.stringify(programData, null, 2)}\n`;
+  const updatedContent = collapseShortArrays(
+    `${JSON.stringify(programData, null, 2)}\n`,
+  );
 
   await octokit.git.createRef({
     owner: GITHUB_CONFIG.user,

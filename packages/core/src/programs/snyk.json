@@ -33,5 +33,10 @@
     "Include a link back to Snyk's website in the project README and website.",
     "Permit Snyk to use, reproduce, and display the project's logo on their website."
   ],
-  "tags": ["security", "vulnerability-scanning", "dependencies", "devsecops"]
+  "tags": ["security", "vulnerability-scanning", "dependencies", "devsecops"],
+  "contact": {
+    "name": "Stephen Thoemmes",
+    "role": "Senior DevRel",
+    "url": "https://www.linkedin.com/in/stephen-thoemmes/"
+  }
 }

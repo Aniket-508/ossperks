@@ -5,26 +5,12 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 import { GITHUB_CONFIG } from "@/constants/links";
+import { collapseShortArrays } from "@/lib/json";
 
 type ProgramSubmission = Omit<
   Program,
   "slug" | "contact" | "duration" | "requirements"
 >;
-
-const PRINT_WIDTH = 80;
-
-const collapseShortArrays = (json: string): string =>
-  json.replaceAll(
-    /^( +)"([^"]+)": \[\n((?:\1 {2}"[^\n]*",?\n)+)\1\]/gm,
-    (match, indent: string, key: string, items: string) => {
-      const values = items
-        .trim()
-        .split("\n")
-        .map((l) => l.trim().replace(/,$/, ""));
-      const collapsed = `${indent}"${key}": [${values.join(", ")}]`;
-      return collapsed.length <= PRINT_WIDTH ? collapsed : match;
-    },
-  );
 
 const buildProgramJson = (
   submission: ProgramSubmission,

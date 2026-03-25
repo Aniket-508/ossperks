@@ -8,17 +8,18 @@ Free tools, services, and credits offered to open-source projects and their main
 
 ## Contents
 
-- [AI & Machine Learning](#ai--machine-learning)
+- [AI & Machine Learning](#ai-machine-learning)
 - [Analytics](#analytics)
 - [CI/CD](#cicd)
 - [Communication](#communication)
-- [Credentials & Secrets](#credentials--secrets)
+- [Credentials & Secrets](#credentials-secrets)
 - [Developer Tools](#developer-tools)
 - [Funding](#funding)
-- [Hosting & Deployment](#hosting--deployment)
+- [Hosting & Deployment](#hosting-deployment)
 - [Infrastructure](#infrastructure)
-- [Monitoring & Observability](#monitoring--observability)
+- [Monitoring & Observability](#monitoring-observability)
 - [Security](#security)
+- [Support](#support)
 - [Testing](#testing)
 
 ## AI & Machine Learning
@@ -56,7 +57,7 @@ Free tools, services, and credits offered to open-source projects and their main
 - [Atlassian](https://www.atlassian.com/software/views/open-source-license-request) - Free Atlassian Standard cloud products including Rovo, Jira, Confluence, Trello, Bitbucket, and more for qualifying open-source projects.
 - [Cal.com](https://cal.com/help/event-types/sponsor) - Cal.com sponsors open source projects with free access to their scheduling platform. Projects must display a 'Book us with Cal.com' banner in their README and website footer.
 - [Crowdin](https://crowdin.com/page/open-source-project-setup-request) - Free localization platform for open source projects with an OSI-approved license, including translation memory, glossaries, 700+ integrations, and GitHub/GitLab/Bitbucket sync.
-- [cubic](https://cubic.dev) - The leading AI code review platform – used by teams like Resend, n8n, Better Auth, and thousands of other open source teams.
+- [cubic](https://cubic.dev) - The leading AI code review platform – used by teams like Resend, n8n, Better Auth, and thousands of other open source teams.
 - [GitBook](https://docs.gitbook.com/account-management/plans/apply-for-the-non-profit-open-source-plan) - Free Community plan for open source projects with access to all Ultimate features (except SAML SSO), GitHub/GitLab sync, unlimited contributors, and no hosting fees.
 - [GitLab](https://about.gitlab.com/solutions/open-source/) - GitLab provides free Ultimate-tier features and 50,000 compute minutes for qualifying open-source projects through the GitLab for Open Source Program.
 - [JetBrains](https://www.jetbrains.com/community/opensource/) - JetBrains offers free All Products Pack subscriptions for open-source project core teams, covering all JetBrains IDEs for development.
@@ -95,6 +96,10 @@ Free tools, services, and credits offered to open-source projects and their main
 - [SignPath](https://signpath.io/solutions/open-source-community) - Open-source projects can apply for a free code signing certificate through the SignPath Foundation, with secure signing, pipeline integrity, and full audit trails at no cost.
 - [Snyk](https://snyk.io/open-source/) - Snyk provides full Enterprise License access with unlimited usage for open-source projects, covering vulnerability scanning, dependency analysis, and security advisories.
 - [SonarSource](https://www.sonarsource.com/open-source-editions/sonarqube-cloud/) - Free static analysis for open-source projects on SonarQube Cloud, with unlimited members, feature branch analysis, and custom quality standards.
+
+## Support
+
+- [Cossistant](https://cossistant.com/open-source-program) - Free Cossistant Pro plan for open source projects, including credits, a dofollow listing, guest blog posts, and integration support.
 
 ## Testing
 

@@ -1,0 +1,47 @@
+{
+  "slug": "cossistant",
+  "name": "Cossistant Open Source Program",
+  "provider": "Cossistant",
+  "url": "https://cossistant.com/open-source-program",
+  "applicationUrl": "https://cossistant.com/open-source-program/apply",
+  "category": "support",
+  "contact": {
+    "name": "Anthony Riera",
+    "role": "Founder",
+    "url": "https://x.com/anthonyriera"
+  },
+  "description": "Free Cossistant Pro plan for open source projects, including credits, a dofollow listing, guest blog posts, and integration support.",
+  "perks": [
+    {
+      "title": "Free Pro Plan",
+      "description": "Pro plan for free with included credits."
+    },
+    {
+      "title": "Listing with Dofollow Link",
+      "description": "Your project listed on the Cossistant OSS page with a dofollow backlink."
+    },
+    {
+      "title": "Guest Blog Post",
+      "description": "A guest blog post published on the Cossistant blog."
+    },
+    {
+      "title": "Integration Support",
+      "description": "Help integrating and customizing the Cossistant widget by the Cossistant team."
+    }
+  ],
+  "eligibility": [
+    "Public GitHub repository.",
+    "Recent commits and actively maintained.",
+    "At least 100+ GitHub stars.",
+    "Not profitable (yet)."
+  ],
+  "requirements": [
+    "Keep Cossistant mentioned in the widget.",
+    "Add the OSS badge to your README.md.",
+    "Keep the badge linked to the Cossistant OSS program page."
+  ],
+  "applicationProcess": [
+    "Apply through the Cossistant OSS friends program page."
+  ],
+  "tags": ["support", "ai", "customer-support", "open-source"]
+}

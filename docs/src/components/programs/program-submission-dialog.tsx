@@ -156,20 +156,6 @@ const TextareaField = ({
   );
 };
 
-const CATEGORY_VALUES = [
-  "ai",
-  "analytics",
-  "ci-cd",
-  "communication",
-  "credentials",
-  "devtools",
-  "hosting",
-  "infrastructure",
-  "monitoring",
-  "security",
-  "testing",
-] as const;
-
 const canSubmitSelector = (s: { canSubmit: boolean }) => s.canSubmit;
 
 interface ProgramSubmissionTranslations {
@@ -479,11 +465,13 @@ export const ProgramSubmissionDialog = ({
                             </SelectValue>
                           </SelectTrigger>
                           <SelectContent>
-                            {CATEGORY_VALUES.map((val) => (
-                              <SelectItem key={val} value={val}>
-                                {categoryLabels[val]}
-                              </SelectItem>
-                            ))}
+                            {Object.keys(categoryLabels)
+                              .toSorted()
+                              .map((val) => (
+                                <SelectItem key={val} value={val}>
+                                  {categoryLabels[val]}
+                                </SelectItem>
+                              ))}
                           </SelectContent>
                         </Select>
                         <FieldError errors={field.state.meta.errors} />

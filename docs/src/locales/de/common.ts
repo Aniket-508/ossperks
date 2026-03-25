@@ -11,6 +11,7 @@ const common = {
     infrastructure: "Infrastruktur",
     monitoring: "Monitoring & Observability",
     security: "Sicherheit",
+    support: "Support",
     testing: "Testing"
   }
 };

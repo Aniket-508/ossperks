@@ -15,6 +15,7 @@ export const categoryEnum = z.enum([
   "infrastructure",
   "credentials",
   "funding",
+  "support",
 ]);
 
 export type Category = z.infer<typeof categoryEnum>;
@@ -102,5 +103,6 @@ export const CATEGORY_LABELS: Record<Category, string> = {
   infrastructure: "Infrastructure",
   monitoring: "Monitoring & Observability",
   security: "Security",
+  support: "Support",
   testing: "Testing",
-};
+} as const;

@@ -13,7 +13,7 @@
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "changeset publish",
-    "generate:readme": "node scripts/generate-readme.mjs",
+    "generate:readme": "tsx scripts/generate-readme.ts",
     "prepare": "lefthook install"
   },
   "devDependencies": {
@@ -21,6 +21,7 @@
     "lefthook": "^2.1.4",
     "oxfmt": "^0.40.0",
     "oxlint": "^1.55.0",
+    "tsx": "catalog:",
     "typescript": "catalog:",
     "ultracite": "7.3.1"
   },

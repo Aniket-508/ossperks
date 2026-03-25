@@ -42,13 +42,13 @@
   },
   "scripts": {
     "dev": "tsdown --watch",
-    "generate": "node --import tsx src/generate-programs.ts",
-    "generate:watch": "node --import tsx src/generate-programs.ts --watch",
+    "generate": "tsx src/generate-programs.ts",
+    "generate:watch": "tsx src/generate-programs.ts --watch",
     "build": "pnpm generate && pnpm clean && NODE_ENV=production tsdown",
     "clean": "rm -rf dist tsconfig.tsbuildinfo",
     "typecheck": "pnpm generate && tsc -p tsconfig.json --pretty",
     "test": "pnpm build && vitest run",
-    "validate": "node --import tsx src/validate.ts"
+    "validate": "tsx src/validate.ts"
   },
   "dependencies": {
     "@gitbeaker/rest": "^43.8.0",
@@ -60,7 +60,7 @@
   "devDependencies": {
     "@types/node": "catalog:",
     "tsdown": "catalog:",
-    "tsx": "^4.21.0",
+    "tsx": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },

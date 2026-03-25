@@ -14,6 +14,7 @@ import codeClimate from "./programs/code-climate.json" with { type: "json" };
 import codecov from "./programs/codecov.json" with { type: "json" };
 import coderabbit from "./programs/coderabbit.json" with { type: "json" };
 import convex from "./programs/convex.json" with { type: "json" };
+import cossistant from "./programs/cossistant.json" with { type: "json" };
 import coveralls from "./programs/coveralls.json" with { type: "json" };
 import crowdin from "./programs/crowdin.json" with { type: "json" };
 import cubicOpenSource from "./programs/cubic---open-source.json" with { type: "json" };
@@ -63,6 +64,7 @@ export const rawPrograms = [
   codecov,
   coderabbit,
   convex,
+  cossistant,
   coveralls,
   crowdin,
   cubicOpenSource,

@@ -7,6 +7,10 @@ export const PROVIDER_HOSTS: Record<RepoProvider, string> = {
   gitlab: "gitlab.com",
 };
 
+export const VALID_PROVIDERS = new Set<RepoProvider>(
+  Object.keys(PROVIDER_HOSTS) as RepoProvider[],
+);
+
 const HOST_TO_PROVIDER = Object.fromEntries(
   Object.entries(PROVIDER_HOSTS).map(([provider, host]) => [host, provider]),
 ) as Record<string, RepoProvider>;

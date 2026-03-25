@@ -110,7 +110,7 @@ export {
   fetchGitea,
   fetchRepoContext,
 } from "./fetch";
-export { parseRepoUrl, PROVIDER_HOSTS } from "./parse";
+export { parseRepoUrl, PROVIDER_HOSTS, VALID_PROVIDERS } from "./parse";
 export { formatSlug } from "./slug";
 export type {
   EligibilityReason,

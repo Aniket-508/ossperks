@@ -6,7 +6,7 @@ import OgImage from "@/components/og/og-image";
 import { SITE } from "@/constants/site";
 import { i18n, isLocale } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
-import { loadOgFonts } from "@/lib/fonts";
+import { loadOgFonts } from "@/lib/og";
 import { cliSource, programsSource } from "@/lib/source";
 
 export const revalidate = false;
@@ -16,6 +16,7 @@ type OgContext =
   | { type: "about" }
   | { type: "programs" }
   | { type: "program"; slug: string }
+  | { type: "submit" }
   | { type: "people" }
   | { type: "sponsors" }
   | { slugs: string[]; type: "cli" };
@@ -41,6 +42,9 @@ const resolveContext = (slug: string[] | undefined): OgContext | null => {
       return { type: "sponsors" };
     }
   }
+  if (slug.length === 2 && slug[0] === "programs" && slug[1] === "submit") {
+    return { type: "submit" };
+  }
   if (slug.length === 2 && slug[0] === "programs") {
     return { slug: slug[1], type: "program" };
   }
@@ -50,6 +54,9 @@ const resolveContext = (slug: string[] | undefined): OgContext | null => {
 const getFooterLabel = (context: OgContext): string | undefined => {
   if (context.type === "program") {
     return "Program";
+  }
+  if (context.type === "submit") {
+    return "Submit";
   }
   if (context.type === "cli") {
     return "CLI";
@@ -113,6 +120,12 @@ const getOgContent = async (
         title: program.name,
       };
     }
+    case "submit": {
+      return {
+        description: t.programs.submit.description,
+        title: t.programs.submit.heading,
+      };
+    }
     case "people": {
       return { description: t.people.description, title: t.people.heading };
     }
@@ -166,6 +179,7 @@ export const generateStaticParams = () => {
     params.push({ lang });
     params.push({ lang, slug: ["about"] });
     params.push({ lang, slug: ["programs"] });
+    params.push({ lang, slug: ["programs", "submit"] });
     params.push({ lang, slug: ["people"] });
     params.push({ lang, slug: ["sponsors"] });
     for (const program of programs) {

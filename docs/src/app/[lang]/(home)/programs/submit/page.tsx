@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 
-import { i18n } from "@/i18n/config";
+import { generateLangParams } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
 import { createMetadata } from "@/seo/metadata";
 
 import { ProgramSubmitPageClient } from "./page.client";
 
-export const generateStaticParams = () =>
-  i18n.languages.map((lang) => ({ lang }));
+export const generateStaticParams = generateLangParams;
 
 export const generateMetadata = async ({
   params,

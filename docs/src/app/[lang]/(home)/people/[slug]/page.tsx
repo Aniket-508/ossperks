@@ -11,7 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ROUTES } from "@/constants/routes";
-import { i18n } from "@/i18n/config";
+import { generateLangParamsWithSlug } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
 import { withLocalePrefix } from "@/i18n/navigation";
 import { getProgram } from "@/lib/programs";
@@ -167,9 +167,7 @@ export default async function PersonPage({
 }
 
 export const generateStaticParams = () =>
-  i18n.languages.flatMap((lang) =>
-    getAllPeopleSlugs().map((slug) => ({ lang, slug })),
-  );
+  generateLangParamsWithSlug(getAllPeopleSlugs);
 
 export const generateMetadata = async ({
   params,

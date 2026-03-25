@@ -1,14 +1,19 @@
 import "../global.css";
 import { Analytics } from "@vercel/analytics/react";
+import { Public_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { RootProvider } from "@/components/root-provider";
-import { i18n, isLocale } from "@/i18n/config";
+import { generateLangParams, isLocale } from "@/i18n/config";
 import { provider } from "@/i18n/ui";
-import { publicSans } from "@/lib/fonts";
 import { JsonLdScripts } from "@/seo/json-ld";
 import { baseMetadata } from "@/seo/metadata";
+
+const publicSans = Public_Sans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 export const metadata = baseMetadata;
 
@@ -37,5 +42,4 @@ export default async function Layout({
   );
 }
 
-export const generateStaticParams = () =>
-  i18n.languages.map((lang) => ({ lang }));
+export const generateStaticParams = generateLangParams;

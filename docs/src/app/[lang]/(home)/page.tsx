@@ -15,15 +15,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ROUTES } from "@/constants/routes";
-import { i18n } from "@/i18n/config";
+import { generateLangParams } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
 import { withLocalePrefix } from "@/i18n/navigation";
 import { getFeaturedPrograms } from "@/lib/programs";
 import { getUnavatarUrl } from "@/lib/unavatar";
 import { createMetadata } from "@/seo/metadata";
 
-export const generateStaticParams = () =>
-  i18n.languages.map((lang) => ({ lang }));
+export const generateStaticParams = generateLangParams;
 
 export const generateMetadata = async ({
   params,

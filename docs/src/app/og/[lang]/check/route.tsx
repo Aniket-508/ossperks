@@ -9,13 +9,11 @@ import { ImageResponse } from "next/og";
 
 import OgCheckImage from "@/components/og/og-check-image";
 import OgImage from "@/components/og/og-image";
-import { i18n, isLocale } from "@/i18n/config";
+import { generateLangParams, isLocale } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
-import { loadOgFonts } from "@/lib/fonts";
+import { loadOgFonts, OG_DIMENSIONS } from "@/lib/og";
 
 const VALID_PROVIDERS = new Set(["github", "gitlab", "codeberg", "gitea"]);
-
-const OG_DIMENSIONS = { height: 630, width: 1200 } as const;
 
 export const GET = async (
   req: Request,
@@ -80,5 +78,4 @@ export const GET = async (
   }
 };
 
-export const generateStaticParams = () =>
-  i18n.languages.map((lang) => ({ lang }));
+export const generateStaticParams = generateLangParams;

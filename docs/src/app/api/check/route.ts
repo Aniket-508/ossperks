@@ -2,7 +2,7 @@ import {
   checkAllProgramsDetailed,
   fetchRepoContext,
   programs,
-  PROVIDER_HOSTS,
+  VALID_PROVIDERS,
 } from "@ossperks/core";
 import type { RepoProvider, RepoRef } from "@ossperks/core";
 import { headers } from "next/headers";
@@ -12,8 +12,6 @@ import { NextResponse } from "next/server";
 import { DEFAULT_PROVIDER } from "@/lib/check";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { CheckApiErrorCode } from "@/types/check";
-
-const VALID_PROVIDERS = new Set(Object.keys(PROVIDER_HOSTS));
 
 const CACHE_TTL_MS = 5 * 60 * 1000;
 const CACHE_MAX_AGE_S = Math.floor(CACHE_TTL_MS / 1000);
@@ -45,7 +43,8 @@ const validateParams = (searchParams: URLSearchParams) => {
   const owner = searchParams.get("owner");
   const path = searchParams.get("path");
   const repo = searchParams.get("repo");
-  const provider = searchParams.get("provider") ?? DEFAULT_PROVIDER;
+  const provider =
+    (searchParams.get("provider") as RepoProvider) ?? DEFAULT_PROVIDER;
 
   if (!owner || !repo) {
     return {
@@ -75,7 +74,7 @@ const validateParams = (searchParams: URLSearchParams) => {
   return {
     owner,
     path: path ?? `${owner}/${repo}`,
-    provider: provider as RepoProvider,
+    provider,
     repo,
   };
 };

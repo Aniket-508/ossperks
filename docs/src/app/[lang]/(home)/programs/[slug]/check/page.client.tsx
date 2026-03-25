@@ -1,6 +1,5 @@
 "use client";
 
-import type { EligibilityStatus } from "@ossperks/core";
 import { ArrowLeft, CircleX } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -19,6 +18,7 @@ import {
   CHECK_PAGE_CONTAINER,
   DEFAULT_PROVIDER,
   STATUS_CONFIG,
+  STATUS_LABELS,
 } from "@/lib/check";
 import type { CheckTranslations } from "@/locales/en/check";
 import type {
@@ -33,15 +33,6 @@ interface ProgramCheckPageClientProps {
   translations: CheckTranslations;
   programTranslations: ProgramTranslationMap;
 }
-
-const STATUS_LABELS: Record<
-  EligibilityStatus,
-  keyof Pick<CheckTranslations, "eligible" | "ineligible" | "needsReview">
-> = {
-  eligible: "eligible",
-  ineligible: "ineligible",
-  "needs-review": "needsReview",
-};
 
 const ProgramCheckSkeleton = ({ name }: { name: string }) => (
   <div className={`${CHECK_PAGE_CONTAINER} animate-pulse`}>

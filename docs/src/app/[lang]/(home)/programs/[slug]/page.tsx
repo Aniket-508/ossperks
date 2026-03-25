@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LinkText } from "@/components/ui/link-text";
 import { Separator } from "@/components/ui/separator";
 import { ROUTES } from "@/constants/routes";
-import { i18n } from "@/i18n/config";
+import { generateLangParamsWithSlug } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
 import { withLocalePrefix } from "@/i18n/navigation";
 import { getProgram } from "@/lib/programs";
@@ -186,9 +186,7 @@ export default async function ProgramPage({
 }
 
 export const generateStaticParams = () =>
-  i18n.languages.flatMap((lang) =>
-    getAllProgramSlugs().map((slug) => ({ lang, slug })),
-  );
+  generateLangParamsWithSlug(getAllProgramSlugs);
 
 export const generateMetadata = async ({
   params,

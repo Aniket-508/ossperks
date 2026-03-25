@@ -10,14 +10,13 @@ import Link from "next/link";
 import { ProgramsFilter } from "@/components/programs/programs-filter";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/constants/routes";
-import { i18n } from "@/i18n/config";
+import { generateLangParams } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
 import { withLocalePrefix } from "@/i18n/navigation";
 import { getPrograms } from "@/lib/programs";
 import { createMetadata } from "@/seo/metadata";
 
-export const generateStaticParams = () =>
-  i18n.languages.map((lang) => ({ lang }));
+export const generateStaticParams = generateLangParams;
 
 export const generateMetadata = async ({
   params,

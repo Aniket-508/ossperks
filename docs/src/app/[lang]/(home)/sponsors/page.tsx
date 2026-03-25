@@ -4,12 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { LINK } from "@/constants/links";
-import { i18n } from "@/i18n/config";
+import { generateLangParams } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
 import { createMetadata } from "@/seo/metadata";
 
-export const generateStaticParams = () =>
-  i18n.languages.map((lang) => ({ lang }));
+export const generateStaticParams = generateLangParams;
 
 export const generateMetadata = async ({
   params,

@@ -1,19 +1,16 @@
-import { programs as corePrograms, getAllProgramSlugs } from "@ossperks/core";
+import { getAllProgramSlugs } from "@ossperks/core";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { i18n } from "@/i18n/config";
+import { generateLangParamsWithSlug } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
-import { getProgram } from "@/lib/programs";
+import { getProgram, getSingleProgramTranslation } from "@/lib/programs";
 import { createMetadata } from "@/seo/metadata";
-import type { ProgramTranslationMap } from "@/types/check";
 
 import { ProgramCheckPageClient } from "./page.client";
 
 export const generateStaticParams = () =>
-  i18n.languages.flatMap((lang) =>
-    getAllProgramSlugs().map((slug) => ({ lang, slug })),
-  );
+  generateLangParamsWithSlug(getAllProgramSlugs);
 
 export const generateMetadata = async ({
   params,
@@ -43,22 +40,14 @@ export default async function ProgramCheckPage({
   params: Promise<{ lang: string; slug: string }>;
 }) {
   const { lang, slug } = await params;
-  const [program, t] = await Promise.all([getProgram(slug, lang), getT(lang)]);
+  const [program, t, programTranslations] = await Promise.all([
+    getProgram(slug, lang),
+    getT(lang),
+    getSingleProgramTranslation(slug, lang),
+  ]);
   if (!program) {
     notFound();
   }
-
-  const englishProgram = corePrograms.find((p) => p.slug === slug);
-  const programTranslation: ProgramTranslationMap = {
-    [slug]: {
-      eligibility: program.eligibility,
-      hasEligibilityParity:
-        lang === i18n.defaultLanguage ||
-        program.eligibility.length ===
-          (englishProgram?.eligibility.length ?? program.eligibility.length),
-      name: program.name,
-    },
-  };
 
   return (
     <ProgramCheckPageClient
@@ -66,7 +55,7 @@ export default async function ProgramCheckPage({
       programSlug={slug}
       programName={program.name}
       translations={t.check}
-      programTranslations={programTranslation}
+      programTranslations={programTranslations}
     />
   );
 }

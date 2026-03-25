@@ -1,19 +1,16 @@
-import { programs as corePrograms } from "@ossperks/core";
 import type { Metadata } from "next";
 
 import { RepoCheckInput } from "@/components/check/check-input";
 import { Separator } from "@/components/ui/separator";
-import { i18n } from "@/i18n/config";
+import { generateLangParams } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
 import { CHECK_PAGE_CONTAINER } from "@/lib/check";
-import { getPrograms } from "@/lib/programs";
+import { getProgramTranslations } from "@/lib/programs";
 import { createMetadata } from "@/seo/metadata";
-import type { ProgramTranslationMap } from "@/types/check";
 
 import { CheckPageClient } from "./page.client";
 
-export const generateStaticParams = () =>
-  i18n.languages.map((lang) => ({ lang }));
+export const generateStaticParams = generateLangParams;
 
 type CheckPageSearchParams = Record<string, string | string[] | undefined>;
 
@@ -54,28 +51,6 @@ export const generateMetadata = async ({
     path: "/check",
     title: t.check.heading,
   });
-};
-
-const buildProgramTranslations = async (
-  lang: string,
-): Promise<ProgramTranslationMap> => {
-  const translated = await getPrograms(lang);
-  const englishPrograms = new Map(
-    corePrograms.map((program) => [program.slug, program]),
-  );
-  const map: ProgramTranslationMap = {};
-  for (const p of translated) {
-    const en = englishPrograms.get(p.slug);
-    map[p.slug] = {
-      eligibility: p.eligibility,
-      hasEligibilityParity:
-        lang === i18n.defaultLanguage ||
-        p.eligibility.length ===
-          (en?.eligibility.length ?? p.eligibility.length),
-      name: p.name,
-    };
-  }
-  return map;
 };
 
 const CheckLanding = ({
@@ -127,7 +102,7 @@ export default async function CheckPage({
   const [{ lang }, query] = await Promise.all([params, searchParams]);
   const [t, programTranslations] = await Promise.all([
     getT(lang),
-    buildProgramTranslations(lang),
+    getProgramTranslations(lang),
   ]);
 
   const owner = getSearchParam(query.owner);

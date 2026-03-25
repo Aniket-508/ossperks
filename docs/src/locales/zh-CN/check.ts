@@ -1,15 +1,14 @@
 const check = {
   checkAnother: "检查另一个仓库",
   checkFailed: "检查失败",
-  description:
-    "粘贴 GitHub、GitLab 或 Codeberg 仓库链接，即时查看您的项目可以获得哪些开源计划和福利。",
+  description: "粘贴 GitHub、GitLab 或 Codeberg 仓库链接，即时查看您的项目可以获得哪些开源计划和福利。",
   eligible: "符合条件",
   errors: {
     invalidRequest: "检查请求无效。",
     notFound: "未找到该仓库。请检查链接后重试。",
     rateLimit: "请求过于频繁。请一分钟后再试。",
     unknown: "出现了一些问题。请重试。",
-    upstream: "暂时无法获取仓库详情。请稍后再试。",
+    upstream: "暂时无法获取仓库详情。请稍后再试。"
   },
   fetchError: "无法获取资格结果。请重试。",
   fork: "复刻",
@@ -18,7 +17,7 @@ const check = {
   input: {
     invalidUrl: "请输入有效的 GitHub、GitLab 或 Codeberg 仓库链接",
     placeholder: "粘贴 GitHub、GitLab 或 Codeberg 仓库链接...",
-    required: "请粘贴仓库链接",
+    required: "请粘贴仓库链接"
   },
   lastPush: "最近推送",
   needsReview: "需要审核",
@@ -51,17 +50,19 @@ const check = {
     techStackMet: "检测到技术依赖（{matched}）",
     techStackMissing: "在 package.json 中未找到匹配的技术依赖",
     techStackUnknown: "无法检测项目依赖",
-    usageRestriction: "使用限制无法自动验证",
+    usageRestriction: "使用限制无法自动验证"
   },
+  checkProgram: "检查 {program} 资格",
+  noResultFound: "未找到此项目的资格结果。",
+  programCheckDescription: "粘贴仓库 URL 以检查您的项目是否符合此项目的资格。",
   stars: "星标",
   time: {
     daysAgo: "{days}天前",
     monthsAgo: "{months}个月前",
     today: "今天",
     yearsAgo: "{years}年前",
-    yesterday: "昨天",
-  },
+    yesterday: "昨天"
+  }
 };
-
 export default check;
-export type { CheckTranslations } from "../en/check";
+export type CheckTranslations = typeof check;

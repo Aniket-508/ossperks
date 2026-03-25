@@ -15,6 +15,7 @@
     "typescript": {
       "include": [
         "src/locales/[locale]/about.ts",
+        "src/locales/[locale]/check.ts",
         "src/locales/[locale]/common.ts",
         "src/locales/[locale]/footer.ts",
         "src/locales/[locale]/home.ts",

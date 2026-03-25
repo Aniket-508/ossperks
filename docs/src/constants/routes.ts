@@ -8,4 +8,5 @@ export const ROUTES: Record<string, `/${string}`> = {
   PEOPLE: "/people",
   PROGRAMS: "/programs",
   SPONSORS: "/sponsors",
+  SUBMIT_PROGRAM: "/programs/submit",
 };

@@ -20,6 +20,16 @@ const programs = {
     tags: "标签"
   },
   submit: {
+    autofill: {
+      button: "自动填写",
+      description:
+        "只需输入项目 URL，我们将自动为您填写详细信息！",
+      error:
+        "无法从此 URL 提取详细信息。请手动填写表单。",
+      heading: "AI 自动填写",
+      loading: "自动填写中...",
+      placeholder: "https://...",
+    },
     buttonText: "提交项目",
     description: "有想推荐的项目?提交其详细信息,我们将把它添加到列表中。",
     form: {

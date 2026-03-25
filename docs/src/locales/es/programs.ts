@@ -20,6 +20,16 @@ const programs = {
     tags: "Etiquetas"
   },
   submit: {
+    autofill: {
+      button: "Autocompletar",
+      description:
+        "Simplemente ingresa la URL del programa y completaremos automáticamente los detalles por ti.",
+      error:
+        "No se pudieron extraer los detalles de esta URL. Por favor, completa el formulario manualmente.",
+      heading: "Autocompletar con IA",
+      loading: "Autocompletando...",
+      placeholder: "https://...",
+    },
     buttonText: "Enviar un programa",
     description: "¿Tienes un programa para sugerir? Envía sus detalles y lo añadiremos a la lista.",
     form: {

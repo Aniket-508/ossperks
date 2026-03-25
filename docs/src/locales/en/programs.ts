@@ -14,6 +14,7 @@ const programs = {
   },
   more: "+{count} more",
   sections: {
+    checkEligibility: "Check Eligibility",
     eligibility: "Eligibility",
     howToApply: "How to Apply",
     perks: "Perks",
@@ -21,6 +22,16 @@ const programs = {
     tags: "Tags",
   },
   submit: {
+    autofill: {
+      button: "Autofill",
+      description:
+        "Simply input the program URL, and we'll automagically fill in the details for you!",
+      error:
+        "Could not extract details from this URL. Please fill in the form manually.",
+      heading: "Autofill with AI",
+      loading: "Autofilling...",
+      placeholder: "https://...",
+    },
     buttonText: "Submit a program",
     description:
       "Have a program to suggest? Submit its details and we'll add it to the list.",
@@ -60,6 +71,13 @@ const programs = {
       tagsPlaceholder: "Search or add tags...",
       urlLabel: "URL",
       urlPlaceholder: "https://...",
+      contactToggle: "Also add a program contact?",
+      contactNameLabel: "Contact name",
+      contactNamePlaceholder: "e.g., Jane Doe",
+      contactRoleLabel: "Role",
+      contactRolePlaceholder: "e.g., OSS Program Manager",
+      contactUrlLabel: "Contact URL (optional)",
+      contactUrlPlaceholder: "https://...",
     },
     heading: "Submit a program",
     submitButton: "Submit PR",

@@ -55,6 +55,10 @@ const check = {
     techStackUnknown: "Could not detect project dependencies",
     usageRestriction: "Usage restriction cannot be auto-verified",
   },
+  checkProgram: "Check eligibility for {program}",
+  noResultFound: "No eligibility result found for this program.",
+  programCheckDescription:
+    "Paste a repository URL to check if your project qualifies for this program.",
   stars: "stars",
   time: {
     daysAgo: "{days}d ago",

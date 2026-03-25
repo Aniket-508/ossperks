@@ -20,6 +20,16 @@ const programs = {
     tags: "Tags"
   },
   submit: {
+    autofill: {
+      button: "Automatisch ausfüllen",
+      description:
+        "Geben Sie einfach die Programm-URL ein, und wir füllen die Details automatisch für Sie aus!",
+      error:
+        "Die Details konnten nicht aus dieser URL extrahiert werden. Bitte füllen Sie das Formular manuell aus.",
+      heading: "Automatisch mit KI ausfüllen",
+      loading: "Wird ausgefüllt...",
+      placeholder: "https://...",
+    },
     buttonText: "Programm einreichen",
     description: "Haben Sie ein Programm vorzuschlagen? Reichen Sie die Details ein und wir fügen es der Liste hinzu.",
     form: {

@@ -16,6 +16,7 @@ import type { CheckTranslations } from "@/locales/en/check";
 interface RepoCheckInputProps {
   lang: string;
   translations: CheckTranslations["input"];
+  basePath?: `/${string}`;
   className?: string;
   compact?: boolean;
 }
@@ -23,6 +24,7 @@ interface RepoCheckInputProps {
 export const RepoCheckInput = ({
   lang,
   translations,
+  basePath = ROUTES.CHECK,
   className,
   compact,
 }: RepoCheckInputProps) => {
@@ -49,7 +51,7 @@ export const RepoCheckInput = ({
         return;
       }
       const search = `?provider=${encodeURIComponent(ref.provider)}&owner=${encodeURIComponent(ref.owner)}&repo=${encodeURIComponent(ref.repo)}&path=${encodeURIComponent(ref.path)}`;
-      router.push(`${withLocalePrefix(lang, ROUTES.CHECK)}${search}`);
+      router.push(`${withLocalePrefix(lang, basePath)}${search}`);
     },
     validators: {
       onSubmit: schema,

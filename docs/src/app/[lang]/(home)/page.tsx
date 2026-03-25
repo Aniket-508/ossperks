@@ -279,11 +279,10 @@ export default async function HomePage({
 
       {/* CTA */}
       <HomeCtaWithDialogs
+        lang={lang}
         programOptions={programOptions}
         translations={t.home.cta}
-        programDialogTranslations={t.programs.submit}
         contactDialogTranslations={t.people.submit}
-        categoryLabels={t.common.categories}
       />
     </div>
   );

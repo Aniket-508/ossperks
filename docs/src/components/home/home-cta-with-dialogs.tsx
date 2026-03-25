@@ -1,15 +1,16 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 import { ContactSubmissionDialog } from "@/components/people/contact-submission-dialog";
-import { ProgramSubmissionDialog } from "@/components/programs/program-submission-dialog";
 import { Button } from "@/components/ui/button";
-import type { CommonTranslations } from "@/locales/en/common";
+import { ROUTES } from "@/constants/routes";
+import { withLocalePrefix } from "@/i18n/navigation";
 import type { PeopleTranslations } from "@/locales/en/people";
-import type { ProgramsTranslations } from "@/locales/en/programs";
 
 interface HomeCtaWithDialogsProps {
+  lang: string;
   programOptions: { slug: string; name: string }[];
   translations: {
     heading: string;
@@ -17,17 +18,14 @@ interface HomeCtaWithDialogsProps {
     submitProgram: string;
     submitContact: string;
   };
-  programDialogTranslations: ProgramsTranslations["submit"];
   contactDialogTranslations: PeopleTranslations["submit"];
-  categoryLabels: CommonTranslations["categories"];
 }
 
 export const HomeCtaWithDialogs = ({
+  lang,
   programOptions,
   translations,
-  programDialogTranslations,
   contactDialogTranslations,
-  categoryLabels,
 }: HomeCtaWithDialogsProps) => (
   <section className="pt-16 pb-8 text-center">
     <h2 className="mb-2 text-2xl font-bold">{translations.heading}</h2>
@@ -35,15 +33,16 @@ export const HomeCtaWithDialogs = ({
       {translations.description}
     </p>
     <div className="flex flex-wrap justify-center gap-4">
-      <ProgramSubmissionDialog
-        trigger={
-          <Button variant="default" size="lg">
+      <Button
+        variant="default"
+        size="lg"
+        nativeButton={false}
+        render={
+          <Link href={withLocalePrefix(lang, ROUTES.SUBMIT_PROGRAM)}>
             {translations.submitProgram}
             <ArrowRight />
-          </Button>
+          </Link>
         }
-        translations={programDialogTranslations}
-        categoryLabels={categoryLabels}
       />
       <ContactSubmissionDialog
         trigger={

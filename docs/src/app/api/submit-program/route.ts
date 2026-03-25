@@ -7,10 +7,18 @@ import { NextResponse } from "next/server";
 import { GITHUB_CONFIG } from "@/constants/links";
 import { collapseShortArrays } from "@/lib/json";
 
+interface SubmissionContact {
+  name: string;
+  role: string;
+  url?: string;
+}
+
 type ProgramSubmission = Omit<
   Program,
   "slug" | "contact" | "duration" | "requirements"
->;
+> & {
+  contact?: SubmissionContact;
+};
 
 const buildProgramJson = (
   submission: ProgramSubmission,
@@ -30,12 +38,23 @@ const buildProgramJson = (
       ? submission.tags
       : ["open-source"];
 
+  const contact = submission.contact?.name?.trim()
+    ? {
+        name: submission.contact.name.trim(),
+        role: submission.contact.role.trim(),
+        ...(submission.contact.url?.trim() && {
+          url: submission.contact.url.trim(),
+        }),
+      }
+    : undefined;
+
   const program: Record<string, unknown> = {
     ...(applicationProcess.length > 0 && { applicationProcess }),
     ...(submission.applicationUrl?.trim() && {
       applicationUrl: submission.applicationUrl.trim(),
     }),
     category: submission.category,
+    ...(contact && { contact }),
     description: submission.description,
     eligibility,
     name: submission.name,
@@ -53,6 +72,7 @@ const buildProgramJson = (
     "url",
     "applicationUrl",
     "category",
+    "contact",
     "title",
     "description",
     "perks",
@@ -101,6 +121,7 @@ ${applicationProcessList ? `\n### How to Apply\n${applicationProcessList}` : ""}
 
 ### Perks
 ${perksList || "- (none)"}
+${submission.contact?.name?.trim() ? `\n### Contact\n**Name:** ${submission.contact.name}\n**Role:** ${submission.contact.role}${submission.contact.url ? `\n**URL:** ${submission.contact.url}` : ""}` : ""}
 
 ---
 *Submitted via the OSS Perks website.*

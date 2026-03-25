@@ -1,4 +1,4 @@
-import { programs } from "@ossperks/core";
+import { getPeople, getPersonSlug, programs } from "@ossperks/core";
 import type { MetadataRoute } from "next";
 
 import { ROUTES } from "@/constants/routes";
@@ -7,15 +7,21 @@ import { i18n } from "@/i18n/config";
 import { withLocalePrefix } from "@/i18n/navigation";
 import { cliSource } from "@/lib/source";
 
-const STATIC_PATHS: { path: `/${string}`; priority: number }[] = [
-  { path: ROUTES.HOME, priority: 1 },
-  { path: ROUTES.ABOUT, priority: 0.5 },
-  { path: ROUTES.CHECK, priority: 0.7 },
-  { path: ROUTES.PROGRAMS, priority: 0.9 },
-  { path: ROUTES.SUBMIT_PROGRAM, priority: 0.6 },
-  { path: ROUTES.PEOPLE, priority: 0.7 },
-  { path: ROUTES.SPONSORS, priority: 0.5 },
-  { path: ROUTES.CLI, priority: 0.9 },
+type ChangeFrequency = MetadataRoute.Sitemap[number]["changeFrequency"];
+
+const STATIC_PATHS: {
+  changeFrequency: ChangeFrequency;
+  path: `/${string}`;
+  priority: number;
+}[] = [
+  { changeFrequency: "daily", path: ROUTES.HOME, priority: 1 },
+  { changeFrequency: "monthly", path: ROUTES.ABOUT, priority: 0.5 },
+  { changeFrequency: "weekly", path: ROUTES.CHECK, priority: 0.7 },
+  { changeFrequency: "weekly", path: ROUTES.PROGRAMS, priority: 0.9 },
+  { changeFrequency: "monthly", path: ROUTES.SUBMIT_PROGRAM, priority: 0.6 },
+  { changeFrequency: "weekly", path: ROUTES.PEOPLE, priority: 0.7 },
+  { changeFrequency: "monthly", path: ROUTES.SPONSORS, priority: 0.5 },
+  { changeFrequency: "weekly", path: ROUTES.CLI, priority: 0.9 },
 ];
 
 const buildAlternates = (
@@ -33,10 +39,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
   const entries: MetadataRoute.Sitemap = [];
 
-  for (const { path, priority } of STATIC_PATHS) {
+  for (const { changeFrequency, path, priority } of STATIC_PATHS) {
     entries.push({
       alternates: buildAlternates(path),
-      changeFrequency: "weekly" as const,
+      changeFrequency,
       lastModified,
       priority,
       url: `${SITE.URL}${withLocalePrefix(i18n.defaultLanguage, path)}`,
@@ -84,6 +90,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       lastModified,
       priority: 0.8,
+      url: `${SITE.URL}${withLocalePrefix(i18n.defaultLanguage, path)}`,
+    });
+  }
+
+  for (const person of getPeople()) {
+    const path =
+      `${ROUTES.PEOPLE}/${getPersonSlug(person.contact.name)}` as `/${string}`;
+    entries.push({
+      alternates: buildAlternates(path),
+      changeFrequency: "monthly" as const,
+      lastModified,
+      priority: 0.5,
       url: `${SITE.URL}${withLocalePrefix(i18n.defaultLanguage, path)}`,
     });
   }

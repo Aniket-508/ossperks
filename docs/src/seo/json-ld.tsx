@@ -1,12 +1,29 @@
+import type { Program } from "@ossperks/core";
+
 import { LINK } from "@/constants/links";
 import { SITE } from "@/constants/site";
 import { i18n } from "@/i18n/config";
+import { withLocalePrefix } from "@/i18n/navigation";
 
 const LOCALE_TO_BCP47: Record<string, string> = {
+  de: "de-DE",
   en: "en-US",
-  "pt-br": "pt-BR",
-  zh: "zh-Hans",
+  es: "es-ES",
+  fr: "fr-FR",
+  ja: "ja-JP",
+  ko: "ko-KR",
+  "pt-BR": "pt-BR",
+  ru: "ru-RU",
+  "zh-CN": "zh-Hans",
 };
+
+const JsonLdScript = ({ data }: { data: Record<string, unknown> }) => (
+  <script
+    // oxlint-disable-next-line react/no-danger
+    dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    type="application/ld+json"
+  />
+);
 
 const WebsiteJsonLd = () => {
   const inLanguage = i18n.languages.map(
@@ -22,13 +39,7 @@ const WebsiteJsonLd = () => {
     url: SITE.URL,
   };
 
-  return (
-    <script
-      // oxlint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      type="application/ld+json"
-    />
-  );
+  return <JsonLdScript data={jsonLd} />;
 };
 
 const SoftwareSourceCodeJsonLd = () => {
@@ -57,13 +68,7 @@ const SoftwareSourceCodeJsonLd = () => {
     url: SITE.URL,
   };
 
-  return (
-    <script
-      // oxlint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      type="application/ld+json"
-    />
-  );
+  return <JsonLdScript data={jsonLd} />;
 };
 
 const OrganizationJsonLd = () => {
@@ -76,13 +81,7 @@ const OrganizationJsonLd = () => {
     url: SITE.URL,
   };
 
-  return (
-    <script
-      // oxlint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      type="application/ld+json"
-    />
-  );
+  return <JsonLdScript data={jsonLd} />;
 };
 
 const FAQJsonLd = () => {
@@ -115,13 +114,100 @@ const FAQJsonLd = () => {
     })),
   };
 
-  return (
-    <script
-      // oxlint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      type="application/ld+json"
-    />
-  );
+  return <JsonLdScript data={jsonLd} />;
+};
+
+const BreadcrumbJsonLd = ({
+  items,
+  lang,
+}: {
+  items: { name: string; path: `/${string}` }[];
+  lang: string;
+}) => {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      item: `${SITE.URL}${withLocalePrefix(lang, item.path)}`,
+      name: item.name,
+      position: index + 1,
+    })),
+  };
+  return <JsonLdScript data={jsonLd} />;
+};
+
+const ProgramJsonLd = ({
+  lang,
+  program,
+}: {
+  lang: string;
+  program: Program;
+}) => {
+  const programUrl = `${SITE.URL}${withLocalePrefix(lang, `/programs/${program.slug}`)}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    applicationCategory: "DeveloperApplication",
+    description: program.description,
+    name: program.name,
+    offers: {
+      "@type": "Offer",
+      availability: "https://schema.org/InStock",
+      price: "0",
+      priceCurrency: "USD",
+    },
+    provider: {
+      "@type": "Organization",
+      name: program.provider,
+    },
+    url: programUrl,
+  };
+  return <JsonLdScript data={jsonLd} />;
+};
+
+const ProgramListJsonLd = ({
+  lang,
+  programs,
+}: {
+  lang: string;
+  programs: { name: string; slug: string }[];
+}) => {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: programs.map((program, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `${SITE.URL}${withLocalePrefix(lang, `/programs/${program.slug}`)}`,
+    })),
+    name: "Open Source Programs",
+    numberOfItems: programs.length,
+  };
+  return <JsonLdScript data={jsonLd} />;
+};
+
+const PersonPageJsonLd = ({
+  name,
+  role,
+  url,
+}: {
+  name: string;
+  role?: string;
+  url?: string;
+}) => {
+  const jsonLd: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name,
+  };
+  if (role) {
+    jsonLd.jobTitle = role;
+  }
+  if (url) {
+    jsonLd.url = url;
+  }
+  return <JsonLdScript data={jsonLd} />;
 };
 
 const JsonLdScripts = () => (
@@ -129,7 +215,6 @@ const JsonLdScripts = () => (
     <WebsiteJsonLd />
     <SoftwareSourceCodeJsonLd />
     <OrganizationJsonLd />
-    <FAQJsonLd />
   </>
 );
 
@@ -139,4 +224,8 @@ export {
   SoftwareSourceCodeJsonLd,
   OrganizationJsonLd,
   FAQJsonLd,
+  BreadcrumbJsonLd,
+  ProgramJsonLd,
+  ProgramListJsonLd,
+  PersonPageJsonLd,
 };

@@ -8,16 +8,16 @@ Free tools, services, and credits offered to open-source projects and their main
 
 ## Contents
 
-- [AI & Machine Learning](#ai-machine-learning)
+- [AI & Machine Learning](#ai--machine-learning)
 - [Analytics](#analytics)
 - [CI/CD](#cicd)
 - [Communication](#communication)
-- [Credentials & Secrets](#credentials-secrets)
+- [Credentials & Secrets](#credentials--secrets)
 - [Developer Tools](#developer-tools)
 - [Funding](#funding)
-- [Hosting & Deployment](#hosting-deployment)
+- [Hosting & Deployment](#hosting--deployment)
 - [Infrastructure](#infrastructure)
-- [Monitoring & Observability](#monitoring-observability)
+- [Monitoring & Observability](#monitoring--observability)
 - [Security](#security)
 - [Support](#support)
 - [Testing](#testing)

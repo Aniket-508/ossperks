@@ -47,8 +47,7 @@ const labelToAnchor = (label: string): string =>
     .toLowerCase()
     .replaceAll("&", "")
     .replaceAll(/[^\w\s-]/g, "")
-    .replaceAll(/\s+/g, "-")
-    .replaceAll(/-+/g, "-")
+    .replaceAll(/\s/g, "-")
     .replaceAll(/(^-|-$)/g, "");
 
 const sortedCategories = (

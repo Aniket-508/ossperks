@@ -12,6 +12,7 @@ const STATIC_PATHS: { path: `/${string}`; priority: number }[] = [
   { path: ROUTES.ABOUT, priority: 0.5 },
   { path: ROUTES.CHECK, priority: 0.7 },
   { path: ROUTES.PROGRAMS, priority: 0.9 },
+  { path: ROUTES.SUBMIT_PROGRAM, priority: 0.6 },
   { path: ROUTES.PEOPLE, priority: 0.7 },
   { path: ROUTES.SPONSORS, priority: 0.5 },
   { path: ROUTES.CLI, priority: 0.9 },
@@ -50,6 +51,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified,
       priority: 0.8,
       url: `${SITE.URL}${withLocalePrefix(i18n.defaultLanguage, path)}`,
+    });
+
+    const checkPath =
+      `${ROUTES.PROGRAMS}/${program.slug}/check` as `/${string}`;
+    entries.push({
+      alternates: buildAlternates(checkPath),
+      changeFrequency: "weekly" as const,
+      lastModified,
+      priority: 0.7,
+      url: `${SITE.URL}${withLocalePrefix(i18n.defaultLanguage, checkPath)}`,
     });
   }
 

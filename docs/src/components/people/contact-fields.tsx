@@ -1,18 +1,9 @@
 "use client";
 
-import React, { useCallback } from "react";
+import { TextField } from "@/components/ui/form-field";
+import type { FormFieldState } from "@/components/ui/form-field";
 
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-
-export interface ContactFieldState {
-  state: {
-    value: string;
-    meta: { errors: unknown[] };
-  };
-  handleChange: (value: string) => void;
-  handleBlur: () => void;
-}
+export type ContactFieldState = FormFieldState;
 
 export interface ContactFieldsTranslations {
   nameLabel: string;
@@ -22,58 +13,6 @@ export interface ContactFieldsTranslations {
   urlLabel: string;
   urlPlaceholder: string;
 }
-
-const FieldError = ({ errors }: { errors: unknown[] }) => {
-  if (errors.length === 0) {
-    return null;
-  }
-  const message =
-    typeof errors[0] === "string"
-      ? errors[0]
-      : (errors[0] as { message?: string })?.message;
-  if (!message) {
-    return null;
-  }
-  return <p className="text-destructive text-xs">{message}</p>;
-};
-
-const ContactTextField = ({
-  field,
-  id,
-  label,
-  placeholder,
-  disabled,
-  type = "text",
-}: {
-  field: ContactFieldState;
-  id: string;
-  label: string;
-  placeholder: string;
-  disabled: boolean;
-  type?: string;
-}) => {
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) =>
-      field.handleChange(e.target.value),
-    [field],
-  );
-
-  return (
-    <div className="space-y-2">
-      <Label htmlFor={id}>{label}</Label>
-      <Input
-        id={id}
-        type={type}
-        placeholder={placeholder}
-        value={field.state.value}
-        onChange={handleChange}
-        onBlur={field.handleBlur}
-        disabled={disabled}
-      />
-      <FieldError errors={field.state.meta.errors} />
-    </div>
-  );
-};
 
 interface ContactFieldsProps {
   nameField: ContactFieldState;
@@ -94,14 +33,14 @@ export const ContactFields = ({
 }: ContactFieldsProps) => (
   <>
     <div className="grid grid-cols-2 gap-4">
-      <ContactTextField
+      <TextField
         field={nameField}
         id={`${idPrefix}-name`}
         label={translations.nameLabel}
         placeholder={translations.namePlaceholder}
         disabled={disabled}
       />
-      <ContactTextField
+      <TextField
         field={roleField}
         id={`${idPrefix}-role`}
         label={translations.roleLabel}
@@ -109,7 +48,7 @@ export const ContactFields = ({
         disabled={disabled}
       />
     </div>
-    <ContactTextField
+    <TextField
       field={urlField}
       id={`${idPrefix}-url`}
       label={translations.urlLabel}

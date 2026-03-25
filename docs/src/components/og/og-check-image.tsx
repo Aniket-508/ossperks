@@ -8,7 +8,7 @@ import {
 } from "@/components/icons";
 import { LogoMark } from "@/components/logo";
 import { SITE } from "@/constants/site";
-import { OG_FONT_FAMILY } from "@/lib/fonts";
+import { OG_FONT_FAMILY } from "@/lib/og";
 
 type Provider = "codeberg" | "gitea" | "github" | "gitlab";
 

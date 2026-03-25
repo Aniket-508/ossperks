@@ -14,18 +14,9 @@ import {
 } from "@/components/ui/card";
 import { ROUTES } from "@/constants/routes";
 import { withLocalePrefix } from "@/i18n/navigation";
-import { STATUS_CONFIG } from "@/lib/check";
+import { STATUS_CONFIG, STATUS_LABELS } from "@/lib/check";
 import type { CheckTranslations } from "@/locales/en/check";
 import type { TranslatedCheckResult } from "@/types/check";
-
-const STATUS_LABELS: Record<
-  EligibilityStatus,
-  keyof Pick<CheckTranslations, "eligible" | "ineligible" | "needsReview">
-> = {
-  eligible: "eligible",
-  ineligible: "ineligible",
-  "needs-review": "needsReview",
-};
 
 export const ResultSection = ({
   items,

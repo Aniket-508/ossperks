@@ -19,6 +19,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { FieldError } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -30,20 +31,6 @@ import {
 } from "@/components/ui/select";
 import { useAutofill } from "@/hooks/use-autofill";
 import { useSubmission } from "@/hooks/use-submission";
-
-const FieldError = ({ errors }: { errors: unknown[] }) => {
-  if (errors.length === 0) {
-    return null;
-  }
-  const message =
-    typeof errors[0] === "string"
-      ? errors[0]
-      : (errors[0] as { message?: string })?.message;
-  if (!message) {
-    return null;
-  }
-  return <p className="text-destructive text-xs">{message}</p>;
-};
 
 const canSubmitSelector = (s: { canSubmit: boolean }) => s.canSubmit;
 

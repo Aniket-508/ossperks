@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import { LogoMark } from "@/components/logo";
 import { SITE } from "@/constants/site";
-import { OG_FONT_FAMILY } from "@/lib/fonts";
+import { OG_FONT_FAMILY } from "@/lib/og";
 
 interface OgImageProps {
   description?: ReactNode;

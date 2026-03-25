@@ -1,10 +1,11 @@
 import {
-  programs,
   checkAllPrograms,
   checkEligibility,
   getProgramBySlug,
   fetchRepoContext,
+  programs,
   PROVIDER_HOSTS,
+  VALID_PROVIDERS,
 } from "@ossperks/core";
 import type {
   Program,
@@ -25,6 +26,7 @@ import {
   maxSlugLength,
   success,
 } from "../utils/format.js";
+import { closestSlug } from "../utils/slug.js";
 
 interface CheckOpts {
   repo?: string;
@@ -32,31 +34,6 @@ interface CheckOpts {
   program?: string;
   json?: boolean;
 }
-
-const slugScore = (a: string, b: string): number => {
-  const maxLen = Math.max(a.length, b.length);
-  let score = 0;
-  for (let i = 0; i < maxLen; i += 1) {
-    if (a[i] !== b[i]) {
-      score += 1;
-    }
-  }
-  return score + Math.abs(a.length - b.length);
-};
-
-const closestSlug = (slug: string): string | null => {
-  let best: string | null = null;
-  let bestScore = Infinity;
-  const target = slug.toLowerCase();
-  for (const p of programs) {
-    const score = slugScore(target, p.slug.toLowerCase());
-    if (score < bestScore) {
-      bestScore = score;
-      best = p.slug;
-    }
-  }
-  return bestScore <= 5 ? best : null;
-};
 
 const formatAge = (date: Date): string => {
   const days = Math.floor(
@@ -92,10 +69,6 @@ const printRepoSummary = (ctx: RepoContext): void => {
   }
   success(`${pc.bold(ctx.name)} ${pc.dim("—")} ${parts.join(pc.dim(" · "))}`);
 };
-
-const VALID_PROVIDERS = new Set<RepoProvider>(
-  Object.keys(PROVIDER_HOSTS) as RepoProvider[],
-);
 
 const resolveRef = (opts: CheckOpts): RepoRef | null => {
   if (!opts.repo) {

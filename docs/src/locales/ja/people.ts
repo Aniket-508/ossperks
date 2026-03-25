@@ -12,13 +12,11 @@ const people = {
   submit: {
     autofill: {
       button: "自動入力",
-      description:
-        "プロフィールのURLを入力するだけで、詳細を自動的に入力します！",
-      error:
-        "このURLから詳細を抽出できませんでした。フォームを手動で入力してください。",
+      description: "プロフィールのURLを入力するだけで、詳細を自動的に入力します！",
+      error: "このURLから詳細を抽出できませんでした。フォームを手動で入力してください。",
       heading: "AIで自動入力",
       loading: "自動入力中...",
-      placeholder: "https://...",
+      placeholder: "https://..."
     },
     buttonText: "連絡先を送信",
     description: "プログラムに関わる人物をご存知ですか？詳細情報を送信していただければ、追加いたします。",

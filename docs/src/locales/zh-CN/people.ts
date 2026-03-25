@@ -12,13 +12,11 @@ const people = {
   submit: {
     autofill: {
       button: "自动填写",
-      description:
-        "只需输入个人资料 URL，我们将自动为您填写详细信息！",
-      error:
-        "无法从此 URL 提取详细信息。请手动填写表单。",
+      description: "只需输入个人资料 URL，我们将自动为您填写详细信息！",
+      error: "无法从此 URL 提取详细信息。请手动填写表单。",
       heading: "AI 自动填写",
       loading: "自动填写中...",
-      placeholder: "https://...",
+      placeholder: "https://..."
     },
     buttonText: "提交联系人",
     description: "认识某个计划背后的人员?提交他们的详细信息,我们将添加他们。",

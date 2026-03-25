@@ -20,6 +20,7 @@ const programs = {
     tags: "태그"
   },
   submit: {
+    backToAll: "모든 프로그램",
     autofill: {
       button: "자동 입력",
       description:

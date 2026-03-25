@@ -12,13 +12,11 @@ const people = {
   submit: {
     autofill: {
       button: "Preenchimento automático",
-      description:
-        "Basta inserir a URL do perfil e preencheremos automaticamente os detalhes para você!",
-      error:
-        "Não foi possível extrair os detalhes desta URL. Por favor, preencha o formulário manualmente.",
+      description: "Basta inserir a URL do perfil e preencheremos automaticamente os detalhes para você!",
+      error: "Não foi possível extrair os detalhes desta URL. Por favor, preencha o formulário manualmente.",
       heading: "Preenchimento automático com IA",
       loading: "Preenchendo...",
-      placeholder: "https://...",
+      placeholder: "https://..."
     },
     buttonText: "Enviar um contato",
     description: "Conhece alguém por trás de um programa? Envie os detalhes e nós o adicionaremos.",

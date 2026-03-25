@@ -20,6 +20,7 @@ const programs = {
     tags: "标签"
   },
   submit: {
+    backToAll: "所有项目",
     autofill: {
       button: "自动填写",
       description:

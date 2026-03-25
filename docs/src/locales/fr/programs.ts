@@ -20,6 +20,7 @@ const programs = {
     tags: "Tags"
   },
   submit: {
+    backToAll: "Tous les programmes",
     autofill: {
       button: "Remplissage auto",
       description:

@@ -22,6 +22,7 @@ const programs = {
     tags: "Tags",
   },
   submit: {
+    backToAll: "All Programs",
     autofill: {
       button: "Autofill",
       description:

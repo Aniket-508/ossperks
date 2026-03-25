@@ -20,6 +20,7 @@ const programs = {
     tags: "Теги"
   },
   submit: {
+    backToAll: "Все программы",
     autofill: {
       button: "Автозаполнение",
       description:

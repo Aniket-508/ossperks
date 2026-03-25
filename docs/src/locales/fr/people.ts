@@ -12,13 +12,11 @@ const people = {
   submit: {
     autofill: {
       button: "Remplissage auto",
-      description:
-        "Entrez simplement l'URL du profil et nous remplirons automatiquement les détails pour vous !",
-      error:
-        "Impossible d'extraire les détails de cette URL. Veuillez remplir le formulaire manuellement.",
+      description: "Entrez simplement l'URL du profil et nous remplirons automatiquement les détails pour vous !",
+      error: "Impossible d'extraire les détails de cette URL. Veuillez remplir le formulaire manuellement.",
       heading: "Remplissage auto avec l'IA",
       loading: "Remplissage en cours...",
-      placeholder: "https://...",
+      placeholder: "https://..."
     },
     buttonText: "Soumettre un contact",
     description: "Vous connaissez quelqu'un derrière un programme ? Soumettez ses coordonnées et nous les ajouterons.",

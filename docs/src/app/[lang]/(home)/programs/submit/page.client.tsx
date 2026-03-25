@@ -170,15 +170,15 @@ const TextareaField = ({
 const canSubmitSelector = (s: { canSubmit: boolean }) => s.canSubmit;
 
 interface ProgramSubmitPageClientProps {
+  categoryLabels: Record<string, string>;
   lang: string;
   translations: ProgramsTranslations["submit"];
-  categoryLabels: Record<string, string>;
 }
 
 export const ProgramSubmitPageClient = ({
-  lang,
-  translations,
   categoryLabels,
+  lang,
+  translations: t,
 }: ProgramSubmitPageClientProps) => {
   const [step, setStep] = useState<"form" | "success">("form");
   const [result, setResult] = useState<{
@@ -194,8 +194,6 @@ export const ProgramSubmitPageClient = ({
   const [hasApplicationUrl, setHasApplicationUrl] = useState(false);
   const [hasContact, setHasContact] = useState(false);
   const [autofillUrl, setAutofillUrl] = useState("");
-
-  const t = translations;
 
   const { autofill, autofillError, isAutofilling } = useAutofill(
     "/api/autofill-program",
@@ -436,7 +434,7 @@ export const ProgramSubmitPageClient = ({
           render={
             <Link href={withLocalePrefix(lang, ROUTES.PROGRAMS)}>
               <ArrowLeft />
-              {t.heading}
+              {t.backToAll}
             </Link>
           }
         />

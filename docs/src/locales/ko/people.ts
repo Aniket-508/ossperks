@@ -12,13 +12,11 @@ const people = {
   submit: {
     autofill: {
       button: "자동 입력",
-      description:
-        "프로필 URL을 입력하면 자동으로 세부 정보를 채워드립니다!",
-      error:
-        "이 URL에서 세부 정보를 추출할 수 없습니다. 양식을 수동으로 작성해 주세요.",
+      description: "프로필 URL을 입력하면 자동으로 세부 정보를 채워드립니다!",
+      error: "이 URL에서 세부 정보를 추출할 수 없습니다. 양식을 수동으로 작성해 주세요.",
       heading: "AI로 자동 입력",
       loading: "자동 입력 중...",
-      placeholder: "https://...",
+      placeholder: "https://..."
     },
     buttonText: "연락처 제출하기",
     description: "프로그램 담당자를 알고 계신가요? 상세 정보를 제출해 주시면 추가하겠습니다.",

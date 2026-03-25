@@ -20,6 +20,7 @@ const programs = {
     tags: "タグ"
   },
   submit: {
+    backToAll: "すべてのプログラム",
     autofill: {
       button: "自動入力",
       description:

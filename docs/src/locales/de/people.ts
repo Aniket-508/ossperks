@@ -10,6 +10,16 @@ const people = {
   heading: "Personen",
   roleAt: "{role} bei {provider}",
   submit: {
+    autofill: {
+      button: "Automatisch ausfüllen",
+      description:
+        "Geben Sie einfach die Profil-URL ein, und wir füllen die Details automatisch für Sie aus!",
+      error:
+        "Die Details konnten nicht aus dieser URL extrahiert werden. Bitte füllen Sie das Formular manuell aus.",
+      heading: "Automatisch mit KI ausfüllen",
+      loading: "Wird ausgefüllt...",
+      placeholder: "https://...",
+    },
     buttonText: "Kontakt einreichen",
     description: "Kennen Sie jemanden hinter einem Programm? Reichen Sie dessen Details ein und wir fügen sie hinzu.",
     form: {

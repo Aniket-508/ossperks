@@ -2,10 +2,12 @@
 
 import { getProgramBySlug } from "@ossperks/core";
 import { useForm } from "@tanstack/react-form";
-import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, Loader2, Sparkles } from "lucide-react";
 import React, { useCallback, useMemo, useState } from "react";
 import { z } from "zod";
 
+import { ContactFields } from "@/components/people/contact-fields";
+import type { ContactFieldsTranslations } from "@/components/people/contact-fields";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -26,16 +28,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAutofill } from "@/hooks/use-autofill";
 import { useSubmission } from "@/hooks/use-submission";
-
-interface FormField {
-  state: {
-    value: string;
-    meta: { errors: unknown[] };
-  };
-  handleChange: (value: string) => void;
-  handleBlur: () => void;
-}
 
 const FieldError = ({ errors }: { errors: unknown[] }) => {
   if (errors.length === 0) {
@@ -51,57 +45,21 @@ const FieldError = ({ errors }: { errors: unknown[] }) => {
   return <p className="text-destructive text-xs">{message}</p>;
 };
 
-const TextField = ({
-  field,
-  id,
-  label,
-  placeholder,
-  disabled,
-  type = "text",
-}: {
-  field: FormField;
-  id: string;
-  label: string;
-  placeholder: string;
-  disabled: boolean;
-  type?: string;
-}) => {
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) =>
-      field.handleChange(e.target.value),
-    [field],
-  );
-
-  return (
-    <div className="space-y-2">
-      <Label htmlFor={id}>{label}</Label>
-      <Input
-        id={id}
-        type={type}
-        placeholder={placeholder}
-        value={field.state.value}
-        onChange={handleChange}
-        onBlur={field.handleBlur}
-        disabled={disabled}
-      />
-      <FieldError errors={field.state.meta.errors} />
-    </div>
-  );
-};
-
 const canSubmitSelector = (s: { canSubmit: boolean }) => s.canSubmit;
 
 interface ContactSubmissionTranslations {
+  autofill: {
+    button: string;
+    description: string;
+    error: string;
+    heading: string;
+    loading: string;
+    placeholder: string;
+  };
   heading: string;
   description: string;
   buttonText: string;
-  form: {
-    nameLabel: string;
-    namePlaceholder: string;
-    roleLabel: string;
-    rolePlaceholder: string;
-    urlLabel: string;
-    urlPlaceholder: string;
+  form: ContactFieldsTranslations & {
     programLabel: string;
     programPlaceholder: string;
   };
@@ -139,8 +97,14 @@ export const ContactSubmissionDialog = ({
     prNumber?: number;
     prUrl?: string;
   } | null>(null);
+  const [autofillUrl, setAutofillUrl] = useState("");
 
   const t = translations;
+
+  const { autofill, autofillError, isAutofilling } = useAutofill(
+    "/api/autofill-contact",
+    { error: t.autofill.error, loading: t.autofill.loading },
+  );
 
   const contactSchema = useMemo(
     () =>
@@ -187,8 +151,28 @@ export const ContactSubmissionDialog = ({
     },
   });
 
+  const handleAutofill = useCallback(async () => {
+    if (!autofillUrl.trim()) {
+      return;
+    }
+    const data = await autofill(autofillUrl.trim());
+    if (!data) {
+      return;
+    }
+
+    const d = data as Record<string, unknown>;
+    if (typeof d.name === "string") {
+      form.setFieldValue("name", d.name);
+    }
+    if (typeof d.role === "string") {
+      form.setFieldValue("role", d.role);
+    }
+    form.setFieldValue("url", autofillUrl.trim());
+  }, [autofillUrl, autofill, form]);
+
   const handleClose = useCallback(() => {
     setOpen(false);
+    setAutofillUrl("");
     setTimeout(() => {
       setStep("form");
       form.reset();
@@ -228,41 +212,68 @@ export const ContactSubmissionDialog = ({
             <DialogBody>
               {/* eslint-disable react-perf/jsx-no-new-function-as-prop */}
               <div className="grid gap-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <form.Field name="name">
-                    {(field) => (
-                      <TextField
-                        field={field}
-                        id="contact-name"
-                        label={t.form.nameLabel}
-                        placeholder={t.form.namePlaceholder}
-                        disabled={isSubmitting}
-                      />
-                    )}
-                  </form.Field>
-                  <form.Field name="role">
-                    {(field) => (
-                      <TextField
-                        field={field}
-                        id="contact-role"
-                        label={t.form.roleLabel}
-                        placeholder={t.form.rolePlaceholder}
-                        disabled={isSubmitting}
-                      />
-                    )}
-                  </form.Field>
+                <div className="bg-fd-muted/50 border-fd-border rounded-lg border p-4">
+                  <div className="mb-3">
+                    <h4 className="text-sm font-semibold">
+                      {t.autofill.heading}
+                    </h4>
+                    <p className="text-fd-muted-foreground text-xs">
+                      {t.autofill.description}
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Input
+                      placeholder={t.autofill.placeholder}
+                      value={autofillUrl}
+                      onChange={(e) => setAutofillUrl(e.target.value)}
+                      disabled={isAutofilling || isSubmitting}
+                      className="flex-1"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={
+                        isAutofilling || isSubmitting || !autofillUrl.trim()
+                      }
+                      onClick={handleAutofill}
+                    >
+                      {isAutofilling ? (
+                        <>
+                          <Loader2 className="animate-spin" />
+                          {t.autofill.loading}
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="size-4" />
+                          {t.autofill.button}
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                  {autofillError && (
+                    <p className="text-destructive mt-2 text-xs">
+                      {autofillError}
+                    </p>
+                  )}
                 </div>
 
-                <form.Field name="url">
-                  {(field) => (
-                    <TextField
-                      field={field}
-                      id="contact-url"
-                      label={t.form.urlLabel}
-                      placeholder={t.form.urlPlaceholder}
-                      type="url"
-                      disabled={isSubmitting}
-                    />
+                <form.Field name="name">
+                  {(nameField) => (
+                    <form.Field name="role">
+                      {(roleField) => (
+                        <form.Field name="url">
+                          {(urlField) => (
+                            <ContactFields
+                              nameField={nameField}
+                              roleField={roleField}
+                              urlField={urlField}
+                              translations={t.form}
+                              disabled={isSubmitting}
+                            />
+                          )}
+                        </form.Field>
+                      )}
+                    </form.Field>
                   )}
                 </form.Field>
 

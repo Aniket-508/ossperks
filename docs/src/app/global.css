@@ -117,6 +117,23 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+@keyframes slide-down {
+  from {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    max-height: 80px;
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-down {
+  animation: slide-down 300ms ease-out forwards;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

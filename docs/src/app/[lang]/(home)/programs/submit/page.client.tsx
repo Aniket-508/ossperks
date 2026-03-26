@@ -8,7 +8,6 @@ import {
   ChevronDown,
   Loader2,
   Plus,
-  Sparkles,
   Trash2,
 } from "lucide-react";
 import Link from "next/link";
@@ -16,6 +15,7 @@ import React, { useCallback, useMemo, useRef, useState } from "react";
 import { z } from "zod";
 
 import { ContactFields } from "@/components/people/contact-fields";
+import { AutofillCard } from "@/components/programs/autofill-card";
 import { TagsInput } from "@/components/programs/tags-input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -41,7 +41,6 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { ROUTES } from "@/constants/routes";
-import { useAutofill } from "@/hooks/use-autofill";
 import { useSubmission } from "@/hooks/use-submission";
 import { withLocalePrefix } from "@/i18n/navigation";
 import type { ProgramsTranslations } from "@/locales/en/programs";
@@ -102,12 +101,6 @@ export const ProgramSubmitPageClient = ({
   >([0]);
   const [hasApplicationUrl, setHasApplicationUrl] = useState(false);
   const [hasContact, setHasContact] = useState(false);
-  const [autofillUrl, setAutofillUrl] = useState("");
-
-  const { autofill, autofillError, isAutofilling } = useAutofill(
-    "/api/autofill-program",
-    { error: t.autofill.error, loading: t.autofill.loading },
-  );
 
   const programSchema = useMemo(
     () =>
@@ -146,11 +139,13 @@ export const ProgramSubmitPageClient = ({
     [t.validation],
   );
 
-  const { isSubmitting, submissionError, submissionStatus, submit } =
-    useSubmission("/api/submit-program", {
+  const { isSubmitting, submissionError, submit } = useSubmission(
+    "/api/submit-program",
+    {
       error: t.submitError,
       submitting: t.submitting,
-    });
+    },
+  );
 
   const form = useForm({
     defaultValues: {
@@ -211,79 +206,74 @@ export const ProgramSubmitPageClient = ({
     },
   });
 
-  const handleAutofill = useCallback(async () => {
-    if (!autofillUrl.trim()) {
-      return;
-    }
-    const data = await autofill(autofillUrl.trim());
-    if (!data) {
-      return;
-    }
+  const handleAutofillData = useCallback(
+    (data: Record<string, unknown>, sourceUrl: string) => {
+      const d = data;
+      if (typeof d.name === "string") {
+        form.setFieldValue("name", d.name);
+      }
+      if (typeof d.provider === "string") {
+        form.setFieldValue("provider", d.provider);
+      }
+      if (typeof d.url === "string") {
+        form.setFieldValue("url", d.url);
+      } else {
+        form.setFieldValue("url", sourceUrl);
+      }
+      if (typeof d.category === "string") {
+        form.setFieldValue("category", d.category);
+      }
+      if (typeof d.description === "string") {
+        form.setFieldValue("description", d.description);
+      }
 
-    const d = data as Record<string, unknown>;
-    if (typeof d.name === "string") {
-      form.setFieldValue("name", d.name);
-    }
-    if (typeof d.provider === "string") {
-      form.setFieldValue("provider", d.provider);
-    }
-    if (typeof d.url === "string") {
-      form.setFieldValue("url", d.url);
-    } else {
-      form.setFieldValue("url", autofillUrl.trim());
-    }
-    if (typeof d.category === "string") {
-      form.setFieldValue("category", d.category);
-    }
-    if (typeof d.description === "string") {
-      form.setFieldValue("description", d.description);
-    }
+      if (Array.isArray(d.eligibility) && d.eligibility.length > 0) {
+        form.setFieldValue("eligibility", d.eligibility as string[]);
+        const keys = (d.eligibility as string[]).map(() => {
+          nextIdRef.current += 1;
+          return nextIdRef.current;
+        });
+        setEligibilityKeys(keys);
+      }
 
-    if (Array.isArray(d.eligibility) && d.eligibility.length > 0) {
-      form.setFieldValue("eligibility", d.eligibility as string[]);
-      const keys = (d.eligibility as string[]).map(() => {
-        nextIdRef.current += 1;
-        return nextIdRef.current;
-      });
-      setEligibilityKeys(keys);
-    }
+      if (Array.isArray(d.perks) && d.perks.length > 0) {
+        form.setFieldValue(
+          "perks",
+          d.perks as { title: string; description: string }[],
+        );
+        const keys = (d.perks as unknown[]).map(() => {
+          nextIdRef.current += 1;
+          return nextIdRef.current;
+        });
+        setPerkKeys(keys);
+      }
 
-    if (Array.isArray(d.perks) && d.perks.length > 0) {
-      form.setFieldValue(
-        "perks",
-        d.perks as { title: string; description: string }[],
-      );
-      const keys = (d.perks as unknown[]).map(() => {
-        nextIdRef.current += 1;
-        return nextIdRef.current;
-      });
-      setPerkKeys(keys);
-    }
+      if (
+        Array.isArray(d.applicationProcess) &&
+        d.applicationProcess.length > 0
+      ) {
+        form.setFieldValue(
+          "applicationProcess",
+          d.applicationProcess as string[],
+        );
+        const keys = (d.applicationProcess as string[]).map(() => {
+          nextIdRef.current += 1;
+          return nextIdRef.current;
+        });
+        setApplicationProcessKeys(keys);
+      }
 
-    if (
-      Array.isArray(d.applicationProcess) &&
-      d.applicationProcess.length > 0
-    ) {
-      form.setFieldValue(
-        "applicationProcess",
-        d.applicationProcess as string[],
-      );
-      const keys = (d.applicationProcess as string[]).map(() => {
-        nextIdRef.current += 1;
-        return nextIdRef.current;
-      });
-      setApplicationProcessKeys(keys);
-    }
+      if (typeof d.applicationUrl === "string" && d.applicationUrl) {
+        form.setFieldValue("applicationUrl", d.applicationUrl);
+        setHasApplicationUrl(true);
+      }
 
-    if (typeof d.applicationUrl === "string" && d.applicationUrl) {
-      form.setFieldValue("applicationUrl", d.applicationUrl);
-      setHasApplicationUrl(true);
-    }
-
-    if (Array.isArray(d.tags)) {
-      form.setFieldValue("tags", d.tags as string[]);
-    }
-  }, [autofillUrl, autofill, form]);
+      if (Array.isArray(d.tags)) {
+        form.setFieldValue("tags", d.tags as string[]);
+      }
+    },
+    [form],
+  );
 
   const handleFormSubmit = useCallback(
     (e: React.SubmitEvent) => {
@@ -354,50 +344,17 @@ export const ProgramSubmitPageClient = ({
         <p className="text-fd-muted-foreground">{t.description}</p>
       </div>
 
+      <AutofillCard
+        className="mb-6"
+        endpoint="/api/autofill-program"
+        translations={t.autofill}
+        disabled={isSubmitting}
+        onAutofill={handleAutofillData}
+      />
+
       <form onSubmit={handleFormSubmit}>
         {/* eslint-disable react/no-array-index-key, react-perf/jsx-no-new-function-as-prop */}
         <div className="grid gap-6">
-          <div className="bg-fd-muted/50 border-fd-border rounded-lg border p-4">
-            <div className="mb-3">
-              <h4 className="text-sm font-semibold">{t.autofill.heading}</h4>
-              <p className="text-fd-muted-foreground text-xs">
-                {t.autofill.description}
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <Input
-                placeholder={t.autofill.placeholder}
-                value={autofillUrl}
-                onChange={(e) => setAutofillUrl(e.target.value)}
-                disabled={isAutofilling || isSubmitting}
-                className="flex-1"
-              />
-              <Button
-                type="button"
-                variant="outline"
-                disabled={isAutofilling || isSubmitting || !autofillUrl.trim()}
-                onClick={handleAutofill}
-              >
-                {isAutofilling ? (
-                  <>
-                    <Loader2 className="animate-spin" />
-                    {t.autofill.loading}
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="size-4" />
-                    {t.autofill.button}
-                  </>
-                )}
-              </Button>
-            </div>
-            {autofillError && (
-              <p className="text-destructive mt-2 text-xs">{autofillError}</p>
-            )}
-          </div>
-
-          <Separator />
-
           <div className="grid grid-cols-2 gap-4">
             <form.Field name="name">
               {(field) => (
@@ -860,7 +817,7 @@ export const ProgramSubmitPageClient = ({
                   {isSubmitting ? (
                     <>
                       <Loader2 className="animate-spin" />
-                      {submissionStatus}
+                      {t.submitting}
                     </>
                   ) : (
                     <>

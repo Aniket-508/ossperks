@@ -2,12 +2,13 @@
 
 import { getProgramBySlug } from "@ossperks/core";
 import { useForm } from "@tanstack/react-form";
-import { ArrowRight, CheckCircle2, Loader2, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 import React, { useCallback, useMemo, useState } from "react";
 import { z } from "zod";
 
 import { ContactFields } from "@/components/people/contact-fields";
 import type { ContactFieldsTranslations } from "@/components/people/contact-fields";
+import { AutofillCard } from "@/components/programs/autofill-card";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -20,7 +21,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { FieldError } from "@/components/ui/form-field";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -29,7 +29,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useAutofill } from "@/hooks/use-autofill";
 import { useSubmission } from "@/hooks/use-submission";
 
 const canSubmitSelector = (s: { canSubmit: boolean }) => s.canSubmit;
@@ -42,6 +41,7 @@ interface ContactSubmissionTranslations {
     heading: string;
     loading: string;
     placeholder: string;
+    success: string;
   };
   heading: string;
   description: string;
@@ -84,14 +84,7 @@ export const ContactSubmissionDialog = ({
     prNumber?: number;
     prUrl?: string;
   } | null>(null);
-  const [autofillUrl, setAutofillUrl] = useState("");
-
   const t = translations;
-
-  const { autofill, autofillError, isAutofilling } = useAutofill(
-    "/api/autofill-contact",
-    { error: t.autofill.error, loading: t.autofill.loading },
-  );
 
   const contactSchema = useMemo(
     () =>
@@ -104,11 +97,13 @@ export const ContactSubmissionDialog = ({
     [t.validation],
   );
 
-  const { isSubmitting, submissionError, submissionStatus, submit } =
-    useSubmission("/api/submit-contact", {
+  const { isSubmitting, submissionError, submit } = useSubmission(
+    "/api/submit-contact",
+    {
       error: t.submitError,
       submitting: t.submitting,
-    });
+    },
+  );
 
   const form = useForm({
     defaultValues: {
@@ -138,28 +133,22 @@ export const ContactSubmissionDialog = ({
     },
   });
 
-  const handleAutofill = useCallback(async () => {
-    if (!autofillUrl.trim()) {
-      return;
-    }
-    const data = await autofill(autofillUrl.trim());
-    if (!data) {
-      return;
-    }
-
-    const d = data as Record<string, unknown>;
-    if (typeof d.name === "string") {
-      form.setFieldValue("name", d.name);
-    }
-    if (typeof d.role === "string") {
-      form.setFieldValue("role", d.role);
-    }
-    form.setFieldValue("url", autofillUrl.trim());
-  }, [autofillUrl, autofill, form]);
+  const handleAutofillData = useCallback(
+    (data: Record<string, unknown>, sourceUrl: string) => {
+      const d = data;
+      if (typeof d.name === "string") {
+        form.setFieldValue("name", d.name);
+      }
+      if (typeof d.role === "string") {
+        form.setFieldValue("role", d.role);
+      }
+      form.setFieldValue("url", sourceUrl);
+    },
+    [form],
+  );
 
   const handleClose = useCallback(() => {
     setOpen(false);
-    setAutofillUrl("");
     setTimeout(() => {
       setStep("form");
       form.reset();
@@ -199,50 +188,12 @@ export const ContactSubmissionDialog = ({
             <DialogBody>
               {/* eslint-disable react-perf/jsx-no-new-function-as-prop */}
               <div className="grid gap-4">
-                <div className="bg-fd-muted/50 border-fd-border rounded-lg border p-4">
-                  <div className="mb-3">
-                    <h4 className="text-sm font-semibold">
-                      {t.autofill.heading}
-                    </h4>
-                    <p className="text-fd-muted-foreground text-xs">
-                      {t.autofill.description}
-                    </p>
-                  </div>
-                  <div className="flex gap-2">
-                    <Input
-                      placeholder={t.autofill.placeholder}
-                      value={autofillUrl}
-                      onChange={(e) => setAutofillUrl(e.target.value)}
-                      disabled={isAutofilling || isSubmitting}
-                      className="flex-1"
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      disabled={
-                        isAutofilling || isSubmitting || !autofillUrl.trim()
-                      }
-                      onClick={handleAutofill}
-                    >
-                      {isAutofilling ? (
-                        <>
-                          <Loader2 className="animate-spin" />
-                          {t.autofill.loading}
-                        </>
-                      ) : (
-                        <>
-                          <Sparkles className="size-4" />
-                          {t.autofill.button}
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                  {autofillError && (
-                    <p className="text-destructive mt-2 text-xs">
-                      {autofillError}
-                    </p>
-                  )}
-                </div>
+                <AutofillCard
+                  endpoint="/api/autofill-contact"
+                  translations={t.autofill}
+                  disabled={isSubmitting}
+                  onAutofill={handleAutofillData}
+                />
 
                 <form.Field name="name">
                   {(nameField) => (
@@ -315,7 +266,7 @@ export const ContactSubmissionDialog = ({
                     {isSubmitting ? (
                       <>
                         <Loader2 className="animate-spin" />
-                        {submissionStatus}
+                        {t.submitting}
                       </>
                     ) : (
                       <>

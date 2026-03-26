@@ -17,7 +17,7 @@ const people = {
       heading: "AI로 자동 입력",
       loading: "자동 입력 중...",
       placeholder: "https://...",
-      success: "연락처 정보를 성공적으로 가져왔습니다!",
+      success: "연락처 정보를 성공적으로 가져왔습니다!"
     },
     buttonText: "연락처 제출하기",
     description: "프로그램 담당자를 알고 계신가요? 상세 정보를 제출해 주시면 추가하겠습니다.",

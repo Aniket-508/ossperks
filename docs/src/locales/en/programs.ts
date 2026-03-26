@@ -29,11 +29,11 @@ const programs = {
       description:
         "Simply input the program URL, and we'll automagically fill in the details for you!",
       error:
-        "Could not extract details from this URL. Please fill in the form manually.",
+        "Could not extract program details from this URL. Please fill in the form manually.",
       heading: "Autofill with AI",
       loading: "Autofilling...",
       placeholder: "https://...",
-      success: "We've successfully fetched your project details!",
+      success: "We've successfully fetched your program details!",
     },
     buttonText: "Submit a program",
     description:

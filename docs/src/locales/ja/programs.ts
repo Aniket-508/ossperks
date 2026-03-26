@@ -26,7 +26,7 @@ const programs = {
     autofill: {
       button: "自動入力",
       description: "プログラムのURLを入力するだけで、詳細を自動的に入力します！",
-      error: "このURLから詳細を抽出できませんでした。フォームを手動で入力してください。",
+      error: "このURLからプログラムの詳細を抽出できませんでした。フォームに手動で入力してください。",
       heading: "AIで自動入力",
       loading: "自動入力中...",
       placeholder: "https://...",

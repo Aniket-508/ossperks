@@ -26,7 +26,7 @@ const programs = {
     autofill: {
       button: "Preenchimento automático",
       description: "Basta inserir a URL do programa e preencheremos automaticamente os detalhes para você!",
-      error: "Não foi possível extrair os detalhes desta URL. Por favor, preencha o formulário manualmente.",
+      error: "Não foi possível extrair os detalhes do programa desta URL. Por favor, preencha o formulário manualmente.",
       heading: "Preenchimento automático com IA",
       loading: "Preenchendo...",
       placeholder: "https://...",

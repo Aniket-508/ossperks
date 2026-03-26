@@ -26,7 +26,7 @@ const programs = {
     autofill: {
       button: "Remplissage auto",
       description: "Entrez simplement l'URL du programme et nous remplirons automatiquement les détails pour vous !",
-      error: "Impossible d'extraire les détails de cette URL. Veuillez remplir le formulaire manuellement.",
+      error: "Impossible d'extraire les détails du programme depuis cette URL. Veuillez remplir le formulaire manuellement.",
       heading: "Remplissage auto avec l'IA",
       loading: "Remplissage en cours...",
       placeholder: "https://...",

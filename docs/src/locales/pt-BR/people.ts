@@ -17,7 +17,7 @@ const people = {
       heading: "Preenchimento automático com IA",
       loading: "Preenchendo...",
       placeholder: "https://...",
-      success: "Buscamos os dados do contato com sucesso!",
+      success: "Buscamos os dados do contato com sucesso!"
     },
     buttonText: "Enviar um contato",
     description: "Conhece alguém por trás de um programa? Envie os detalhes e nós o adicionaremos.",

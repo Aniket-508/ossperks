@@ -17,11 +17,11 @@ const people = {
       description:
         "Simply input the profile URL, and we'll automagically fill in the details for you!",
       error:
-        "Could not extract details from this URL. Please fill in the form manually.",
+        "Could not extract contact details from this URL. Please fill in the form manually.",
       heading: "Autofill with AI",
       loading: "Autofilling...",
       placeholder: "https://...",
-      success: "We've successfully fetched the contact details!",
+      success: "We've successfully fetched your contact details!",
     },
     buttonText: "Submit a contact",
     description:

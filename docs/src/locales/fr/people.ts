@@ -17,7 +17,7 @@ const people = {
       heading: "Remplissage auto avec l'IA",
       loading: "Remplissage en cours...",
       placeholder: "https://...",
-      success: "Nous avons récupéré les coordonnées avec succès !",
+      success: "Nous avons récupéré les coordonnées avec succès !"
     },
     buttonText: "Soumettre un contact",
     description: "Vous connaissez quelqu'un derrière un programme ? Soumettez ses coordonnées et nous les ajouterons.",

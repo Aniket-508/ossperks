@@ -26,7 +26,7 @@ const programs = {
     autofill: {
       button: "자동 입력",
       description: "프로그램 URL을 입력하면 자동으로 세부 정보를 채워드립니다!",
-      error: "이 URL에서 세부 정보를 추출할 수 없습니다. 양식을 수동으로 작성해 주세요.",
+      error: "이 URL에서 프로그램 세부 정보를 추출할 수 없습니다. 양식을 수동으로 작성해 주세요.",
       heading: "AI로 자동 입력",
       loading: "자동 입력 중...",
       placeholder: "https://...",

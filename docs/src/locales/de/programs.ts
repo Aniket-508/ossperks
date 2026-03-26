@@ -26,7 +26,7 @@ const programs = {
     autofill: {
       button: "Automatisch ausfüllen",
       description: "Geben Sie einfach die Programm-URL ein, und wir füllen die Details automatisch für Sie aus!",
-      error: "Die Details konnten nicht aus dieser URL extrahiert werden. Bitte füllen Sie das Formular manuell aus.",
+      error: "Die Programmdetails konnten von dieser URL nicht extrahiert werden. Bitte füllen Sie das Formular manuell aus.",
       heading: "Automatisch mit KI ausfüllen",
       loading: "Wird ausgefüllt...",
       placeholder: "https://...",

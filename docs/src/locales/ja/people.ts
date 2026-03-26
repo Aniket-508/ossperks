@@ -17,7 +17,7 @@ const people = {
       heading: "AIで自動入力",
       loading: "自動入力中...",
       placeholder: "https://...",
-      success: "連絡先の詳細を正常に取得しました！",
+      success: "連絡先の詳細を正常に取得しました！"
     },
     buttonText: "連絡先を送信",
     description: "プログラムに関わる人物をご存知ですか？詳細情報を送信していただければ、追加いたします。",

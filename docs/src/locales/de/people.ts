@@ -17,7 +17,7 @@ const people = {
       heading: "Automatisch mit KI ausfüllen",
       loading: "Wird ausgefüllt...",
       placeholder: "https://...",
-      success: "Wir haben die Kontaktdaten erfolgreich abgerufen!",
+      success: "Wir haben die Kontaktdaten erfolgreich abgerufen!"
     },
     buttonText: "Kontakt einreichen",
     description: "Kennen Sie jemanden hinter einem Programm? Reichen Sie dessen Details ein und wir fügen sie hinzu.",

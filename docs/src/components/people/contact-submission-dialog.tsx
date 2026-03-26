@@ -91,7 +91,7 @@ export const ContactSubmissionDialog = ({
         name: z.string().min(1, t.validation.nameRequired),
         programSlug: z.string().min(1, t.validation.programRequired),
         role: z.string().min(1, t.validation.roleRequired),
-        url: z.string().url(t.validation.invalidUrl).or(z.literal("")),
+        url: z.url(t.validation.invalidUrl).or(z.literal("")),
       }),
     [t.validation],
   );

@@ -106,13 +106,12 @@ export const ProgramSubmitPageClient = ({
       z.object({
         applicationProcess: z.array(z.string()),
         applicationUrl: z
-          .string()
           .url(t.validation.invalidApplicationUrl)
           .or(z.literal("")),
         category: z.string().min(1, t.validation.categoryRequired),
         contactName: z.string(),
         contactRole: z.string(),
-        contactUrl: z.string().url(t.validation.invalidUrl).or(z.literal("")),
+        contactUrl: z.url(t.validation.invalidUrl).or(z.literal("")),
         description: z.string().min(1, t.validation.descriptionRequired),
         eligibility: z
           .array(z.string())
@@ -133,7 +132,7 @@ export const ProgramSubmitPageClient = ({
           ),
         provider: z.string().min(1, t.validation.providerRequired),
         tags: z.array(z.string()),
-        url: z.string().url(t.validation.invalidUrl),
+        url: z.url(t.validation.invalidUrl),
       }),
     [t.validation],
   );

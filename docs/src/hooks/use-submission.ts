@@ -1,6 +1,9 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
+import useSWRMutation from "swr/mutation";
+
+import { postJson } from "@/lib/fetchers";
 
 export interface SubmissionResult {
   success: boolean;
@@ -23,29 +26,17 @@ export const useSubmission = (
   endpoint: string,
   labels: SubmissionLabels = defaultLabels,
 ) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submissionError, setSubmissionError] = useState<string | null>(null);
-  const [submissionStatus, setSubmissionStatus] = useState<string | null>(null);
+  const { error, isMutating, trigger } = useSWRMutation<
+    { error?: string; prNumber?: number; prUrl?: string },
+    Error,
+    string,
+    Record<string, unknown>
+  >(endpoint, (_key, { arg }) => postJson(_key, arg, labels.error));
 
   const submit = useCallback(
     async (data: Record<string, unknown>): Promise<SubmissionResult> => {
-      setIsSubmitting(true);
-      setSubmissionError(null);
-      setSubmissionStatus(labels.submitting);
-
       try {
-        const response = await fetch(endpoint, {
-          body: JSON.stringify(data),
-          headers: { "Content-Type": "application/json" },
-          method: "POST",
-        });
-
-        const result = await response.json();
-
-        if (!response.ok) {
-          throw new Error(result.error || labels.error);
-        }
-
+        const result = await trigger(data);
         return {
           prNumber: result.prNumber,
           prUrl: result.prUrl,
@@ -53,15 +44,13 @@ export const useSubmission = (
         };
       } catch (error) {
         const message = error instanceof Error ? error.message : labels.error;
-        setSubmissionError(message);
         return { error: message, success: false };
-      } finally {
-        setIsSubmitting(false);
-        setSubmissionStatus(null);
       }
     },
-    [endpoint, labels],
+    [trigger, labels.error],
   );
 
-  return { isSubmitting, submissionError, submissionStatus, submit };
+  const submissionError = error instanceof Error ? error.message : null;
+
+  return { isSubmitting: isMutating, submissionError, submit };
 };

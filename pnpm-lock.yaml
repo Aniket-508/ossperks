@@ -113,6 +113,9 @@ importers:
       shadcn:
         specifier: ^4.0.8
         version: 4.0.8(@types/node@25.5.0)(typescript@5.9.3)
+      swr:
+        specifier: ^2.4.1
+        version: 2.4.1(react@19.2.4)
       tailwind-merge:
         specifier: ^3.5.0
         version: 3.5.0
@@ -4460,6 +4463,11 @@ packages:
         optional: true
       babel-plugin-macros:
         optional: true
+
+  swr@2.4.1:
+    resolution: {integrity: sha512-2CC6CiKQtEwaEeNiqWTAw9PGykW8SR5zZX8MZk6TeAvEAnVS7Visz8WzphqgtQ8v2xz/4Q5K+j+SeMaKXeeQIA==}
+    peerDependencies:
+      react: ^16.11.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   tabbable@6.4.0:
     resolution: {integrity: sha512-05PUHKSNE8ou2dwIxTngl4EzcnsCDZGJ/iCLtDflR/SHB/ny14rXc+qU5P4mG9JkusiV7EivzY9Mhm55AzAvCg==}
@@ -9267,6 +9275,12 @@ snapshots:
       react: 19.2.4
     optionalDependencies:
       '@babel/core': 7.29.0
+
+  swr@2.4.1(react@19.2.4):
+    dependencies:
+      dequal: 2.0.3
+      react: 19.2.4
+      use-sync-external-store: 1.6.0(react@19.2.4)
 
   tabbable@6.4.0: {}
 

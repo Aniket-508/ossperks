@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
+import useSWR from "swr";
 
 import type { CheckTranslations } from "@/locales/en/check";
 import { CheckApiErrorCode } from "@/types/check";
@@ -29,6 +30,33 @@ const getErrorMessage = (
   return t.unknown;
 };
 
+class CheckFetchError extends Error {
+  status: number;
+  body: CheckApiErrorResponse;
+
+  constructor(message: string, status: number, body: CheckApiErrorResponse) {
+    super(message);
+    this.name = "CheckFetchError";
+    this.status = status;
+    this.body = body;
+  }
+}
+
+const fetchCheck = async (url: string): Promise<CheckResponse> => {
+  const res = await fetch(url);
+  const json = (await res.json()) as CheckResponse | CheckApiErrorResponse;
+
+  if (!res.ok) {
+    throw new CheckFetchError(
+      "check failed",
+      res.status,
+      json as CheckApiErrorResponse,
+    );
+  }
+
+  return json as CheckResponse;
+};
+
 interface UseCheckDataProps {
   owner: string | null;
   path?: string | null;
@@ -44,79 +72,32 @@ export const useCheckData = ({
   repo,
   translations,
 }: UseCheckDataProps) => {
-  const [data, setData] = useState<CheckResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
+  const key = useMemo(() => {
     if (!provider || !owner || !repo) {
-      setData(null);
-      setError(null);
-      setLoading(false);
-      return;
+      return null;
     }
+    return `/api/check?owner=${encodeURIComponent(owner)}&repo=${encodeURIComponent(repo)}&provider=${encodeURIComponent(provider)}${path ? `&path=${encodeURIComponent(path)}` : ""}`;
+  }, [owner, path, provider, repo]);
 
-    setData(null);
-    setError(null);
-    setLoading(true);
+  const {
+    data,
+    error: swrError,
+    isLoading: loading,
+  } = useSWR(key, fetchCheck, { revalidateOnFocus: false });
 
-    const controller = new AbortController();
-    let cancelled = false;
-
-    const fetchResults = async () => {
-      try {
-        const res = await fetch(
-          `/api/check?owner=${encodeURIComponent(owner)}&repo=${encodeURIComponent(repo)}&provider=${encodeURIComponent(provider)}${
-            path ? `&path=${encodeURIComponent(path)}` : ""
-          }`,
-          { signal: controller.signal },
-        );
-        const json = (await res.json()) as
-          | CheckResponse
-          | CheckApiErrorResponse;
-        if (cancelled) {
-          return;
-        }
-        if (!res.ok) {
-          setError(
-            getErrorMessage(
-              json as CheckApiErrorResponse,
-              res.status,
-              translations.errors,
-            ),
-          );
-          return;
-        }
-        setData(json as CheckResponse);
-      } catch (fetchError) {
-        if (
-          cancelled ||
-          (fetchError instanceof Error && fetchError.name === "AbortError")
-        ) {
-          return;
-        }
-        setError(translations.fetchError);
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchResults();
-
-    return () => {
-      cancelled = true;
-      controller.abort();
-    };
-  }, [
-    owner,
-    path,
-    provider,
-    repo,
-    translations.errors,
-    translations.fetchError,
-  ]);
+  const error = useMemo(() => {
+    if (!swrError) {
+      return null;
+    }
+    if (swrError instanceof CheckFetchError) {
+      return getErrorMessage(
+        swrError.body,
+        swrError.status,
+        translations.errors,
+      );
+    }
+    return translations.fetchError;
+  }, [swrError, translations.errors, translations.fetchError]);
 
   return { data, error, loading };
 };

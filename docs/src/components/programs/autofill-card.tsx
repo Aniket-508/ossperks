@@ -37,10 +37,7 @@ export const AutofillCard = ({
 }: AutofillCardProps) => {
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const urlSchema = useMemo(
-    () => z.object({ url: z.string().url(t.error) }),
-    [t.error],
-  );
+  const urlSchema = useMemo(() => z.object({ url: z.url(t.error) }), [t.error]);
 
   const { error, isMutating, trigger } = useSWRMutation<
     Record<string, unknown>,
@@ -65,7 +62,7 @@ export const AutofillCard = ({
   });
 
   const handleFormSubmit = useCallback(
-    (e: React.FormEvent) => {
+    (e: React.SubmitEvent) => {
       e.preventDefault();
       e.stopPropagation();
       form.handleSubmit();
@@ -86,12 +83,13 @@ export const AutofillCard = ({
           <p className="text-fd-muted-foreground text-xs">{t.description}</p>
         </div>
         {/* eslint-disable react-perf/jsx-no-new-function-as-prop */}
-        <div className="flex items-start gap-3">
+        <div className="flex flex-col items-start gap-3 sm:flex-row">
           <form.Field name="url">
             {(field) => (
-              <div className="flex-1">
+              <div className="w-full">
                 <Input
                   type="url"
+                  required
                   placeholder={t.placeholder}
                   value={field.state.value}
                   onChange={(e) => {
@@ -106,11 +104,11 @@ export const AutofillCard = ({
               </div>
             )}
           </form.Field>
-          {/* eslint-enable react-perf/jsx-no-new-function-as-prop */}
           <form.Subscribe selector={canSubmitSelector}>
             {(canSubmit) => (
               <Button
                 type="submit"
+                className="w-full sm:w-auto"
                 disabled={isMutating || disabled || !canSubmit}
               >
                 {isMutating ? (
@@ -128,13 +126,16 @@ export const AutofillCard = ({
             )}
           </form.Subscribe>
         </div>
-        {autofillError && (
-          <p className="text-destructive mt-2 text-xs">{autofillError}</p>
-        )}
+        {/* eslint-enable react-perf/jsx-no-new-function-as-prop */}
       </form>
       {showSuccess && (
         <p className="animate-slide-down bg-fd-muted/50 overflow-hidden py-2 text-center text-xs text-green-500">
           {t.success} 🥳
+        </p>
+      )}
+      {autofillError && (
+        <p className="animate-slide-down bg-fd-muted/50 text-destructive overflow-hidden py-2 text-center text-xs">
+          {autofillError} 😕
         </p>
       )}
     </div>

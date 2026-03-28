@@ -20,6 +20,7 @@ Run this from inside any Git repository. No arguments or tokens required for pub
 | `--repo <owner/repo>`   | Explicitly specify a repository (e.g. `vercel/next.js`)                      |
 | `--provider <provider>` | Git provider: `github`, `gitlab`, `codeberg`, or `gitea` (default: `github`) |
 | `-p, --program <id>`    | Check against a specific program only (e.g. `--program vercel`)              |
+| `-i, --interactive`    | Pick programs interactively (grouped by category; TTY only, not with `--json` or `--program`) |
 | `--json`                | Output raw JSON                                                              |
 | `-h, --help`            | Show help                                                                    |
 
@@ -88,6 +89,9 @@ ossperks check --repo group/project --provider gitlab
 
 # Check a specific program only
 ossperks check --program vercel
+
+# Interactively choose which programs to check (terminal UI)
+ossperks check --interactive
 
 # JSON output for scripting
 ossperks check --json

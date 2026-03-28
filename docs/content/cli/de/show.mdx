@@ -6,16 +6,16 @@ description: Vollständige Details für ein bestimmtes OSS-Vorteilsprogramm anze
 ## Verwendung
 
 ```
-ossperks show <id> [options]
+ossperks show [id] [options]
 ```
 
 **Alias:** `ossperks info`
 
 ## Argumente
 
-| Argument | Beschreibung                                   |
-| -------- | ---------------------------------------------- |
-| `<id>`   | Die Programm-ID (z. B. `vercel`, `github-pages`) |
+| Argument | Beschreibung                                                                 |
+| -------- | ----------------------------------------------------------------------------- |
+| `[id]`   | Optionale Programm-ID (z. B. `vercel`, `github-pages`). In einem TTY weglassen, um aus einer Liste auszuwählen. |
 
 ## Optionen
 
@@ -32,6 +32,10 @@ ossperks show <id> [options]
 
 ossperks show vercel
 
+# Interaktive Auswahl (TTY): Wählen Sie ein Programm aus der Liste
+
+ossperks show
+
 # Maschinenlesbares JSON
 
 ossperks show vercel --json
@@ -42,7 +46,7 @@ ossperks show vercel --json
 ```
 ─────────────────────────────────────
   Vercel for Open Source
-  by Vercel  ·  hosting
+  von Vercel  ·  Hosting
 ─────────────────────────────────────
 
 Vercel stellt Plattform-Credits und zusätzliche Dienste für
@@ -54,15 +58,15 @@ VORTEILE
   • OSS Starter Pack — Credits von Drittanbieterdiensten.
 
 VORAUSSETZUNGEN
-  • Muss ein aktiv entwickeltes und gepflegtes Open-Source-Projekt sein.
-  • Muss auf Vercel gehostet sein (oder beabsichtigen, dort zu hosten).
+  • Muss ein Open-Source-Projekt sein, das aktiv entwickelt und gepflegt wird.
+  • Muss auf Vercel gehostet werden (oder beabsichtigt sein, dort gehostet zu werden).
 
-WIE MAN SICH BEWIRBT
-  • Bewerben Sie sich über die Vercel OSS-Programmseite, wenn Bewerbungen geöffnet sind.
+WIE BEWERBEN
+  • Bewerben Sie sich über die Vercel OSS-Programmseite, wenn Bewerbungen möglich sind.
 
   → Jetzt bewerben: https://vercel.com/open-source-program
 ```
 
 import { DynamicLink } from "fumadocs-core/dynamic-link";
 
-Finden Sie eine Programm-ID in der Spalte **ID** von <DynamicLink href="/[lang]/cli/list">`ossperks list`</DynamicLink> oder <DynamicLink href="/[lang]/cli/search">`ossperks search`</DynamicLink>.
+Führen Sie <DynamicLink href="/[lang]/cli/show">`ossperks show`</DynamicLink> ohne ID in einem TTY aus, um ein Programm interaktiv auszuwählen, oder verwenden Sie <DynamicLink href="/[lang]/cli/search">`ossperks search`</DynamicLink> auf die gleiche Weise.

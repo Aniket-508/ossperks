@@ -1,7 +1,9 @@
 ---
 title: ossperks categories
-description: 사용 가능한 모든 프로그램 카테고리와 해당 ID를 나열합니다.
+description: 카테고리를 대화형으로 탐색하거나 비대화형 모드에서 목록을 표시합니다.
 ---
+
+import { DynamicLink } from "fumadocs-core/dynamic-link";
 
 ## 사용법
 
@@ -13,38 +15,42 @@ ossperks categories [options]
 
 ## 옵션
 
-| 플래그       | 설명           |
-| ------------ | -------------- |
-| `--json`     | 원시 JSON 출력 |
-| `-h, --help` | 도움말 표시    |
+| 플래그       | 설명            |
+| ------------ | --------------- |
+| `--json`     | 원시 JSON 출력  |
+| `-h, --help` | 도움말 표시     |
 
 ## 예제
 
 ```bash
 
-# 모든 카테고리 나열
+# TTY: 카테고리를 자동완성한 후 프로그램 목록(이름 + URL) 표시.
+
+# Non-TTY: 카테고리 테이블(이름 + 개수) 출력.
 
 ossperks categories
 
-# JSON 출력
+# JSON: ossperks list --category <id>에 사용할 카테고리 ID
 
 ossperks categories --json
 ```
 
 ## 출력
 
+**TTY** 환경에서는 자동완성 프롬프트가 표시되며, 카테고리를 선택하면 CLI가 해당 카테고리의 프로그램에 대한 **이름**과 **URL** 테이블을 출력합니다(<DynamicLink href="/[lang]/cli/list">`ossperks list`</DynamicLink>와 동일한 스타일).
+
+**비대화형** 환경에서는:
+
 ```
-13 categories
+13개 카테고리
 ─────────────
 
-  ID               NAME                    COUNT
-  hosting          Hosting & Deployment       12
-  devtools         Developer Tools             8
+  이름                    개수
+  호스팅 및 배포             12
+  개발자 도구                 8
   ...
 ```
 
-**COUNT** 열은 해당 카테고리에 속한 프로그램의 수입니다 (예시 값).
+**개수** 열은 해당 카테고리의 프로그램 수를 나타냅니다(예시 값).
 
-import { DynamicLink } from "fumadocs-core/dynamic-link";
-
-카테고리 **id** (첫 번째 열)를 <DynamicLink href="/[lang]/cli/list">`ossperks list --category <id>`</DynamicLink>와 함께 사용하여 프로그램을 필터링하세요.
+스크립트에서 프로그램을 필터링하려면 `--json`에서 가져온 카테고리 **id**를 <DynamicLink href="/[lang]/cli/list">`ossperks list --category <id>`</DynamicLink>와 함께 사용하세요.

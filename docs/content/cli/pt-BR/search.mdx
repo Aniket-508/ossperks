@@ -7,14 +7,16 @@ description: Buscar programas de benefícios OSS por palavra-chave em nomes,
 ## Uso
 
 ```
-ossperks search <consulta> [opções]
+ossperks search [consulta] [opções]
 ```
+
+**Apelidos:** `ossperks find`, `ossperks s`
 
 ## Argumentos
 
 | Argumento  | Descrição                                                                       |
 | --------- | --------------------------------------------------------------------------------- |
-| `<query>` | Termo de busca (corresponde a nome, id, descrição, provedor, categoria, tags ou benefícios) |
+| `[consulta]` | Termo de busca (corresponde a nome, id, descrição, provedor, categoria, tags ou benefícios). Omita em um TTY para autocompletar interativo. |
 
 ## Opções
 
@@ -32,9 +34,13 @@ ossperks search <consulta> [opções]
 
 ossperks search hosting
 
-# Buscar por "credits" na categoria devtools
+# Busca interativa com autocompletar (TTY): digite para filtrar, escolha um programa
 
-ossperks search credits --category devtools
+ossperks search
+
+# Usando o apelido curto
+
+ossperks s credits
 
 # Saída JSON
 
@@ -47,13 +53,13 @@ ossperks search vercel --json
 Resultados da busca para "hosting" — 4 programas
 ────────────────────────────────────────────
 
-  ID            NOME                            URL
-  vercel        Vercel for Open Source          https://ossperks.com/programs/vercel
-  netlify       Netlify Open Source Plan        https://ossperks.com/programs/netlify
-  digitalocean  DigitalOcean Open Source        https://ossperks.com/programs/digitalocean
-  cloudflare    Cloudflare for Open Source      https://ossperks.com/programs/cloudflare
+  NOME                            URL
+  Vercel para Open Source         https://ossperks.com/programs/vercel
+  Netlify Open Source Plan        https://ossperks.com/programs/netlify
+  DigitalOcean Open Source        https://ossperks.com/programs/digitalocean
+  Cloudflare para Open Source     https://ossperks.com/programs/cloudflare
 ```
 
 import { DynamicLink } from "fumadocs-core/dynamic-link";
 
-Use a coluna **ID** com <DynamicLink href="/[lang]/cli/show">`ossperks show <id>`</DynamicLink> para visualizar os detalhes completos de qualquer resultado.
+Execute <DynamicLink href="/[lang]/cli/search">`ossperks search`</DynamicLink> sem uma consulta em um TTY para escolher um programa interativamente e abrir os detalhes completos.

@@ -1,7 +1,9 @@
 ---
 title: ossperks categories
-description: List all available program categories and their ids.
+description: Browse categories interactively or list them in non-interactive mode.
 ---
+
+import { DynamicLink } from "fumadocs-core/dynamic-link";
 
 ## Usage
 
@@ -21,27 +23,30 @@ ossperks categories [options]
 ## Examples
 
 ```bash
-# List all categories
+# TTY: autocomplete a category, then list programs (NAME + URL).
+# Non-TTY: prints a category table (NAME + COUNT).
 ossperks categories
 
-# JSON output
+# JSON: category ids for ossperks list --category <id>
 ossperks categories --json
 ```
 
 ## Output
 
+In a **TTY**, you get an autocomplete prompt; after you pick a category, the CLI prints a **NAME** and **URL** table for programs in that category (same style as <DynamicLink href="/[lang]/cli/list">`ossperks list`</DynamicLink>).
+
+In a **non-interactive** environment:
+
 ```
 13 categories
 ─────────────
 
-  ID               NAME                    COUNT
-  hosting          Hosting & Deployment       12
-  devtools         Developer Tools             8
+  NAME                    COUNT
+  Hosting & Deployment       12
+  Developer Tools             8
   ...
 ```
 
 The **COUNT** column is the number of programs in that category (example values).
 
-import { DynamicLink } from "fumadocs-core/dynamic-link";
-
-Use the category **id** (first column) with <DynamicLink href="/[lang]/cli/list">`ossperks list --category <id>`</DynamicLink> to filter programs.
+Use the category **id** from `--json` with <DynamicLink href="/[lang]/cli/list">`ossperks list --category <id>`</DynamicLink> to filter programs in scripts.

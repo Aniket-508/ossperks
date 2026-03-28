@@ -6,16 +6,16 @@ description: 显示特定开源福利项目的完整详细信息。
 ## 用法
 
 ```
-ossperks show <id> [options]
+ossperks show [id] [options]
 ```
 
 **别名：** `ossperks info`
 
 ## 参数
 
-| 参数 | 描述                                   |
-| -------- | --------------------------------------------- |
-| `<id>`   | 项目 ID（例如 `vercel`、`github-pages`） |
+| 参数 | 描述                                                                 |
+| -------- | ----------------------------------------------------------------------------- |
+| `[id]`   | 可选的项目 ID（例如 `vercel`、`github-pages`）。在 TTY 中省略以从列表中选择。 |
 
 ## 选项
 
@@ -32,6 +32,10 @@ ossperks show <id> [options]
 
 ossperks show vercel
 
+# 交互式选择器（TTY）：从列表中选择一个项目
+
+ossperks show
+
 # 机器可读的 JSON
 
 ossperks show vercel --json
@@ -42,25 +46,25 @@ ossperks show vercel --json
 ```
 ─────────────────────────────────────
   Vercel for Open Source
-  由 Vercel 提供  ·  托管服务
+  by Vercel  ·  hosting
 ─────────────────────────────────────
 
-Vercel 为在 Vercel 平台上托管的开源项目提供平台积分和额外服务。
+Vercel 为托管在 Vercel 平台上的开源项目提供平台积分和额外服务。
 
 权益
   • $3,600 平台积分 — 在 12 个月内分发的 $3,600 Vercel 平台积分。
-  • OSS 初创礼包 — 来自第三方服务的积分。
+  • OSS 入门套餐 — 来自第三方服务的积分。
 
 资格要求
   • 必须是正在积极开发和维护的开源项目。
-  • 必须托管在（或计划托管在）Vercel 上。
+  • 必须托管在 Vercel 上（或计划托管在 Vercel 上）。
 
 如何申请
-  • 在申请开放时通过 Vercel OSS 项目页面申请。
+  • 在申请开放时，通过 Vercel OSS 项目页面申请。
 
   → 立即申请：https://vercel.com/open-source-program
 ```
 
 import { DynamicLink } from "fumadocs-core/dynamic-link";
 
-在 <DynamicLink href="/[lang]/cli/list">`ossperks list`</DynamicLink> 或 <DynamicLink href="/[lang]/cli/search">`ossperks search`</DynamicLink> 的 **ID** 列中查找项目 ID。
+在 TTY 中运行不带 id 的 <DynamicLink href="/[lang]/cli/show">`ossperks show`</DynamicLink> 以交互式选择项目，或以相同方式使用 <DynamicLink href="/[lang]/cli/search">`ossperks search`</DynamicLink>。

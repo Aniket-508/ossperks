@@ -6,16 +6,16 @@ description: 特定のOSS特典プログラムの詳細を表示します。
 ## 使用方法
 
 ```
-ossperks show <id> [options]
+ossperks show [id] [options]
 ```
 
 **エイリアス:** `ossperks info`
 
 ## 引数
 
-| 引数 | 説明                                   |
-| -------- | --------------------------------------------- |
-| `<id>`   | プログラムID（例: `vercel`、`github-pages`） |
+| 引数 | 説明                                                                 |
+| -------- | ----------------------------------------------------------------------------- |
+| `[id]`   | オプションのプログラムID（例：`vercel`、`github-pages`）。TTYでは省略するとリストから選択できます。 |
 
 ## オプション
 
@@ -32,6 +32,10 @@ ossperks show <id> [options]
 
 ossperks show vercel
 
+# 対話型ピッカー（TTY）：リストからプログラムを選択
+
+ossperks show
+
 # 機械可読なJSON
 
 ossperks show vercel --json
@@ -42,28 +46,28 @@ ossperks show vercel --json
 ```
 ─────────────────────────────────────
   Vercel for Open Source
-  by Vercel  ·  hosting
+  by Vercel  ·  ホスティング
 ─────────────────────────────────────
 
-Vercelは、Vercelプラットフォームでホストされている
-オープンソースプロジェクトに対してプラットフォームクレジットと
-追加サービスを提供しています。
+Vercelは、Vercelプラットフォームでホストされているオープンソース
+プロジェクト向けに、プラットフォームクレジットと追加サービスを
+提供しています。
 
 特典
-  • 3,600ドルのプラットフォームクレジット — 12か月にわたって配布される
-    3,600ドル相当のVercelプラットフォームクレジット。
+  • $3,600のプラットフォームクレジット — 12ヶ月間にわたって配布される
+    $3,600のVercelプラットフォームクレジット。
   • OSSスターターパック — サードパーティサービスからのクレジット。
 
 応募資格
   • 積極的に開発・保守されているオープンソースプロジェクトであること。
-  • Vercelでホストされている（またはホスト予定）こと。
+  • Vercelでホストされている（またはホスト予定である）こと。
 
 応募方法
-  • 募集開始時にVercel OSSプログラムページから応募してください。
+  • 募集期間中にVercel OSSプログラムページから応募してください。
 
   → 今すぐ応募: https://vercel.com/open-source-program
 ```
 
 import { DynamicLink } from "fumadocs-core/dynamic-link";
 
-プログラムIDは、<DynamicLink href="/[lang]/cli/list">`ossperks list`</DynamicLink>または<DynamicLink href="/[lang]/cli/search">`ossperks search`</DynamicLink>の**ID**列から確認できます。
+TTYで<DynamicLink href="/[lang]/cli/show">`ossperks show`</DynamicLink>をIDなしで実行すると対話形式でプログラムを選択できます。または、同じ方法で<DynamicLink href="/[lang]/cli/search">`ossperks search`</DynamicLink>を使用してください。

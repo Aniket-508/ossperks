@@ -21,7 +21,8 @@ Exécutez ceci depuis n'importe quel dépôt Git. Aucun argument ni jeton requis
 | `--repo <owner/repo>`   | Spécifier explicitement un dépôt (ex. `vercel/next.js`)                          |
 | `--provider <provider>` | Fournisseur Git : `github`, `gitlab`, `codeberg` ou `gitea` (par défaut : `github`) |
 | `-p, --program <id>`    | Vérifier uniquement un programme spécifique (ex. `--program vercel`)             |
-| `--json`                | Afficher le JSON brut                                                             |
+| `-i, --interactive`    | Sélectionner les programmes de manière interactive (groupés par catégorie ; TTY uniquement, pas avec `--json` ou `--program`) |
+| `--json`                | Sortie JSON brute                                                                 |
 | `-h, --help`            | Afficher l'aide                                                                   |
 
 ## Fonctionnement
@@ -95,15 +96,19 @@ ossperks check --repo group/project --provider gitlab
 
 ossperks check --program vercel
 
+# Choisir interactivement les programmes à vérifier (interface terminal)
+
+ossperks check --interactive
+
 # Sortie JSON pour les scripts
 
 ossperks check --json
 ```
 
-## Résultat
+## Sortie
 
 ```
-✅ my-project — MIT · 412 étoiles · dernière mise à jour il y a 3 jours
+✅ my-project — MIT · 412 étoiles · dernier push il y a 3 jours
 
 Éligibilité pour 48 programmes — 12 éligibles, 8 nécessitent un examen, 28 non éligibles
 

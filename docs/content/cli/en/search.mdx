@@ -6,7 +6,7 @@ description: Search OSS perk programs by keyword across names, descriptions, pro
 ## Usage
 
 ```
-ossperks search <query> [options]
+ossperks search [query] [options]
 ```
 
 **Aliases:** `ossperks find`, `ossperks s`
@@ -15,7 +15,7 @@ ossperks search <query> [options]
 
 | Argument  | Description                                                                       |
 | --------- | --------------------------------------------------------------------------------- |
-| `<query>` | Search term (matches name, id, description, provider, category, tags, or perks) |
+| `[query]` | Search term (matches name, id, description, provider, category, tags, or perks). Omit in a TTY for interactive autocomplete. |
 
 ## Options
 
@@ -30,6 +30,9 @@ ossperks search <query> [options]
 # Search for "hosting"
 ossperks search hosting
 
+# Interactive autocomplete search (TTY): type to filter, pick a program
+ossperks search
+
 # Using the short alias
 ossperks s credits
 
@@ -43,13 +46,13 @@ ossperks search vercel --json
 Search results for "hosting" — 4 programs
 ────────────────────────────────────────────
 
-  ID            NAME                            URL
-  vercel        Vercel for Open Source          https://ossperks.com/programs/vercel
-  netlify       Netlify Open Source Plan        https://ossperks.com/programs/netlify
-  digitalocean  DigitalOcean Open Source        https://ossperks.com/programs/digitalocean
-  cloudflare    Cloudflare for Open Source      https://ossperks.com/programs/cloudflare
+  NAME                            URL
+  Vercel for Open Source          https://ossperks.com/programs/vercel
+  Netlify Open Source Plan        https://ossperks.com/programs/netlify
+  DigitalOcean Open Source        https://ossperks.com/programs/digitalocean
+  Cloudflare for Open Source      https://ossperks.com/programs/cloudflare
 ```
 
 import { DynamicLink } from "fumadocs-core/dynamic-link";
 
-Use the **ID** column with <DynamicLink href="/[lang]/cli/show">`ossperks show <id>`</DynamicLink> to view full details for any result.
+Run <DynamicLink href="/[lang]/cli/search">`ossperks search`</DynamicLink> without a query in a TTY to pick a program interactively and open full details.

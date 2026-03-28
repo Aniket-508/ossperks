@@ -18,8 +18,9 @@ ossperks check [옵션]
 | 플래그                    | 설명                                                                  |
 | ----------------------- | ---------------------------------------------------------------------------- |
 | `--repo <owner/repo>`   | 저장소를 명시적으로 지정 (예: `vercel/next.js`)                      |
-| `--provider <provider>` | Git 제공자: `github`, `gitlab`, `codeberg`, 또는 `gitea` (기본값: `github`) |
+| `--provider <provider>` | Git 제공자: `github`, `gitlab`, `codeberg` 또는 `gitea` (기본값: `github`) |
 | `-p, --program <id>`    | 특정 프로그램만 확인 (예: `--program vercel`)              |
+| `-i, --interactive`    | 프로그램을 대화형으로 선택 (카테고리별로 그룹화됨; TTY 전용, `--json` 또는 `--program`과 함께 사용 불가) |
 | `--json`                | 원시 JSON 출력                                                              |
 | `-h, --help`            | 도움말 표시                                                                    |
 
@@ -94,6 +95,10 @@ ossperks check --repo group/project --provider gitlab
 
 ossperks check --program vercel
 
+# 확인할 프로그램을 대화형으로 선택 (터미널 UI)
+
+ossperks check --interactive
+
 # 스크립팅을 위한 JSON 출력
 
 ossperks check --json
@@ -102,20 +107,20 @@ ossperks check --json
 ## 출력
 
 ```
-✅ my-project — MIT · 별 412개 · 마지막 푸시 3일 전
+✅ my-project — MIT · 스타 412개 · 마지막 푸시 3일 전
 
-48개 프로그램 자격 요건 — 12개 적격, 8개 검토 필요, 28개 부적격
+48개 프로그램의 자격 요건 — 12개 적격, 8개 검토 필요, 28개 부적격
 
   ✅  Vercel for Open Source                         적격 가능성 높음 — 오픈 소스 프로젝트
   ✅  Netlify Open Source Plan                      적격 가능성 높음 — 오픈 소스 프로젝트
   ⚠️  GitHub Copilot Pro for Open Source Maintainers 검토 필요 — 수동 검토 필요
-  ❌  DigitalOcean Open Source Credits             부적격 가능성 높음 — GitHub 별이 충분하지 않음
+  ❌  DigitalOcean Open Source Credits             부적격 가능성 높음 — GitHub 스타 부족
 ```
 
 상태:
 
-- **✅ 적격 가능성 높음** — 분석된 모든 자격 규칙이 일치함
-- **⚠️ 검토 필요** — 최소 하나의 규칙을 자동으로 평가할 수 없음
-- **❌ 부적격 가능성 높음** — 하나 이상의 규칙이 명백히 일치하지 않음
+- **✅ 적격 가능성 높음** — 모든 파싱된 자격 요건 규칙이 일치함
+- **⚠️ 검토 필요** — 하나 이상의 규칙을 자동으로 평가할 수 없음
+- **❌ 부적격 가능성 높음** — 하나 이상의 규칙이 명확히 일치하지 않음
 
-신청하기 전에 항상 프로그램의 공식 페이지에서 확인하세요.
+신청하기 전에 항상 해당 프로그램의 공식 페이지에서 확인하세요.

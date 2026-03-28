@@ -39,16 +39,16 @@ ossperks list --json
 ## 输出
 
 ```
-48 个项目
+48 programs
 ────────────
 
-  ID                NAME                                          URL
-  1password         1Password for Open Source Projects            https://ossperks.com/programs/1password
-  algolia           Algolia for Open Source                         https://ossperks.com/programs/algolia
-  anthropic-claude  Anthropic Claude for Open Source                https://ossperks.com/programs/anthropic-claude
+  NAME                                          URL
+  1Password for Open Source Projects            https://ossperks.com/programs/1password
+  Algolia for Open Source                         https://ossperks.com/programs/algolia
+  Anthropic Claude for Open Source                https://ossperks.com/programs/anthropic-claude
   ...
 ```
 
 import { DynamicLink } from "fumadocs-core/dynamic-link";
 
-**ID** 列是您传递给 <DynamicLink href="/[lang]/cli/show">`ossperks show <id>`</DynamicLink> 的内容。**URL** 链接到 ossperks.com 上的项目页面。
+**URL** 链接到 ossperks.com 上的每个项目页面。使用 <DynamicLink href="/[lang]/cli/show">`ossperks show`</DynamicLink>(在 TTY 中交互式)或显式传递项目 ID。

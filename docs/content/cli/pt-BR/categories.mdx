@@ -1,50 +1,56 @@
 ---
 title: ossperks categories
-description: Lista todas as categorias de programas disponíveis e seus ids.
+description: Navegue pelas categorias interativamente ou liste-as em modo não interativo.
 ---
+
+import { DynamicLink } from "fumadocs-core/dynamic-link";
 
 ## Uso
 
 ```
-ossperks categories [options]
+ossperks categories [opções]
 ```
 
 **Alias:** `ossperks cats`
 
 ## Opções
 
-| Opção        | Descrição        |
-| ------------ | ---------------- |
-| `--json`     | Exibir JSON puro |
-| `-h, --help` | Mostrar ajuda    |
+| Flag         | Descrição          |
+| ------------ | ------------------ |
+| `--json`     | Exibir JSON puro   |
+| `-h, --help` | Mostrar ajuda      |
 
 ## Exemplos
 
 ```bash
 
-# Listar todas as categorias
+# TTY: autocompletar uma categoria e listar programas (NOME + URL).
+
+# Não-TTY: exibe uma tabela de categorias (NOME + CONTAGEM).
 
 ossperks categories
 
-# Saída em JSON
+# JSON: ids de categorias para ossperks list --category <id>
 
 ossperks categories --json
 ```
 
 ## Saída
 
+Em um **TTY**, você recebe um prompt de autocompletar; após escolher uma categoria, a CLI exibe uma tabela de **NOME** e **URL** dos programas naquela categoria (mesmo estilo de <DynamicLink href="/[lang]/cli/list">`ossperks list`</DynamicLink>).
+
+Em um ambiente **não interativo**:
+
 ```
 13 categorias
 ─────────────
 
-  ID               NOME                    QUANTIDADE
-  hosting          Hospedagem e Deploy        12
-  devtools         Ferramentas de Desenvolvimento             8
+  NOME                    CONTAGEM
+  Hosting & Deployment          12
+  Developer Tools                8
   ...
 ```
 
-A coluna **QUANTIDADE** é o número de programas naquela categoria (valores de exemplo).
+A coluna **CONTAGEM** representa o número de programas naquela categoria (valores de exemplo).
 
-import { DynamicLink } from "fumadocs-core/dynamic-link";
-
-Use o **id** da categoria (primeira coluna) com <DynamicLink href="/[lang]/cli/list">`ossperks list --category <id>`</DynamicLink> para filtrar programas.
+Use o **id** da categoria obtido com `--json` junto com <DynamicLink href="/[lang]/cli/list">`ossperks list --category <id>`</DynamicLink> para filtrar programas em scripts.

@@ -6,16 +6,16 @@ description: Muestra los detalles completos de un programa específico de benefi
 ## Uso
 
 ```
-ossperks show <id> [opciones]
+ossperks show [id] [opciones]
 ```
 
 **Alias:** `ossperks info`
 
 ## Argumentos
 
-| Argumento | Descripción                                   |
-| --------- | --------------------------------------------- |
-| `<id>`    | El id del programa (ej. `vercel`, `github-pages`) |
+| Argumento | Descripción                                                                 |
+| -------- | ----------------------------------------------------------------------------- |
+| `[id]`   | ID de programa opcional (ej. `vercel`, `github-pages`). Omitir en una TTY para elegir de una lista. |
 
 ## Opciones
 
@@ -31,6 +31,10 @@ ossperks show <id> [opciones]
 # Mostrar el programa de Vercel
 
 ossperks show vercel
+
+# Selector interactivo (TTY): elige un programa de la lista
+
+ossperks show
 
 # JSON legible por máquina
 
@@ -49,20 +53,20 @@ Vercel proporciona créditos de plataforma y servicios adicionales para
 proyectos de código abierto alojados en la plataforma Vercel.
 
 BENEFICIOS
-  • $3,600 en Créditos de Plataforma — $3,600 en créditos de la plataforma Vercel
+  • $3,600 Créditos de Plataforma — $3,600 en créditos de la plataforma Vercel
     distribuidos durante 12 meses.
   • Paquete Inicial OSS — Créditos de servicios de terceros.
 
 ELEGIBILIDAD
-  • Debe ser un proyecto de código abierto activamente desarrollado y mantenido.
-  • Debe estar alojado en (o tener intención de alojarse en) Vercel.
+  • Debe ser un proyecto de código abierto desarrollado y mantenido activamente.
+  • Debe estar alojado en (o tener la intención de alojar en) Vercel.
 
 CÓMO APLICAR
-  • Aplica a través de la página del programa OSS de Vercel cuando se abran las aplicaciones.
+  • Solicita a través de la página del programa OSS de Vercel cuando se abran las aplicaciones.
 
-  → Aplicar Ahora: https://vercel.com/open-source-program
+  → Solicitar Ahora: https://vercel.com/open-source-program
 ```
 
 import { DynamicLink } from "fumadocs-core/dynamic-link";
 
-Encuentra el id de un programa en la columna **ID** desde <DynamicLink href="/[lang]/cli/list">`ossperks list`</DynamicLink> o <DynamicLink href="/[lang]/cli/search">`ossperks search`</DynamicLink>.
+Ejecuta <DynamicLink href="/[lang]/cli/show">`ossperks show`</DynamicLink> sin un id en una TTY para elegir un programa de forma interactiva, o usa <DynamicLink href="/[lang]/cli/search">`ossperks search`</DynamicLink> de la misma manera.

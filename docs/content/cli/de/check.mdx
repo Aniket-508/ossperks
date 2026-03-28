@@ -16,13 +16,14 @@ Führen Sie dies innerhalb eines beliebigen Git-Repositorys aus. Für öffentlic
 
 ## Optionen
 
-| Flag                    | Beschreibung                                                                    |
-| ----------------------- | ------------------------------------------------------------------------------- |
-| `--repo <owner/repo>`   | Repository explizit angeben (z. B. `vercel/next.js`)                            |
+| Flag                    | Beschreibung                                                                  |
+| ----------------------- | ----------------------------------------------------------------------------- |
+| `--repo <owner/repo>`   | Repository explizit angeben (z. B. `vercel/next.js`)                         |
 | `--provider <provider>` | Git-Anbieter: `github`, `gitlab`, `codeberg` oder `gitea` (Standard: `github`) |
-| `-p, --program <id>`    | Nur gegen ein bestimmtes Programm prüfen (z. B. `--program vercel`)             |
-| `--json`                | Rohes JSON ausgeben                                                             |
-| `-h, --help`            | Hilfe anzeigen                                                                  |
+| `-p, --program <id>`    | Nur gegen ein bestimmtes Programm prüfen (z. B. `--program vercel`)          |
+| `-i, --interactive`    | Programme interaktiv auswählen (nach Kategorie gruppiert; nur TTY, nicht mit `--json` oder `--program`) |
+| `--json`                | Rohes JSON ausgeben                                                           |
+| `-h, --help`            | Hilfe anzeigen                                                                |
 
 ## Funktionsweise
 
@@ -95,6 +96,10 @@ ossperks check --repo group/project --provider gitlab
 
 ossperks check --program vercel
 
+# Interaktiv auswählen, welche Programme geprüft werden sollen (Terminal-UI)
+
+ossperks check --interactive
+
 # JSON-Ausgabe für Skripte
 
 ossperks check --json
@@ -105,18 +110,18 @@ ossperks check --json
 ```
 ✅ my-project — MIT · 412 Sterne · letzter Push vor 3 Tagen
 
-Förderfähigkeit für 48 Programme — 12 förderfähig, 8 benötigen Überprüfung, 28 nicht förderfähig
+Berechtigung für 48 Programme — 12 berechtigt, 8 benötigen Prüfung, 28 nicht berechtigt
 
-  ✅  Vercel for Open Source                         Wahrscheinlich förderfähig — Open-Source-Projekt
-  ✅  Netlify Open Source Plan                      Wahrscheinlich förderfähig — Open-Source-Projekt
-  ⚠️  GitHub Copilot Pro for Open Source Maintainers Überprüfung erforderlich — manuelle Prüfung notwendig
-  ❌  DigitalOcean Open Source Credits             Wahrscheinlich nicht förderfähig — nicht genügend GitHub-Sterne
+  ✅  Vercel for Open Source                         Wahrscheinlich berechtigt — Open-Source-Projekt
+  ✅  Netlify Open Source Plan                      Wahrscheinlich berechtigt — Open-Source-Projekt
+  ⚠️  GitHub Copilot Pro for Open Source Maintainers Benötigt Prüfung — manuelle Überprüfung erforderlich
+  ❌  DigitalOcean Open Source Credits             Wahrscheinlich nicht berechtigt — nicht genügend GitHub-Sterne
 ```
 
 Status:
 
-- **✅ Wahrscheinlich förderfähig** — alle geprüften Förderkriterien erfüllt
-- **⚠️ Überprüfung erforderlich** — mindestens ein Kriterium konnte nicht automatisch geprüft werden
-- **❌ Wahrscheinlich nicht förderfähig** — ein oder mehrere Kriterien eindeutig nicht erfüllt
+- **✅ Wahrscheinlich berechtigt** — alle geparsten Berechtigungsregeln erfüllt
+- **⚠️ Benötigt Prüfung** — mindestens eine Regel konnte nicht automatisch ausgewertet werden
+- **❌ Wahrscheinlich nicht berechtigt** — eine oder mehrere Regeln stimmen eindeutig nicht überein
 
-Bitte immer die offizielle Programmseite prüfen, bevor Sie sich bewerben.
+Überprüfen Sie immer die offizielle Seite des Programms, bevor Sie sich bewerben.

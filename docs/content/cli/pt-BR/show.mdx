@@ -6,16 +6,16 @@ description: Exibir detalhes completos de um programa de benefícios OSS especí
 ## Uso
 
 ```
-ossperks show <id> [opções]
+ossperks show [id] [opções]
 ```
 
 **Alias:** `ossperks info`
 
 ## Argumentos
 
-| Argumento | Descrição                                   |
-| --------- | ------------------------------------------- |
-| `<id>`    | O id do programa (ex: `vercel`, `github-pages`) |
+| Argumento | Descrição                                                                 |
+| -------- | ----------------------------------------------------------------------------- |
+| `[id]`   | ID do programa opcional (ex.: `vercel`, `github-pages`). Omita em um TTY para escolher de uma lista. |
 
 ## Opções
 
@@ -31,6 +31,10 @@ ossperks show <id> [opções]
 # Mostrar o programa Vercel
 
 ossperks show vercel
+
+# Seletor interativo (TTY): escolha um programa da lista
+
+ossperks show
 
 # JSON legível por máquina
 
@@ -55,14 +59,14 @@ BENEFÍCIOS
 
 ELEGIBILIDADE
   • Deve ser um projeto de código aberto ativamente desenvolvido e mantido.
-  • Deve estar hospedado (ou ter intenção de hospedar) na Vercel.
+  • Deve estar hospedado (ou pretender hospedar) na Vercel.
 
 COMO SE INSCREVER
-  • Inscreva-se através da página do programa OSS da Vercel quando as inscrições abrirem.
+  • Inscreva-se através da página do programa OSS da Vercel quando as inscrições estiverem abertas.
 
-  → Inscrever-se Agora: https://vercel.com/open-source-program
+  → Inscreva-se Agora: https://vercel.com/open-source-program
 ```
 
 import { DynamicLink } from "fumadocs-core/dynamic-link";
 
-Encontre um id de programa na coluna **ID** em <DynamicLink href="/[lang]/cli/list">`ossperks list`</DynamicLink> ou <DynamicLink href="/[lang]/cli/search">`ossperks search`</DynamicLink>.
+Execute <DynamicLink href="/[lang]/cli/show">`ossperks show`</DynamicLink> sem um id em um TTY para escolher um programa interativamente, ou use <DynamicLink href="/[lang]/cli/search">`ossperks search`</DynamicLink> da mesma forma.

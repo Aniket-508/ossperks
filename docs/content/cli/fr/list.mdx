@@ -41,15 +41,15 @@ ossperks list --json
 
 ```
 48 programmes
-─────────────
+────────────
 
-  ID                NOM                                           URL
-  1password         1Password pour les projets Open Source        https://ossperks.com/programs/1password
-  algolia           Algolia pour l'Open Source                    https://ossperks.com/programs/algolia
-  anthropic-claude  Anthropic Claude pour l'Open Source           https://ossperks.com/programs/anthropic-claude
+  NOM                                           URL
+  1Password pour les projets Open Source        https://ossperks.com/programs/1password
+  Algolia pour l'Open Source                    https://ossperks.com/programs/algolia
+  Anthropic Claude pour l'Open Source           https://ossperks.com/programs/anthropic-claude
   ...
 ```
 
 import { DynamicLink } from "fumadocs-core/dynamic-link";
 
-La colonne **ID** correspond à ce que vous transmettez à <DynamicLink href="/[lang]/cli/show">`ossperks show <id>`</DynamicLink>. **URL** renvoie vers la page du programme sur ossperks.com.
+**URL** renvoie vers la page de chaque programme sur ossperks.com. Utilisez <DynamicLink href="/[lang]/cli/show">`ossperks show`</DynamicLink> (interactif dans un TTY) ou transmettez explicitement un identifiant de programme.

@@ -6,16 +6,16 @@ description: Afficher les détails complets d'un programme de bénéfices OSS sp
 ## Utilisation
 
 ```
-ossperks show <id> [options]
+ossperks show [id] [options]
 ```
 
 **Alias :** `ossperks info`
 
 ## Arguments
 
-| Argument | Description                                        |
-| -------- | -------------------------------------------------- |
-| `<id>`   | L'identifiant du programme (ex. `vercel`, `github-pages`) |
+| Argument | Description                                                                 |
+| -------- | ----------------------------------------------------------------------------- |
+| `[id]`   | Identifiant de programme optionnel (par ex. `vercel`, `github-pages`). Omettez dans un TTY pour choisir dans une liste. |
 
 ## Options
 
@@ -32,6 +32,10 @@ ossperks show <id> [options]
 
 ossperks show vercel
 
+# Sélecteur interactif (TTY) : choisissez un programme dans la liste
+
+ossperks show
+
 # JSON lisible par machine
 
 ossperks show vercel --json
@@ -41,16 +45,16 @@ ossperks show vercel --json
 
 ```
 ─────────────────────────────────────
-  Vercel for Open Source
-  by Vercel  ·  hosting
+  Vercel pour l'Open Source
+  par Vercel  ·  hébergement
 ─────────────────────────────────────
 
-Vercel fournit des crédits de plateforme et des services supplémentaires
-pour les projets open source hébergés sur la plateforme Vercel.
+Vercel fournit des crédits de plateforme et des services supplémentaires pour
+les projets open source hébergés sur la plateforme Vercel.
 
 AVANTAGES
   • 3 600 $ de crédits de plateforme — 3 600 $ en crédits de plateforme Vercel
-    répartis sur 12 mois.
+    distribués sur 12 mois.
   • Pack de démarrage OSS — Crédits de services tiers.
 
 ÉLIGIBILITÉ
@@ -58,11 +62,11 @@ AVANTAGES
   • Doit être hébergé sur (ou destiné à être hébergé sur) Vercel.
 
 COMMENT POSTULER
-  • Postulez via la page du programme Vercel OSS lorsque les candidatures sont ouvertes.
+  • Postulez via la page du programme OSS de Vercel lorsque les candidatures sont ouvertes.
 
   → Postuler maintenant : https://vercel.com/open-source-program
 ```
 
 import { DynamicLink } from "fumadocs-core/dynamic-link";
 
-Trouvez un identifiant de programme dans la colonne **ID** depuis <DynamicLink href="/[lang]/cli/list">`ossperks list`</DynamicLink> ou <DynamicLink href="/[lang]/cli/search">`ossperks search`</DynamicLink>.
+Exécutez <DynamicLink href="/[lang]/cli/show">`ossperks show`</DynamicLink> sans identifiant dans un TTY pour choisir un programme de manière interactive, ou utilisez <DynamicLink href="/[lang]/cli/search">`ossperks search`</DynamicLink> de la même manière.

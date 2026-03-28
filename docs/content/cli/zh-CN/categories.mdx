@@ -1,7 +1,9 @@
 ---
 title: ossperks categories
-description: 列出所有可用的程序分类及其 ID。
+description: 以交互方式浏览类别或在非交互模式下列出它们。
 ---
+
+import { DynamicLink } from "fumadocs-core/dynamic-link";
 
 ## 用法
 
@@ -13,38 +15,42 @@ ossperks categories [options]
 
 ## 选项
 
-| 标志         | 描述          |
-| ------------ | ------------- |
+| 标志         | 描述     |
+| ------------ | --------------- |
 | `--json`     | 输出原始 JSON |
-| `-h, --help` | 显示帮助      |
+| `-h, --help` | 显示帮助       |
 
 ## 示例
 
 ```bash
 
-# 列出所有类别
+# TTY：自动完成类别选择，然后列出程序（名称 + 链接）。
+
+# 非 TTY：打印类别表（名称 + 数量）。
 
 ossperks categories
 
-# JSON 输出
+# JSON：用于 ossperks list --category <id> 的类别 ID
 
 ossperks categories --json
 ```
 
 ## 输出
 
+在 **TTY** 中，您会看到一个自动完成提示；选择类别后，CLI 会打印该类别中程序的 **名称** 和 **链接** 表格（样式与 <DynamicLink href="/[lang]/cli/list">`ossperks list`</DynamicLink> 相同）。
+
+在 **非交互式** 环境中：
+
 ```
-13 categories
+13 个类别
 ─────────────
 
-  ID               NAME                    COUNT
-  hosting          Hosting & Deployment       12
-  devtools         Developer Tools             8
+  名称                    数量
+  托管与部署                 12
+  开发者工具                  8
   ...
 ```
 
-**COUNT** 列是该分类中程序的数量(示例值)。
+**数量** 列显示该类别中的程序数量（示例值）。
 
-import { DynamicLink } from "fumadocs-core/dynamic-link";
-
-使用分类 **id**(第一列)配合 <DynamicLink href="/[lang]/cli/list">`ossperks list --category <id>`</DynamicLink> 来筛选程序。
+在脚本中使用 `--json` 输出的类别 **ID** 配合 <DynamicLink href="/[lang]/cli/list">`ossperks list --category <id>`</DynamicLink> 来筛选程序。

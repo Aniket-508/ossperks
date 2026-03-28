@@ -7,16 +7,16 @@ description: Recherchez des programmes d'avantages OSS par mot-clé parmi les
 ## Utilisation
 
 ```
-ossperks search <query> [options]
+ossperks search [requête] [options]
 ```
 
 **Alias :** `ossperks find`, `ossperks s`
 
 ## Arguments
 
-| Argument  | Description                                                                                |
-| --------- | ------------------------------------------------------------------------------------------ |
-| `<query>` | Terme de recherche (correspond au nom, id, description, fournisseur, catégorie, tags ou avantages) |
+| Argument    | Description                                                                       |
+| ----------- | --------------------------------------------------------------------------------- |
+| `[requête]` | Terme de recherche (correspond au nom, id, description, fournisseur, catégorie, tags ou avantages). Omettre dans un TTY pour l'autocomplétion interactive. |
 
 ## Options
 
@@ -33,6 +33,10 @@ ossperks search <query> [options]
 
 ossperks search hosting
 
+# Recherche interactive par autocomplétion (TTY) : tapez pour filtrer, sélectionnez un programme
+
+ossperks search
+
 # Utilisation de l'alias court
 
 ossperks s credits
@@ -45,16 +49,16 @@ ossperks search vercel --json
 ## Résultat
 
 ```
-Résultats de recherche pour "hosting" — 4 programmes
+Résultats de recherche pour « hosting » — 4 programmes
 ────────────────────────────────────────────
 
-  ID            NAME                            URL
-  vercel        Vercel for Open Source          https://ossperks.com/programs/vercel
-  netlify       Netlify Open Source Plan        https://ossperks.com/programs/netlify
-  digitalocean  DigitalOcean Open Source        https://ossperks.com/programs/digitalocean
-  cloudflare    Cloudflare for Open Source      https://ossperks.com/programs/cloudflare
+  NOM                             URL
+  Vercel for Open Source          https://ossperks.com/programs/vercel
+  Netlify Open Source Plan        https://ossperks.com/programs/netlify
+  DigitalOcean Open Source        https://ossperks.com/programs/digitalocean
+  Cloudflare for Open Source      https://ossperks.com/programs/cloudflare
 ```
 
 import { DynamicLink } from "fumadocs-core/dynamic-link";
 
-Utilisez la colonne **ID** avec <DynamicLink href="/[lang]/cli/show">`ossperks show <id>`</DynamicLink> pour afficher les détails complets de n'importe quel résultat.
+Exécutez <DynamicLink href="/[lang]/cli/search">`ossperks search`</DynamicLink> sans requête dans un TTY pour sélectionner un programme de manière interactive et afficher les détails complets.

@@ -16,13 +16,14 @@ Execute dentro de qualquer repositório Git. Nenhum argumento ou token necessár
 
 ## Opções
 
-| Flag                    | Descrição                                                                       |
-| ----------------------- | ------------------------------------------------------------------------------- |
-| `--repo <owner/repo>`   | Especificar explicitamente um repositório (ex.: `vercel/next.js`)               |
-| `--provider <provider>` | Provedor Git: `github`, `gitlab`, `codeberg` ou `gitea` (padrão: `github`)      |
-| `-p, --program <id>`    | Verificar apenas um programa específico (ex.: `--program vercel`)               |
-| `--json`                | Exibir JSON bruto                                                               |
-| `-h, --help`            | Mostrar ajuda                                                                   |
+| Flag                    | Descrição                                                                     |
+| ----------------------- | ----------------------------------------------------------------------------- |
+| `--repo <owner/repo>`   | Especificar explicitamente um repositório (ex.: `vercel/next.js`)            |
+| `--provider <provider>` | Provedor Git: `github`, `gitlab`, `codeberg` ou `gitea` (padrão: `github`)   |
+| `-p, --program <id>`    | Verificar apenas um programa específico (ex.: `--program vercel`)            |
+| `-i, --interactive`    | Escolher programas interativamente (agrupados por categoria; apenas TTY, não com `--json` ou `--program`) |
+| `--json`                | Exibir JSON bruto                                                             |
+| `-h, --help`            | Mostrar ajuda                                                                 |
 
 ## Como funciona
 
@@ -95,6 +96,10 @@ ossperks check --repo group/project --provider gitlab
 
 ossperks check --program vercel
 
+# Escolher interativamente quais programas verificar (interface de terminal)
+
+ossperks check --interactive
+
 # Saída JSON para scripts
 
 ossperks check --json
@@ -105,18 +110,18 @@ ossperks check --json
 ```
 ✅ my-project — MIT · 412 estrelas · último push há 3 dias
 
-Elegibilidade em 48 programas — 12 elegíveis, 8 precisam de revisão, 28 inelegíveis
+Elegibilidade em 48 programas — 12 elegíveis, 8 precisam de revisão, 28 não elegíveis
 
-  ✅  Vercel for Open Source                         Provavelmente elegível — projeto open source
-  ✅  Netlify Open Source Plan                      Provavelmente elegível — projeto open source
+  ✅  Vercel for Open Source                         Provavelmente elegível — projeto de código aberto
+  ✅  Netlify Open Source Plan                      Provavelmente elegível — projeto de código aberto
   ⚠️  GitHub Copilot Pro for Open Source Maintainers Precisa de revisão — revisão manual necessária
-  ❌  DigitalOcean Open Source Credits             Provavelmente inelegível — estrelas no GitHub insuficientes
+  ❌  DigitalOcean Open Source Credits             Provavelmente não elegível — estrelas insuficientes no GitHub
 ```
 
 Status:
 
 - **✅ Provavelmente elegível** — todas as regras de elegibilidade analisadas foram atendidas
 - **⚠️ Precisa de revisão** — pelo menos uma regra não pôde ser avaliada automaticamente
-- **❌ Provavelmente inelegível** — uma ou mais regras claramente não foram atendidas
+- **❌ Provavelmente não elegível** — uma ou mais regras claramente não foram atendidas
 
-Sempre verifique na página oficial do programa antes de se inscrever.
+Sempre verifique na página oficial do programa antes de se candidatar.

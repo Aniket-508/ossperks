@@ -1,48 +1,56 @@
 ---
 title: ossperks categories
-description: Alle verfügbaren Programmkategorien und ihre IDs auflisten.
+description: Kategorien interaktiv durchsuchen oder im nicht-interaktiven Modus auflisten.
 ---
+
+import { DynamicLink } from "fumadocs-core/dynamic-link";
 
 ## Verwendung
 
 ```
-ossperks categories [optionen]
+ossperks categories [options]
 ```
+
+**Alias:** `ossperks cats`
 
 ## Optionen
 
-| Flag         | Beschreibung        |
-| ------------ | ------------------- |
+| Flag         | Beschreibung       |
+| ------------ | ------------------ |
 | `--json`     | Rohes JSON ausgeben |
-| `-h, --help` | Hilfe anzeigen      |
+| `-h, --help` | Hilfe anzeigen     |
 
 ## Beispiele
 
 ```bash
 
-# Alle Kategorien auflisten
+# TTY: Kategorie per Autovervollständigung auswählen, dann Programme auflisten (NAME + URL).
+
+# Nicht-TTY: Gibt eine Kategorientabelle aus (NAME + ANZAHL).
 
 ossperks categories
 
-# JSON-Ausgabe
+# JSON: Kategorie-IDs für ossperks list --category <id>
 
 ossperks categories --json
 ```
 
 ## Ausgabe
 
+In einem **TTY** erhalten Sie eine Autovervollständigungsaufforderung; nachdem Sie eine Kategorie ausgewählt haben, gibt die CLI eine **NAME**- und **URL**-Tabelle für Programme in dieser Kategorie aus (gleicher Stil wie <DynamicLink href="/[lang]/cli/list">`ossperks list`</DynamicLink>).
+
+In einer **nicht-interaktiven** Umgebung:
+
 ```
 13 Kategorien
 ──────────────
 
-  ID               NAME                    COUNT
-  hosting          Hosting & Deployment       12
-  devtools         Developer Tools             8
+  NAME                    ANZAHL
+  Hosting & Deployment       12
+  Developer Tools             8
   ...
 ```
 
-Die Spalte **COUNT** gibt die Anzahl der Programme in dieser Kategorie an (Beispielwerte).
+Die Spalte **ANZAHL** zeigt die Anzahl der Programme in dieser Kategorie (Beispielwerte).
 
-import { DynamicLink } from "fumadocs-core/dynamic-link";
-
-Verwenden Sie die Kategorie-**ID** (erste Spalte) mit <DynamicLink href="/[lang]/cli/list">`ossperks list --category <id>`</DynamicLink>, um Programme zu filtern.
+Verwenden Sie die Kategorie-**ID** aus `--json` mit <DynamicLink href="/[lang]/cli/list">`ossperks list --category <id>`</DynamicLink>, um Programme in Skripten zu filtern.

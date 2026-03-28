@@ -17,11 +17,12 @@ ossperks check [オプション]
 
 | フラグ                    | 説明                                                                  |
 | ----------------------- | ---------------------------------------------------------------------------- |
-| `--repo <owner/repo>`   | リポジトリを明示的に指定します（例：`vercel/next.js`）                      |
+| `--repo <owner/repo>`   | リポジトリを明示的に指定（例：`vercel/next.js`）                      |
 | `--provider <provider>` | Gitプロバイダー：`github`、`gitlab`、`codeberg`、または `gitea`（デフォルト：`github`） |
-| `-p, --program <id>`    | 特定のプログラムのみをチェックします（例：`--program vercel`）              |
-| `--json`                | 生のJSONを出力します                                                              |
-| `-h, --help`            | ヘルプを表示します                                                                    |
+| `-p, --program <id>`    | 特定のプログラムのみをチェック（例：`--program vercel`）              |
+| `-i, --interactive`    | プログラムを対話形式で選択（カテゴリー別にグループ化；TTYのみ、`--json`または`--program`との併用不可） |
+| `--json`                | 生のJSONを出力                                                              |
+| `-h, --help`            | ヘルプを表示                                                                    |
 
 ## 動作の仕組み
 
@@ -94,6 +95,10 @@ ossperks check --repo group/project --provider gitlab
 
 ossperks check --program vercel
 
+# チェックするプログラムを対話形式で選択（ターミナルUI）
+
+ossperks check --interactive
+
 # スクリプト用のJSON出力
 
 ossperks check --json
@@ -102,20 +107,20 @@ ossperks check --json
 ## 出力
 
 ```
-✅ my-project — MIT · 412 stars · 最終プッシュ 3日前
+✅ my-project — MIT · 412スター · 最終プッシュ3日前
 
-48のプログラムにおける適格性 — 12件が適格、8件が要確認、28件が不適格
+48プログラムの適格性 — 12件適格、8件要確認、28件不適格
 
   ✅  Vercel for Open Source                         適格の可能性あり — オープンソースプロジェクト
   ✅  Netlify Open Source Plan                      適格の可能性あり — オープンソースプロジェクト
-  ⚠️  GitHub Copilot Pro for Open Source Maintainers 要確認 — 手動レビューが必要です
-  ❌  DigitalOcean Open Source Credits             不適格の可能性あり — GitHubスター数が不足しています
+  ⚠️  GitHub Copilot Pro for Open Source Maintainers 要確認 — 手動レビューが必要
+  ❌  DigitalOcean Open Source Credits             不適格の可能性あり — GitHubスター数が不足
 ```
 
 ステータス：
 
-- **✅ 適格の可能性あり** — 解析されたすべての適格性ルールに一致しました
+- **✅ 適格の可能性あり** — 解析されたすべての適格性ルールが一致
 - **⚠️ 要確認** — 少なくとも1つのルールが自動評価できませんでした
-- **❌ 不適格の可能性あり** — 1つ以上のルールが明らかに一致しませんでした
+- **❌ 不適格の可能性あり** — 1つ以上のルールが明らかに一致しません
 
 申請前に必ずプログラムの公式ページで確認してください。

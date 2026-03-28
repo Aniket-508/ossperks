@@ -1,7 +1,9 @@
 ---
 title: ossperks categories
-description: 利用可能なすべてのプログラムカテゴリとそのIDを一覧表示します。
+description: カテゴリを対話的に閲覧、または非対話型モードでリスト表示します。
 ---
+
+import { DynamicLink } from "fumadocs-core/dynamic-link";
 
 ## 使用方法
 
@@ -13,38 +15,42 @@ ossperks categories [options]
 
 ## オプション
 
-| フラグ       | 説明           |
-| ------------ | -------------- |
-| `--json`     | 生のJSONを出力 |
-| `-h, --help` | ヘルプを表示   |
+| フラグ | 説明 |
+| ------------ | --------------- |
+| `--json` | 生のJSONを出力 |
+| `-h, --help` | ヘルプを表示 |
 
 ## 例
 
 ```bash
 
-# 全カテゴリーを一覧表示
+# TTY: カテゴリを自動補完し、プログラムをリスト表示(名前 + URL)。
+
+# 非TTY: カテゴリテーブルを出力(名前 + 件数)。
 
 ossperks categories
 
-# JSON出力
+# JSON: ossperks list --category <id> 用のカテゴリID
 
 ossperks categories --json
 ```
 
 ## 出力
 
+**TTY**環境では、自動補完プロンプトが表示されます。カテゴリを選択すると、CLIはそのカテゴリ内のプログラムの**名前**と**URL**のテーブルを出力します(<DynamicLink href="/[lang]/cli/list">`ossperks list`</DynamicLink>と同じスタイル)。
+
+**非対話型**環境では:
+
 ```
-13 categories
+13カテゴリ
 ─────────────
 
-  ID               NAME                    COUNT
-  hosting          Hosting & Deployment       12
-  devtools         Developer Tools             8
+  名前                    件数
+  ホスティング & デプロイ       12
+  開発者ツール                  8
   ...
 ```
 
-**COUNT** 列は、そのカテゴリ内のプログラム数を示します（例示値）。
+**件数**列は、そのカテゴリ内のプログラム数を示します(例示値)。
 
-import { DynamicLink } from "fumadocs-core/dynamic-link";
-
-カテゴリの **id**（最初の列）を <DynamicLink href="/[lang]/cli/list">`ossperks list --category <id>`</DynamicLink> と組み合わせて使用し、プログラムをフィルタリングできます。
+スクリプトでプログラムをフィルタリングするには、`--json`から取得したカテゴリ**ID**を<DynamicLink href="/[lang]/cli/list">`ossperks list --category <id>`</DynamicLink>で使用してください。

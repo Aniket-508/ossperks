@@ -39,16 +39,16 @@ ossperks list --json
 ## 출력
 
 ```
-48개의 프로그램
+48 programs
 ────────────
 
-  ID                NAME                                          URL
-  1password         1Password for Open Source Projects            https://ossperks.com/programs/1password
-  algolia           Algolia for Open Source                         https://ossperks.com/programs/algolia
-  anthropic-claude  Anthropic Claude for Open Source                https://ossperks.com/programs/anthropic-claude
+  NAME                                          URL
+  1Password for Open Source Projects            https://ossperks.com/programs/1password
+  Algolia for Open Source                         https://ossperks.com/programs/algolia
+  Anthropic Claude for Open Source                https://ossperks.com/programs/anthropic-claude
   ...
 ```
 
 import { DynamicLink } from "fumadocs-core/dynamic-link";
 
-**ID** 열은 <DynamicLink href="/[lang]/cli/show">`ossperks show <id>`</DynamicLink>에 전달하는 값입니다. **URL**은 ossperks.com의 프로그램 페이지로 연결됩니다.
+**URL**은 ossperks.com의 각 프로그램 페이지로 연결됩니다. <DynamicLink href="/[lang]/cli/show">`ossperks show`</DynamicLink> (TTY에서 대화형) 명령을 사용하거나 프로그램 ID를 명시적으로 전달하세요.

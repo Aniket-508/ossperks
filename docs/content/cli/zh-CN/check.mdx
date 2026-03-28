@@ -13,13 +13,13 @@ ossperks check [选项]
 
 ## 选项
 
-| 标志                    | 描述                                                                  |
-| ----------------------- | ---------------------------------------------------------------------------- |
-| `--repo <owner/repo>`   | 明确指定一个仓库(例如 `vercel/next.js`)                      |
-| `--provider <provider>` | Git 提供商:`github`、`gitlab`、`codeberg` 或 `gitea`(默认:`github`) |
-| `-p, --program <id>`    | 仅检查特定程序(例如 `--program vercel`)              |
-| `-i, --interactive`    | 交互式选择程序(按类别分组;仅限 TTY,不能与 `--json` 或 `--program` 同时使用) |
-| `--json`                | 输出原始 JSON                                                              |
+| 标志                    | 描述                                                                        |
+| ----------------------- | --------------------------------------------------------------------------- |
+| `--repo <owner/repo>`   | 明确指定一个仓库(例如 `vercel/next.js`)                                     |
+| `--provider <provider>` | Git 提供商:`github`、`gitlab`、`codeberg` 或 `gitea`(默认:`github`)         |
+| `-p, --program <id>`    | 仅检查特定程序(例如 `--program vercel`)                                     |
+| `-i, --interactive`     | 交互式选择程序(按类别分组;仅限 TTY,不能与 `--json` 或 `--program` 同时使用) |
+| `--json`                | 输出原始 JSON                                                               |
 | `-h, --help`            | 显示帮助                                                                    |
 
 ## 工作原理
@@ -116,19 +116,22 @@ ossperks check --interactive
 # 用于脚本的 JSON 输出
 
 ossperks check --json
+
 ```
 
 ## 输出
 
 ```
+
 ✅ my-project — MIT · 412 星标 · 最后推送于 3 天前
 
 48 个程序的资格审查 — 12 个符合条件,8 个需要审核,28 个不符合条件
 
-  ✅  Vercel for Open Source                         可能符合条件 — 开源项目
-  ✅  Netlify Open Source Plan                      可能符合条件 — 开源项目
-  ⚠️  GitHub Copilot Pro for Open Source Maintainers 需要审核 — 需要人工审核
-  ❌  DigitalOcean Open Source Credits             可能不符合条件 — GitHub 星标数不足
+✅ Vercel for Open Source 可能符合条件 — 开源项目
+✅ Netlify Open Source Plan 可能符合条件 — 开源项目
+⚠️ GitHub Copilot Pro for Open Source Maintainers 需要审核 — 需要人工审核
+❌ DigitalOcean Open Source Credits 可能不符合条件 — GitHub 星标数不足
+
 ```
 
 状态说明:
@@ -138,3 +141,4 @@ ossperks check --json
 - **❌ 可能不符合条件** — 一条或多条规则明显不匹配
 
 在申请之前,请务必根据该程序的官方页面进行验证。
+```

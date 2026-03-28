@@ -1,8 +1,17 @@
 import { createI18nMiddleware } from "fumadocs-core/i18n/middleware";
+import type { NextFetchEvent, NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 import { i18n } from "@/i18n/config";
 
-export const proxy = createI18nMiddleware(i18n);
+const i18nMiddleware = createI18nMiddleware(i18n);
+
+export const proxy = (request: NextRequest, event: NextFetchEvent) => {
+  if (request.nextUrl.pathname.endsWith(".mdx")) {
+    return NextResponse.next();
+  }
+  return i18nMiddleware(request, event);
+};
 
 export const config = {
   matcher: [

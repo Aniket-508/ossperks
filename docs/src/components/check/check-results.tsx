@@ -1,6 +1,10 @@
 "use client";
 
-import { PROVIDER_HOSTS } from "@ossperks/core";
+import {
+  formatRelativeTime,
+  PROVIDER_HOSTS,
+  templateFormatter,
+} from "@ossperks/core";
 import type { RepoProvider } from "@ossperks/core";
 import { GitFork, Lock, Scale, Star } from "lucide-react";
 
@@ -8,7 +12,6 @@ import { Badge } from "@/components/ui/badge";
 import { LinkText } from "@/components/ui/link-text";
 import { Separator } from "@/components/ui/separator";
 import { STATUS_CONFIG } from "@/lib/check";
-import { formatAge } from "@/lib/date";
 import type { CheckTranslations } from "@/locales/en/check";
 import type { TranslatedCheckResponse } from "@/types/check";
 
@@ -54,7 +57,10 @@ export const CheckResults = ({
           )}
           <Badge variant="outline">
             {translations.lastPush}{" "}
-            {formatAge(repo.pushedAt, translations.time)}
+            {formatRelativeTime(
+              new Date(repo.pushedAt),
+              templateFormatter(translations.time),
+            )}
           </Badge>
           {repo.isFork && (
             <Badge variant="secondary" className="gap-1.5">

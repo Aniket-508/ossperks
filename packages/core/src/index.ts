@@ -103,12 +103,23 @@ export {
   checkAllProgramsDetailed,
 } from "./eligibility";
 export {
+  calculateTimeUnits,
+  englishFormatter,
+  formatRelativeTime,
+  templateFormatter,
+  type TimeFormatter,
+  type TimeTemplates,
+  type TimeUnit,
+  type TimeUnitResult,
+} from "./date";
+export {
   aggregateDependencies,
   extractDependencyNames,
   fetchGitHub,
   fetchGitLab,
   fetchGitea,
   fetchRepoContext,
+  MAX_PACKAGE_JSON_FILES,
 } from "./fetch";
 export { parseRepoUrl, PROVIDER_HOSTS, VALID_PROVIDERS } from "./parse";
 export { formatSlug } from "./slug";

@@ -47,13 +47,18 @@ export const aggregateDependencies = (
   return [...names];
 };
 
-const MAX_PACKAGE_JSON_FILES = 20;
+export const MAX_PACKAGE_JSON_FILES = 20;
 
 const isPackageJsonPath = (filePath: string): boolean =>
   filePath.endsWith("/package.json") || filePath === "package.json";
 
 const isNotInNodeModules = (filePath: string): boolean =>
   !filePath.includes("node_modules");
+
+const filterPackageJsonPaths = (filePaths: string[]): string[] =>
+  filePaths
+    .filter((p) => isPackageJsonPath(p) && isNotInNodeModules(p))
+    .slice(0, MAX_PACKAGE_JSON_FILES);
 
 const parseBase64Json = (content: string): Record<string, unknown> | null => {
   try {
@@ -135,9 +140,7 @@ const fetchGitHubTree = async (ref: RepoRef): Promise<TreeScanResult> => {
       .filter((entry) => entry.type === "blob" && entry.path)
       .map((entry) => entry.path as string);
 
-    const pkgPaths = filePaths
-      .filter((p) => isPackageJsonPath(p) && isNotInNodeModules(p))
-      .slice(0, MAX_PACKAGE_JSON_FILES);
+    const pkgPaths = filterPackageJsonPaths(filePaths);
 
     if (pkgPaths.length === 0) {
       return { dependencies: [], filePaths };
@@ -240,9 +243,7 @@ const fetchGitLabTree = async (ref: RepoRef): Promise<TreeScanResult> => {
       .filter((entry) => entry.type === "blob")
       .map((entry) => entry.path);
 
-    const pkgPaths = filePaths
-      .filter((p) => isPackageJsonPath(p) && isNotInNodeModules(p))
-      .slice(0, MAX_PACKAGE_JSON_FILES);
+    const pkgPaths = filterPackageJsonPaths(filePaths);
 
     if (pkgPaths.length === 0) {
       return { dependencies: [], filePaths };
@@ -405,9 +406,7 @@ const fetchGiteaTree = async (
       .filter((entry) => entry.type === "blob" && entry.path)
       .map((entry) => entry.path as string);
 
-    const pkgPaths = filePaths
-      .filter((p) => isPackageJsonPath(p) && isNotInNodeModules(p))
-      .slice(0, MAX_PACKAGE_JSON_FILES);
+    const pkgPaths = filterPackageJsonPaths(filePaths);
 
     if (pkgPaths.length === 0) {
       return { dependencies: [], filePaths };

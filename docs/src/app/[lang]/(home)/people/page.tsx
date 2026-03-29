@@ -118,7 +118,6 @@ export default async function PeoplePage({
                     `/people/${slug}` as `/${string}`,
                   )}
                   subtitle={roleText}
-                  variant="directory"
                 />
               );
             })}

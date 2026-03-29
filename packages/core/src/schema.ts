@@ -61,25 +61,30 @@ export const programSchema = z.object({
 
 export type Program = z.infer<typeof programSchema>;
 
-export const PERK_TYPES = {
+export const perkTypeEnum = z.enum([
+  "credits",
+  "free-plans",
+  "full-access",
+  "security",
+  "support",
+]);
+
+export type PerkType = z.infer<typeof perkTypeEnum>;
+
+export const PERK_TYPE_LABELS: Record<PerkType, string> = {
   credits: "Credits",
-  freePlans: "Free Plans",
-  fullAccess: "Full Access",
+  "free-plans": "Free Plans",
+  "full-access": "Full Access",
   security: "Security",
   support: "Support",
 } as const;
 
-export type PerkType = (typeof PERK_TYPES)[keyof typeof PERK_TYPES];
-
 const PERK_TYPE_PATTERNS: [PerkType, RegExp][] = [
-  [PERK_TYPES.credits, /credits?|minutes|events|transactions/i],
-  [PERK_TYPES.freePlans, /\bfree\b/i],
-  [
-    PERK_TYPES.fullAccess,
-    /\b(full|all|enterprise|ultimate|unlimited|complete)\b/i,
-  ],
-  [PERK_TYPES.security, /security|zero trust|codex security/i],
-  [PERK_TYPES.support, /support|assistance/i],
+  ["credits", /credits?|minutes|events|transactions/i],
+  ["free-plans", /\bfree\b/i],
+  ["full-access", /\b(full|all|enterprise|ultimate|unlimited|complete)\b/i],
+  ["security", /security|zero trust|codex security/i],
+  ["support", /support|assistance/i],
 ];
 
 export const getPerkType = (perkTitle: string): PerkType => {
@@ -88,7 +93,7 @@ export const getPerkType = (perkTitle: string): PerkType => {
       return type;
     }
   }
-  return PERK_TYPES.fullAccess;
+  return "full-access";
 };
 
 export const CATEGORY_LABELS: Record<Category, string> = {

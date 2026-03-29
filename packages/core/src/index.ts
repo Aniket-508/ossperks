@@ -1,5 +1,10 @@
 import { rawPrograms } from "./programs.generated";
-import { programSchema, getPerkType, PERK_TYPES } from "./schema";
+import {
+  getPerkType,
+  PERK_TYPE_LABELS,
+  perkTypeEnum,
+  programSchema,
+} from "./schema";
 import type { Category, PerkType, Program } from "./schema";
 import { formatSlug } from "./slug";
 import type { PersonDetail, PersonWithProgram, ProgramSummary } from "./types";
@@ -85,16 +90,26 @@ export const getPersonBySlug = (slug: string): PersonDetail | undefined => {
 
 export const getAllPeopleSlugs = (): string[] => [...peopleBySlug.keys()];
 
+export const getPeopleByProgramSlug = (programSlug: string): PersonDetail[] =>
+  [...peopleBySlug.values()].filter((person) =>
+    person.programs.some((p) => p.slug === programSlug),
+  );
+
 export const getProgramPerkTypes = (program: Program): PerkType[] => [
   ...new Set(program.perks.map((p) => getPerkType(p.title))),
 ];
 
 export const getAllPerkTypes = (): PerkType[] =>
-  Object.values(PERK_TYPES).toSorted();
+  [...perkTypeEnum.options].toSorted();
 
 export { programSchema, type Category, type Program } from "./schema";
 export { type Contact, type PerkType } from "./schema";
-export { CATEGORY_LABELS, getPerkType, PERK_TYPES } from "./schema";
+export {
+  CATEGORY_LABELS,
+  getPerkType,
+  PERK_TYPE_LABELS,
+  perkTypeEnum,
+} from "./schema";
 
 export {
   checkEligibility,

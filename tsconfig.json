@@ -7,7 +7,9 @@
     "baseUrl": ".",
     "paths": {
       "@ossperks/core": ["packages/core/src/index.ts"],
-      "@ossperks/core/schema": ["packages/core/src/schema.ts"]
+      "@ossperks/core/schema": ["packages/core/src/schema.ts"],
+      "@ossperks/data": ["packages/data/src/index.ts"],
+      "@ossperks/data/schema": ["packages/data/src/schema.ts"]
     },
     "strict": true,
     "declaration": true,

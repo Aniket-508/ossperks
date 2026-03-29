@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "pnpm generate:programs && next build",
-    "dev": "pnpm --filter @ossperks/core generate && pnpm generate:programs && next dev",
+    "dev": "pnpm --filter @ossperks/data generate && pnpm generate:programs && next dev",
     "start": "next start",
     "generate:programs": "node scripts/generate-programs-mdx.mjs",
     "generate:i18n": "pnpm generate:programs && npx lingo.dev@latest run",
@@ -18,7 +18,9 @@
     "@octokit/rest": "^22.0.1",
     "@orama/tokenizers": "^3.1.18",
     "@ossperks/core": "workspace:*",
+    "@ossperks/data": "workspace:*",
     "@tanstack/react-form": "^1.28.5",
+    "@tanstack/react-hotkeys": "^0.8.4",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.37.0",
     "@vercel/analytics": "^2.0.1",

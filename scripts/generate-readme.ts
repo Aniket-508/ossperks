@@ -16,7 +16,7 @@ import { CATEGORY_LABELS } from "@ossperks/core/schema";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
 
-const PROGRAMS_DIR = path.join(ROOT, "packages", "core", "src", "programs");
+const PROGRAMS_DIR = path.join(ROOT, "packages", "data", "src", "programs");
 const README_PATH = path.join(ROOT, "README.md");
 
 interface ProgramEntry extends Pick<

@@ -108,7 +108,6 @@ Free tools, services, and credits offered to open-source projects and their main
 - [Chromatic](https://chromatic.com/docs/open-source) - Free visual testing plan for qualifying open source projects, built by the Storybook team. Includes 35,000 Chrome snapshots per month with cross-browser testing across Chrome, Firefox, Safari, and Edge.
 - [Codecov](https://about.codecov.io/for/open-source/) - Free forever code coverage for open source projects with unlimited public repositories, PR comments, status checks, and API access. Trusted by over 60,000 OSS projects.
 - [Coveralls](https://coveralls.io/) - Free forever code coverage tracking for open source projects with support for C/C++, Go, Java, JavaScript, Python, Ruby, PHP, .NET, and more.
-
 ## Contributing
 
 Contributions welcome! Read the [contribution guidelines](CONTRIBUTING.md) first.

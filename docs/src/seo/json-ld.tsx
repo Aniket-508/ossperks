@@ -4,6 +4,7 @@ import { LINK } from "@/constants/links";
 import { SITE } from "@/constants/site";
 import { i18n } from "@/i18n/config";
 import { withLocalePrefix } from "@/i18n/navigation";
+import { encodeTagForPath } from "@/lib/tag-path";
 
 const LOCALE_TO_BCP47: Record<string, string> = {
   de: "de-DE",
@@ -189,12 +190,14 @@ const ProgramListJsonLd = ({
 
 const PersonPageJsonLd = ({
   name,
+  profilePageUrl,
   role,
-  url,
+  sameAs,
 }: {
   name: string;
+  profilePageUrl?: string;
   role?: string;
-  url?: string;
+  sameAs?: string;
 }) => {
   const jsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",
@@ -204,8 +207,11 @@ const PersonPageJsonLd = ({
   if (role) {
     jsonLd.jobTitle = role;
   }
-  if (url) {
-    jsonLd.url = url;
+  if (profilePageUrl) {
+    jsonLd.url = profilePageUrl;
+  }
+  if (sameAs) {
+    jsonLd.sameAs = sameAs;
   }
   return <JsonLdScript data={jsonLd} />;
 };
@@ -239,6 +245,78 @@ const CategoryProgramListJsonLd = ({
   return <JsonLdScript data={jsonLd} />;
 };
 
+const CategoriesIndexItemListJsonLd = ({
+  lang,
+  listName,
+  categories,
+}: {
+  lang: string;
+  listName: string;
+  categories: { label: string; slug: string }[];
+}) => {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: categories.map((row, index) => ({
+      "@type": "ListItem",
+      name: row.label,
+      position: index + 1,
+      url: `${SITE.URL}${withLocalePrefix(lang, `/categories/${row.slug}`)}`,
+    })),
+    name: listName,
+    numberOfItems: categories.length,
+  };
+  return <JsonLdScript data={jsonLd} />;
+};
+
+const TagsIndexItemListJsonLd = ({
+  lang,
+  listName,
+  tags,
+}: {
+  lang: string;
+  listName: string;
+  tags: { tag: string }[];
+}) => {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: tags.map((row, index) => ({
+      "@type": "ListItem",
+      name: row.tag,
+      position: index + 1,
+      url: `${SITE.URL}${withLocalePrefix(lang, `/tags/${encodeTagForPath(row.tag)}`)}`,
+    })),
+    name: listName,
+    numberOfItems: tags.length,
+  };
+  return <JsonLdScript data={jsonLd} />;
+};
+
+const PeopleIndexItemListJsonLd = ({
+  lang,
+  listName,
+  people,
+}: {
+  lang: string;
+  listName: string;
+  people: { name: string; slug: string }[];
+}) => {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: people.map((row, index) => ({
+      "@type": "ListItem",
+      name: row.name,
+      position: index + 1,
+      url: `${SITE.URL}${withLocalePrefix(lang, `/people/${row.slug}`)}`,
+    })),
+    name: listName,
+    numberOfItems: people.length,
+  };
+  return <JsonLdScript data={jsonLd} />;
+};
+
 const JsonLdScripts = () => (
   <>
     <WebsiteJsonLd />
@@ -257,5 +335,8 @@ export {
   ProgramJsonLd,
   ProgramListJsonLd,
   CategoryProgramListJsonLd,
+  CategoriesIndexItemListJsonLd,
+  TagsIndexItemListJsonLd,
+  PeopleIndexItemListJsonLd,
   PersonPageJsonLd,
 };

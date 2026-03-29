@@ -134,7 +134,7 @@ const createProgramPR = async (
 ) => {
   const octokit = new Octokit({ auth: githubToken });
   const slug = formatSlug(submission.name);
-  const jsonPath = `packages/core/src/programs/${slug}.json`;
+  const jsonPath = `packages/data/src/programs/${slug}.json`;
   const branchName = `add-program-${slug}-${Date.now()}`;
 
   const { data: ref } = await octokit.git.getRef({

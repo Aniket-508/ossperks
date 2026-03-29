@@ -4,13 +4,33 @@ const programs = {
   by: "por",
   filters: {
     allCategories: "Todas as categorias",
+    allTags: "Nenhuma tag selecionada",
     allTypes: "Todos os tipos",
-    noMatches: "Nenhum programa corresponde aos filtros selecionados."
+    apply: "Aplicar",
+    clearAll: "Limpar tudo",
+    emptySection: "Nenhuma opção correspondente.",
+    filterButton: "Filtros",
+    noMatches: "Nenhum programa corresponde aos filtros selecionados.",
+    removeChip: "Remover",
+    reset: "Redefinir",
+    searchCategories: "Buscar categorias…",
+    searchTags: "Buscar tags…",
+    searchTypes: "Buscar tipos…",
+    sectionCategories: "Categorias",
+    sectionTags: "Tags",
+    sectionTypes: "Tipos",
+    select: "Selecionar",
+    showingCount: "Mostrando {count} programas"
   },
   learnMore: "saiba mais",
   listing: {
     heading: "Programas",
-    intro: "{count} programas selecionados com ferramentas gratuitas, créditos e serviços para projetos open source."
+    intro: "{count} programas selecionados com ferramentas gratuitas, créditos e serviços para projetos open source.",
+    orderBy: "Ordenar por",
+    resetFilters: "Redefinir",
+    searchPlaceholder: "Buscar programas…",
+    sortNameAsc: "Nome A–Z",
+    sortNameDesc: "Nome Z–A"
   },
   more: "+{count} mais",
   category: {
@@ -19,13 +39,34 @@ const programs = {
     empty: "Ainda não há programas nesta categoria."
   },
   sections: {
+    applyShort: "Aplicar",
+    categoryLabel: "Categoria",
     checkEligibility: "Verificar Elegibilidade",
+    checkShort: "Verificar",
+    contact: "Contato",
+    copyLink: "Copiar link",
+    copyLinkTooltip: "Copiar link da página",
     eligibility: "Elegibilidade",
     howToApply: "Como se inscrever",
+    linkCopied: "Link copiado!",
+    linkCopiedTooltip: "Link copiado!",
+    nextProgram: "Próximo programa",
+    nextProgramTooltip: "Próximo programa",
     people: "Pessoas",
     perks: "Benefícios",
+    previousProgram: "Programa anterior",
+    previousProgramTooltip: "Programa anterior",
     requirements: "Requisitos",
-    tags: "Tags"
+    share: "Compartilhar",
+    shareOnFacebook: "Compartilhar no Facebook",
+    shareOnLinkedIn: "Compartilhar no LinkedIn",
+    shareOnReddit: "Compartilhar no Reddit",
+    shareOnWhatsApp: "Compartilhar no WhatsApp",
+    shareOnX: "Compartilhar no X",
+    similarTo: "Semelhante a {name}",
+    tags: "Tags",
+    timeline: "Prazo",
+    viewAll: "Ver todos os programas"
   },
   submit: {
     backToAll: "Todos os programas",

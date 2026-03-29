@@ -4,13 +4,33 @@ const programs = {
   by: "由",
   filters: {
     allCategories: "所有类别",
+    allTags: "未选择标签",
     allTypes: "所有类型",
-    noMatches: "没有符合所选筛选条件的项目。"
+    apply: "应用",
+    clearAll: "清除全部",
+    emptySection: "没有匹配的选项。",
+    filterButton: "筛选",
+    noMatches: "没有符合所选筛选条件的项目。",
+    removeChip: "移除",
+    reset: "重置",
+    searchCategories: "搜索类别…",
+    searchTags: "搜索标签…",
+    searchTypes: "搜索类型…",
+    sectionCategories: "类别",
+    sectionTags: "标签",
+    sectionTypes: "类型",
+    select: "选择",
+    showingCount: "显示 {count} 个项目"
   },
   learnMore: "了解更多",
   listing: {
     heading: "项目",
-    intro: "{count} 个精选项目，为开源项目提供免费工具、额度和服务。"
+    intro: "{count} 个精选项目，为开源项目提供免费工具、额度和服务。",
+    orderBy: "排序方式",
+    resetFilters: "重置",
+    searchPlaceholder: "搜索项目…",
+    sortNameAsc: "名称 A–Z",
+    sortNameDesc: "名称 Z–A"
   },
   more: "还有 {count} 个",
   category: {
@@ -19,13 +39,34 @@ const programs = {
     empty: "该类别下暂时还没有项目。"
   },
   sections: {
+    applyShort: "申请",
+    categoryLabel: "类别",
     checkEligibility: "检查资格",
+    checkShort: "检查",
+    contact: "联系",
+    copyLink: "复制链接",
+    copyLinkTooltip: "复制页面链接",
     eligibility: "资格要求",
     howToApply: "如何申请",
+    linkCopied: "链接已复制！",
+    linkCopiedTooltip: "链接已复制！",
+    nextProgram: "下一个项目",
+    nextProgramTooltip: "下一个项目",
     people: "相关人员",
     perks: "福利",
+    previousProgram: "上一个项目",
+    previousProgramTooltip: "上一个项目",
     requirements: "要求",
-    tags: "标签"
+    share: "分享",
+    shareOnFacebook: "分享到 Facebook",
+    shareOnLinkedIn: "分享到 LinkedIn",
+    shareOnReddit: "分享到 Reddit",
+    shareOnWhatsApp: "分享到 WhatsApp",
+    shareOnX: "分享到 X",
+    similarTo: "与 {name} 类似",
+    tags: "标签",
+    timeline: "时间线",
+    viewAll: "查看所有项目"
   },
   submit: {
     backToAll: "所有项目",

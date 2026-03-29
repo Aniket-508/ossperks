@@ -2,25 +2,23 @@ import {
   getCategories,
   getAllPerkTypes,
   getProgramPerkTypes,
-  getProgramsByCategory,
   PERK_TYPE_LABELS,
 } from "@ossperks/core";
-import type { Category } from "@ossperks/core";
 import { Plus } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { SearchParams } from "nuqs/server";
 
-import { ProgramsFilter } from "@/components/programs/programs-filter";
+import { PageBreadcrumb } from "@/components/layout/page-breadcrumb";
+import { ProgramsListing } from "@/components/programs/programs-listing";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/constants/routes";
 import { generateLangParams } from "@/i18n/config";
-import { formatProgramsCategoryIntro } from "@/i18n/format-programs-category-intro";
 import { getT } from "@/i18n/get-t";
 import { withLocalePrefix } from "@/i18n/navigation";
 import { getPrograms } from "@/lib/programs";
 import { programsParamsCache } from "@/lib/search-params";
-import { ProgramListJsonLd } from "@/seo/json-ld";
+import { BreadcrumbJsonLd, ProgramListJsonLd } from "@/seo/json-ld";
 import { createMetadata } from "@/seo/metadata";
 
 export const generateStaticParams = generateLangParams;
@@ -33,26 +31,8 @@ export const generateMetadata = async ({
   searchParams: Promise<SearchParams>;
 }): Promise<Metadata> => {
   const { lang } = await params;
-  const { category } = await programsParamsCache.parse(searchParams);
+  await programsParamsCache.parse(searchParams);
   const t = await getT(lang);
-
-  if (category) {
-    const categoryLabel =
-      t.common.categories[category as keyof typeof t.common.categories] ??
-      category;
-    const programCount = getProgramsByCategory(category as Category).length;
-    return createMetadata({
-      description: formatProgramsCategoryIntro(
-        t.programs.category.intro,
-        programCount,
-        categoryLabel,
-        lang,
-      ),
-      lang,
-      path: "/programs",
-      title: `${categoryLabel} — ${t.programs.listing.heading}`,
-    });
-  }
 
   const translatedPrograms = await getPrograms(lang);
   return createMetadata({
@@ -89,6 +69,13 @@ export default async function ProgramsPage({
 
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: t.common.breadcrumbHome, path: "/" },
+          { name: t.programs.listing.heading, path: ROUTES.PROGRAMS },
+        ]}
+        lang={lang}
+      />
       <ProgramListJsonLd
         lang={lang}
         programs={translatedPrograms.map((p) => ({
@@ -97,6 +84,11 @@ export default async function ProgramsPage({
         }))}
       />
       <div className="container mx-auto flex w-full flex-1 flex-col px-4 py-12">
+        <PageBreadcrumb
+          homeHref={withLocalePrefix(lang, ROUTES.HOME)}
+          homeLabel={t.common.breadcrumbHome}
+          segments={[{ current: true, label: t.programs.listing.heading }]}
+        />
         <div className="mb-10 flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <h1 className="mb-2 text-4xl font-bold">
@@ -123,18 +115,19 @@ export default async function ProgramsPage({
           </div>
         </div>
 
-        <ProgramsFilter
-          programs={programsWithPerkTypes}
+        <ProgramsListing
+          categoryLabels={t.common.categories}
           categories={categories}
-          perkTypes={perkTypes}
           lang={lang}
+          perkTypeLabels={PERK_TYPE_LABELS}
+          perkTypes={perkTypes}
+          programs={programsWithPerkTypes}
           translations={{
             filters: t.programs.filters,
             learnMore: t.programs.learnMore,
+            listing: t.programs.listing,
             more: t.programs.more,
           }}
-          categoryLabels={t.common.categories}
-          perkTypeLabels={PERK_TYPE_LABELS}
         />
       </div>
     </>

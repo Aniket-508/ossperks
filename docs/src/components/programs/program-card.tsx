@@ -33,7 +33,7 @@ export const ProgramCard = ({
             {program.name}
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className="flex flex-1 flex-col gap-3">
           <p className="text-fd-muted-foreground line-clamp-2 text-sm">
             {program.description}
           </p>
@@ -49,7 +49,7 @@ export const ProgramCard = ({
               </Badge>
             )}
           </div>
-          <div className="flex justify-end">
+          <div className="mt-auto flex justify-end">
             <Badge variant="action" className="group-hover:underline">
               {learnMore}
               <ArrowRight className="size-3" />

@@ -3,7 +3,7 @@ name: Generate and Translate
 on:
   pull_request:
     paths:
-      - "packages/core/src/programs/*.json"
+      - "packages/data/src/programs/*.json"
 
 jobs:
   generate:
@@ -36,8 +36,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Generate core programs barrel file
-        run: pnpm --filter @ossperks/core generate
+      - name: Generate data programs barrel file
+        run: pnpm --filter @ossperks/data generate
 
       - name: Generate English MDX files
         run: pnpm --filter docs generate:programs

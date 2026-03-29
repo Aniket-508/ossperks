@@ -16,7 +16,7 @@ const PROGRAMS_SRC = path.join(
   "..",
   "..",
   "packages",
-  "core",
+  "data",
   "src",
   "programs",
 );

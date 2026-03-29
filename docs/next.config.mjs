@@ -11,7 +11,7 @@ const config = {
   },
   reactStrictMode: true,
   serverExternalPackages: ["license-similarity"],
-  transpilePackages: ["@ossperks/core"],
+  transpilePackages: ["@ossperks/core", "@ossperks/data"],
 };
 
 export default withMDX(config);

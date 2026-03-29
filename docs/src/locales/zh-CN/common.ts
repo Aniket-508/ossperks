@@ -1,4 +1,5 @@
 const common = {
+  breadcrumbHome: "首页",
   categories: {
     ai: "AI 与机器学习",
     analytics: "分析",

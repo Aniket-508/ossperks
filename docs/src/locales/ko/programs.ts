@@ -4,13 +4,33 @@ const programs = {
   by: "제공",
   filters: {
     allCategories: "모든 카테고리",
+    allTags: "선택된 태그 없음",
     allTypes: "모든 유형",
-    noMatches: "선택한 필터와 일치하는 프로그램이 없습니다."
+    apply: "적용",
+    clearAll: "모두 지우기",
+    emptySection: "일치하는 옵션이 없습니다.",
+    filterButton: "필터",
+    noMatches: "선택한 필터와 일치하는 프로그램이 없습니다.",
+    removeChip: "제거",
+    reset: "초기화",
+    searchCategories: "카테고리 검색…",
+    searchTags: "태그 검색…",
+    searchTypes: "유형 검색…",
+    sectionCategories: "카테고리",
+    sectionTags: "태그",
+    sectionTypes: "유형",
+    select: "선택",
+    showingCount: "프로그램 {count}개 표시"
   },
   learnMore: "자세히 알아보기",
   listing: {
     heading: "프로그램",
-    intro: "{count}개의 엄선된 프로그램으로 오픈소스 프로젝트를 위한 무료 도구, 크레딧 및 서비스를 제공합니다."
+    intro: "{count}개의 엄선된 프로그램으로 오픈소스 프로젝트를 위한 무료 도구, 크레딧 및 서비스를 제공합니다.",
+    orderBy: "정렬",
+    resetFilters: "초기화",
+    searchPlaceholder: "프로그램 검색…",
+    sortNameAsc: "이름 A–Z",
+    sortNameDesc: "이름 Z–A"
   },
   more: "+{count}개 더보기",
   category: {
@@ -23,6 +43,7 @@ const programs = {
     categoryLabel: "카테고리",
     checkEligibility: "자격 확인",
     checkShort: "확인",
+    contact: "연락처",
     copyLink: "링크 복사",
     copyLinkTooltip: "페이지 링크 복사",
     eligibility: "자격 요건",
@@ -44,6 +65,7 @@ const programs = {
     shareOnX: "X에 공유",
     similarTo: "{name}와(과) 유사",
     tags: "태그",
+    timeline: "기간",
     viewAll: "모든 프로그램 보기"
   },
   submit: {

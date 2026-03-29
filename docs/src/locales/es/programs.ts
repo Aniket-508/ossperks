@@ -4,13 +4,33 @@ const programs = {
   by: "por",
   filters: {
     allCategories: "Todas las categorías",
+    allTags: "Sin etiquetas seleccionadas",
     allTypes: "Todos los tipos",
-    noMatches: "Ningún programa coincide con los filtros seleccionados."
+    apply: "Aplicar",
+    clearAll: "Borrar todo",
+    emptySection: "No hay opciones que coincidan.",
+    filterButton: "Filtros",
+    noMatches: "Ningún programa coincide con los filtros seleccionados.",
+    removeChip: "Quitar",
+    reset: "Restablecer",
+    searchCategories: "Buscar categorías…",
+    searchTags: "Buscar etiquetas…",
+    searchTypes: "Buscar tipos…",
+    sectionCategories: "Categorías",
+    sectionTags: "Etiquetas",
+    sectionTypes: "Tipos",
+    select: "Seleccionar",
+    showingCount: "Mostrando {count} programas"
   },
   learnMore: "más información",
   listing: {
     heading: "Programas",
-    intro: "{count} programas seleccionados con herramientas gratuitas, créditos y servicios para proyectos open source."
+    intro: "{count} programas seleccionados con herramientas gratuitas, créditos y servicios para proyectos open source.",
+    orderBy: "Ordenar por",
+    resetFilters: "Restablecer",
+    searchPlaceholder: "Buscar programas…",
+    sortNameAsc: "Nombre A–Z",
+    sortNameDesc: "Nombre Z–A"
   },
   more: "+{count} más",
   category: {
@@ -23,6 +43,7 @@ const programs = {
     categoryLabel: "Categoría",
     checkEligibility: "Verificar Elegibilidad",
     checkShort: "Verificar",
+    contact: "Contacto",
     copyLink: "Copiar enlace",
     copyLinkTooltip: "Copiar enlace de la página",
     eligibility: "Elegibilidad",
@@ -44,6 +65,7 @@ const programs = {
     shareOnX: "Compartir en X",
     similarTo: "Similar a {name}",
     tags: "Etiquetas",
+    timeline: "Duración",
     viewAll: "Ver todos los programas"
   },
   submit: {

@@ -4,13 +4,33 @@ const programs = {
   by: "от",
   filters: {
     allCategories: "Все категории",
+    allTags: "Теги не выбраны",
     allTypes: "Все типы",
-    noMatches: "Нет программ, соответствующих выбранным фильтрам."
+    apply: "Применить",
+    clearAll: "Снять все",
+    emptySection: "Нет подходящих вариантов.",
+    filterButton: "Фильтры",
+    noMatches: "Нет программ, соответствующих выбранным фильтрам.",
+    removeChip: "Убрать",
+    reset: "Сбросить",
+    searchCategories: "Поиск категорий…",
+    searchTags: "Поиск тегов…",
+    searchTypes: "Поиск типов…",
+    sectionCategories: "Категории",
+    sectionTags: "Теги",
+    sectionTypes: "Типы",
+    select: "Выбрать",
+    showingCount: "Показано программ: {count}"
   },
   learnMore: "подробнее",
   listing: {
     heading: "Программы",
-    intro: "{count} отобранных программ с бесплатными инструментами, кредитами и сервисами для проектов с открытым кодом."
+    intro: "{count} отобранных программ с бесплатными инструментами, кредитами и сервисами для проектов с открытым кодом.",
+    orderBy: "Сортировка",
+    resetFilters: "Сбросить",
+    searchPlaceholder: "Поиск программ…",
+    sortNameAsc: "Имя А–Я",
+    sortNameDesc: "Имя Я–А"
   },
   more: "ещё {count}",
   category: {
@@ -23,6 +43,7 @@ const programs = {
     categoryLabel: "Категория",
     checkEligibility: "Проверка соответствия",
     checkShort: "Проверить",
+    contact: "Контакты",
     copyLink: "Копировать ссылку",
     copyLinkTooltip: "Копировать ссылку на страницу",
     eligibility: "Условия участия",
@@ -44,6 +65,7 @@ const programs = {
     shareOnX: "Поделиться в X",
     similarTo: "Похоже на {name}",
     tags: "Теги",
+    timeline: "Сроки",
     viewAll: "Все программы"
   },
   submit: {

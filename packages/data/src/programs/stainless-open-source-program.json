@@ -1,0 +1,32 @@
+{
+  "applicationUrl": "mailto:opensource@stainless.com",
+  "applicationProcess": [
+    "Create a free Stainless account at stainless.com with your GitHub account.",
+    "Email opensource@stainless.com with details about your project to get set up on the free Starter plan."
+  ],
+  "category": "devtools",
+  "description": "Free Starter plan (normally $79/mo per generator) for qualifying non-commercial open-source projects, including SDK, documentation site, and MCP server generation from OpenAPI specs.",
+  "eligibility": [
+    "Project must be a non-commercial open-source (FOSS) project.",
+    "Project must have a public OpenAPI specification."
+  ],
+  "name": "Stainless Open Source Program",
+  "perks": [
+    {
+      "description": "Generate TypeScript, Python, Go, Java, Kotlin, Ruby, and C# SDKs from your OpenAPI spec at no cost.",
+      "title": "SDK Generation"
+    },
+    {
+      "description": "Auto-generated API documentation sites and MCP servers from your OpenAPI spec.",
+      "title": "Documentation & MCP Servers"
+    },
+    {
+      "description": "Starter plan features including 50 endpoints, 300 preview builds per month, SSE streaming, and OAuth 2.0 auth support.",
+      "title": "Starter Plan Features"
+    }
+  ],
+  "provider": "Stainless",
+  "slug": "stainless-open-source-program",
+  "tags": ["open-source", "developer-tools", "api"],
+  "url": "https://stainless.com/pricing"
+}

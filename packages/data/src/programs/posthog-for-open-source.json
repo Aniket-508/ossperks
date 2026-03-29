@@ -1,0 +1,28 @@
+{
+  "slug": "posthog-for-open-source",
+  "name": "PostHog for Open Source",
+  "provider": "PostHog",
+  "url": "https://posthog.com/startups",
+  "category": "analytics",
+  "description": "Free credits for small open-source projects covering product analytics, session replay, feature flags, error tracking, and more.",
+  "perks": [
+    {
+      "title": "PostHog Credits",
+      "description": "$50,000 in credits covering all products including product analytics, session replay, feature flags, experiments, and error tracking."
+    },
+    {
+      "title": "Credit Expiry Waiver",
+      "description": "Standard 12-month credit expiry limit waived for qualifying OSS projects upon request."
+    }
+  ],
+  "eligibility": [
+    "Must be an open-source project without corporate backing.",
+    "Must have less than $200k in annual revenue."
+  ],
+  "applicationProcess": [
+    "Sign up for PostHog Cloud at posthog.com (no credit card required).",
+    "Apply through the PostHog for Startups program.",
+    "Contact PostHog support to get the 12-month credit expiry limit waived."
+  ],
+  "tags": ["open-source", "analytics", "observability"]
+}

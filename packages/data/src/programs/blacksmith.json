@@ -1,0 +1,33 @@
+{
+  "slug": "blacksmith",
+  "name": "Blacksmith OSS Program",
+  "provider": "Blacksmith",
+  "url": "https://www.blacksmith.sh/pricing#oss",
+  "applicationUrl": "https://www.blacksmith.sh/pricing#oss",
+  "category": "ci-cd",
+  "description": "Free high-performance GitHub Actions runners for open source projects. Blacksmith provides 2x faster hardware and 4x faster cache downloads, currently supporting projects like Celery, Ladybird, Zen, and Limbo.",
+  "perks": [
+    {
+      "title": "Free CI Minutes",
+      "description": "Free access to Blacksmith's high-performance GitHub Actions runners for qualifying open source projects."
+    },
+    {
+      "title": "2x Faster Hardware",
+      "description": "Runners with 2x faster hardware compared to GitHub's default runners, cutting CI runtime in half."
+    },
+    {
+      "title": "4x Faster Cache Downloads",
+      "description": "Significantly faster cache downloads for quicker builds and shorter feedback loops."
+    }
+  ],
+  "eligibility": [
+    "Actively maintained public repository.",
+    "Permissive open source license.",
+    "Clear community usage."
+  ],
+  "applicationProcess": [
+    "Apply through the OSS Program section on the Blacksmith pricing page.",
+    "Applications are reviewed by the Blacksmith team."
+  ],
+  "tags": ["ci-cd", "github-actions", "runners", "performance"]
+}

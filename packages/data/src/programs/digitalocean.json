@@ -1,0 +1,38 @@
+{
+  "slug": "digitalocean",
+  "name": "DigitalOcean Open Source Credits",
+  "provider": "DigitalOcean",
+  "url": "https://digitalocean.com/open-source/credits-for-projects",
+  "applicationUrl": "mailto:opensource@digitalocean.com",
+  "category": "infrastructure",
+  "description": "Annual credit grants for open source projects tiered by GitHub stars, from $60/year (100+ stars) to $20,000/year (10,000+ stars), plus swag, co-marketing, and direct access to the open source team.",
+  "perks": [
+    {
+      "title": "Annual Infrastructure Credits",
+      "description": "Tiered credit grants based on GitHub stars: $60/year (100+ stars), $250/year (500+ stars), or $250–$20,000/year (10,000+ stars)."
+    },
+    {
+      "title": "Co-Marketing Opportunities",
+      "description": "Blog posts, live streams, social promotion, and participation in Hacktoberfest and other events."
+    },
+    {
+      "title": "Direct Team Access",
+      "description": "Direct access to the DigitalOcean open source team, plus swag and exclusives."
+    }
+  ],
+  "eligibility": [
+    "Active development and community around the project.",
+    "OSI-approved open source license.",
+    "Demonstrated community impact and/or interest.",
+    "Fully open source (FOSS).",
+    "Must include DigitalOcean logo and link on your website or repository.",
+    "Bonus: posted Code of Conduct."
+  ],
+  "applicationProcess": [
+    "Email opensource@digitalocean.com with your project details.",
+    "New applicants start at the Testing tier ($60/year).",
+    "Grants are awarded annually and must be renewed each year."
+  ],
+  "duration": "Annual (renewable)",
+  "tags": ["cloud", "infrastructure", "hosting", "credits"]
+}

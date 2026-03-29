@@ -1,0 +1,31 @@
+{
+  "slug": "browserstack",
+  "name": "BrowserStack for Open Source",
+  "provider": "BrowserStack",
+  "url": "https://www.browserstack.com/open-source",
+  "applicationUrl": "https://www.browserstack.com/open-source",
+  "category": "testing",
+  "description": "BrowserStack provides lifetime access to its full testing platform for open-source projects, including cross-browser, real device, and visual testing.",
+  "perks": [
+    {
+      "title": "Unlimited Testing",
+      "description": "Unlimited testing across 3,000+ browsers and real mobile devices."
+    },
+    {
+      "title": "All BrowserStack Products",
+      "description": "Access to Live, Automate, Percy, App Live, Screenshots, and App Automate."
+    },
+    {
+      "title": "5 Concurrent Users",
+      "description": "5 concurrent users and 5 parallels for faster testing and team collaboration."
+    }
+  ],
+  "eligibility": [
+    "Must be an open-source project (web frameworks, libraries, web applications, or mobile apps)."
+  ],
+  "applicationProcess": [
+    "Sign up or log in on the BrowserStack open-source program page."
+  ],
+  "duration": "Lifetime membership",
+  "tags": ["testing", "cross-browser", "mobile", "visual-testing"]
+}

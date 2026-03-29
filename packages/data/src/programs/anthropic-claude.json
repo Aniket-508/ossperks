@@ -1,0 +1,27 @@
+{
+  "slug": "anthropic-claude",
+  "name": "Claude for Open Source",
+  "provider": "Anthropic",
+  "url": "https://claude.com/contact-sales/claude-for-oss",
+  "applicationUrl": "https://claude.com/contact-sales/claude-for-oss",
+  "category": "ai",
+  "description": "Anthropic provides 6 months of free Claude Max 20x to open-source maintainers and contributors as a thank-you for keeping the ecosystem running.",
+  "perks": [
+    {
+      "title": "6 Months of Claude Max 20x",
+      "description": "Free Claude Max 20x subscription for 6 months."
+    }
+  ],
+  "eligibility": [
+    "Must be a primary maintainer or core team member of a public repo with 5,000+ GitHub stars OR 1M+ monthly NPM downloads.",
+    "Must have made commits, releases, or PR reviews within the last 3 months.",
+    "Projects the ecosystem quietly depends on may also apply even if they don't meet the star/download thresholds."
+  ],
+  "applicationProcess": [
+    "Apply through the Claude for Open Source application form.",
+    "Applications are reviewed on a rolling basis.",
+    "Up to 10,000 contributors are accepted."
+  ],
+  "duration": "6 months",
+  "tags": ["ai", "llm", "coding-assistant", "productivity"]
+}

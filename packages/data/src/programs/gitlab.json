@@ -1,0 +1,29 @@
+{
+  "slug": "gitlab",
+  "name": "GitLab for Open Source",
+  "provider": "GitLab",
+  "url": "https://about.gitlab.com/solutions/open-source/",
+  "applicationUrl": "https://about.gitlab.com/solutions/open-source/join/",
+  "category": "devtools",
+  "description": "GitLab provides free Ultimate-tier features and 50,000 compute minutes for qualifying open-source projects through the GitLab for Open Source Program.",
+  "perks": [
+    {
+      "title": "GitLab Ultimate Features",
+      "description": "Access to all GitLab Ultimate features including advanced CI/CD, security scanning, and compliance tools."
+    },
+    {
+      "title": "50,000 Compute Minutes",
+      "description": "50,000 compute minutes per month for CI/CD pipelines."
+    }
+  ],
+  "eligibility": [
+    "Must be an open-source project.",
+    "Project must be publicly available.",
+    "Must welcome open collaboration and reuse."
+  ],
+  "applicationProcess": [
+    "Join the GitLab for Open Source program through the application page.",
+    "Ask questions in the GitLab Forum's open-source category."
+  ],
+  "tags": ["devops", "ci-cd", "source-control", "security"]
+}

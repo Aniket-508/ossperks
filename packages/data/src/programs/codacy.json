@@ -1,0 +1,29 @@
+{
+  "slug": "codacy",
+  "name": "Codacy Open Source Program",
+  "provider": "Codacy",
+  "url": "https://www.codacy.com/pricing",
+  "applicationUrl": "https://codacy.com/signup-codacy",
+  "category": "security",
+  "description": "Free Team plan forever for open source projects, with full cloud platform access including PR integration, quality gates, and security scanning across 49 supported languages.",
+  "perks": [
+    {
+      "title": "Free Team Plan",
+      "description": "Full cloud platform access at no cost for open source projects, including team dashboards, quality gates, and PR integration."
+    },
+    {
+      "title": "Security Scanning",
+      "description": "SAST, secrets detection, and dependency vulnerability scanning across all 49 supported languages."
+    },
+    {
+      "title": "Code Coverage Tracking",
+      "description": "Track test coverage metrics with inline reporting and coverage gates on pull requests."
+    }
+  ],
+  "eligibility": ["Must be an open source project with a public repository."],
+  "applicationProcess": [
+    "Sign up at codacy.com with your GitHub, GitLab, or Bitbucket account.",
+    "Open source repositories are automatically eligible for the free Team plan."
+  ],
+  "tags": ["code-quality", "security", "static-analysis", "code-review"]
+}

@@ -1,0 +1,39 @@
+{
+  "slug": "cal",
+  "name": "Cal.com Open Source Sponsorship",
+  "provider": "Cal.com",
+  "url": "https://cal.com/help/event-types/sponsor",
+  "applicationUrl": "mailto:peer@cal.com",
+  "category": "devtools",
+  "contact": {
+    "name": "Peer Richelsen",
+    "role": "Co-Founder",
+    "url": "https://x.com/peer_rich"
+  },
+  "description": "Cal.com sponsors open source projects with free access to their scheduling platform. Projects must display a 'Book us with Cal.com' banner in their README and website footer.",
+  "perks": [
+    {
+      "title": "Free Scheduling Platform",
+      "description": "Full access to Cal.com's scheduling infrastructure beyond the free tier and open core for qualifying open source projects."
+    },
+    {
+      "title": "Potential Angel Investment",
+      "description": "Commercial open source companies under $2M ARR may also receive a small angel investment from Cal.com's team."
+    }
+  ],
+  "eligibility": [
+    "The project must be open source.",
+    "Non-commercial or a commercial open source company with less than $2M in ARR.",
+    "Must include a 'Book us with Cal.com' banner in the repository README linking to a Cal.com booking link.",
+    "Must include the same banner in the project website footer.",
+    "Must use the UTM tag format: ?utm_source=banner&utm_campaign=oss.",
+    "The free tier or open core must be insufficient for the project's needs."
+  ],
+  "applicationProcess": [
+    "Ensure your project meets all sponsorship criteria.",
+    "Send an email to peer@cal.com explaining your project and confirming eligibility.",
+    "Include your Cal.com team slug and a link to your open source repository.",
+    "Requests are reviewed on a monthly basis."
+  ],
+  "tags": ["scheduling", "booking", "calendar", "developer-tools"]
+}

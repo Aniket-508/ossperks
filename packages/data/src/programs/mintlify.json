@@ -1,0 +1,41 @@
+{
+  "slug": "mintlify",
+  "name": "Mintlify OSS Program",
+  "provider": "Mintlify",
+  "url": "https://www.mintlify.com/oss-program",
+  "applicationUrl": "https://mintlify.typeform.com/oss-program",
+  "category": "devtools",
+  "description": "Non-commercial open source projects get Mintlify's Pro plan for free (normally $300/month), including custom domains, advanced analytics, API playground, AI chat, and version control.",
+  "perks": [
+    {
+      "title": "Free Pro Plan",
+      "description": "Full access to the Pro plan at no cost (normally $300/month) for qualifying non-commercial open source projects."
+    },
+    {
+      "title": "Custom Domains & Branding",
+      "description": "Present documentation under your own domain with custom branding and styling."
+    },
+    {
+      "title": "Advanced Analytics",
+      "description": "Understand how users interact with your documentation and identify improvement opportunities."
+    },
+    {
+      "title": "API Playground",
+      "description": "Interactive API documentation with live testing capabilities for your endpoints."
+    },
+    {
+      "title": "AI Chat & Version Control",
+      "description": "Pro features including AI chat, version control, and advanced components for world-class documentation."
+    }
+  ],
+  "eligibility": [
+    "Open source with a recognized OSS license (MIT, Apache 2.0, GPL, etc.).",
+    "Not venture-backed or revenue-funded.",
+    "Not owned or primarily maintained by a for-profit company."
+  ],
+  "applicationProcess": [
+    "Apply through the Mintlify OSS Program page.",
+    "Mintlify reviews the application for eligibility."
+  ],
+  "tags": ["documentation", "docs", "developer-tools", "mintlify"]
+}

@@ -1,0 +1,31 @@
+{
+  "slug": "deepsource",
+  "name": "DeepSource Open Source Plan",
+  "provider": "DeepSource",
+  "url": "https://deepsource.com/pricing",
+  "applicationUrl": "https://deepsource.com/pricing",
+  "category": "security",
+  "description": "Free static analysis, SAST, code coverage, and automated code reviews for open source projects with unlimited public repositories and unlimited team members.",
+  "perks": [
+    {
+      "title": "Unlimited Public Repositories",
+      "description": "Analyze unlimited public repositories at no cost with static analysis, SAST, and infrastructure-as-code scanning."
+    },
+    {
+      "title": "Automated Code Reviews",
+      "description": "Up to 1,000 pull request reviews and 1,000 automated code formatting runs per month."
+    },
+    {
+      "title": "Code Coverage & Secrets Detection",
+      "description": "Built-in code coverage tracking and secrets detection across your codebase."
+    }
+  ],
+  "eligibility": [
+    "Must be an open source project with a public repository on GitHub, GitLab, or Bitbucket."
+  ],
+  "applicationProcess": [
+    "Sign up at deepsource.com with your Git provider account.",
+    "Public repositories are automatically eligible for the free Open Source plan."
+  ],
+  "tags": ["static-analysis", "code-review", "security", "code-quality"]
+}

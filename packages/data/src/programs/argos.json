@@ -1,0 +1,39 @@
+{
+  "slug": "argos",
+  "name": "Argos Open Source Sponsorship",
+  "provider": "Argos",
+  "url": "https://argos-ci.com/docs/open-source",
+  "applicationUrl": "mailto:contact@argos-ci.com",
+  "category": "testing",
+  "description": "Free visual regression testing for open source projects. Argos sponsors qualifying OSS projects with full access to their visual testing platform in exchange for a README badge.",
+  "perks": [
+    {
+      "title": "Free Visual Testing Platform",
+      "description": "Full access to Argos visual regression testing for open source repositories, covering screenshot comparison, diff detection, and review workflows."
+    },
+    {
+      "title": "Integration Support",
+      "description": "Works with Playwright, Storybook, Cypress, WebdriverIO, Puppeteer, Next.js, React Router, and more."
+    }
+  ],
+  "eligibility": [
+    "The project must be open source.",
+    "The project must not be for commercial use.",
+    "Usage of Argos must fall within reasonable use limits.",
+    "Must include the Argos badge in the repository README pointing to https://argos-ci.com.",
+    "Must include a dofollow link to https://argos-ci.com on at least one page.",
+    "The free plan may already be sufficient — sponsorship is for projects that need more."
+  ],
+  "applicationProcess": [
+    "Verify your project meets all sponsorship criteria.",
+    "Send an email to contact@argos-ci.com confirming eligibility and explaining why the free tier is insufficient.",
+    "Include your Argos team slug and a link to your open source repository."
+  ],
+  "tags": [
+    "visual-testing",
+    "regression-testing",
+    "screenshots",
+    "testing",
+    "ci"
+  ]
+}

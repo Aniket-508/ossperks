@@ -1,0 +1,30 @@
+{
+  "slug": "datadog",
+  "name": "Datadog Open Source Program",
+  "provider": "Datadog",
+  "url": "https://www.datadoghq.com/partner/open-source/",
+  "applicationUrl": "https://www.datadoghq.com/partner/open-source/",
+  "category": "monitoring",
+  "description": "Free Datadog accounts for open source projects providing cloud observability and security monitoring. Used by the Apache Software Foundation, Python Software Foundation, ElectronJS, Ruby, and Linux Mint.",
+  "perks": [
+    {
+      "title": "Free Datadog Account",
+      "description": "Full access to Datadog's cloud observability and security platform at no cost for qualifying open source projects."
+    },
+    {
+      "title": "Infrastructure Monitoring",
+      "description": "Monitor servers, containers, and cloud infrastructure with real-time dashboards and alerting."
+    },
+    {
+      "title": "APM & Log Management",
+      "description": "Application performance monitoring, distributed tracing, and log management for your project's infrastructure."
+    }
+  ],
+  "eligibility": [
+    "Must be an open source project that would benefit from cloud observability and security monitoring."
+  ],
+  "applicationProcess": [
+    "Apply through the Datadog for Open Source Projects partner page."
+  ],
+  "tags": ["monitoring", "observability", "apm", "logging", "infrastructure"]
+}

@@ -1,0 +1,38 @@
+{
+  "slug": "cloudflare",
+  "name": "Cloudflare Project Alexandria",
+  "provider": "Cloudflare",
+  "url": "https://www.cloudflare.com/en-gb/lp/project-alexandria/",
+  "applicationUrl": "https://www.cloudflare.com/en-gb/lp/project-alexandria/",
+  "category": "infrastructure",
+  "description": "Project Alexandria provides recurring annual credits for open-source projects, including Zero Trust access, R2 storage, Workers, Pages, and plan upgrades.",
+  "perks": [
+    {
+      "title": "Enhanced Zero Trust Access",
+      "description": "Includes Remote Browser Isolation for project infrastructure."
+    },
+    {
+      "title": "Increased R2 Storage",
+      "description": "Additional R2 object storage for builds and artifacts."
+    },
+    {
+      "title": "Workers & Pages Credits",
+      "description": "Increased request limits for Cloudflare Workers and Pages."
+    },
+    {
+      "title": "Plan Upgrades",
+      "description": "Upgrade to Cloudflare Pro, Business, or Enterprise plan."
+    }
+  ],
+  "eligibility": [
+    "Must operate solely on a non-profit basis.",
+    "Must align with the project's mission.",
+    "Must maintain an open-source project with a recognized OSS license."
+  ],
+  "applicationProcess": [
+    "Submit a sponsorship request through the Project Alexandria page.",
+    "Acceptance is at Cloudflare's sole discretion."
+  ],
+  "duration": "Recurring annual credits",
+  "tags": ["cdn", "infrastructure", "security", "workers", "storage"]
+}

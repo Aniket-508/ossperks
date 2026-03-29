@@ -1,0 +1,42 @@
+{
+  "slug": "snyk",
+  "name": "Snyk for Open Source",
+  "provider": "Snyk",
+  "url": "https://snyk.io/open-source/",
+  "applicationUrl": "https://snyk.io/open-source/",
+  "category": "security",
+  "description": "Snyk provides full Enterprise License access with unlimited usage for open-source projects, covering vulnerability scanning, dependency analysis, and security advisories.",
+  "perks": [
+    {
+      "title": "Full Enterprise License",
+      "description": "Full Snyk Enterprise access with no usage limits, valid for open-source projects."
+    },
+    {
+      "title": "All Latest Features",
+      "description": "Access to all latest Snyk features with unlimited usage."
+    },
+    {
+      "title": "Community Support",
+      "description": "Community support via Snyk's Discord server."
+    },
+    {
+      "title": "Security Advisory Assistance",
+      "description": "Dedicated security advisory assistance for setup and integration."
+    }
+  ],
+  "eligibility": [
+    "Project must not be backed by any corporate entity.",
+    "Project must not seek to make a profit from commercialization, licensing, or services.",
+    "Software must use an OSI-approved open-source license."
+  ],
+  "requirements": [
+    "Include a link back to Snyk's website in the project README and website.",
+    "Permit Snyk to use, reproduce, and display the project's logo on their website."
+  ],
+  "tags": ["security", "vulnerability-scanning", "dependencies", "devsecops"],
+  "contact": {
+    "name": "Stephen Thoemmes",
+    "role": "Senior DevRel",
+    "url": "https://www.linkedin.com/in/stephen-thoemmes/"
+  }
+}

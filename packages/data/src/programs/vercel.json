@@ -1,0 +1,37 @@
+{
+  "slug": "vercel",
+  "name": "Vercel for Open Source",
+  "provider": "Vercel",
+  "url": "https://vercel.com/open-source-program",
+  "applicationUrl": "https://vercel.com/open-source-program",
+  "category": "hosting",
+  "description": "Vercel provides platform credits, community support, and an OSS Starter Pack with third-party credits to power open-source projects.",
+  "perks": [
+    {
+      "title": "$3,600 Platform Credits",
+      "description": "$3,600 in Vercel platform credits distributed over 12 months."
+    },
+    {
+      "title": "OSS Starter Pack",
+      "description": "Credits from third-party services to boost your project."
+    },
+    {
+      "title": "Community Support",
+      "description": "Priority community support and guidance from Vercel."
+    }
+  ],
+  "eligibility": [
+    "Must be an open-source project that is actively developed and maintained.",
+    "Must be hosted on (or intended to host on) Vercel.",
+    "Must show measurable impact or growth potential.",
+    "Must follow a Code of Conduct.",
+    "Credits must be used exclusively for open-source work."
+  ],
+  "applicationProcess": [
+    "Apply through the Vercel OSS program page when applications are open.",
+    "Applications are reviewed in seasonal cohorts."
+  ],
+  "duration": "12 months",
+  "tags": ["hosting", "deployment", "serverless", "credits"],
+  "configFiles": ["vercel.json", ".vercel/project.json"]
+}

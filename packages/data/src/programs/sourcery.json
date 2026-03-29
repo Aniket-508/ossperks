@@ -1,0 +1,31 @@
+{
+  "slug": "sourcery",
+  "name": "Sourcery Open Source Plan",
+  "provider": "Sourcery",
+  "url": "https://sourcery.ai/pricing",
+  "applicationUrl": "https://sourcery.ai/",
+  "category": "ai",
+  "description": "Free AI-powered code reviews for open source projects on public repositories, with full Pro-tier functionality including IDE integration and security scans.",
+  "perks": [
+    {
+      "title": "Free AI Code Reviews",
+      "description": "Full code review functionality on public repositories — same features as the paid Pro tier."
+    },
+    {
+      "title": "IDE Integration",
+      "description": "AI-powered code reviews directly in your IDE for open source projects."
+    },
+    {
+      "title": "Security Scans",
+      "description": "Security scanning for up to 3 repositories with biweekly frequency."
+    }
+  ],
+  "eligibility": [
+    "Must be an open source project with a public repository on GitHub or GitLab."
+  ],
+  "applicationProcess": [
+    "Sign up at sourcery.ai with your GitHub or GitLab account.",
+    "Public repositories automatically receive free access to Pro-tier code reviews."
+  ],
+  "tags": ["ai", "code-review", "developer-tools", "security"]
+}

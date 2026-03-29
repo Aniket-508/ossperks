@@ -1,0 +1,30 @@
+{
+  "slug": "circleci",
+  "name": "CircleCI for Open Source",
+  "provider": "CircleCI",
+  "url": "https://circleci.com/open-source/",
+  "category": "ci-cd",
+  "description": "CircleCI provides generous free build credits for open-source projects on the Free Plan, covering Linux, Arm, Docker, macOS, and Windows builds.",
+  "perks": [
+    {
+      "title": "400,000 Linux Credits/Month",
+      "description": "Up to 400,000 credits per month for Linux, Arm, and Docker builds."
+    },
+    {
+      "title": "30,000 macOS/Windows Credits",
+      "description": "30,000 credits per month for macOS and Windows builds."
+    }
+  ],
+  "eligibility": [
+    "Must be on CircleCI's Free Plan.",
+    "Repository must be public."
+  ],
+  "applicationProcess": [
+    "Sign up for CircleCI's Free Plan.",
+    "Keep your repository public to automatically qualify for open-source credits."
+  ],
+  "requirements": [
+    "Enable the \"Only build pull requests\" setting to reduce unnecessary builds."
+  ],
+  "tags": ["ci-cd", "builds", "automation", "continuous-integration"]
+}

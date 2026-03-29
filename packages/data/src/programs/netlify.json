@@ -1,0 +1,40 @@
+{
+  "slug": "netlify",
+  "name": "Netlify Open Source Plan",
+  "provider": "Netlify",
+  "url": "https://www.netlify.com/open-source/",
+  "applicationUrl": "https://opensource-form.netlify.com/",
+  "category": "hosting",
+  "description": "Netlify offers a dedicated Open Source plan with generous credits, unlimited team members, and free production deploys for qualifying projects.",
+  "perks": [
+    {
+      "title": "10,000 Credits/Month",
+      "description": "10,000 monthly credits covering deploys, compute, bandwidth, and web requests."
+    },
+    {
+      "title": "Unlimited Team Members",
+      "description": "Invite your entire contributor team at no cost."
+    },
+    {
+      "title": "Free Production Deploys",
+      "description": "Deploy to production without charge."
+    },
+    {
+      "title": "Sites Stay Active",
+      "description": "Sites remain active even if credits run out."
+    }
+  ],
+  "eligibility": [
+    "Project must use an open-source license.",
+    "Must not be a commercial project (company or individual).",
+    "Must feature a link to Netlify on main or internal pages."
+  ],
+  "requirements": [
+    "Add a link reading \"This site is powered by Netlify\" with a link to netlify.com, or use a premade Netlify badge."
+  ],
+  "applicationProcess": [
+    "Fill out the Netlify open-source application form.",
+    "Netlify reviews the application."
+  ],
+  "tags": ["hosting", "deployment", "jamstack", "credits"]
+}

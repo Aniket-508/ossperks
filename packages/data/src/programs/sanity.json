@@ -1,0 +1,36 @@
+{
+  "slug": "sanity",
+  "name": "Sanity Non-Profit Plan",
+  "provider": "Sanity",
+  "url": "https://www.sanity.io/docs/open-source-plan",
+  "applicationUrl": "https://forms.gle/xkQstGLFrujT2me39",
+  "category": "devtools",
+  "description": "Sanity offers its Growth plan for free to non-monetized open source projects, including 3 datasets, 25 users, SAML SSO, and no credit card required as long as you stay within quotas.",
+  "perks": [
+    {
+      "title": "Free Growth Plan",
+      "description": "Full access to the Growth plan at no cost, including API access, content lake, and structured content management."
+    },
+    {
+      "title": "3 Datasets & 25 Users",
+      "description": "One extra dataset over the standard Growth plan, plus 25 users included free of charge ($15 per additional user)."
+    },
+    {
+      "title": "SAML SSO Included",
+      "description": "Enterprise-grade SAML SSO add-on included at no extra cost for qualifying projects."
+    }
+  ],
+  "eligibility": [
+    "Open source project based on sponsorships or voluntary effort (not monetized).",
+    "Educational or academic institutions of smaller sizes and budgets.",
+    "Small and mid-sized organizations operated for collective, public, or social benefit.",
+    "Must comply with Sanity's Terms of Service.",
+    "Not eligible if the organization qualifies for Sanity's Enterprise plan."
+  ],
+  "applicationProcess": [
+    "Fill out the application form with a valid Sanity project ID.",
+    "Receive a decision via email within 14 business days."
+  ],
+  "tags": ["cms", "headless-cms", "content-management", "developer-tools"],
+  "techPackages": ["sanity", "@sanity/client"]
+}

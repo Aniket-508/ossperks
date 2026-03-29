@@ -1,0 +1,32 @@
+{
+  "slug": "gitbook",
+  "name": "GitBook Community Plan",
+  "provider": "GitBook",
+  "url": "https://docs.gitbook.com/account-management/plans/apply-for-the-non-profit-open-source-plan",
+  "applicationUrl": "https://docs.gitbook.com/account-management/plans/apply-for-the-non-profit-open-source-plan",
+  "category": "devtools",
+  "description": "Free Community plan for open source projects with access to all Ultimate features (except SAML SSO), GitHub/GitLab sync, unlimited contributors, and no hosting fees.",
+  "perks": [
+    {
+      "title": "Free Ultimate Features",
+      "description": "Access to all Ultimate plan features except SAML SSO, including customization, content insights, AI answers, and integrations."
+    },
+    {
+      "title": "GitHub & GitLab Sync",
+      "description": "Sync documentation with your repository so community members can contribute via pull requests."
+    },
+    {
+      "title": "Unlimited Contributors",
+      "description": "Unlimited free users for community contributors with no hosting fees for published documentation."
+    }
+  ],
+  "eligibility": [
+    "Must be an open source project, non-profit, or small education-related group.",
+    "Must meet GitBook's community plan criteria."
+  ],
+  "applicationProcess": [
+    "Apply through the GitBook Community plan application page.",
+    "GitBook reviews the application against their eligibility criteria."
+  ],
+  "tags": ["documentation", "docs", "developer-tools", "knowledge-base"]
+}

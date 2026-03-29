@@ -1,0 +1,34 @@
+{
+  "slug": "convex",
+  "name": "Convex for Open Source",
+  "provider": "Convex",
+  "url": "https://www.convex.dev/open-source-program",
+  "applicationUrl": "https://www.convex.dev/open-source-program/apply",
+  "category": "infrastructure",
+  "description": "Convex sponsors open-source developers building tools, frameworks, and apps that strengthen the ecosystem with free Pro credits, swag, and direct community support.",
+  "perks": [
+    {
+      "title": "Free Convex Pro",
+      "description": "Free Convex Pro plan for one team with built-in monthly Pro resource limits."
+    },
+    {
+      "title": "Convex Swag",
+      "description": "Stickers, shirts, and gear to rep your stack."
+    },
+    {
+      "title": "Community Support",
+      "description": "Direct access to the Convex team and developer community when you need help."
+    }
+  ],
+  "eligibility": [
+    "Must be an actively maintained and fully open-source project.",
+    "Must be built with Convex or planning to integrate Convex.",
+    "Must support the developer ecosystem through tools, libraries, or resources."
+  ],
+  "applicationProcess": [
+    "Apply through the Convex OSS program page.",
+    "Applications are reviewed on a rolling basis with responses within 60 days."
+  ],
+  "tags": ["backend", "database", "real-time", "serverless"],
+  "techPackages": ["convex"]
+}

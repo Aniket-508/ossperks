@@ -1,0 +1,50 @@
+{
+  "slug": "upstash",
+  "name": "Upstash Open Source Program",
+  "provider": "Upstash",
+  "url": "https://upstash.com/open-source",
+  "applicationUrl": "https://upstash.com/open-source",
+  "category": "infrastructure",
+  "contact": {
+    "name": "Josh",
+    "role": "Lead DevRel",
+    "url": "https://x.com/joshtriedcoding"
+  },
+  "description": "Upstash supports open-source projects with monthly credit grants, direct technical support, and co-marketing opportunities.",
+  "perks": [
+    {
+      "title": "$1,000 Monthly Credit Grant",
+      "description": "Covers all Upstash-related costs up to $1,000 per month. Build on any Upstash product(s) including Redis, Kafka, and QStash without worrying about billing."
+    },
+    {
+      "title": "Direct Technical Support",
+      "description": "Receive direct technical support and help integrating Upstash into your project from the engineering team."
+    },
+    {
+      "title": "Priority Team Access",
+      "description": "Reach out to Upstash's engineering team and get priority support just like Pro customers."
+    },
+    {
+      "title": "Co-Marketing Opportunities",
+      "description": "Upstash helps publish technical articles about your business to their audience, providing high-quality backlinks for your project."
+    }
+  ],
+  "eligibility": [
+    "Must be an open-source project with a recognized OSS license.",
+    "Applications are reviewed on a rolling basis."
+  ],
+  "applicationProcess": [
+    "Fill out the application form on the Upstash Open Source Program page.",
+    "Provide your name, Twitter/X username, and GitHub repository.",
+    "Applications are reviewed on a rolling basis."
+  ],
+  "duration": "Monthly recurring credits",
+  "tags": [
+    "database",
+    "redis",
+    "kafka",
+    "serverless",
+    "infrastructure",
+    "messaging"
+  ]
+}

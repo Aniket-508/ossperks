@@ -1,0 +1,32 @@
+{
+  "slug": "openai-codex-fund",
+  "name": "Codex Open Source Fund",
+  "provider": "OpenAI",
+  "url": "https://openai.com/form/codex-open-source-fund/",
+  "applicationUrl": "https://openai.com/form/codex-open-source-fund/",
+  "category": "ai",
+  "description": "A $1 million grant initiative providing one-time API credit grants of up to $25,000 for open source projects integrating Codex CLI or OpenAI models — separate from the Codex for Open Source subscription benefit.",
+  "perks": [
+    {
+      "title": "API Credits Grant",
+      "description": "Receive up to $25,000 in OpenAI API credits for your open source project."
+    },
+    {
+      "title": "Codex CLI Access",
+      "description": "Support for using Codex CLI and OpenAI models in your project workflows."
+    }
+  ],
+  "eligibility": [
+    "Must represent an open source project.",
+    "Applications are reviewed on an ongoing basis.",
+    "Funding decisions are made at OpenAI's sole discretion."
+  ],
+  "applicationProcess": [
+    "Fill out the application form on the OpenAI website.",
+    "Provide project details including GitHub repository and description.",
+    "Explain how you would use API credits for your project.",
+    "Applications are reviewed on an ongoing basis."
+  ],
+  "duration": "One-time grant (API credits)",
+  "tags": ["ai", "openai", "codex", "api-credits", "funding"]
+}

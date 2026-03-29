@@ -1,0 +1,46 @@
+{
+  "slug": "atlassian",
+  "name": "Atlassian Open Source Cloud",
+  "provider": "Atlassian",
+  "url": "https://www.atlassian.com/software/views/open-source-license-request",
+  "applicationUrl": "https://www.atlassian.com/software/views/open-source-license-request#/",
+  "category": "devtools",
+  "description": "Free Atlassian Standard cloud products including Rovo, Jira, Confluence, Trello, Bitbucket, and more for qualifying open-source projects.",
+  "perks": [
+    {
+      "title": "Free Jira Access",
+      "description": "Free Jira Standard cloud plan for flexible project management and issue tracking."
+    },
+    {
+      "title": "Free Confluence Access",
+      "description": "Free Confluence Standard cloud plan for collaborative knowledge workspace and documentation."
+    },
+    {
+      "title": "Free Bitbucket Access",
+      "description": "Free Bitbucket Standard cloud plan for source code hosting and CI/CD pipelines."
+    },
+    {
+      "title": "Free Trello Access",
+      "description": "Free Trello Standard cloud plan for task capture and organization."
+    },
+    {
+      "title": "Free Rovo Access",
+      "description": "Free Rovo AI-powered apps driven by your team's knowledge."
+    }
+  ],
+  "eligibility": [
+    "Must be an open-source project with a publicly available codebase.",
+    "Must use an open-source license recognized by the Open Source Initiative.",
+    "Must operate solely on a non-commercial, non-profit basis."
+  ],
+  "applicationProcess": [
+    "Submit an open-source license request through the Atlassian application page.",
+    "Atlassian reviews the application for eligibility."
+  ],
+  "tags": [
+    "project-management",
+    "issue-tracking",
+    "documentation",
+    "source-control"
+  ]
+}

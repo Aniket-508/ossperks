@@ -1,0 +1,30 @@
+{
+  "slug": "jetbrains",
+  "name": "JetBrains Open Source Support",
+  "provider": "JetBrains",
+  "url": "https://www.jetbrains.com/community/opensource/",
+  "applicationUrl": "https://www.jetbrains.com/shop/eform/opensource",
+  "category": "devtools",
+  "description": "JetBrains offers free All Products Pack subscriptions for open-source project core teams, covering all JetBrains IDEs for development.",
+  "perks": [
+    {
+      "title": "All Products Pack",
+      "description": "Complimentary All Products Pack subscriptions for your core development team — use any JetBrains IDE."
+    },
+    {
+      "title": "Free Non-Commercial Use",
+      "description": "WebStorm, Rider, CLion, RubyMine, and DataGrip are free for non-commercial/open-source use."
+    }
+  ],
+  "eligibility": [
+    "Must be an actively maintained open-source project.",
+    "Must have a dedicated community.",
+    "Must make valuable contributions to the software industry.",
+    "Projects are prioritized based on quality, innovation, and community impact."
+  ],
+  "applicationProcess": [
+    "Apply through the JetBrains open-source application form.",
+    "Tell JetBrains what makes your project stand out."
+  ],
+  "tags": ["ide", "developer-tools", "productivity"]
+}

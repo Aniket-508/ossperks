@@ -1,0 +1,31 @@
+{
+  "slug": "code-climate",
+  "name": "Code Climate Open Source Program",
+  "provider": "Code Climate",
+  "url": "https://codeclimate.com/quality/pricing",
+  "applicationUrl": "https://codeclimate.com/quality/pricing",
+  "category": "security",
+  "description": "Free forever for all open source projects. Code Climate (now Qlty) provides code coverage, maintainability analysis, linting, and auto-formatting with unlimited contributors.",
+  "perks": [
+    {
+      "title": "Free Quality Platform",
+      "description": "Unlimited private and public contributors with full access to code coverage, maintainability analysis, and linting."
+    },
+    {
+      "title": "Auto-Formatting & Linting",
+      "description": "Automated code formatting and linting across your codebase with configurable rules."
+    },
+    {
+      "title": "Maintainability Analysis",
+      "description": "Track technical debt, code complexity, and maintainability metrics over time."
+    }
+  ],
+  "eligibility": [
+    "Must be an open source project with a public GitHub repository."
+  ],
+  "applicationProcess": [
+    "Sign up at codeclimate.com and add your public GitHub repository.",
+    "Open source repositories are automatically free forever."
+  ],
+  "tags": ["code-quality", "code-coverage", "static-analysis", "linting"]
+}

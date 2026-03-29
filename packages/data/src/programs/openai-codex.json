@@ -1,0 +1,36 @@
+{
+  "slug": "openai-codex",
+  "name": "Codex for Open Source",
+  "provider": "OpenAI",
+  "url": "https://openai.com/form/codex-for-oss/",
+  "applicationUrl": "https://openai.com/form/codex-for-oss/",
+  "category": "ai",
+  "description": "OpenAI offers 6 months of free ChatGPT Pro with Codex access, API credits, and conditional Codex Security access for open-source maintainers.",
+  "perks": [
+    {
+      "title": "6 Months of ChatGPT Pro",
+      "description": "Free ChatGPT Pro subscription with Codex access for coding, triage, review, and maintainer workflows."
+    },
+    {
+      "title": "API Credits",
+      "description": "Credits through the Codex Open Source Fund for PR review, automation, release workflows, or core open-source work."
+    },
+    {
+      "title": "Codex Security",
+      "description": "Conditional access to Codex Security for deeper code security scans and audits on qualified repositories."
+    }
+  ],
+  "eligibility": [
+    "No hard requirements like GitHub stars or monthly download thresholds.",
+    "Must be a primary or core maintainer of an open-source project.",
+    "Must demonstrate repository usage, ecosystem importance, and active maintenance.",
+    "Must have a valid ChatGPT account."
+  ],
+  "applicationProcess": [
+    "Submit through OpenAI's official Codex for OSS form.",
+    "Applications are reviewed on a rolling basis.",
+    "Selected applicants are notified via email."
+  ],
+  "duration": "6 months",
+  "tags": ["ai", "llm", "code-review", "security", "automation"]
+}

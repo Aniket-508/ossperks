@@ -1,0 +1,33 @@
+{
+  "slug": "zulip",
+  "name": "Zulip for Open Source",
+  "provider": "Zulip",
+  "url": "https://zulip.com/for/open-source/",
+  "applicationUrl": "https://zulip.com/accounts/go/?next=/sponsorship/",
+  "category": "communication",
+  "description": "Zulip Cloud Standard is free for open-source projects, providing organized team chat with topics, full message history, and powerful integrations.",
+  "perks": [
+    {
+      "title": "Free Zulip Cloud Standard",
+      "description": "Full Zulip Cloud Standard hosting at no cost for open-source projects."
+    },
+    {
+      "title": "Complete Message History",
+      "description": "Access your organization's entire message history with full-text search."
+    },
+    {
+      "title": "Public Access Option",
+      "description": "Anyone can view, browse, and search your organization's public content without an account."
+    },
+    {
+      "title": "Integrations",
+      "description": "Native integrations for GitHub, Jira, Sentry, and hundreds of other tools."
+    }
+  ],
+  "eligibility": ["Must be an open-source project."],
+  "applicationProcess": [
+    "Create a Zulip organization.",
+    "Request sponsorship through the Zulip sponsorship page."
+  ],
+  "tags": ["chat", "communication", "team-collaboration", "community"]
+}

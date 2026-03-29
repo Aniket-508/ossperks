@@ -1,0 +1,31 @@
+{
+  "slug": "coveralls",
+  "name": "Coveralls Open Source Program",
+  "provider": "Coveralls",
+  "url": "https://coveralls.io/",
+  "applicationUrl": "https://coveralls.io/sign-up",
+  "category": "testing",
+  "description": "Free forever code coverage tracking for open source projects with support for C/C++, Go, Java, JavaScript, Python, Ruby, PHP, .NET, and more.",
+  "perks": [
+    {
+      "title": "Free Code Coverage",
+      "description": "Unlimited code coverage tracking for all public repositories with no time limits."
+    },
+    {
+      "title": "Multi-Language Support",
+      "description": "Supports C/C++, Go, Java, JavaScript/Node, Python, Ruby/Rails, PHP, .NET, and many more."
+    },
+    {
+      "title": "Unlimited Users",
+      "description": "All plans include unlimited users with instant sign-up through GitHub, Bitbucket, and GitLab."
+    }
+  ],
+  "eligibility": [
+    "Must be an open source project with a public repository on GitHub, GitLab, or Bitbucket."
+  ],
+  "applicationProcess": [
+    "Sign up at coveralls.io with your GitHub, Bitbucket, or GitLab account.",
+    "Public repositories are automatically free forever — no credit card required."
+  ],
+  "tags": ["code-coverage", "testing", "quality", "multi-language"]
+}

@@ -1,0 +1,33 @@
+{
+  "slug": "chromatic",
+  "name": "Chromatic Open Source Sponsorship",
+  "provider": "Chromatic",
+  "url": "https://chromatic.com/docs/open-source",
+  "applicationUrl": "https://chromatic.com/docs/open-source",
+  "category": "testing",
+  "description": "Free visual testing plan for qualifying open source projects, built by the Storybook team. Includes 35,000 Chrome snapshots per month with cross-browser testing across Chrome, Firefox, Safari, and Edge.",
+  "perks": [
+    {
+      "title": "Free Visual Testing",
+      "description": "35,000 Chrome snapshots per month at no cost for qualifying open source projects."
+    },
+    {
+      "title": "Cross-Browser Testing",
+      "description": "Automated visual regression testing across Chrome, Firefox, Safari, and Edge running in parallel."
+    },
+    {
+      "title": "TurboSnap",
+      "description": "Reduce snapshot usage by up to 80% by only testing components that actually changed."
+    }
+  ],
+  "eligibility": [
+    "Community-led projects with over 10,000 GitHub stars, 40,000 weekly npm downloads, or 100+ contributors.",
+    "Company-built UI libraries or design systems with 5+ contributors.",
+    "Government UI libraries or design systems (national-level or higher) with 5+ contributors."
+  ],
+  "applicationProcess": [
+    "Apply through the Chromatic open source sponsorship page.",
+    "Chromatic reviews the application against their eligibility criteria."
+  ],
+  "tags": ["visual-testing", "storybook", "ui-testing", "regression-testing"]
+}

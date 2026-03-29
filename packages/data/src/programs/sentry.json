@@ -1,0 +1,33 @@
+{
+  "slug": "sentry",
+  "name": "Sentry for Open Source",
+  "provider": "Sentry",
+  "url": "https://sentry.io/for/open-source/",
+  "applicationUrl": "https://sentry.io/for/open-source/",
+  "category": "monitoring",
+  "description": "Sentry provides free error tracking and performance monitoring for open-source projects with generous usage limits and no term limit.",
+  "perks": [
+    {
+      "title": "5 Million Errors",
+      "description": "Track up to 5 million errors for free."
+    },
+    {
+      "title": "100 Million Transactions",
+      "description": "Performance monitoring with up to 100 million transactions."
+    },
+    {
+      "title": "10 GB Attachments",
+      "description": "Store up to 10 GB of error attachments."
+    },
+    {
+      "title": "100,000 Session Replays",
+      "description": "Replay user sessions to debug issues."
+    }
+  ],
+  "eligibility": [
+    "Must be an active open-source project.",
+    "Project should use a recognized open-source license."
+  ],
+  "duration": "No term limit",
+  "tags": ["monitoring", "error-tracking", "performance", "observability"]
+}

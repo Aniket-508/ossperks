@@ -1,0 +1,23 @@
+{
+  "slug": "github-copilot",
+  "name": "GitHub Copilot Pro for Open Source Maintainers",
+  "provider": "GitHub",
+  "url": "https://docs.github.com/en/copilot/managing-copilot/managing-copilot-as-an-individual-subscriber/managing-your-github-copilot-pro-subscription/getting-free-access-to-copilot-pro-as-a-student-teacher-or-maintainer",
+  "category": "ai",
+  "description": "GitHub provides free Copilot Pro access to maintainers of popular open-source repositories, enabling AI-assisted coding at no cost.",
+  "perks": [
+    {
+      "title": "Free GitHub Copilot Pro",
+      "description": "Full access to GitHub Copilot Pro for AI-powered code completion, chat, and suggestions."
+    }
+  ],
+  "eligibility": [
+    "Must be a maintainer of a popular open-source repository on GitHub.",
+    "Repository must meet GitHub's popularity/activity thresholds."
+  ],
+  "applicationProcess": [
+    "Eligible maintainers are automatically identified by GitHub.",
+    "Activate through GitHub Copilot settings."
+  ],
+  "tags": ["ai", "code-completion", "developer-tools"]
+}

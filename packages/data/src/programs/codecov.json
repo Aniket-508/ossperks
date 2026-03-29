@@ -1,0 +1,31 @@
+{
+  "slug": "codecov",
+  "name": "Codecov Open Source Program",
+  "provider": "Codecov",
+  "url": "https://about.codecov.io/for/open-source/",
+  "applicationUrl": "https://about.codecov.io/sign-up/",
+  "category": "testing",
+  "description": "Free forever code coverage for open source projects with unlimited public repositories, PR comments, status checks, and API access. Trusted by over 60,000 OSS projects.",
+  "perks": [
+    {
+      "title": "Free Code Coverage",
+      "description": "Unlimited public repositories with full code coverage tracking, patch and project coverage metrics."
+    },
+    {
+      "title": "PR Comments & Status Checks",
+      "description": "Automated pull request comments with coverage information and status checks to enforce coverage requirements."
+    },
+    {
+      "title": "Multi-Platform Integration",
+      "description": "Integrates with GitHub, GitLab, and Bitbucket with full API access."
+    }
+  ],
+  "eligibility": [
+    "Must be an open source project with a public repository on GitHub, GitLab, or Bitbucket."
+  ],
+  "applicationProcess": [
+    "Sign up at codecov.io with your GitHub, GitLab, or Bitbucket account.",
+    "Public repositories are automatically free forever."
+  ],
+  "tags": ["code-coverage", "testing", "ci-cd", "quality"]
+}

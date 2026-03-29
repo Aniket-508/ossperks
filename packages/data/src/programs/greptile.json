@@ -1,0 +1,29 @@
+{
+  "slug": "greptile",
+  "name": "Greptile Open Source Program",
+  "provider": "Greptile",
+  "url": "https://www.greptile.com/open-source",
+  "applicationUrl": "https://www.greptile.com/open-source",
+  "category": "ai",
+  "description": "Free AI code review for open source projects. Non-commercial projects with MIT, Apache, or GPL licenses get full access to Greptile's GitHub PR review bot at no cost.",
+  "perks": [
+    {
+      "title": "Free AI Code Review",
+      "description": "100% off Greptile for eligible open source repositories. Automated GitHub PR reviews with full codebase understanding."
+    },
+    {
+      "title": "Code Context & Custom Rules",
+      "description": "AI that understands your codebase context, with support for custom rules and learning from your repo."
+    }
+  ],
+  "eligibility": [
+    "Open source project with MIT, Apache, or GPL license.",
+    "Non-commercial project.",
+    "Repository owner or admin able to install apps to the repository."
+  ],
+  "applicationProcess": [
+    "Apply via the Greptile Open Source Program page with email, name, and repository link.",
+    "Confirm you are an owner or admin of the repository and can install apps."
+  ],
+  "tags": ["ai", "code-review", "github", "developer-tools"]
+}

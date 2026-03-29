@@ -4,20 +4,20 @@ import { ImageResponse } from "next/og";
 
 import OgImage from "@/components/og/og-image";
 import { SITE } from "@/constants/site";
-import { generateLangParamsWithSlug, isLocale } from "@/i18n/config";
+import { generateLangParamsWithProgram, isLocale } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
 import { loadOgFonts, OG_DIMENSIONS } from "@/lib/og";
 
 export const GET = async (
   _req: Request,
-  { params }: { params: Promise<{ lang: string; slug: string }> },
+  { params }: { params: Promise<{ lang: string; program: string }> },
 ) => {
-  const { lang, slug } = await params;
+  const { lang, program: programSlug } = await params;
   if (!isLocale(lang)) {
     notFound();
   }
 
-  const program = getProgramBySlug(slug);
+  const program = getProgramBySlug(programSlug);
   if (!program) {
     notFound();
   }
@@ -39,4 +39,4 @@ export const GET = async (
 };
 
 export const generateStaticParams = () =>
-  generateLangParamsWithSlug(getAllProgramSlugs);
+  generateLangParamsWithProgram(getAllProgramSlugs);

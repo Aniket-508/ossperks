@@ -1,17 +1,16 @@
 import { getAllPeopleSlugs, getPersonBySlug } from "@ossperks/core";
 import type { Program } from "@ossperks/core";
-import { ArrowLeftIcon, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { XIcon, LinkedInIcon } from "@/components/icons";
 import { ProgramCard } from "@/components/programs/program-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ROUTES } from "@/constants/routes";
-import { generateLangParamsWithSlug } from "@/i18n/config";
+import { SITE } from "@/constants/site";
+import { generateLangParamsWithPerson } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
 import { withLocalePrefix } from "@/i18n/navigation";
 import { getProgram } from "@/lib/programs";
@@ -22,10 +21,10 @@ import { createMetadata } from "@/seo/metadata";
 export default async function PersonPage({
   params,
 }: {
-  params: Promise<{ lang: string; slug: string }>;
+  params: Promise<{ lang: string; person: string }>;
 }) {
-  const { lang, slug } = await params;
-  const person = getPersonBySlug(slug);
+  const { lang, person: personSlug } = await params;
+  const person = getPersonBySlug(personSlug);
   if (!person) {
     notFound();
   }
@@ -52,33 +51,23 @@ export default async function PersonPage({
   return (
     <>
       <BreadcrumbJsonLd
-        lang={lang}
         items={[
-          { name: "Home", path: "/" },
-          { name: t.people.heading, path: "/people" },
-          { name: contact.name, path: `/people/${slug}` },
+          { name: t.common.breadcrumbHome, path: "/" },
+          { name: t.people.heading, path: ROUTES.PEOPLE },
+          {
+            name: contact.name,
+            path: `${ROUTES.PEOPLE}/${personSlug}` as `/${string}`,
+          },
         ]}
+        lang={lang}
       />
       <PersonPageJsonLd
         name={contact.name}
+        profilePageUrl={`${SITE.URL}${withLocalePrefix(lang, `${ROUTES.PEOPLE}/${personSlug}`)}`}
         role={contact.role}
-        url={contact.url}
+        sameAs={contact.url}
       />
       <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4 py-12">
-        <div className="mb-8">
-          <Button
-            variant="link"
-            size="sm"
-            nativeButton={false}
-            render={
-              <Link href={withLocalePrefix(lang, ROUTES.PEOPLE)}>
-                <ArrowLeftIcon />
-                {t.people.backToPeople}
-              </Link>
-            }
-          />
-        </div>
-
         {/* Profile header */}
         <div className="mb-8 flex items-start gap-6">
           <Avatar className="ring-fd-primary/20 size-16 ring-2">
@@ -168,12 +157,12 @@ export default async function PersonPage({
               );
               return (
                 <ProgramCard
-                  key={program.slug}
-                  program={program}
-                  programHref={programHref}
                   categoryLabel={categoryLabel}
+                  key={program.slug}
                   learnMore={t.programs.learnMore}
                   more={t.programs.more}
+                  program={program}
+                  programHref={programHref}
                 />
               );
             })}
@@ -185,20 +174,20 @@ export default async function PersonPage({
 }
 
 export const generateStaticParams = () =>
-  generateLangParamsWithSlug(getAllPeopleSlugs);
+  generateLangParamsWithPerson(getAllPeopleSlugs);
 
 export const generateMetadata = async ({
   params,
 }: {
-  params: Promise<{ lang: string; slug: string }>;
+  params: Promise<{ lang: string; person: string }>;
 }): Promise<Metadata> => {
-  const { lang, slug } = await params;
-  const person = getPersonBySlug(slug);
+  const { lang, person: personSlug } = await params;
+  const person = getPersonBySlug(personSlug);
   if (!person) {
     notFound();
   }
 
-  const personPath = `${ROUTES.PEOPLE}/${slug}` as `/${string}`;
+  const personPath = `${ROUTES.PEOPLE}/${personSlug}` as `/${string}`;
   const primaryProvider = person.programs[0]?.provider ?? "";
   const roleDesc = person.contact.role
     ? `${person.contact.role} at ${primaryProvider}`

@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { SearchParams } from "nuqs/server";
 
-import { PageBreadcrumb } from "@/components/layout/page-breadcrumb";
 import { ProgramCard } from "@/components/programs/program-card";
 import { ProgramListToolbar } from "@/components/programs/program-list-toolbar";
+import { PageBreadcrumb } from "@/components/shared/page-breadcrumb";
 import { ROUTES } from "@/constants/routes";
 import { i18n } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";

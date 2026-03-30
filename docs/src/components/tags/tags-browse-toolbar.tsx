@@ -1,21 +1,15 @@
 "use client";
 
-import { Search } from "lucide-react";
 import { useQueryStates } from "nuqs";
-import { useCallback, useRef } from "react";
+import { useCallback, useMemo, useRef } from "react";
 
 import { useSlashFocusSearch } from "@/components/hotkeys/use-slash-focus-search";
+import { ListingOrderControl } from "@/components/shared/listing-order";
+import type { ListingOrderOption } from "@/components/shared/listing-order";
+import { ListingReset } from "@/components/shared/listing-reset";
+import { ListingQueryField } from "@/components/shared/listing-search";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { tagsBrowseSearchParams } from "@/lib/search-params";
-import type { TagsBrowseSort } from "@/lib/tags-browse-server";
 import { cn } from "@/lib/utils";
 
 const LETTERS = [..."abcdefghijklmnopqrstuvwxyz"];
@@ -87,30 +81,33 @@ export const TagsBrowseToolbar = ({ labels }: TagsBrowseToolbarProps) => {
     });
   }, [setParams]);
 
+  const handleQueryChange = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { value: next } = e.target;
+      await setParams({
+        page: 1,
+        q: next === "" || next === null ? null : next,
+      });
+    },
+    [setParams],
+  );
+
+  const handleSortChange = useCallback(
+    async (sortValue: string | null) => {
+      await setParams({
+        page: 1,
+        sort: sortValue,
+      } as Parameters<typeof setParams>[0]);
+    },
+    [setParams],
+  );
+
   const setLetter = useCallback(
     async (next: string) => {
       await setParams({
         letter: next,
         page: 1,
       });
-    },
-    [setParams],
-  );
-
-  const setSort = useCallback(
-    async (value: TagsBrowseSort | null) => {
-      await setParams({
-        page: 1,
-        sort: value,
-      });
-    },
-    [setParams],
-  );
-
-  const handleSearchInput = useCallback(
-    async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = e.target;
-      await setParams({ page: 1, q: value === "" ? null : value });
     },
     [setParams],
   );
@@ -134,48 +131,43 @@ export const TagsBrowseToolbar = ({ labels }: TagsBrowseToolbarProps) => {
 
   const activeLetter = letter ?? "";
 
+  const orderOptions = useMemo<ListingOrderOption[]>(
+    () => [
+      { label: labels.sortNameAsc, value: "name-asc" },
+      { label: labels.sortNameDesc, value: "name-desc" },
+      { label: labels.sortCountDesc, value: "count-desc" },
+      { label: labels.sortCountAsc, value: "count-asc" },
+    ],
+    [
+      labels.sortCountAsc,
+      labels.sortCountDesc,
+      labels.sortNameAsc,
+      labels.sortNameDesc,
+    ],
+  );
+
   return (
     <div className="mb-8 space-y-4">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
         <div className="flex min-w-0 flex-1 items-center gap-2">
-          <div className="relative min-w-0 flex-1">
-            <Search className="text-fd-muted-foreground pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2" />
-            <Input
-              aria-label={labels.searchPlaceholder}
-              className="pl-9"
-              inputSize="default"
-              onChange={handleSearchInput}
-              placeholder={labels.searchPlaceholder}
-              ref={inputRef}
-              value={q ?? ""}
-            />
-          </div>
-          {hasActiveFilters ? (
-            <Button
-              className="shrink-0"
-              onClick={resetFilters}
-              size="default"
-              type="button"
-              variant="outline"
-            >
-              {labels.resetFilters}
-            </Button>
-          ) : null}
+          <ListingQueryField
+            inputRef={inputRef}
+            labels={{ searchPlaceholder: labels.searchPlaceholder }}
+            onChange={handleQueryChange}
+            value={q ?? ""}
+          />
+          <ListingReset
+            hasActiveFilters={hasActiveFilters}
+            label={labels.resetFilters}
+            onReset={resetFilters}
+          />
         </div>
-        <Select
-          onValueChange={setSort}
-          value={sort === null || sort === undefined ? undefined : sort}
-        >
-          <SelectTrigger className="w-full min-w-[200px] lg:w-[240px]">
-            <SelectValue placeholder={labels.orderBy} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="name-asc">{labels.sortNameAsc}</SelectItem>
-            <SelectItem value="name-desc">{labels.sortNameDesc}</SelectItem>
-            <SelectItem value="count-desc">{labels.sortCountDesc}</SelectItem>
-            <SelectItem value="count-asc">{labels.sortCountAsc}</SelectItem>
-          </SelectContent>
-        </Select>
+        <ListingOrderControl
+          labelHeading={labels.orderBy}
+          onSortValueChange={handleSortChange}
+          options={orderOptions}
+          sortValue={sort}
+        />
       </div>
 
       <div className="flex flex-wrap gap-1">

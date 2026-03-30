@@ -4,8 +4,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import type { SearchParams } from "nuqs/server";
 
-import { PageBreadcrumb } from "@/components/layout/page-breadcrumb";
-import { TagsBrowsePagination } from "@/components/tags/tags-browse-pagination";
+import { ListingPagination } from "@/components/shared/listing-pagination";
+import { PageBreadcrumb } from "@/components/shared/page-breadcrumb";
 import { TagsBrowseToolbar } from "@/components/tags/tags-browse-toolbar";
 import { ROUTES } from "@/constants/routes";
 import { generateLangParams } from "@/i18n/config";
@@ -116,7 +116,7 @@ export default async function TagsBrowsePage({
           </div>
         )}
 
-        <TagsBrowsePagination
+        <ListingPagination
           labels={{
             paginationNext: t.tags.browse.paginationNext,
             paginationPrevious: t.tags.browse.paginationPrevious,

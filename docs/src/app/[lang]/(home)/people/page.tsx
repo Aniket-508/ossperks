@@ -2,9 +2,9 @@ import { getPeople, getPersonSlug, programs } from "@ossperks/core";
 import { Plus } from "lucide-react";
 import type { Metadata } from "next";
 
-import { PageBreadcrumb } from "@/components/layout/page-breadcrumb";
 import { ContactSubmissionDialog } from "@/components/people/contact-submission-dialog";
 import { PersonCard } from "@/components/people/person-card";
+import { PageBreadcrumb } from "@/components/shared/page-breadcrumb";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/constants/routes";
 import { generateLangParams } from "@/i18n/config";

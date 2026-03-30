@@ -4,7 +4,7 @@ import { ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { PageBreadcrumb } from "@/components/layout/page-breadcrumb";
+import { PageBreadcrumb } from "@/components/shared/page-breadcrumb";
 import { ROUTES } from "@/constants/routes";
 import { generateLangParams } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";

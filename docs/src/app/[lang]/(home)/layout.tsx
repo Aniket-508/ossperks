@@ -2,8 +2,8 @@ import { HomeLayout } from "fumadocs-ui/layouts/home";
 import type { ReactNode } from "react";
 
 import { Footer } from "@/components/layout/footer";
+import { baseOptions } from "@/components/layout/layout.shared";
 import { getT } from "@/i18n/get-t";
-import { baseOptions } from "@/lib/layout.shared";
 
 export default async function Layout({
   children,

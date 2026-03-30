@@ -9,8 +9,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import type { SearchParams } from "nuqs/server";
 
-import { PageBreadcrumb } from "@/components/layout/page-breadcrumb";
 import { ProgramsListing } from "@/components/programs/programs-listing";
+import { PageBreadcrumb } from "@/components/shared/page-breadcrumb";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/constants/routes";
 import { generateLangParams } from "@/i18n/config";

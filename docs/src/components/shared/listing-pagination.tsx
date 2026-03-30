@@ -15,15 +15,6 @@ import {
 import { getPaginationWindow } from "@/lib/pagination-window";
 import { tagsBrowseSearchParams } from "@/lib/search-params";
 
-interface TagsBrowsePaginationProps {
-  labels: {
-    paginationNext: string;
-    paginationPrevious: string;
-  };
-  page: number;
-  pageCount: number;
-}
-
 const PageJump = ({
   displayPage,
   n,
@@ -55,11 +46,18 @@ const PageJump = ({
   );
 };
 
-export const TagsBrowsePagination = ({
+export const ListingPagination = ({
   labels,
   page,
   pageCount,
-}: TagsBrowsePaginationProps) => {
+}: {
+  labels: {
+    paginationNext: string;
+    paginationPrevious: string;
+  };
+  page: number;
+  pageCount: number;
+}) => {
   const [{ page: urlPage }, setParams] = useQueryStates(
     tagsBrowseSearchParams,
     {

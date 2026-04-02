@@ -1,64 +1,72 @@
 import {
   CATEGORY_LABELS,
+  getAllPeopleSlugs,
   getCategories,
+  getPersonBySlug,
   getProgramBySlug,
-  getProgramsByCategory,
+  getTagsWithProgramCounts,
   programs,
 } from "@ossperks/core";
-import type { Category } from "@ossperks/core";
 import { notFound } from "next/navigation";
 import { ImageResponse } from "next/og";
 
 import OgImage from "@/components/og/og-image";
 import { SITE } from "@/constants/site";
 import { i18n, isLocale } from "@/i18n/config";
-import { formatProgramsCategoryIntro } from "@/i18n/format-programs-category-intro";
 import { getT } from "@/i18n/get-t";
 import { loadOgFonts } from "@/lib/og";
-import { cliSource, programsSource } from "@/lib/source";
+import { cliSource } from "@/lib/source";
+import { decodeTagFromPath, encodeTagForPath } from "@/lib/tag-path";
+
+import { buildOgContent } from "./og-content";
+import type { OgContext } from "./og-content";
 
 export const revalidate = false;
 
-type OgContext =
-  | { type: "home" }
-  | { type: "about" }
-  | { type: "programs" }
-  | { type: "program"; slug: string }
-  | { type: "category"; category: string }
-  | { type: "submit" }
-  | { type: "people" }
-  | { type: "sponsors" }
-  | { slugs: string[]; type: "cli" };
+const validTagSet = (): Set<string> =>
+  new Set(getTagsWithProgramCounts().map((row) => row.tag));
+
+const SINGLE_SEGMENT: Record<string, OgContext> = {
+  about: { type: "about" },
+  categories: { type: "categories-index" },
+  people: { type: "people" },
+  programs: { type: "programs" },
+  sponsors: { type: "sponsors" },
+  tags: { type: "tags-index" },
+};
+
+const resolveTwoSegment = (slug: [string, string]): OgContext | null => {
+  const [first, second] = slug;
+  if (first === "programs" && second === "submit") {
+    return { type: "submit" };
+  }
+  if (first === "programs") {
+    return { slug: second, type: "program" };
+  }
+  if (first === "categories") {
+    return { category: second, type: "category" };
+  }
+  if (first === "tags") {
+    return { tag: decodeTagFromPath(second), type: "tag" };
+  }
+  if (first === "people") {
+    return { personSlug: second, type: "person" };
+  }
+  return null;
+};
 
 const resolveContext = (slug: string[] | undefined): OgContext | null => {
-  if (!slug || slug.length === 0) {
+  if (!slug?.length) {
     return { type: "home" };
   }
   if (slug[0] === "cli") {
     return { slugs: slug.slice(1), type: "cli" };
   }
   if (slug.length === 1) {
-    if (slug[0] === "about") {
-      return { type: "about" };
-    }
-    if (slug[0] === "programs") {
-      return { type: "programs" };
-    }
-    if (slug[0] === "people") {
-      return { type: "people" };
-    }
-    if (slug[0] === "sponsors") {
-      return { type: "sponsors" };
-    }
+    return SINGLE_SEGMENT[slug[0] ?? ""] ?? null;
   }
-  if (slug.length === 2 && slug[0] === "programs" && slug[1] === "submit") {
-    return { type: "submit" };
-  }
-  if (slug.length === 2 && slug[0] === "programs") {
-    return { slug: slug[1], type: "program" };
-  }
-  if (slug.length === 3 && slug[0] === "programs" && slug[1] === "category") {
-    return { category: slug[2], type: "category" };
+  if (slug.length === 2) {
+    return resolveTwoSegment([slug[0], slug[1]]);
   }
   return null;
 };
@@ -67,8 +75,14 @@ const getFooterLabel = (context: OgContext): string | undefined => {
   if (context.type === "program") {
     return "Program";
   }
-  if (context.type === "category") {
+  if (context.type === "category" || context.type === "categories-index") {
     return "Category";
+  }
+  if (context.type === "tag" || context.type === "tags-index") {
+    return "Tags";
+  }
+  if (context.type === "person") {
+    return "Person";
   }
   if (context.type === "submit") {
     return "Submit";
@@ -100,6 +114,15 @@ const validateOgRequest = (params: {
   if (context.type === "category" && !(context.category in CATEGORY_LABELS)) {
     notFound();
   }
+  if (context.type === "tag" && !validTagSet().has(context.tag)) {
+    notFound();
+  }
+  if (context.type === "person") {
+    const person = getPersonBySlug(context.personSlug);
+    if (!person) {
+      notFound();
+    }
+  }
   if (context.type === "cli") {
     const page = cliSource.getPage(context.slugs, lang);
     if (!page) {
@@ -109,80 +132,9 @@ const validateOgRequest = (params: {
   return { context, lang };
 };
 
-const getOgContent = async (
-  lang: string,
-  context: OgContext,
-): Promise<{ description: string; title: string }> => {
+const getOgContent = async (lang: string, context: OgContext) => {
   const t = await getT(lang);
-  switch (context.type) {
-    case "home": {
-      return { description: t.home.description, title: t.home.heading };
-    }
-    case "about": {
-      return { description: t.about.intro, title: t.about.heading };
-    }
-    case "programs": {
-      return {
-        description: t.programs.listing.intro.replace(
-          "{count}",
-          String(programs.length),
-        ),
-        title: t.programs.listing.heading,
-      };
-    }
-    case "program": {
-      const program = getProgramBySlug(context.slug);
-      if (!program) {
-        return { description: "", title: "" };
-      }
-      const page = programsSource.getPage([program.slug], lang);
-      return {
-        description: page?.data.description ?? program.description,
-        title: program.name,
-      };
-    }
-    case "category": {
-      const categoryLabel =
-        t.common.categories[
-          context.category as keyof typeof t.common.categories
-        ] ?? context.category;
-      const count = getProgramsByCategory(context.category as Category).length;
-      return {
-        description: formatProgramsCategoryIntro(
-          t.programs.category.intro,
-          count,
-          categoryLabel,
-          lang,
-        ),
-        title: t.programs.category.heading.replace("{category}", categoryLabel),
-      };
-    }
-    case "submit": {
-      return {
-        description: t.programs.submit.description,
-        title: t.programs.submit.heading,
-      };
-    }
-    case "people": {
-      return { description: t.people.description, title: t.people.heading };
-    }
-    case "sponsors": {
-      return { description: t.sponsors.intro, title: t.sponsors.heading };
-    }
-    case "cli": {
-      const page = cliSource.getPage(context.slugs, lang);
-      if (!page) {
-        return { description: "", title: "" };
-      }
-      const description = page.data.description ?? "";
-      const title = page.data.title ?? "";
-      return { description, title };
-    }
-    default: {
-      const _: never = context;
-      return { description: "", title: "" };
-    }
-  }
+  return buildOgContent(t, lang, context);
 };
 
 export const GET = async (
@@ -219,11 +171,19 @@ export const generateStaticParams = () => {
     params.push({ lang, slug: ["programs", "submit"] });
     params.push({ lang, slug: ["people"] });
     params.push({ lang, slug: ["sponsors"] });
+    params.push({ lang, slug: ["categories"] });
+    params.push({ lang, slug: ["tags"] });
     for (const program of programs) {
       params.push({ lang, slug: ["programs", program.slug] });
     }
     for (const category of getCategories()) {
-      params.push({ lang, slug: ["programs", "category", category] });
+      params.push({ lang, slug: ["categories", category] });
+    }
+    for (const { tag } of getTagsWithProgramCounts()) {
+      params.push({ lang, slug: ["tags", encodeTagForPath(tag)] });
+    }
+    for (const personSlug of getAllPeopleSlugs()) {
+      params.push({ lang, slug: ["people", personSlug] });
     }
   }
   for (const page of cliSource.getPages()) {

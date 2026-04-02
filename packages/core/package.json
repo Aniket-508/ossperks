@@ -2,7 +2,7 @@
   "name": "@ossperks/core",
   "version": "0.1.0",
   "private": true,
-  "description": "Core data, types, and eligibility checking logic for OSS Perks.",
+  "description": "Types, schema, and eligibility checking logic for OSS Perks (program records live in @ossperks/data).",
   "keywords": [
     "data",
     "eligibility",
@@ -42,17 +42,17 @@
   },
   "scripts": {
     "dev": "tsdown --watch",
-    "generate": "tsx src/generate-programs.ts",
-    "generate:watch": "tsx src/generate-programs.ts --watch",
-    "build": "pnpm generate && pnpm clean && NODE_ENV=production tsdown",
+    "generate": "pnpm --filter @ossperks/data generate",
+    "build": "pnpm --filter @ossperks/data generate && pnpm clean && NODE_ENV=production tsdown",
     "clean": "rm -rf dist tsconfig.tsbuildinfo",
-    "typecheck": "pnpm generate && tsc -p tsconfig.json --pretty",
+    "typecheck": "pnpm --filter @ossperks/data generate && tsc -p tsconfig.json --pretty",
     "test": "pnpm build && vitest run",
     "validate": "tsx src/validate.ts"
   },
   "dependencies": {
     "@gitbeaker/rest": "^43.8.0",
     "@octokit/rest": "^22.0.1",
+    "@ossperks/data": "workspace:*",
     "license-similarity": "^0.2.3",
     "spdx-license-list": "^6.11.0",
     "zod": "catalog:"

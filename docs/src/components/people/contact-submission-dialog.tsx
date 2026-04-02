@@ -8,7 +8,7 @@ import { z } from "zod";
 
 import { ContactFields } from "@/components/people/contact-fields";
 import type { ContactFieldsTranslations } from "@/components/people/contact-fields";
-import { AutofillCard } from "@/components/programs/autofill-card";
+import { AutofillCard } from "@/components/shared/autofill-card";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

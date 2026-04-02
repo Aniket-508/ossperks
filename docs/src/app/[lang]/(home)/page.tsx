@@ -7,11 +7,12 @@ import {
 import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ViewTransition } from "react";
 
 import { HeroActions } from "@/components/home/hero-actions";
 import { HomeCtaWithDialogs } from "@/components/home/home-cta-with-dialogs";
+import { PersonCard } from "@/components/people/person-card";
 import { ProgramCard } from "@/components/programs/program-card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ROUTES } from "@/constants/routes";
@@ -64,9 +65,14 @@ export default async function HomePage({
   ];
 
   return (
-    <>
+    <ViewTransition
+      enter={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      exit={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      default="none"
+    >
+      <div>
       <FAQJsonLd />
-      <div className="container mx-auto flex w-full flex-1 flex-col px-4 py-12">
+      <div className="view-container flex w-full flex-1 flex-col px-4 py-12">
         {/* Hero */}
         <section className="pt-8 pb-16 text-center sm:pt-24 sm:pb-32">
           <h1 className="mb-4 text-5xl font-bold tracking-tight">
@@ -211,34 +217,19 @@ export default async function HomePage({
                     .replace("{role}", contact.role)
                     .replace("{provider}", provider)
                 : provider;
+              const avatarUrl = contact.url
+                ? getUnavatarUrl(contact.url)
+                : null;
 
               return (
-                <Link
+                <PersonCard
                   key={`${contact.name}-${provider}`}
+                  avatarUrl={avatarUrl}
+                  contact={contact}
                   href={personHref}
-                  className="group block"
-                >
-                  <div className="ring-foreground/10 hover:bg-fd-accent flex flex-col items-center gap-3 rounded-xl p-8 ring-1 transition-colors">
-                    <Avatar className="ring-fd-primary/20 group-hover:ring-fd-primary/40 size-16 ring-2 transition-all">
-                      {contact.url &&
-                        (() => {
-                          const avatarUrl = getUnavatarUrl(contact.url);
-                          return avatarUrl ? (
-                            <AvatarImage src={avatarUrl} alt={contact.name} />
-                          ) : null;
-                        })()}
-                      <AvatarFallback className="text-xl">
-                        {contact.name.charAt(0).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="text-center">
-                      <p className="font-semibold">{contact.name}</p>
-                      <p className="text-fd-muted-foreground text-sm">
-                        {roleText}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
+                  subtitle={roleText}
+                  variant="featured"
+                />
               );
             })}
           </div>
@@ -293,6 +284,7 @@ export default async function HomePage({
           contactDialogTranslations={t.people.submit}
         />
       </div>
-    </>
+      </div>
+    </ViewTransition>
   );
 }

@@ -4,13 +4,33 @@ const programs = {
   by: "提供元:",
   filters: {
     allCategories: "すべてのカテゴリー",
+    allTags: "タグ未選択",
     allTypes: "すべてのタイプ",
-    noMatches: "選択した条件に一致するプログラムはありません。"
+    apply: "適用",
+    clearAll: "すべてクリア",
+    emptySection: "一致する項目がありません。",
+    filterButton: "フィルター",
+    noMatches: "選択した条件に一致するプログラムはありません。",
+    removeChip: "削除",
+    reset: "リセット",
+    searchCategories: "カテゴリーを検索…",
+    searchTags: "タグを検索…",
+    searchTypes: "タイプを検索…",
+    sectionCategories: "カテゴリー",
+    sectionTags: "タグ",
+    sectionTypes: "タイプ",
+    select: "選択",
+    showingCount: "{count}件のプログラムを表示"
   },
   learnMore: "詳細を見る",
   listing: {
     heading: "プログラム一覧",
-    intro: "{count}件の厳選プログラム。オープンソース向けの無料ツール、クレジット、サービスを提供しています。"
+    intro: "{count}件の厳選プログラム。オープンソース向けの無料ツール、クレジット、サービスを提供しています。",
+    orderBy: "並び替え",
+    resetFilters: "リセット",
+    searchPlaceholder: "プログラムを検索…",
+    sortNameAsc: "名前（昇順）",
+    sortNameDesc: "名前（降順）"
   },
   more: "他{count}件",
   category: {
@@ -19,13 +39,34 @@ const programs = {
     empty: "このカテゴリーにはまだプログラムがありません。"
   },
   sections: {
+    applyShort: "応募",
+    categoryLabel: "カテゴリ",
     checkEligibility: "適格性を確認",
+    checkShort: "確認",
+    contact: "連絡先",
+    copyLink: "リンクをコピー",
+    copyLinkTooltip: "ページのリンクをコピー",
     eligibility: "応募資格",
     howToApply: "応募方法",
+    linkCopied: "リンクをコピーしました",
+    linkCopiedTooltip: "リンクをコピーしました",
+    nextProgram: "次のプログラム",
+    nextProgramTooltip: "次のプログラム",
     people: "関連する人物",
     perks: "特典",
+    previousProgram: "前のプログラム",
+    previousProgramTooltip: "前のプログラム",
     requirements: "要件",
-    tags: "タグ"
+    share: "共有",
+    shareOnFacebook: "Facebookで共有",
+    shareOnLinkedIn: "LinkedInで共有",
+    shareOnReddit: "Redditで共有",
+    shareOnWhatsApp: "WhatsAppで共有",
+    shareOnX: "Xで共有",
+    similarTo: "{name}に似ている",
+    tags: "タグ",
+    timeline: "期間",
+    viewAll: "すべてのプログラムを見る"
   },
   submit: {
     backToAll: "すべてのプログラム",

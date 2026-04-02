@@ -4,13 +4,33 @@ const programs = {
   by: "von",
   filters: {
     allCategories: "Alle Kategorien",
+    allTags: "Keine Tags ausgewählt",
     allTypes: "Alle Typen",
-    noMatches: "Keine Programme entsprechen den ausgewählten Filtern."
+    apply: "Anwenden",
+    clearAll: "Alle löschen",
+    emptySection: "Keine passenden Optionen.",
+    filterButton: "Filter",
+    noMatches: "Keine Programme entsprechen den ausgewählten Filtern.",
+    removeChip: "Entfernen",
+    reset: "Zurücksetzen",
+    searchCategories: "Kategorien durchsuchen…",
+    searchTags: "Tags durchsuchen…",
+    searchTypes: "Typen durchsuchen…",
+    sectionCategories: "Kategorien",
+    sectionTags: "Tags",
+    sectionTypes: "Typen",
+    select: "Auswählen",
+    showingCount: "{count} Programme angezeigt"
   },
   learnMore: "mehr erfahren",
   listing: {
     heading: "Programme",
-    intro: "{count} kuratierte Programme mit kostenlosen Tools, Guthaben und Diensten für Open-Source-Projekte."
+    intro: "{count} kuratierte Programme mit kostenlosen Tools, Guthaben und Diensten für Open-Source-Projekte.",
+    orderBy: "Sortieren nach",
+    resetFilters: "Zurücksetzen",
+    searchPlaceholder: "Programme durchsuchen…",
+    sortNameAsc: "Name A–Z",
+    sortNameDesc: "Name Z–A"
   },
   more: "+{count} weitere",
   category: {
@@ -19,13 +39,34 @@ const programs = {
     empty: "In dieser Kategorie gibt es noch keine Programme."
   },
   sections: {
+    applyShort: "Bewerben",
+    categoryLabel: "Kategorie",
     checkEligibility: "Berechtigung prüfen",
+    checkShort: "Prüfen",
+    contact: "Kontakt",
+    copyLink: "Link kopieren",
+    copyLinkTooltip: "Link zur Seite kopieren",
     eligibility: "Teilnahmeberechtigung",
     howToApply: "Bewerbungsverfahren",
+    linkCopied: "Link kopiert!",
+    linkCopiedTooltip: "Link kopiert!",
+    nextProgram: "Nächstes Programm",
+    nextProgramTooltip: "Nächstes Programm",
     people: "Personen",
     perks: "Vorteile",
+    previousProgram: "Vorheriges Programm",
+    previousProgramTooltip: "Vorheriges Programm",
     requirements: "Anforderungen",
-    tags: "Tags"
+    share: "Teilen",
+    shareOnFacebook: "Auf Facebook teilen",
+    shareOnLinkedIn: "Auf LinkedIn teilen",
+    shareOnReddit: "Auf Reddit teilen",
+    shareOnWhatsApp: "Über WhatsApp teilen",
+    shareOnX: "Auf X teilen",
+    similarTo: "Ähnlich wie {name}",
+    tags: "Tags",
+    timeline: "Zeitrahmen",
+    viewAll: "Alle Programme anzeigen"
   },
   submit: {
     backToAll: "Alle Programme",

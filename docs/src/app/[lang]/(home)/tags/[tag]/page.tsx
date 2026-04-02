@@ -1,0 +1,172 @@
+import { getProgramsByTag, getTagsWithProgramCounts } from "@ossperks/core";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import type { SearchParams } from "nuqs/server";
+import { ViewTransition } from "react";
+
+import { ProgramCard } from "@/components/programs/program-card";
+import { ProgramListToolbar } from "@/components/programs/program-list-toolbar";
+import { PageBreadcrumb } from "@/components/shared/page-breadcrumb";
+import { ROUTES } from "@/constants/routes";
+import { i18n } from "@/i18n/config";
+import { getT } from "@/i18n/get-t";
+import { withLocalePrefix } from "@/i18n/navigation";
+import { filterSortPrograms } from "@/lib/program-list-server";
+import { getProgram } from "@/lib/programs";
+import { programListParamsCache } from "@/lib/search-params";
+import { decodeTagFromPath, encodeTagForPath } from "@/lib/tag-path";
+import { BreadcrumbJsonLd, CategoryProgramListJsonLd } from "@/seo/json-ld";
+import { createMetadata } from "@/seo/metadata";
+
+const validTagSet = (): Set<string> =>
+  new Set(getTagsWithProgramCounts().map((row) => row.tag));
+
+export const generateStaticParams = (): { lang: string; tag: string }[] =>
+  i18n.languages.flatMap((lang) =>
+    getTagsWithProgramCounts().map(({ tag }) => ({
+      lang,
+      tag: encodeTagForPath(tag),
+    })),
+  );
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ lang: string; tag: string }>;
+}): Promise<Metadata> => {
+  const { lang, tag: tagParam } = await params;
+  const decoded = decodeTagFromPath(tagParam);
+  if (!validTagSet().has(decoded)) {
+    notFound();
+  }
+  const t = await getT(lang);
+  const count = getProgramsByTag(decoded).length;
+  const title = `${decoded} — ${t.tags.detail.titleSuffix}`;
+  const description = t.tags.detail.intro.replace("{count}", String(count));
+  return createMetadata({
+    description,
+    lang,
+    path: `${ROUTES.TAGS}/${encodeTagForPath(decoded)}` as `/${string}`,
+    title,
+  });
+};
+
+export default async function TagDetailPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ lang: string; tag: string }>;
+  searchParams: Promise<SearchParams>;
+}) {
+  const { lang, tag: tagParam } = await params;
+  const decodedTag = decodeTagFromPath(tagParam);
+  if (!validTagSet().has(decodedTag)) {
+    notFound();
+  }
+
+  const query = await programListParamsCache.parse(searchParams);
+  const t = await getT(lang);
+  const corePrograms = getProgramsByTag(decodedTag);
+  const translatedPrograms = await Promise.all(
+    corePrograms.map((p) => getProgram(p.slug, lang)),
+  );
+  const programs = translatedPrograms.filter(
+    (p): p is NonNullable<typeof p> => p !== undefined,
+  );
+  const filtered = filterSortPrograms(programs, {
+    q: query.q,
+    sort: query.sort ?? null,
+  });
+
+  const pageTitle = `${decodedTag} — ${t.tags.detail.titleSuffix}`;
+  const searchPlaceholder = t.tags.detail.searchPlaceholder.replace(
+    "{tag}",
+    decodedTag,
+  );
+
+  return (
+    <ViewTransition
+      enter={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      exit={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      default="none"
+    >
+      <div>
+      <BreadcrumbJsonLd
+        items={[
+          { name: t.common.breadcrumbHome, path: "/" },
+          { name: t.tags.detail.breadcrumb, path: ROUTES.TAGS },
+          {
+            name: decodedTag,
+            path: `${ROUTES.TAGS}/${encodeTagForPath(decodedTag)}` as `/${string}`,
+          },
+        ]}
+        lang={lang}
+      />
+      <CategoryProgramListJsonLd
+        categoryLabel={decodedTag}
+        lang={lang}
+        pageName={pageTitle}
+        programs={filtered.map((p) => ({ name: p.name, slug: p.slug }))}
+      />
+      <div className="view-container flex w-full flex-1 flex-col px-4 py-12">
+        <PageBreadcrumb
+          homeHref={withLocalePrefix(lang, ROUTES.HOME)}
+          homeLabel={t.common.breadcrumbHome}
+          segments={[
+            {
+              href: withLocalePrefix(lang, ROUTES.TAGS),
+              label: t.tags.detail.breadcrumb,
+            },
+            { current: true, label: decodedTag },
+          ]}
+        />
+
+        <h1 className="mb-2 text-4xl font-bold">{pageTitle}</h1>
+        <p className="text-fd-muted-foreground mb-10 max-w-2xl text-lg">
+          {t.tags.detail.intro.replace("{count}", String(programs.length))}
+        </p>
+
+        <ProgramListToolbar
+          labels={{
+            ...t.tags.detail,
+            searchPlaceholder,
+          }}
+        />
+
+        {filtered.length > 0 ? (
+          <div className="grid gap-4 md:grid-cols-3">
+            {filtered.map((program) => {
+              const programCategoryLabel =
+                t.common.categories[
+                  program.category as keyof typeof t.common.categories
+                ] ?? program.category;
+              const programHref = withLocalePrefix(
+                lang,
+                `${ROUTES.PROGRAMS}/${program.slug}` as `/${string}`,
+              );
+              return (
+                <ProgramCard
+                  categoryLabel={programCategoryLabel}
+                  key={program.slug}
+                  learnMore={t.programs.learnMore}
+                  more={t.programs.more}
+                  program={program}
+                  programHref={programHref}
+                />
+              );
+            })}
+          </div>
+        ) : (
+          <div className="bg-fd-muted/30 rounded-lg border border-dashed p-12 text-center">
+            <p className="text-fd-muted-foreground">
+              {programs.length === 0
+                ? t.tags.detail.emptyTag
+                : t.tags.detail.noMatches}
+            </p>
+          </div>
+        )}
+      </div>
+      </div>
+    </ViewTransition>
+  );
+}

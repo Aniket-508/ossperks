@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ViewTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -37,6 +38,11 @@ export default async function AboutPage({
   const t = await getT(lang);
 
   return (
+    <ViewTransition
+      enter={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      exit={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      default="none"
+    >
     <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-4 py-12">
       <div className="mb-10">
         <h1 className="mb-4 text-4xl font-bold">{t.about.heading}</h1>
@@ -105,5 +111,6 @@ export default async function AboutPage({
         />
       </section>
     </div>
+    </ViewTransition>
   );
 }

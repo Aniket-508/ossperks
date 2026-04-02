@@ -15,7 +15,16 @@ export const isLocale = (value: string): value is Locale =>
 export const generateLangParams = (): { lang: string }[] =>
   i18n.languages.map((lang) => ({ lang }));
 
-export const generateLangParamsWithSlug = (
-  getSlugs: () => string[],
-): { lang: string; slug: string }[] =>
-  i18n.languages.flatMap((lang) => getSlugs().map((slug) => ({ lang, slug })));
+export const generateLangParamsWithProgram = (
+  getProgramSlugs: () => string[],
+): { lang: string; program: string }[] =>
+  i18n.languages.flatMap((lang) =>
+    getProgramSlugs().map((program) => ({ lang, program })),
+  );
+
+export const generateLangParamsWithPerson = (
+  getPersonSlugs: () => string[],
+): { lang: string; person: string }[] =>
+  i18n.languages.flatMap((lang) =>
+    getPersonSlugs().map((person) => ({ lang, person })),
+  );

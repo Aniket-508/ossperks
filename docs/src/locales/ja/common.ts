@@ -1,4 +1,5 @@
 const common = {
+  breadcrumbHome: "ホーム",
   categories: {
     ai: "AI・機械学習",
     analytics: "アナリティクス",

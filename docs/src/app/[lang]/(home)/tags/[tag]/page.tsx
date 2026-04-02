@@ -2,6 +2,7 @@ import { getProgramsByTag, getTagsWithProgramCounts } from "@ossperks/core";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { SearchParams } from "nuqs/server";
+import { ViewTransition } from "react";
 
 import { ProgramCard } from "@/components/programs/program-card";
 import { ProgramListToolbar } from "@/components/programs/program-list-toolbar";
@@ -84,7 +85,12 @@ export default async function TagDetailPage({
   );
 
   return (
-    <>
+    <ViewTransition
+      enter={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      exit={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      default="none"
+    >
+      <div>
       <BreadcrumbJsonLd
         items={[
           { name: t.common.breadcrumbHome, path: "/" },
@@ -160,6 +166,7 @@ export default async function TagDetailPage({
           </div>
         )}
       </div>
-    </>
+      </div>
+    </ViewTransition>
   );
 }

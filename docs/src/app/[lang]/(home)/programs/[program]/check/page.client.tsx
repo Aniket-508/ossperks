@@ -3,7 +3,7 @@
 import { ArrowLeft, CircleX } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useMemo } from "react";
+import { Suspense, useMemo, ViewTransition } from "react";
 
 import { RepoCheckInput } from "@/components/check/check-input";
 import { Badge } from "@/components/ui/badge";
@@ -251,7 +251,15 @@ const ProgramCheckInner = ({
 };
 
 export const ProgramCheckPageClient = (props: ProgramCheckPageClientProps) => (
-  <Suspense fallback={<ProgramCheckSkeleton name={props.programName} />}>
-    <ProgramCheckInner {...props} />
+  <Suspense
+    fallback={
+      <ViewTransition exit="slide-down">
+        <ProgramCheckSkeleton name={props.programName} />
+      </ViewTransition>
+    }
+  >
+    <ViewTransition enter="slide-up" default="none">
+      <ProgramCheckInner {...props} />
+    </ViewTransition>
   </Suspense>
 );

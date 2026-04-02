@@ -4,6 +4,9 @@ const withMDX = createMDX();
 
 /** @type {import('next').NextConfig} */
 const config = {
+  experimental: {
+    viewTransition: true,
+  },
   images: {
     remotePatterns: [
       { hostname: "unavatar.io", pathname: "/**", protocol: "https" },

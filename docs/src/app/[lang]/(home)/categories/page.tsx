@@ -3,6 +3,7 @@ import type { Category } from "@ossperks/core";
 import { ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ViewTransition } from "react";
 
 import { PageBreadcrumb } from "@/components/shared/page-breadcrumb";
 import { ROUTES } from "@/constants/routes";
@@ -45,7 +46,12 @@ export default async function CategoriesListingPage({
   }));
 
   return (
-    <>
+    <ViewTransition
+      enter={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      exit={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      default="none"
+    >
+      <div>
       <BreadcrumbJsonLd
         items={[
           { name: t.common.breadcrumbHome, path: "/" },
@@ -90,6 +96,7 @@ export default async function CategoriesListingPage({
                 className="border-fd-border/60 hover:bg-fd-muted/40 flex items-center justify-between gap-3 rounded-lg border px-4 py-3 transition-colors"
                 href={href}
                 key={category}
+                transitionTypes={["nav-forward"]}
               >
                 <div className="min-w-0">
                   <div className="truncate font-medium">{label}</div>
@@ -106,6 +113,7 @@ export default async function CategoriesListingPage({
           })}
         </div>
       </div>
-    </>
+      </div>
+    </ViewTransition>
   );
 }

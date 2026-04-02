@@ -74,7 +74,11 @@ export const PersonCard = (props: PersonCardProps) => {
 
   if (variant === "featured") {
     return (
-      <Link className="group block" href={href}>
+      <Link
+        className="group block"
+        href={href}
+        transitionTypes={["nav-forward"]}
+      >
         <div className="ring-foreground/10 hover:bg-fd-accent flex flex-col items-center gap-3 rounded-xl p-8 ring-1 transition-colors">
           {avatar}
           <div className="text-center">
@@ -91,7 +95,7 @@ export const PersonCard = (props: PersonCardProps) => {
   }
 
   return (
-    <Link className="group block" href={href}>
+    <Link className="group block" href={href} transitionTypes={["nav-forward"]}>
       <div className="ring-foreground/10 hover:bg-fd-accent flex items-center gap-4 rounded-xl p-4 ring-1 transition-colors">
         {avatar}
         <div className="min-w-0 flex-1">

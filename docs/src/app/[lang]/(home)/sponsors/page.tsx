@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ViewTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -34,6 +35,11 @@ export default async function SponsorsPage({
   const t = await getT(lang);
 
   return (
+    <ViewTransition
+      enter={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      exit={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      default="none"
+    >
     <div className="view-container flex w-full flex-1 flex-col px-4 py-12">
       <div className="mb-10">
         <h1 className="mb-4 text-4xl font-bold">{t.sponsors.heading}</h1>
@@ -122,5 +128,6 @@ export default async function SponsorsPage({
         />
       </section>
     </div>
+    </ViewTransition>
   );
 }

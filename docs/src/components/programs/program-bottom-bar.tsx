@@ -4,7 +4,12 @@ import { useHotkey } from "@tanstack/react-hotkeys";
 import { ChevronLeft, ChevronRight, Link2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import {
+  addTransitionType,
+  startTransition,
+  useCallback,
+  useState,
+} from "react";
 
 import { isEditableTarget } from "@/components/hotkeys/editable-target";
 import { Button } from "@/components/ui/button";
@@ -104,7 +109,10 @@ export const ProgramBottomBar = ({
       return;
     }
     e.preventDefault();
-    router.push(prevHref);
+    startTransition(() => {
+      addTransitionType("nav-back");
+      router.push(prevHref);
+    });
   });
 
   useHotkey("ArrowRight", (e) => {
@@ -115,7 +123,10 @@ export const ProgramBottomBar = ({
       return;
     }
     e.preventDefault();
-    router.push(nextHref);
+    startTransition(() => {
+      addTransitionType("nav-forward");
+      router.push(nextHref);
+    });
   });
 
   return (
@@ -161,7 +172,7 @@ export const ProgramBottomBar = ({
                       aria-label={labels.previousProgram}
                       nativeButton={false}
                       render={
-                        <Link href={prevHref}>
+                        <Link href={prevHref} transitionTypes={["nav-back"]}>
                           <ChevronLeft className="size-4" />
                         </Link>
                       }
@@ -195,7 +206,7 @@ export const ProgramBottomBar = ({
                       aria-label={labels.nextProgram}
                       nativeButton={false}
                       render={
-                        <Link href={nextHref}>
+                        <Link href={nextHref} transitionTypes={["nav-forward"]}>
                           <ChevronRight className="size-4" />
                         </Link>
                       }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ViewTransition } from "react";
 
 import { RepoCheckInput } from "@/components/check/check-input";
 import { Separator } from "@/components/ui/separator";
@@ -109,16 +110,30 @@ export default async function CheckPage({
   const repo = getSearchParam(query.repo);
 
   if (!owner || !repo) {
-    return <CheckLanding lang={lang} translations={t.check} />;
+    return (
+      <ViewTransition
+        enter={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+        exit={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+        default="none"
+      >
+        <CheckLanding lang={lang} translations={t.check} />
+      </ViewTransition>
+    );
   }
 
   return (
-    <CheckPageClient
-      lang={lang}
-      translations={t.check}
-      programTranslations={programTranslations}
+    <ViewTransition
+      enter={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      exit={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      default="none"
     >
-      <CheckPageFooter lang={lang} translations={t.check} />
-    </CheckPageClient>
+      <CheckPageClient
+        lang={lang}
+        translations={t.check}
+        programTranslations={programTranslations}
+      >
+        <CheckPageFooter lang={lang} translations={t.check} />
+      </CheckPageClient>
+    </ViewTransition>
   );
 }

@@ -3,7 +3,7 @@
 import { CircleX } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
-import { Suspense, useMemo } from "react";
+import { Suspense, useMemo, ViewTransition } from "react";
 
 import { RepoCheckInput } from "@/components/check/check-input";
 import { CheckResults } from "@/components/check/check-results";
@@ -156,7 +156,15 @@ const CheckPageInner = ({
 };
 
 export const CheckPageClient = ({ ...props }: CheckPageClientProps) => (
-  <Suspense fallback={<CheckPageFallback />}>
-    <CheckPageInner {...props} />
+  <Suspense
+    fallback={
+      <ViewTransition exit="slide-down">
+        <CheckPageFallback />
+      </ViewTransition>
+    }
+  >
+    <ViewTransition enter="slide-up" default="none">
+      <CheckPageInner {...props} />
+    </ViewTransition>
   </Suspense>
 );

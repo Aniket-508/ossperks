@@ -3,6 +3,7 @@ import { ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { SearchParams } from "nuqs/server";
+import { ViewTransition } from "react";
 
 import { ListingPagination } from "@/components/shared/listing-pagination";
 import { PageBreadcrumb } from "@/components/shared/page-breadcrumb";
@@ -55,7 +56,12 @@ export default async function TagsBrowsePage({
   });
 
   return (
-    <>
+    <ViewTransition
+      enter={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      exit={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      default="none"
+    >
+      <div>
       <BreadcrumbJsonLd
         items={[
           { name: t.common.breadcrumbHome, path: "/" },
@@ -93,6 +99,7 @@ export default async function TagsBrowsePage({
                   className="border-fd-border/60 hover:bg-fd-muted/40 flex items-center justify-between gap-3 rounded-lg border px-4 py-3 transition-colors"
                   href={href}
                   key={row.tag}
+                  transitionTypes={["nav-forward"]}
                 >
                   <div className="min-w-0">
                     <div className="truncate font-medium">{row.tag}</div>
@@ -125,6 +132,7 @@ export default async function TagsBrowsePage({
           pageCount={pageCount}
         />
       </div>
-    </>
+      </div>
+    </ViewTransition>
   );
 }

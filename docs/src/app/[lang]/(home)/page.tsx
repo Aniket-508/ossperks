@@ -7,6 +7,7 @@ import {
 import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ViewTransition } from "react";
 
 import { HeroActions } from "@/components/home/hero-actions";
 import { HomeCtaWithDialogs } from "@/components/home/home-cta-with-dialogs";
@@ -64,7 +65,12 @@ export default async function HomePage({
   ];
 
   return (
-    <>
+    <ViewTransition
+      enter={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      exit={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      default="none"
+    >
+      <div>
       <FAQJsonLd />
       <div className="view-container flex w-full flex-1 flex-col px-4 py-12">
         {/* Hero */}
@@ -278,6 +284,7 @@ export default async function HomePage({
           contactDialogTranslations={t.people.submit}
         />
       </div>
-    </>
+      </div>
+    </ViewTransition>
   );
 }

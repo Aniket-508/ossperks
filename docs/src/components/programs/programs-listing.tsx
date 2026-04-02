@@ -2,7 +2,7 @@
 
 import type { Category, PerkType } from "@ossperks/core";
 import { useQueryStates } from "nuqs";
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useMemo, useRef, ViewTransition } from "react";
 
 import { useSlashFocusSearch } from "@/components/hotkeys/use-slash-focus-search";
 import { ProgramCard } from "@/components/programs/program-card";
@@ -232,14 +232,15 @@ export const ProgramsListing = ({
             `/programs/${program.slug}` as `/${string}`,
           );
           return (
-            <ProgramCard
-              categoryLabel={categoryLabel}
-              key={program.slug}
-              learnMore={translations.learnMore}
-              more={translations.more}
-              program={program}
-              programHref={programHref}
-            />
+            <ViewTransition key={program.slug}>
+              <ProgramCard
+                categoryLabel={categoryLabel}
+                learnMore={translations.learnMore}
+                more={translations.more}
+                program={program}
+                programHref={programHref}
+              />
+            </ViewTransition>
           );
         })}
       </div>

@@ -3,6 +3,7 @@ import type { Program } from "@ossperks/core";
 import { ExternalLink } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { ViewTransition } from "react";
 
 import { XIcon, LinkedInIcon } from "@/components/icons";
 import { ProgramCard } from "@/components/programs/program-card";
@@ -49,7 +50,12 @@ export default async function PersonPage({
     (contact.url.includes("x.com") || contact.url.includes("twitter.com"));
 
   return (
-    <>
+    <ViewTransition
+      enter={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      exit={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      default="none"
+    >
+      <div>
       <BreadcrumbJsonLd
         items={[
           { name: t.common.breadcrumbHome, path: "/" },
@@ -169,7 +175,8 @@ export default async function PersonPage({
           </div>
         )}
       </div>
-    </>
+      </div>
+    </ViewTransition>
   );
 }
 

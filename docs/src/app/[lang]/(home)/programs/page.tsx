@@ -8,6 +8,7 @@ import { Plus } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { SearchParams } from "nuqs/server";
+import { ViewTransition } from "react";
 
 import { ProgramsListing } from "@/components/programs/programs-listing";
 import { PageBreadcrumb } from "@/components/shared/page-breadcrumb";
@@ -68,7 +69,12 @@ export default async function ProgramsPage({
   }));
 
   return (
-    <>
+    <ViewTransition
+      enter={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      exit={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      default="none"
+    >
+      <div>
       <BreadcrumbJsonLd
         items={[
           { name: t.common.breadcrumbHome, path: "/" },
@@ -130,6 +136,7 @@ export default async function ProgramsPage({
           }}
         />
       </div>
-    </>
+      </div>
+    </ViewTransition>
   );
 }

@@ -8,6 +8,7 @@ import { ArrowRightIcon, ListTodoIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ViewTransition } from "react";
 
 import { PersonCard } from "@/components/people/person-card";
 import { ProgramBottomBar } from "@/components/programs/program-bottom-bar";
@@ -96,7 +97,12 @@ export default async function ProgramPage({
   const sec = t.programs.sections;
 
   return (
-    <>
+    <ViewTransition
+      enter={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      exit={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      default="none"
+    >
+      <div>
       <BreadcrumbJsonLd
         items={[
           { name: t.common.breadcrumbHome, path: "/" },
@@ -391,7 +397,8 @@ export default async function ProgramPage({
           </section>
         ) : null}
       </div>
-    </>
+      </div>
+    </ViewTransition>
   );
 }
 

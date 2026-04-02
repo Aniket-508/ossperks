@@ -1,6 +1,7 @@
 import { getPeople, getPersonSlug, programs } from "@ossperks/core";
 import { Plus } from "lucide-react";
 import type { Metadata } from "next";
+import { ViewTransition } from "react";
 
 import { ContactSubmissionDialog } from "@/components/people/contact-submission-dialog";
 import { PersonCard } from "@/components/people/person-card";
@@ -47,7 +48,12 @@ export default async function PeoplePage({
   }));
 
   return (
-    <>
+    <ViewTransition
+      enter={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      exit={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      default="none"
+    >
+      <div>
       <BreadcrumbJsonLd
         items={[
           { name: t.common.breadcrumbHome, path: "/" },
@@ -124,6 +130,7 @@ export default async function PeoplePage({
           </div>
         )}
       </div>
-    </>
+      </div>
+    </ViewTransition>
   );
 }

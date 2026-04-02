@@ -23,7 +23,11 @@ export const ProgramCard = ({
   const extraPerks = program.perks.length - 2;
 
   return (
-    <Link href={programHref} className="group block">
+    <Link
+      href={programHref}
+      className="group block"
+      transitionTypes={["nav-forward"]}
+    >
       <Card className="hover:bg-fd-accent h-full transition-colors">
         <CardHeader>
           <Badge variant="default" className="w-fit text-xs">

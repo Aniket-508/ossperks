@@ -1,6 +1,7 @@
 import { getAllProgramSlugs } from "@ossperks/core";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { ViewTransition } from "react";
 
 import { generateLangParamsWithProgram } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
@@ -50,12 +51,18 @@ export default async function ProgramCheckPage({
   }
 
   return (
-    <ProgramCheckPageClient
-      lang={lang}
-      programName={program.name}
-      programSlug={programSlug}
-      programTranslations={programTranslations}
-      translations={t.check}
-    />
+    <ViewTransition
+      enter={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      exit={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      default="none"
+    >
+      <ProgramCheckPageClient
+        lang={lang}
+        programName={program.name}
+        programSlug={programSlug}
+        programTranslations={programTranslations}
+        translations={t.check}
+      />
+    </ViewTransition>
   );
 }

@@ -50,13 +50,18 @@ const SoftwareSourceCodeJsonLd = () => {
     author: {
       "@type": "Person",
       name: SITE.AUTHOR.NAME,
-      url: LINK.TWITTER,
+      url: LINK.PORTFOLIO,
     },
     codeRepository: LINK.GITHUB,
     description: SITE.DESCRIPTION.LONG,
     isAccessibleForFree: true,
     keywords: SITE.KEYWORDS.join(", "),
     license: LINK.LICENSE,
+    maintainer: {
+      "@type": "Person",
+      name: SITE.AUTHOR.NAME,
+      url: LINK.PORTFOLIO,
+    },
     name: SITE.NAME,
     offers: {
       "@type": "Offer",
@@ -76,9 +81,14 @@ const OrganizationJsonLd = () => {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    logo: `${SITE.URL}${SITE.OG_IMAGE}`,
+    founder: {
+      "@type": "Person",
+      name: SITE.AUTHOR.NAME,
+      url: LINK.PORTFOLIO,
+    },
+    logo: SITE.OG_IMAGE,
     name: SITE.NAME,
-    sameAs: [LINK.GITHUB, LINK.TWITTER],
+    sameAs: [LINK.GITHUB, LINK.TWITTER, LINK.PORTFOLIO],
     url: SITE.URL,
   };
 

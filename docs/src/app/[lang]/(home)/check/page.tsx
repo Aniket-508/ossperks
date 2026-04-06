@@ -112,8 +112,16 @@ export default async function CheckPage({
   if (!owner || !repo) {
     return (
       <ViewTransition
-        enter={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
-        exit={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+        enter={{
+          default: "none",
+          "nav-back": "nav-back",
+          "nav-forward": "nav-forward",
+        }}
+        exit={{
+          default: "none",
+          "nav-back": "nav-back",
+          "nav-forward": "nav-forward",
+        }}
         default="none"
       >
         <CheckLanding lang={lang} translations={t.check} />
@@ -123,8 +131,16 @@ export default async function CheckPage({
 
   return (
     <ViewTransition
-      enter={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
-      exit={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      enter={{
+        default: "none",
+        "nav-back": "nav-back",
+        "nav-forward": "nav-forward",
+      }}
+      exit={{
+        default: "none",
+        "nav-back": "nav-back",
+        "nav-forward": "nav-forward",
+      }}
       default="none"
     >
       <CheckPageClient

@@ -66,11 +66,18 @@ export default async function HomePage({
 
   return (
     <ViewTransition
-      enter={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
-      exit={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      enter={{
+        default: "none",
+        "nav-back": "nav-back",
+        "nav-forward": "nav-forward",
+      }}
+      exit={{
+        default: "none",
+        "nav-back": "nav-back",
+        "nav-forward": "nav-forward",
+      }}
       default="none"
     >
-      <div>
       <FAQJsonLd />
       <div className="view-container flex w-full flex-1 flex-col px-4 py-12">
         {/* Hero */}
@@ -283,7 +290,6 @@ export default async function HomePage({
           translations={t.home.cta}
           contactDialogTranslations={t.people.submit}
         />
-      </div>
       </div>
     </ViewTransition>
   );

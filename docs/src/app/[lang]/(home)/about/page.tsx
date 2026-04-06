@@ -39,78 +39,86 @@ export default async function AboutPage({
 
   return (
     <ViewTransition
-      enter={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
-      exit={{ "nav-forward": "nav-forward", "nav-back": "nav-back", default: "none" }}
+      enter={{
+        default: "none",
+        "nav-back": "nav-back",
+        "nav-forward": "nav-forward",
+      }}
+      exit={{
+        default: "none",
+        "nav-back": "nav-back",
+        "nav-forward": "nav-forward",
+      }}
       default="none"
     >
-    <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-4 py-12">
-      <div className="mb-10">
-        <h1 className="mb-4 text-4xl font-bold">{t.about.heading}</h1>
-        <p className="text-fd-muted-foreground text-lg leading-relaxed">
-          {t.about.intro}
-        </p>
-      </div>
-
-      <Separator className="mb-10" />
-
-      <section className="mb-10">
-        <h2 className="mb-6 text-2xl font-semibold">
-          {t.about.principles.title}
-        </h2>
-        <div className="grid gap-4 sm:grid-cols-2">
-          {t.about.principles.items.map((item) => (
-            <Card key={item.title}>
-              <CardHeader>
-                <CardTitle className="text-base">{item.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-fd-muted-foreground text-sm">
-                  {item.description}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+      <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-4 py-12">
+        <div className="mb-10">
+          <h1 className="mb-4 text-4xl font-bold">{t.about.heading}</h1>
+          <p className="text-fd-muted-foreground text-lg leading-relaxed">
+            {t.about.intro}
+          </p>
         </div>
-      </section>
 
-      <Separator className="mb-10" />
+        <Separator className="mb-10" />
 
-      <section className="mb-10">
-        <h2 className="mb-4 text-2xl font-semibold">
-          {t.about.maintainer.heading}
-        </h2>
-        <p className="text-fd-muted-foreground mb-4">
-          {t.about.maintainer.description}{" "}
-          <a
-            href={`https://github.com/${GITHUB_CONFIG.user}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-fd-primary font-medium hover:underline"
-          >
-            @{GITHUB_CONFIG.user}
-          </a>
-        </p>
-      </section>
+        <section className="mb-10">
+          <h2 className="mb-6 text-2xl font-semibold">
+            {t.about.principles.title}
+          </h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {t.about.principles.items.map((item) => (
+              <Card key={item.title}>
+                <CardHeader>
+                  <CardTitle className="text-base">{item.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-fd-muted-foreground text-sm">
+                    {item.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
 
-      <Separator className="mb-10" />
+        <Separator className="mb-10" />
 
-      <section>
-        <h2 className="mb-4 text-2xl font-semibold">{t.about.cta.heading}</h2>
-        <p className="text-fd-muted-foreground mb-4">
-          {t.about.cta.description}
-        </p>
-        <Button
-          variant="default"
-          size="lg"
-          nativeButton={false}
-          render={
-            <Link href={withLocalePrefix(lang, ROUTES.PROGRAMS)}>
-              {t.about.cta.linkText}
-            </Link>
-          }
-        />
-      </section>
-    </div>
+        <section className="mb-10">
+          <h2 className="mb-4 text-2xl font-semibold">
+            {t.about.maintainer.heading}
+          </h2>
+          <p className="text-fd-muted-foreground mb-4">
+            {t.about.maintainer.description}{" "}
+            <a
+              href={`https://github.com/${GITHUB_CONFIG.user}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-fd-primary font-medium hover:underline"
+            >
+              @{GITHUB_CONFIG.user}
+            </a>
+          </p>
+        </section>
+
+        <Separator className="mb-10" />
+
+        <section>
+          <h2 className="mb-4 text-2xl font-semibold">{t.about.cta.heading}</h2>
+          <p className="text-fd-muted-foreground mb-4">
+            {t.about.cta.description}
+          </p>
+          <Button
+            variant="default"
+            size="lg"
+            nativeButton={false}
+            render={
+              <Link href={withLocalePrefix(lang, ROUTES.PROGRAMS)}>
+                {t.about.cta.linkText}
+              </Link>
+            }
+          />
+        </section>
+      </div>
     </ViewTransition>
   );
 }

@@ -11,7 +11,11 @@
     "**/.next/**",
     "**/node_modules/**",
     "**/tsconfig.tsbuildinfo",
-    "docs/src/locales/**"
+    "docs/src/locales/**",
+    ".agents/**",
+    ".cursor/**",
+    ".changeset/**",
+    ".claude/**"
   ],
   "settings": {
     "react": {

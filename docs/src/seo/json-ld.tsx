@@ -70,7 +70,7 @@ const SoftwareSourceCodeJsonLd = () => {
       price: "0",
       priceCurrency: "USD",
     },
-    programmingLanguage: ["TypeScript", "JavaScript"],
+    programmingLanguage: ["TypeScript", "React", "JavaScript"],
     runtimePlatform: "Node.js",
     url: SITE.URL,
   };

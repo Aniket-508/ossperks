@@ -53,9 +53,10 @@ const SoftwareSourceCodeJsonLd = () => {
       url: LINK.PORTFOLIO,
     },
     codeRepository: LINK.GITHUB,
+    dateModified: new Date().toISOString().split("T")[0],
     description: SITE.DESCRIPTION.LONG,
     isAccessibleForFree: true,
-    keywords: SITE.KEYWORDS.join(", "),
+    keywords: SITE.KEYWORDS,
     license: LINK.LICENSE,
     maintainer: {
       "@type": "Person",

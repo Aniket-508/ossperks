@@ -1,6 +1,7 @@
 "use client";
 
 import type { Category, PerkType } from "@ossperks/core";
+import { SearchIcon } from "lucide-react";
 import { useQueryStates } from "nuqs";
 import { useCallback, useMemo, useRef, ViewTransition } from "react";
 
@@ -15,7 +16,7 @@ import type {
 import { ListingOrderControl } from "@/components/shared/listing-order";
 import type { ListingOrderOption } from "@/components/shared/listing-order";
 import { ListingReset } from "@/components/shared/listing-reset";
-import { ListingQueryField } from "@/components/shared/listing-search";
+import { Input, InputIcon, InputRoot } from "@/components/ui/input";
 import { withLocalePrefix } from "@/i18n/navigation";
 import {
   collectDistinctTags,
@@ -189,14 +190,15 @@ export const ProgramsListing = ({
     <>
       <div className="mb-8 flex flex-col gap-3 lg:flex-row lg:items-center">
         <div className="flex min-w-0 flex-1 items-center gap-2">
-          <ListingQueryField
-            inputRef={inputRef}
-            labels={{
-              searchPlaceholder: translations.listing.searchPlaceholder,
-            }}
-            onChange={handleQueryChange}
-            value={appliedQ}
-          />
+          <InputRoot className="min-w-0 flex-1">
+            <InputIcon render={<SearchIcon />} />
+            <Input
+              ref={inputRef}
+              placeholder={translations.listing.searchPlaceholder}
+              value={appliedQ}
+              onChange={handleQueryChange}
+            />
+          </InputRoot>
           <ListingReset
             hasActiveFilters={hasActiveFilters}
             label={translations.listing.resetFilters}

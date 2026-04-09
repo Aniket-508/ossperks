@@ -1,4 +1,6 @@
 import { Input as InputPrimitive } from "@base-ui/react/input";
+import { mergeProps } from "@base-ui/react/merge-props";
+import { useRender } from "@base-ui/react/use-render";
 import { cva } from "class-variance-authority";
 import type { VariantProps } from "class-variance-authority";
 import * as React from "react";
@@ -21,6 +23,42 @@ const inputVariants = cva(
   },
 );
 
+const InputRoot = ({
+  children,
+  className,
+  ...props
+}: React.ComponentProps<"div">) => (
+  <div className={cn("relative", className)} {...props}>
+    {children}
+  </div>
+);
+
+interface InputIconProps extends useRender.ComponentProps<"svg"> {
+  position?: "left" | "right";
+}
+
+const InputIcon = ({
+  render,
+  className,
+  position = "left",
+  ...props
+}: InputIconProps) =>
+  useRender({
+    defaultTagName: "svg",
+    props: mergeProps(
+      {
+        className: cn(
+          "text-fd-muted-foreground pointer-events-none absolute top-1/2 size-4 -translate-y-1/2 [&~input]:pl-9",
+          position === "left" ? "left-3" : "right-3",
+          className,
+        ),
+        role: "presentation",
+      },
+      props,
+    ),
+    render,
+  });
+
 type InputProps = Omit<React.ComponentProps<"input">, "size"> &
   VariantProps<typeof inputVariants> & {
     size?: React.ComponentProps<"input">["size"];
@@ -35,4 +73,4 @@ const Input = ({ className, inputSize, type, ...props }: InputProps) => (
   />
 );
 
-export { Input, inputVariants };
+export { Input, InputRoot, InputIcon, inputVariants };

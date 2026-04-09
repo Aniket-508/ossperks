@@ -40,6 +40,7 @@ import semaphore from "./programs/semaphore.json" with { type: "json" };
 import sentry from "./programs/sentry.json" with { type: "json" };
 import signpath from "./programs/signpath.json" with { type: "json" };
 import snyk from "./programs/snyk.json" with { type: "json" };
+import socketForOpenSource from "./programs/socket-for-open-source.json" with { type: "json" };
 import sonarcloud from "./programs/sonarcloud.json" with { type: "json" };
 import sourcery from "./programs/sourcery.json" with { type: "json" };
 import stainlessOpenSourceProgram from "./programs/stainless-open-source-program.json" with { type: "json" };
@@ -90,6 +91,7 @@ export const rawPrograms = [
   sentry,
   signpath,
   snyk,
+  socketForOpenSource,
   sonarcloud,
   sourcery,
   stainlessOpenSourceProgram,

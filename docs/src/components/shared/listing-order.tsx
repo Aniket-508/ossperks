@@ -1,5 +1,6 @@
 "use client";
 
+import { useQueryStates } from "nuqs";
 import { useCallback } from "react";
 
 import {
@@ -9,6 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import type {
+  ProgramsSortParser,
+  TagsBrowseSortParser,
+} from "@/lib/search-params";
 import { cn } from "@/lib/utils";
 
 export interface ListingOrderOption {
@@ -16,36 +21,46 @@ export interface ListingOrderOption {
   value: string;
 }
 
-export const ListingOrderControl = ({
-  className,
-  labelHeading,
-  onSortValueChange,
-  options,
-  sortValue,
-}: {
+export type ListingOrderParsers =
+  | { sort: ProgramsSortParser }
+  | { sort: TagsBrowseSortParser };
+
+export interface ListingOrderProps {
   className?: string;
-  labelHeading: string;
-  onSortValueChange: (value: string | null) => void | Promise<void>;
+  labels: { placeholder: string };
   options: ListingOrderOption[];
-  sortValue: string | null | undefined;
-}) => {
+  parsers: ListingOrderParsers;
+}
+
+export const ListingOrder = ({
+  className,
+  labels,
+  options,
+  parsers,
+}: ListingOrderProps) => {
+  const [{ sort }, setParams] = useQueryStates(parsers, {
+    shallow: false,
+  });
+
   const handleValueChange = useCallback(
-    async (next: string | null) => {
-      await onSortValueChange(next);
+    async (sortValue: string | null) => {
+      await setParams({
+        sort: sortValue,
+      } as Parameters<typeof setParams>[0]);
     },
-    [onSortValueChange],
+    [setParams],
   );
 
   return (
-    <Select onValueChange={handleValueChange} value={sortValue ?? null}>
+    <Select onValueChange={handleValueChange} value={sort}>
       <SelectTrigger
-        aria-label={labelHeading}
-        className={cn("w-[200px]", className)}
+        aria-label={labels.placeholder}
+        className={cn("w-auto min-w-36 max-sm:flex-1", className)}
         size="default"
       >
-        <SelectValue placeholder={labelHeading} />
+        <SelectValue placeholder={labels.placeholder} />
       </SelectTrigger>
-      <SelectContent align="start" side="bottom">
+      <SelectContent align="start" side="bottom" className="min-w-36">
         {options.map((o) => (
           <SelectItem key={o.value} value={o.value}>
             {o.label}

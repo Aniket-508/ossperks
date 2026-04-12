@@ -5,21 +5,21 @@ import { useQueryStates } from "nuqs";
 import { useCallback, useMemo, useRef } from "react";
 
 import { useSlashFocusSearch } from "@/components/hotkeys/use-slash-focus-search";
-import { ListingOrderControl } from "@/components/shared/listing-order";
+import { LetterFilter } from "@/components/shared/letter-filter";
+import { ListingOrder } from "@/components/shared/listing-order";
 import type { ListingOrderOption } from "@/components/shared/listing-order";
-import { Button } from "@/components/ui/button";
 import {
   InputIcon,
   InputRoot,
   Input,
   InputButton,
 } from "@/components/ui/input";
-import { tagsBrowseSearchParams } from "@/lib/search-params";
-import { cn } from "@/lib/utils";
+import {
+  tagsBrowseLetterParams,
+  tagsBrowseSearchParams,
+} from "@/lib/search-params";
 
-const LETTERS = [..."abcdefghijklmnopqrstuvwxyz"];
-
-interface BrowseCopy {
+interface TagsBrowseLabels {
   letterAll: string;
   letterOther: string;
   orderBy: string;
@@ -31,37 +31,8 @@ interface BrowseCopy {
   sortNameDesc: string;
 }
 
-const LetterCharButton = ({
-  isActive,
-  letter,
-  onPick,
-}: {
-  isActive: boolean;
-  letter: string;
-  onPick: (l: string) => void | Promise<void>;
-}) => {
-  const handleClick = useCallback(async () => {
-    await onPick(letter);
-  }, [letter, onPick]);
-
-  return (
-    <Button
-      className={cn(
-        "size-8 px-0 font-mono text-xs",
-        isActive && "border-primary",
-      )}
-      onClick={handleClick}
-      size="sm"
-      type="button"
-      variant={isActive ? "default" : "outline"}
-    >
-      {letter.toUpperCase()}
-    </Button>
-  );
-};
-
 interface TagsBrowseToolbarProps {
-  labels: BrowseCopy;
+  labels: TagsBrowseLabels;
 }
 
 export const TagsBrowseToolbar = ({ labels }: TagsBrowseToolbarProps) => {
@@ -70,7 +41,9 @@ export const TagsBrowseToolbar = ({ labels }: TagsBrowseToolbarProps) => {
 
   const [{ letter, q, sort }, setParams] = useQueryStates(
     tagsBrowseSearchParams,
-    { shallow: false },
+    {
+      shallow: false,
+    },
   );
 
   const hasActiveFilters = Boolean(
@@ -78,12 +51,7 @@ export const TagsBrowseToolbar = ({ labels }: TagsBrowseToolbarProps) => {
   );
 
   const resetFilters = useCallback(async () => {
-    await setParams({
-      letter: "",
-      page: 1,
-      q: null,
-      sort: null,
-    });
+    await setParams(null);
   }, [setParams]);
 
   const handleQueryChange = useCallback(
@@ -96,45 +64,6 @@ export const TagsBrowseToolbar = ({ labels }: TagsBrowseToolbarProps) => {
     },
     [setParams],
   );
-
-  const handleSortChange = useCallback(
-    async (sortValue: string | null) => {
-      await setParams({
-        page: 1,
-        sort: sortValue,
-      } as Parameters<typeof setParams>[0]);
-    },
-    [setParams],
-  );
-
-  const setLetter = useCallback(
-    async (next: string) => {
-      await setParams({
-        letter: next,
-        page: 1,
-      });
-    },
-    [setParams],
-  );
-
-  const handleLetterAll = useCallback(async () => {
-    await setLetter("");
-  }, [setLetter]);
-
-  const handleLetterChar = useCallback(
-    async (l: string) => {
-      const activeLetter = letter ?? "";
-      await setLetter(activeLetter === l ? "" : l);
-    },
-    [letter, setLetter],
-  );
-
-  const handleLetterOther = useCallback(async () => {
-    const activeLetter = letter ?? "";
-    await setLetter(activeLetter === "other" ? "" : "other");
-  }, [letter, setLetter]);
-
-  const activeLetter = letter ?? "";
 
   const orderOptions = useMemo<ListingOrderOption[]>(
     () => [
@@ -164,54 +93,23 @@ export const TagsBrowseToolbar = ({ labels }: TagsBrowseToolbarProps) => {
               onChange={handleQueryChange}
             />
             {hasActiveFilters && (
-              <InputButton onClick={resetFilters}>
-                <XIcon /> Reset
+              <InputButton onClick={resetFilters} type="button">
+                <XIcon /> {labels.resetFilters}
               </InputButton>
             )}
           </InputRoot>
         </div>
-        <ListingOrderControl
-          labelHeading={labels.orderBy}
-          onSortValueChange={handleSortChange}
+        <ListingOrder
+          labels={{ placeholder: labels.orderBy }}
           options={orderOptions}
-          sortValue={sort}
+          parsers={{ sort: tagsBrowseSearchParams.sort }}
         />
       </div>
 
-      <div className="flex flex-wrap gap-1">
-        <Button
-          className={cn(
-            "size-8 px-0 font-mono text-xs",
-            activeLetter === "" && "border-primary",
-          )}
-          onClick={handleLetterAll}
-          size="sm"
-          type="button"
-          variant={activeLetter === "" ? "default" : "outline"}
-        >
-          {labels.letterAll}
-        </Button>
-        {LETTERS.map((l) => (
-          <LetterCharButton
-            isActive={activeLetter === l}
-            key={l}
-            letter={l}
-            onPick={handleLetterChar}
-          />
-        ))}
-        <Button
-          className={cn(
-            "size-8 px-0 font-mono text-xs",
-            activeLetter === "other" && "border-primary",
-          )}
-          onClick={handleLetterOther}
-          size="sm"
-          type="button"
-          variant={activeLetter === "other" ? "default" : "outline"}
-        >
-          {labels.letterOther}
-        </Button>
-      </div>
+      <LetterFilter
+        labels={{ all: labels.letterAll, other: labels.letterOther }}
+        parsers={tagsBrowseLetterParams}
+      />
     </div>
   );
 };

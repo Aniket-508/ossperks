@@ -48,7 +48,11 @@ export default async function TagsBrowsePage({
   const query = await tagsBrowseParamsCache.parse(searchParams);
   const t = await getT(lang);
   const allRows = getTagsWithProgramCounts();
-  const { page, pageCount, rows } = filterSortPaginateTags(allRows, {
+  const {
+    page: _page,
+    pageCount,
+    rows,
+  } = filterSortPaginateTags(allRows, {
     letter: query.letter,
     page: query.page,
     q: query.q,
@@ -132,10 +136,9 @@ export default async function TagsBrowsePage({
 
         <ListingPagination
           labels={{
-            paginationNext: t.tags.browse.paginationNext,
-            paginationPrevious: t.tags.browse.paginationPrevious,
+            next: t.tags.browse.paginationNext,
+            previous: t.tags.browse.paginationPrevious,
           }}
-          page={page}
           pageCount={pageCount}
         />
       </div>

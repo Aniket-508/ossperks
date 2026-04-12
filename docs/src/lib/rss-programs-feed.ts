@@ -46,7 +46,7 @@ export const buildProgramsRssResponse = async (lang: Locale) => {
     },
     copyright: `© ${updated.getFullYear()} ${SITE.AUTHOR.NAME}`,
     description: SITE.DESCRIPTION.LONG,
-    favicon: `${SITE.URL}/favicon.ico`,
+    favicon: `${SITE.URL}/icon.svg`,
     feedLinks: {
       rss: feedUrl,
     },

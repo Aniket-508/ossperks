@@ -5,7 +5,7 @@ import { useQueryStates } from "nuqs";
 import { useCallback, useMemo, useRef } from "react";
 
 import { useSlashFocusSearch } from "@/components/hotkeys/use-slash-focus-search";
-import { ListingOrderControl } from "@/components/shared/listing-order";
+import { ListingOrder } from "@/components/shared/listing-order";
 import type { ListingOrderOption } from "@/components/shared/listing-order";
 import {
   Input,
@@ -34,22 +34,13 @@ export const ProgramListToolbar = ({ labels }: { labels: ToolbarCopy }) => {
   const hasActiveFilters = Boolean((q ?? "").trim() || sort);
 
   const resetFilters = useCallback(async () => {
-    await setParams({ q: null, sort: null });
+    await setParams(null);
   }, [setParams]);
 
   const handleQueryChange = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value: next } = e.target;
       await setParams({ q: next === "" ? null : next });
-    },
-    [setParams],
-  );
-
-  const handleSortChange = useCallback(
-    async (sortValue: string | null) => {
-      await setParams({
-        sort: sortValue,
-      } as Parameters<typeof setParams>[0]);
     },
     [setParams],
   );
@@ -74,17 +65,16 @@ export const ProgramListToolbar = ({ labels }: { labels: ToolbarCopy }) => {
             onChange={handleQueryChange}
           />
           {hasActiveFilters && (
-            <InputButton onClick={resetFilters}>
+            <InputButton onClick={resetFilters} type="button">
               <XIcon /> Reset
             </InputButton>
           )}
         </InputRoot>
       </div>
-      <ListingOrderControl
-        labelHeading={labels.orderBy}
-        onSortValueChange={handleSortChange}
+      <ListingOrder
+        labels={{ placeholder: labels.orderBy }}
         options={orderOptions}
-        sortValue={sort}
+        parsers={{ sort: programListSearchParams.sort }}
       />
     </div>
   );

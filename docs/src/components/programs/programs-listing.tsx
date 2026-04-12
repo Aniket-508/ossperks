@@ -9,11 +9,7 @@ import { useSlashFocusSearch } from "@/components/hotkeys/use-slash-focus-search
 import { ProgramCard } from "@/components/programs/program-card";
 import type { ProgramsListingCopy } from "@/components/programs/programs-listing-types";
 import { ListingFilters } from "@/components/shared/listing-filters";
-import type {
-  ListingFiltersData,
-  ListingFiltersSelection,
-} from "@/components/shared/listing-filters";
-import { ListingOrderControl } from "@/components/shared/listing-order";
+import { ListingOrder } from "@/components/shared/listing-order";
 import type { ListingOrderOption } from "@/components/shared/listing-order";
 import {
   Input,
@@ -27,7 +23,7 @@ import {
   filterProgramsIndex,
 } from "@/lib/programs-index-filter";
 import type { ProgramWithPerkTypes } from "@/lib/programs-index-filter";
-import { programsSearchParams } from "@/lib/search-params";
+import { programsFacetParams, programsSearchParams } from "@/lib/search-params";
 
 export type { ProgramsListingCopy } from "@/components/programs/programs-listing-types";
 
@@ -74,39 +70,13 @@ export const ProgramsListing = ({
   );
 
   const resetAll = useCallback(async () => {
-    await setParams({
-      categories: [],
-      q: null,
-      sort: null,
-      tags: [],
-      types: [],
-    });
+    await setParams(null);
   }, [setParams]);
 
   const handleQueryChange = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value: next } = e.target;
       await setParams({ q: next === "" ? null : next });
-    },
-    [setParams],
-  );
-
-  const handleSortChange = useCallback(
-    async (sortValue: string | null) => {
-      await setParams({
-        sort: sortValue,
-      } as Parameters<typeof setParams>[0]);
-    },
-    [setParams],
-  );
-
-  const handleApplyListingFilters = useCallback(
-    async (next: ListingFiltersSelection) => {
-      await setParams({
-        categories: (next.categories ?? []) as Category[],
-        tags: next.tags ?? [],
-        types: (next.types ?? []) as PerkType[],
-      } as Parameters<typeof setParams>[0]);
     },
     [setParams],
   );
@@ -129,65 +99,59 @@ export const ProgramsListing = ({
     [translations.listing.sortNameAsc, translations.listing.sortNameDesc],
   );
 
-  const listingFiltersData = useMemo<ListingFiltersData>(
-    () => ({
-      applied: {
-        categories: [...urlCategories],
-        tags: [...urlTags],
-        types: [...urlTypes],
+  const filterSections = useMemo(
+    () => [
+      {
+        emptySelectionLabel: translations.filters.allCategories,
+        id: "categories",
+        itemKey: (item: unknown) => String(item) as string,
+        itemLabel: (item: unknown) =>
+          categoryLabels[String(item)] ?? String(item),
+        items: categories,
+        searchPlaceholder: translations.filters.searchCategories,
+        title: translations.filters.sectionCategories,
       },
-      labels: {
-        apply: translations.filters.apply,
-        clearAll: translations.filters.clearAll,
-        emptySection: translations.filters.emptySection,
-        filterButton: translations.filters.filterButton,
-        removeChip: translations.filters.removeChip,
-        reset: translations.filters.reset,
-        select: translations.filters.select,
+      {
+        emptySelectionLabel: translations.filters.allTypes,
+        id: "types",
+        itemKey: (item: unknown) => String(item) as string,
+        itemLabel: (item: unknown) =>
+          perkTypeLabels[String(item)] ?? String(item),
+        items: perkTypes,
+        searchPlaceholder: translations.filters.searchTypes,
+        title: translations.filters.sectionTypes,
       },
-      onApply: handleApplyListingFilters,
-      sections: [
-        {
-          emptySelectionLabel: translations.filters.allCategories,
-          id: "categories",
-          itemKey: String,
-          itemLabel: (item) => categoryLabels[String(item)] ?? String(item),
-          items: categories,
-          searchPlaceholder: translations.filters.searchCategories,
-          title: translations.filters.sectionCategories,
-        },
-        {
-          emptySelectionLabel: translations.filters.allTypes,
-          id: "types",
-          itemKey: String,
-          itemLabel: (item) => perkTypeLabels[String(item)] ?? String(item),
-          items: perkTypes,
-          searchPlaceholder: translations.filters.searchTypes,
-          title: translations.filters.sectionTypes,
-        },
-        {
-          emptySelectionLabel: translations.filters.allTags,
-          id: "tags",
-          itemKey: String,
-          itemLabel: String,
-          items: distinctTags,
-          searchPlaceholder: translations.filters.searchTags,
-          title: translations.filters.sectionTags,
-        },
-      ],
-    }),
+      {
+        emptySelectionLabel: translations.filters.allTags,
+        id: "tags",
+        itemKey: String,
+        itemLabel: String,
+        items: distinctTags,
+        searchPlaceholder: translations.filters.searchTags,
+        title: translations.filters.sectionTags,
+      },
+    ],
     [
       categories,
       categoryLabels,
       distinctTags,
-      handleApplyListingFilters,
       perkTypeLabels,
       perkTypes,
       translations.filters,
-      urlCategories,
-      urlTags,
-      urlTypes,
     ],
+  );
+
+  const filterLabels = useMemo(
+    () => ({
+      apply: translations.filters.apply,
+      clearAll: translations.filters.clearAll,
+      emptySection: translations.filters.emptySection,
+      filterButton: translations.filters.filterButton,
+      removeChip: translations.filters.removeChip,
+      reset: translations.filters.reset,
+      select: translations.filters.select,
+    }),
+    [translations.filters],
   );
 
   return (
@@ -203,20 +167,23 @@ export const ProgramsListing = ({
               onChange={handleQueryChange}
             />
             {hasActiveFilters && (
-              <InputButton onClick={resetAll}>
+              <InputButton onClick={resetAll} type="button">
                 <XIcon /> Reset
               </InputButton>
             )}
           </InputRoot>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <ListingOrderControl
-            labelHeading={translations.listing.orderBy}
-            onSortValueChange={handleSortChange}
+          <ListingOrder
+            labels={{ placeholder: translations.listing.orderBy }}
             options={orderOptions}
-            sortValue={sort}
+            parsers={{ sort: programsSearchParams.sort }}
           />
-          <ListingFilters data={listingFiltersData} />
+          <ListingFilters
+            labels={filterLabels}
+            parsers={programsFacetParams}
+            sections={filterSections}
+          />
         </div>
       </div>
 

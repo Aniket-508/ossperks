@@ -1,6 +1,8 @@
 "use client";
 
+import type { Category, PerkType } from "@ossperks/core";
 import { ChevronRight, ListFilter, Search, XIcon } from "lucide-react";
+import { useQueryStates } from "nuqs";
 import { memo, useCallback, useMemo, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
@@ -19,9 +21,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import type { ProgramsFacetParsers } from "@/lib/search-params";
 import { cn } from "@/lib/utils";
 
-/** One facet dimension: arbitrary `id`, items, and how to show/compare them. */
 export interface ListingFilterSectionConfig {
   emptySelectionLabel: string;
   id: string;
@@ -32,7 +34,6 @@ export interface ListingFilterSectionConfig {
   title: string;
 }
 
-/** Global chrome strings only; per-dimension copy lives on each section config. */
 export interface ListingFiltersLabels {
   apply: string;
   clearAll: string;
@@ -43,26 +44,22 @@ export interface ListingFiltersLabels {
   select: string;
 }
 
-/** Selected keys per section `id` (from `itemKey`). */
-export type ListingFiltersSelection = Record<string, string[]>;
-
-export interface ListingFiltersData {
-  applied: ListingFiltersSelection;
+export interface ListingFiltersProps {
   labels: ListingFiltersLabels;
-  onApply: (next: ListingFiltersSelection) => void | Promise<void>;
+  parsers: ProgramsFacetParsers;
   sections: ListingFilterSectionConfig[];
 }
 
-const emptySelection = (
-  sections: ListingFilterSectionConfig[],
-): ListingFiltersSelection =>
+type Selection = Record<string, string[]>;
+
+const emptySelection = (sections: ListingFilterSectionConfig[]): Selection =>
   Object.fromEntries(sections.map((s) => [s.id, [] as string[]]));
 
 const selectionFromApplied = (
   sections: ListingFilterSectionConfig[],
-  applied: ListingFiltersSelection,
-): ListingFiltersSelection => {
-  const out: ListingFiltersSelection = {};
+  applied: Selection,
+): Selection => {
+  const out: Selection = {};
   for (const s of sections) {
     out[s.id] = [...(applied[s.id] ?? [])];
   }
@@ -213,12 +210,39 @@ const MobileFilterSectionCard = memo(function MobileFilterSectionCard({
   );
 });
 
-export const ListingFilters = ({ data }: { data: ListingFiltersData }) => {
-  const { applied, labels: filters, onApply: onApplyFacets, sections } = data;
+export const ListingFilters = ({
+  labels: filters,
+  parsers,
+  sections,
+}: ListingFiltersProps) => {
+  const [facetState, setParams] = useQueryStates(parsers, {
+    shallow: false,
+  });
 
-  const [draft, setDraft] = useState<ListingFiltersSelection>(() =>
-    emptySelection(sections),
+  const applied = useMemo((): Selection => {
+    const out = emptySelection(sections);
+    for (const s of sections) {
+      const key = s.id as keyof typeof facetState;
+      const raw = facetState[key];
+      if (Array.isArray(raw)) {
+        out[s.id] = raw.map(String);
+      }
+    }
+    return out;
+  }, [facetState, sections]);
+
+  const onApplyFacets = useCallback(
+    async (next: Selection) => {
+      await setParams({
+        categories: (next.categories ?? []) as Category[],
+        tags: next.tags ?? [],
+        types: (next.types ?? []) as PerkType[],
+      });
+    },
+    [setParams],
   );
+
+  const [draft, setDraft] = useState<Selection>(() => emptySelection(sections));
   const [desktopOpen, setDesktopOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState(

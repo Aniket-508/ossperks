@@ -13,7 +13,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { getPaginationWindow } from "@/lib/pagination-window";
-import { tagsBrowseSearchParams } from "@/lib/search-params";
+import { tagsBrowsePaginationParams } from "@/lib/search-params";
 
 const PageJump = ({
   displayPage,
@@ -46,26 +46,29 @@ const PageJump = ({
   );
 };
 
+export interface ListingPaginationLabels {
+  next: string;
+  previous: string;
+}
+
+export type ListingPaginationParsers = typeof tagsBrowsePaginationParams;
+
+export interface ListingPaginationProps {
+  labels: ListingPaginationLabels;
+  pageCount: number;
+  parsers?: ListingPaginationParsers;
+}
+
 export const ListingPagination = ({
   labels,
-  page,
   pageCount,
-}: {
-  labels: {
-    paginationNext: string;
-    paginationPrevious: string;
-  };
-  page: number;
-  pageCount: number;
-}) => {
-  const [{ page: urlPage }, setParams] = useQueryStates(
-    tagsBrowseSearchParams,
-    {
-      shallow: false,
-    },
-  );
+  parsers = tagsBrowsePaginationParams,
+}: ListingPaginationProps) => {
+  const [{ page: urlPage }, setParams] = useQueryStates(parsers, {
+    shallow: false,
+  });
 
-  const displayPage = urlPage ?? page;
+  const displayPage = urlPage ?? 1;
 
   const goPage = useCallback(
     async (next: number) => {
@@ -110,7 +113,7 @@ export const ListingPagination = ({
             }
             href="#"
             onClick={displayPage <= 1 ? undefined : handlePagePrev}
-            text={labels.paginationPrevious}
+            text={labels.previous}
           />
         </div>
         <PaginationContent className="mx-auto flex max-w-full flex-wrap justify-center gap-1">
@@ -139,7 +142,7 @@ export const ListingPagination = ({
             }
             href="#"
             onClick={displayPage >= pageCount ? undefined : handlePageNext}
-            text={labels.paginationNext}
+            text={labels.next}
           />
         </div>
       </div>

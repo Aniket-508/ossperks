@@ -123,7 +123,7 @@ export const Footer = ({
             </div>
           </div>
 
-          <div className="md:col-span-3">
+          <div className="md:col-span-3 md:col-start-8">
             <h3 className={columnHeadingClass}>{translation.browse}</h3>
             <ul>
               {browseLinks.map(({ href, label }) => (

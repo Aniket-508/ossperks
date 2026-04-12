@@ -1,9 +1,5 @@
 import { encodeUrlForPath } from "./url";
 
-/**
- * Map URL hostnames to unavatar.io provider names.
- * @see https://unavatar.io/
- */
 const HOST_TO_PROVIDER: Record<string, string> = {
   "bsky.app": "bluesky",
   "deviantart.com": "deviantart",

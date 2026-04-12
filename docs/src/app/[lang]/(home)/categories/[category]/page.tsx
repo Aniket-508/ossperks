@@ -17,7 +17,7 @@ import { i18n } from "@/i18n/config";
 import { formatProgramsCategoryIntro } from "@/i18n/format-programs-category-intro";
 import { getT } from "@/i18n/get-t";
 import { withLocalePrefix } from "@/i18n/navigation";
-import { filterSortPrograms } from "@/lib/program-list-server";
+import { filterSortPrograms } from "@/lib/programs-filter";
 import { getProgram } from "@/lib/programs";
 import { programListParamsCache } from "@/lib/search-params";
 import { BreadcrumbJsonLd, CategoryProgramListJsonLd } from "@/seo/json-ld";

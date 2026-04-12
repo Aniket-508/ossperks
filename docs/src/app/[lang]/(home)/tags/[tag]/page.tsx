@@ -11,7 +11,7 @@ import { ROUTES } from "@/constants/routes";
 import { i18n } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
 import { withLocalePrefix } from "@/i18n/navigation";
-import { filterSortPrograms } from "@/lib/program-list-server";
+import { filterSortPrograms } from "@/lib/programs-filter";
 import { getProgram } from "@/lib/programs";
 import { programListParamsCache } from "@/lib/search-params";
 import { decodeUrlFromPath, encodeUrlForPath } from "@/lib/url";

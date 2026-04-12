@@ -21,8 +21,8 @@ import { withLocalePrefix } from "@/i18n/navigation";
 import {
   collectDistinctTags,
   filterProgramsIndex,
-} from "@/lib/programs-index-filter";
-import type { ProgramWithPerkTypes } from "@/lib/programs-index-filter";
+} from "@/lib/programs-filter";
+import type { ProgramWithPerkTypes } from "@/lib/programs-filter";
 import { programsFacetParams, programsSearchParams } from "@/lib/search-params";
 
 export type { ProgramsListingCopy } from "@/components/programs/programs-listing-types";

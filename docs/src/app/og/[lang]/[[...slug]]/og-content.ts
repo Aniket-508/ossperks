@@ -108,7 +108,7 @@ const ogPerson = (personSlug: string): OgText => {
   if (!person) {
     return { description: "", title: "" };
   }
-  const primaryProvider = person.programs[0]?.provider ?? "";
+  const primaryProvider = person.programs[0]?.provider;
   const roleDesc = person.contact.role
     ? `${person.contact.role} at ${primaryProvider}`
     : primaryProvider;
@@ -144,7 +144,7 @@ const ogCli = (lang: string, slugs: string[]): OgText => {
   }
   return {
     description: page.data.description ?? "",
-    title: page.data.title ?? "",
+    title: page.data.title,
   };
 };
 

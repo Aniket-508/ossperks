@@ -30,7 +30,7 @@ const buildAlternates = (lang: string, path: `/${string}`) => {
 };
 
 interface CreateMetadataOptions {
-  description: string;
+  description?: string;
   lang: string;
   noIndex?: boolean;
   ogDescription?: string;

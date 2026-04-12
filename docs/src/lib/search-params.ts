@@ -22,13 +22,14 @@ export const programsSearchParams = {
   categories: parseAsArrayOf(parseAsStringLiteral(categoryTuple)).withDefault(
     [],
   ),
-  q: parseAsString,
+  q: parseAsString.withDefault(""),
   sort: parseAsStringLiteral(programsNameSortLiterals),
   tags: parseAsArrayOf(parseAsString, TAG_ARRAY_SEPARATOR).withDefault([]),
   types: parseAsArrayOf(parseAsStringLiteral(perkTypeTuple)).withDefault([]),
 };
 
 export type ProgramsSortParser = (typeof programsSearchParams)["sort"];
+export type ListingQParser = (typeof programsSearchParams)["q"];
 
 export const programsParamsCache =
   createSearchParamsCache(programsSearchParams);

@@ -11,7 +11,6 @@ import {
   useState,
 } from "react";
 
-import { isEditableTarget } from "@/components/hotkeys/editable-target";
 import {
   FacebookIcon,
   LinkedInIcon,
@@ -68,9 +67,6 @@ const buildShareUrls = (url: string, text: string) => {
   };
 };
 
-const hotkeyOk = (e: KeyboardEvent) =>
-  !e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey;
-
 export const ProgramBottomBar = ({
   className,
   labels,
@@ -94,17 +90,11 @@ export const ProgramBottomBar = ({
   }, [shareUrl]);
 
   useHotkey("C", async (e) => {
-    if (!hotkeyOk(e) || isEditableTarget(document.activeElement)) {
-      return;
-    }
     e.preventDefault();
     await handleCopy();
   });
 
   useHotkey("ArrowLeft", (e) => {
-    if (!hotkeyOk(e) || isEditableTarget(document.activeElement)) {
-      return;
-    }
     if (!prevHref) {
       return;
     }
@@ -116,9 +106,6 @@ export const ProgramBottomBar = ({
   });
 
   useHotkey("ArrowRight", (e) => {
-    if (!hotkeyOk(e) || isEditableTarget(document.activeElement)) {
-      return;
-    }
     if (!nextHref) {
       return;
     }

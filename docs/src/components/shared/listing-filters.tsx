@@ -245,9 +245,7 @@ export const ListingFilters = ({
   const [draft, setDraft] = useState<Selection>(() => emptySelection(sections));
   const [desktopOpen, setDesktopOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState(
-    () => sections[0]?.id ?? "",
-  );
+  const [activeSection, setActiveSection] = useState(() => sections[0]?.id);
   const [sectionSearch, setSectionSearch] = useState("");
 
   const [nestedSection, setNestedSection] = useState<string | null>(null);
@@ -271,7 +269,7 @@ export const ListingFilters = ({
       if (open) {
         syncDraftFromUrl();
         setSectionSearch("");
-        setActiveSection(sections[0]?.id ?? "");
+        setActiveSection(sections[0]?.id);
       }
       setDesktopOpen(open);
     },
@@ -442,7 +440,7 @@ export const ListingFilters = ({
 
   const filterTriggerLabel = `${filters.filterButton}${appliedFilterCount > 0 ? ` (${appliedFilterCount})` : ""}`;
 
-  const desktopSectionPlaceholder = activeConfig?.searchPlaceholder ?? "";
+  const desktopSectionPlaceholder = activeConfig?.searchPlaceholder;
 
   const desktopPanel = (
     <div className="flex max-h-[min(80vh,520px)] w-[min(100vw-2rem,560px)] min-w-0 flex-col">
@@ -513,10 +511,10 @@ export const ListingFilters = ({
     </div>
   );
 
-  const nestedDrawerTitle = nestedConfig?.title ?? "";
+  const nestedDrawerTitle = nestedConfig?.title;
 
   const nestedSearchPlaceholder =
-    nestedConfig?.searchPlaceholder ?? sections[0]?.searchPlaceholder ?? "";
+    nestedConfig?.searchPlaceholder ?? sections[0]?.searchPlaceholder;
 
   if (sections.length === 0) {
     return null;

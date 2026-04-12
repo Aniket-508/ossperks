@@ -1,22 +1,15 @@
 "use client";
 
 import type { Category, PerkType } from "@ossperks/core";
-import { SearchIcon, XIcon } from "lucide-react";
 import { useQueryStates } from "nuqs";
-import { useCallback, useMemo, useRef, ViewTransition } from "react";
+import { useCallback, useMemo, ViewTransition } from "react";
 
-import { useSlashFocusSearch } from "@/components/hotkeys/use-slash-focus-search";
 import { ProgramCard } from "@/components/programs/program-card";
 import type { ProgramsListingCopy } from "@/components/programs/programs-listing-types";
 import { ListingFilters } from "@/components/shared/listing-filters";
 import { ListingOrder } from "@/components/shared/listing-order";
 import type { ListingOrderOption } from "@/components/shared/listing-order";
-import {
-  Input,
-  InputButton,
-  InputIcon,
-  InputRoot,
-} from "@/components/ui/input";
+import { ListingSearch } from "@/components/shared/listing-search";
 import { withLocalePrefix } from "@/i18n/navigation";
 import {
   collectDistinctTags,
@@ -46,46 +39,32 @@ export const ProgramsListing = ({
   categoryLabels,
   perkTypeLabels,
 }: ProgramsListingProps) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-  useSlashFocusSearch(inputRef);
-
   const [
     { q, sort, categories: urlCategories, types: urlTypes, tags: urlTags },
     setParams,
   ] = useQueryStates(programsSearchParams, { shallow: false });
 
-  const appliedQ = q ?? "";
-  const appliedSort = sort ?? null;
-
   const filtered = useMemo(
     () =>
       filterProgramsIndex(programs, {
         categories: urlCategories,
-        q: appliedQ,
-        sort: appliedSort,
+        q,
+        sort,
         tags: urlTags,
         types: urlTypes,
       }),
-    [programs, appliedQ, appliedSort, urlCategories, urlTypes, urlTags],
+    [programs, q, sort, urlCategories, urlTypes, urlTags],
   );
 
   const resetAll = useCallback(async () => {
     await setParams(null);
   }, [setParams]);
 
-  const handleQueryChange = useCallback(
-    async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { value: next } = e.target;
-      await setParams({ q: next === "" ? null : next });
-    },
-    [setParams],
-  );
-
   const distinctTags = useMemo(() => collectDistinctTags(programs), [programs]);
 
   const hasActiveFilters = Boolean(
-    appliedQ.trim() ||
-    appliedSort ||
+    q.trim() ||
+    sort ||
     urlCategories.length > 0 ||
     urlTypes.length > 0 ||
     urlTags.length > 0,
@@ -158,20 +137,15 @@ export const ProgramsListing = ({
     <>
       <div className="mb-8 flex flex-col gap-3 lg:flex-row lg:items-center">
         <div className="flex min-w-0 flex-1 items-center gap-2">
-          <InputRoot className="min-w-0 flex-1">
-            <InputIcon render={<SearchIcon />} />
-            <Input
-              ref={inputRef}
-              placeholder={translations.listing.searchPlaceholder}
-              value={appliedQ}
-              onChange={handleQueryChange}
-            />
-            {hasActiveFilters && (
-              <InputButton onClick={resetAll} type="button">
-                <XIcon /> Reset
-              </InputButton>
-            )}
-          </InputRoot>
+          <ListingSearch
+            labels={{
+              resetLabel: translations.filters.reset,
+              searchPlaceholder: translations.listing.searchPlaceholder,
+            }}
+            onReset={resetAll}
+            parsers={{ q: programsSearchParams.q }}
+            showReset={hasActiveFilters}
+          />
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <ListingOrder

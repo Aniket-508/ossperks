@@ -63,7 +63,7 @@ const resolveContext = (slug: string[] | undefined): OgContext | null => {
     return { slugs: slug.slice(1), type: "cli" };
   }
   if (slug.length === 1) {
-    return SINGLE_SEGMENT[slug[0] ?? ""] ?? null;
+    return SINGLE_SEGMENT[slug[0]] ?? null;
   }
   if (slug.length === 2) {
     return resolveTwoSegment([slug[0], slug[1]]);

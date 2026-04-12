@@ -48,8 +48,8 @@ const people: PersonWithProgram[] = Array.from(
   peopleBySlug.values(),
   (person) => ({
     contact: person.contact,
-    programSlug: person.programs[0]?.slug ?? "",
-    provider: person.programs[0]?.provider ?? "",
+    programSlug: person.programs[0]?.slug,
+    provider: person.programs[0]?.provider,
   }),
 );
 

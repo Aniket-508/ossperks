@@ -38,7 +38,7 @@ export default async function PersonPage({
   );
 
   const { contact } = person;
-  const primaryProvider = person.programs[0]?.provider ?? "";
+  const primaryProvider = person.programs[0]?.provider;
   const roleText = contact.role
     ? t.people.roleAt
         .replace("{role}", contact.role)
@@ -203,7 +203,7 @@ export const generateMetadata = async ({
   }
 
   const personPath = `${ROUTES.PEOPLE}/${personSlug}` as `/${string}`;
-  const primaryProvider = person.programs[0]?.provider ?? "";
+  const primaryProvider = person.programs[0]?.provider;
   const roleDesc = person.contact.role
     ? `${person.contact.role} at ${primaryProvider}`
     : primaryProvider;

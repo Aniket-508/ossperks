@@ -1,18 +1,11 @@
 "use client";
 
-import { SearchIcon, XIcon } from "lucide-react";
 import { useQueryStates } from "nuqs";
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useMemo } from "react";
 
-import { useSlashFocusSearch } from "@/components/hotkeys/use-slash-focus-search";
 import { ListingOrder } from "@/components/shared/listing-order";
 import type { ListingOrderOption } from "@/components/shared/listing-order";
-import {
-  Input,
-  InputButton,
-  InputIcon,
-  InputRoot,
-} from "@/components/ui/input";
+import { ListingSearch } from "@/components/shared/listing-search";
 import { programListSearchParams } from "@/lib/search-params";
 
 interface ToolbarCopy {
@@ -24,26 +17,15 @@ interface ToolbarCopy {
 }
 
 export const ProgramListToolbar = ({ labels }: { labels: ToolbarCopy }) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-  useSlashFocusSearch(inputRef);
-
   const [{ q, sort }, setParams] = useQueryStates(programListSearchParams, {
     shallow: false,
   });
 
-  const hasActiveFilters = Boolean((q ?? "").trim() || sort);
+  const hasActiveFilters = Boolean(q.trim() || sort);
 
   const resetFilters = useCallback(async () => {
     await setParams(null);
   }, [setParams]);
-
-  const handleQueryChange = useCallback(
-    async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { value: next } = e.target;
-      await setParams({ q: next === "" ? null : next });
-    },
-    [setParams],
-  );
 
   const orderOptions = useMemo<ListingOrderOption[]>(
     () => [
@@ -55,22 +37,15 @@ export const ProgramListToolbar = ({ labels }: { labels: ToolbarCopy }) => {
 
   return (
     <div className="mb-8 flex flex-col gap-3 lg:flex-row lg:items-center">
-      <div className="flex min-w-0 flex-1 items-center gap-2">
-        <InputRoot className="min-w-0 flex-1">
-          <InputIcon render={<SearchIcon />} />
-          <Input
-            ref={inputRef}
-            placeholder={labels.searchPlaceholder}
-            value={q ?? ""}
-            onChange={handleQueryChange}
-          />
-          {hasActiveFilters && (
-            <InputButton onClick={resetFilters} type="button">
-              <XIcon /> Reset
-            </InputButton>
-          )}
-        </InputRoot>
-      </div>
+      <ListingSearch
+        labels={{
+          resetLabel: labels.resetFilters,
+          searchPlaceholder: labels.searchPlaceholder,
+        }}
+        onReset={resetFilters}
+        parsers={{ q: programListSearchParams.q }}
+        showReset={hasActiveFilters}
+      />
       <ListingOrder
         labels={{ placeholder: labels.orderBy }}
         options={orderOptions}

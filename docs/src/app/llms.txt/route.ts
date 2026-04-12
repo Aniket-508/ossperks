@@ -9,7 +9,10 @@ export const GET = () => {
   const programEntries = programsSource
     .getPages()
     .filter((p) => !p.locale || p.locale === "en")
-    .map((p) => `- [${p.data.title}](${p.url}): ${p.data.description ?? ""}`)
+    .map(
+      (p) =>
+        `- [${p.data.title}](${p.url})${p.data.description ? `: ${p.data.description}` : ""}`,
+    )
     .join("\n");
 
   return new Response(`${cliIndex}\n\n## Programs\n\n${programEntries}`);

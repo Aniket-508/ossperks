@@ -69,11 +69,11 @@ export const generateMetadata = async ({
   const cliPath = `${ROUTES.CLI}/${page.slugs.join("/")}` as `/${string}`;
 
   return createMetadata({
-    description: page.data.description ?? "",
+    description: page.data.description,
     lang,
     ogImage: getCliPageImage(page).url,
     ogType: "article",
     path: cliPath,
-    title: page.data.title ?? "",
+    title: page.data.title,
   });
 };

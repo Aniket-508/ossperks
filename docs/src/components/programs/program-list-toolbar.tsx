@@ -1,14 +1,18 @@
 "use client";
 
-import { SearchIcon } from "lucide-react";
+import { SearchIcon, XIcon } from "lucide-react";
 import { useQueryStates } from "nuqs";
 import { useCallback, useMemo, useRef } from "react";
 
 import { useSlashFocusSearch } from "@/components/hotkeys/use-slash-focus-search";
 import { ListingOrderControl } from "@/components/shared/listing-order";
 import type { ListingOrderOption } from "@/components/shared/listing-order";
-import { ListingReset } from "@/components/shared/listing-reset";
-import { Input, InputIcon, InputRoot } from "@/components/ui/input";
+import {
+  Input,
+  InputButton,
+  InputIcon,
+  InputRoot,
+} from "@/components/ui/input";
 import { programListSearchParams } from "@/lib/search-params";
 
 interface ToolbarCopy {
@@ -69,12 +73,12 @@ export const ProgramListToolbar = ({ labels }: { labels: ToolbarCopy }) => {
             value={q ?? ""}
             onChange={handleQueryChange}
           />
+          {hasActiveFilters && (
+            <InputButton onClick={resetFilters}>
+              <XIcon /> Reset
+            </InputButton>
+          )}
         </InputRoot>
-        <ListingReset
-          hasActiveFilters={hasActiveFilters}
-          label={labels.resetFilters}
-          onReset={resetFilters}
-        />
       </div>
       <ListingOrderControl
         labelHeading={labels.orderBy}

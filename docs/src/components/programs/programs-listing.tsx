@@ -1,7 +1,7 @@
 "use client";
 
 import type { Category, PerkType } from "@ossperks/core";
-import { SearchIcon } from "lucide-react";
+import { SearchIcon, XIcon } from "lucide-react";
 import { useQueryStates } from "nuqs";
 import { useCallback, useMemo, useRef, ViewTransition } from "react";
 
@@ -15,8 +15,12 @@ import type {
 } from "@/components/shared/listing-filters";
 import { ListingOrderControl } from "@/components/shared/listing-order";
 import type { ListingOrderOption } from "@/components/shared/listing-order";
-import { ListingReset } from "@/components/shared/listing-reset";
-import { Input, InputIcon, InputRoot } from "@/components/ui/input";
+import {
+  Input,
+  InputButton,
+  InputIcon,
+  InputRoot,
+} from "@/components/ui/input";
 import { withLocalePrefix } from "@/i18n/navigation";
 import {
   collectDistinctTags,
@@ -198,12 +202,12 @@ export const ProgramsListing = ({
               value={appliedQ}
               onChange={handleQueryChange}
             />
+            {hasActiveFilters && (
+              <InputButton onClick={resetAll}>
+                <XIcon /> Reset
+              </InputButton>
+            )}
           </InputRoot>
-          <ListingReset
-            hasActiveFilters={hasActiveFilters}
-            label={translations.listing.resetFilters}
-            onReset={resetAll}
-          />
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <ListingOrderControl

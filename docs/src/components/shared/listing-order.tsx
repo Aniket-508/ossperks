@@ -37,23 +37,21 @@ export const ListingOrderControl = ({
   );
 
   return (
-    <div className={cn("w-full min-w-[200px] lg:w-[240px]", className)}>
-      <Select onValueChange={handleValueChange} value={sortValue ?? null}>
-        <SelectTrigger
-          aria-label={labelHeading}
-          className="w-full min-w-0"
-          size="default"
-        >
-          <SelectValue placeholder={labelHeading} />
-        </SelectTrigger>
-        <SelectContent align="start" side="bottom">
-          {options.map((o) => (
-            <SelectItem key={o.value} value={o.value}>
-              {o.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
+    <Select onValueChange={handleValueChange} value={sortValue ?? null}>
+      <SelectTrigger
+        aria-label={labelHeading}
+        className={cn("w-[200px]", className)}
+        size="default"
+      >
+        <SelectValue placeholder={labelHeading} />
+      </SelectTrigger>
+      <SelectContent align="start" side="bottom">
+        {options.map((o) => (
+          <SelectItem key={o.value} value={o.value}>
+            {o.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 };

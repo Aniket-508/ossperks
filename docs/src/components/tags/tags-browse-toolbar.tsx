@@ -1,15 +1,19 @@
 "use client";
 
-import { SearchIcon } from "lucide-react";
+import { SearchIcon, XIcon } from "lucide-react";
 import { useQueryStates } from "nuqs";
 import { useCallback, useMemo, useRef } from "react";
 
 import { useSlashFocusSearch } from "@/components/hotkeys/use-slash-focus-search";
 import { ListingOrderControl } from "@/components/shared/listing-order";
 import type { ListingOrderOption } from "@/components/shared/listing-order";
-import { ListingReset } from "@/components/shared/listing-reset";
 import { Button } from "@/components/ui/button";
-import { InputIcon, InputRoot, Input } from "@/components/ui/input";
+import {
+  InputIcon,
+  InputRoot,
+  Input,
+  InputButton,
+} from "@/components/ui/input";
 import { tagsBrowseSearchParams } from "@/lib/search-params";
 import { cn } from "@/lib/utils";
 
@@ -159,12 +163,12 @@ export const TagsBrowseToolbar = ({ labels }: TagsBrowseToolbarProps) => {
               value={q ?? ""}
               onChange={handleQueryChange}
             />
+            {hasActiveFilters && (
+              <InputButton onClick={resetFilters}>
+                <XIcon /> Reset
+              </InputButton>
+            )}
           </InputRoot>
-          <ListingReset
-            hasActiveFilters={hasActiveFilters}
-            label={labels.resetFilters}
-            onReset={resetFilters}
-          />
         </div>
         <ListingOrderControl
           labelHeading={labels.orderBy}

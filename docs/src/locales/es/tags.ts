@@ -22,6 +22,9 @@ const tags = {
     breadcrumb: "Etiquetas",
     emptyTag: "Aún no hay programas con esta etiqueta.",
     intro: "{count} programas con esta etiqueta.",
+    metaDescription:
+      'Una colección seleccionada de los mejores programas open source etiquetados como «{tag}». Cada programa incluye ventajas, criterios de elegibilidad y pasos para solicitarlos.',
+    metaTitle: 'Programas open source etiquetados «{tag}»',
     noMatches: "Ningún programa coincide con tu búsqueda.",
     orderBy: "Ordenar por",
     resetFilters: "Restablecer",

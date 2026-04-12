@@ -13,9 +13,9 @@ import { generateLangParams } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
 import { withLocalePrefix } from "@/i18n/navigation";
 import { tagsBrowseParamsCache } from "@/lib/search-params";
-import { encodeTagForPath } from "@/lib/tag-path";
 import { filterSortPaginateTags } from "@/lib/tags-browse-server";
 import type { TagsBrowseSort } from "@/lib/tags-browse-server";
+import { encodeUrlForPath } from "@/lib/url";
 import { BreadcrumbJsonLd, TagsIndexItemListJsonLd } from "@/seo/json-ld";
 import { createMetadata } from "@/seo/metadata";
 
@@ -103,7 +103,7 @@ export default async function TagsBrowsePage({
             {rows.map((row) => {
               const href = withLocalePrefix(
                 lang,
-                `${ROUTES.TAGS}/${encodeTagForPath(row.tag)}` as `/${string}`,
+                `${ROUTES.TAGS}/${encodeUrlForPath(row.tag)}` as `/${string}`,
               );
               return (
                 <Link

@@ -22,8 +22,7 @@ const footer = {
   submit: "提交",
   tags: "标签",
   translationsBy: "翻译由",
-  twitter: "X（Twitter）",
+  twitter: "X（Twitter）"
 };
-
 export default footer;
 export type FooterTranslations = typeof footer;

@@ -4,7 +4,8 @@ import { LINK } from "@/constants/links";
 import { SITE } from "@/constants/site";
 import { i18n } from "@/i18n/config";
 import { withLocalePrefix } from "@/i18n/navigation";
-import { encodeTagForPath } from "@/lib/tag-path";
+import { encodeUrlForPath } from "@/lib/url";
+import { absoluteUrl } from "@/lib/utils";
 
 const LOCALE_TO_BCP47: Record<string, string> = {
   de: "de-DE",
@@ -141,7 +142,7 @@ const BreadcrumbJsonLd = ({
     "@type": "BreadcrumbList",
     itemListElement: items.map((item, index) => ({
       "@type": "ListItem",
-      item: `${SITE.URL}${withLocalePrefix(lang, item.path)}`,
+      item: absoluteUrl(withLocalePrefix(lang, item.path)),
       name: item.name,
       position: index + 1,
     })),
@@ -156,7 +157,9 @@ const ProgramJsonLd = ({
   lang: string;
   program: Program;
 }) => {
-  const programUrl = `${SITE.URL}${withLocalePrefix(lang, `/programs/${program.slug}`)}`;
+  const programUrl = absoluteUrl(
+    withLocalePrefix(lang, `/programs/${program.slug}`),
+  );
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -191,7 +194,7 @@ const ProgramListJsonLd = ({
     itemListElement: programs.map((program, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      url: `${SITE.URL}${withLocalePrefix(lang, `/programs/${program.slug}`)}`,
+      url: absoluteUrl(withLocalePrefix(lang, `/programs/${program.slug}`)),
     })),
     name: "Open Source Programs",
     numberOfItems: programs.length,
@@ -248,7 +251,7 @@ const CategoryProgramListJsonLd = ({
     hasPart: programs.map((program) => ({
       "@type": "SoftwareApplication",
       name: program.name,
-      url: `${SITE.URL}${withLocalePrefix(lang, `/programs/${program.slug}`)}`,
+      url: absoluteUrl(withLocalePrefix(lang, `/programs/${program.slug}`)),
     })),
     name: pageName,
     numberOfItems: programs.length,
@@ -272,7 +275,7 @@ const CategoriesIndexItemListJsonLd = ({
       "@type": "ListItem",
       name: row.label,
       position: index + 1,
-      url: `${SITE.URL}${withLocalePrefix(lang, `/categories/${row.slug}`)}`,
+      url: absoluteUrl(withLocalePrefix(lang, `/categories/${row.slug}`)),
     })),
     name: listName,
     numberOfItems: categories.length,
@@ -296,7 +299,9 @@ const TagsIndexItemListJsonLd = ({
       "@type": "ListItem",
       name: row.tag,
       position: index + 1,
-      url: `${SITE.URL}${withLocalePrefix(lang, `/tags/${encodeTagForPath(row.tag)}`)}`,
+      url: absoluteUrl(
+        withLocalePrefix(lang, `/tags/${encodeUrlForPath(row.tag)}`),
+      ),
     })),
     name: listName,
     numberOfItems: tags.length,
@@ -320,7 +325,7 @@ const PeopleIndexItemListJsonLd = ({
       "@type": "ListItem",
       name: row.name,
       position: index + 1,
-      url: `${SITE.URL}${withLocalePrefix(lang, `/people/${row.slug}`)}`,
+      url: absoluteUrl(withLocalePrefix(lang, `/people/${row.slug}`)),
     })),
     name: listName,
     numberOfItems: people.length,

@@ -7,6 +7,7 @@ import { SITE } from "@/constants/site";
 import type { Locale } from "@/i18n/config";
 import { withLocalePrefix } from "@/i18n/navigation";
 import { getPrograms } from "@/lib/programs";
+import { absoluteUrl } from "@/lib/utils";
 
 /**
  * RSS 2.0 `<language>` uses BCP 47 tags. One feed per locale is the usual pattern
@@ -30,9 +31,9 @@ const LOCALE_TO_RSS_LANGUAGE: Record<Locale, string> = {
 export const buildProgramsRssResponse = async (lang: Locale) => {
   const updated = new Date();
   const feedPath = withLocalePrefix(lang, ROUTES.RSS);
-  const feedUrl = `${SITE.URL}${feedPath}`;
+  const feedUrl = absoluteUrl(feedPath);
   const homePath = withLocalePrefix(lang, ROUTES.HOME);
-  const siteLink = `${SITE.URL}${homePath === "/" ? "" : homePath}`;
+  const siteLink = absoluteUrl(homePath === "/" ? "" : homePath);
 
   const programsList = await getPrograms(lang);
   const sorted = [...programsList].toSorted((a, b) =>
@@ -46,7 +47,7 @@ export const buildProgramsRssResponse = async (lang: Locale) => {
     },
     copyright: `© ${updated.getFullYear()} ${SITE.AUTHOR.NAME}`,
     description: SITE.DESCRIPTION.LONG,
-    favicon: `${SITE.URL}/icon.svg`,
+    favicon: absoluteUrl("/icon.svg"),
     feedLinks: {
       rss: feedUrl,
     },
@@ -60,7 +61,7 @@ export const buildProgramsRssResponse = async (lang: Locale) => {
 
   for (const program of sorted) {
     const path = `${ROUTES.PROGRAMS}/${program.slug}` as `/${string}`;
-    const link = `${SITE.URL}${withLocalePrefix(lang, path)}`;
+    const link = absoluteUrl(withLocalePrefix(lang, path));
 
     feed.addItem({
       date: updated,

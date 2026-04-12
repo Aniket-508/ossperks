@@ -10,12 +10,12 @@ import { ProgramCard } from "@/components/programs/program-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ROUTES } from "@/constants/routes";
-import { SITE } from "@/constants/site";
 import { generateLangParamsWithPerson } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
 import { withLocalePrefix } from "@/i18n/navigation";
 import { getProgram } from "@/lib/programs";
 import { getUnavatarUrl } from "@/lib/unavatar";
+import { absoluteUrl } from "@/lib/utils";
 import { BreadcrumbJsonLd, PersonPageJsonLd } from "@/seo/json-ld";
 import { createMetadata } from "@/seo/metadata";
 
@@ -76,7 +76,9 @@ export default async function PersonPage({
       />
       <PersonPageJsonLd
         name={contact.name}
-        profilePageUrl={`${SITE.URL}${withLocalePrefix(lang, `${ROUTES.PEOPLE}/${personSlug}`)}`}
+        profilePageUrl={absoluteUrl(
+          withLocalePrefix(lang, `${ROUTES.PEOPLE}/${personSlug}`),
+        )}
         role={contact.role}
         sameAs={contact.url}
       />

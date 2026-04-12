@@ -14,7 +14,8 @@ import { withLocalePrefix } from "@/i18n/navigation";
 import { filterSortPrograms } from "@/lib/program-list-server";
 import { getProgram } from "@/lib/programs";
 import { programListParamsCache } from "@/lib/search-params";
-import { decodeTagFromPath, encodeTagForPath } from "@/lib/tag-path";
+import { decodeUrlFromPath, encodeUrlForPath } from "@/lib/url";
+import { formatSlug } from "@/lib/utils";
 import { BreadcrumbJsonLd, CategoryProgramListJsonLd } from "@/seo/json-ld";
 import { createMetadata } from "@/seo/metadata";
 
@@ -25,7 +26,7 @@ export const generateStaticParams = (): { lang: string; tag: string }[] =>
   i18n.languages.flatMap((lang) =>
     getTagsWithProgramCounts().map(({ tag }) => ({
       lang,
-      tag: encodeTagForPath(tag),
+      tag: encodeUrlForPath(tag),
     })),
   );
 
@@ -35,18 +36,18 @@ export const generateMetadata = async ({
   params: Promise<{ lang: string; tag: string }>;
 }): Promise<Metadata> => {
   const { lang, tag: tagParam } = await params;
-  const decoded = decodeTagFromPath(tagParam);
+  const decoded = decodeUrlFromPath(tagParam);
   if (!validTagSet().has(decoded)) {
     notFound();
   }
   const t = await getT(lang);
-  const count = getProgramsByTag(decoded).length;
-  const title = `${decoded} — ${t.tags.detail.titleSuffix}`;
-  const description = t.tags.detail.intro.replace("{count}", String(count));
+  const tagLabel = formatSlug(decoded.replaceAll(/\s+/g, "-"));
+  const title = t.tags.detail.metaTitle.replace("{tag}", tagLabel);
+  const description = t.tags.detail.metaDescription.replace("{tag}", tagLabel);
   return createMetadata({
     description,
     lang,
-    path: `${ROUTES.TAGS}/${encodeTagForPath(decoded)}` as `/${string}`,
+    path: `${ROUTES.TAGS}/${encodeUrlForPath(decoded)}` as `/${string}`,
     title,
   });
 };
@@ -59,7 +60,7 @@ export default async function TagDetailPage({
   searchParams: Promise<SearchParams>;
 }) {
   const { lang, tag: tagParam } = await params;
-  const decodedTag = decodeTagFromPath(tagParam);
+  const decodedTag = decodeUrlFromPath(tagParam);
   if (!validTagSet().has(decodedTag)) {
     notFound();
   }
@@ -75,10 +76,15 @@ export default async function TagDetailPage({
   );
   const filtered = filterSortPrograms(programs, {
     q: query.q,
-    sort: query.sort ?? null,
+    sort: query.sort,
   });
 
-  const pageTitle = `${decodedTag} — ${t.tags.detail.titleSuffix}`;
+  const tagLabel = formatSlug(decodedTag.replaceAll(/\s+/g, "-"));
+  const pageTitle = t.tags.detail.metaTitle.replace("{tag}", tagLabel);
+  const pageDescription = t.tags.detail.metaDescription.replace(
+    "{tag}",
+    tagLabel,
+  );
   const searchPlaceholder = t.tags.detail.searchPlaceholder.replace(
     "{tag}",
     decodedTag,
@@ -103,14 +109,14 @@ export default async function TagDetailPage({
           { name: t.common.breadcrumbHome, path: "/" },
           { name: t.tags.detail.breadcrumb, path: ROUTES.TAGS },
           {
-            name: decodedTag,
-            path: `${ROUTES.TAGS}/${encodeTagForPath(decodedTag)}` as `/${string}`,
+            name: tagLabel,
+            path: `${ROUTES.TAGS}/${encodeUrlForPath(decodedTag)}` as `/${string}`,
           },
         ]}
         lang={lang}
       />
       <CategoryProgramListJsonLd
-        categoryLabel={decodedTag}
+        categoryLabel={tagLabel}
         lang={lang}
         pageName={pageTitle}
         programs={filtered.map((p) => ({ name: p.name, slug: p.slug }))}
@@ -124,19 +130,22 @@ export default async function TagDetailPage({
               href: withLocalePrefix(lang, ROUTES.TAGS),
               label: t.tags.detail.breadcrumb,
             },
-            { current: true, label: decodedTag },
+            { current: true, label: tagLabel },
           ]}
         />
 
         <h1 className="mb-2 text-4xl font-bold">{pageTitle}</h1>
         <p className="text-fd-muted-foreground mb-10 max-w-2xl text-lg">
-          {t.tags.detail.intro.replace("{count}", String(programs.length))}
+          {pageDescription}
         </p>
 
         <ProgramListToolbar
           labels={{
-            ...t.tags.detail,
+            orderBy: t.tags.detail.orderBy,
+            resetFilters: t.tags.detail.resetFilters,
             searchPlaceholder,
+            sortNameAsc: t.tags.detail.sortNameAsc,
+            sortNameDesc: t.tags.detail.sortNameDesc,
           }}
         />
 

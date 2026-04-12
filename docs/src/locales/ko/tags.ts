@@ -22,6 +22,9 @@ const tags = {
     breadcrumb: "태그",
     emptyTag: "이 태그를 쓰는 프로그램이 아직 없습니다.",
     intro: "이 태그가 달린 프로그램 {count}개.",
+    metaDescription:
+      '「{tag}」 태그가 붙은 최고의 오픈소스 프로그램을 엄선했습니다. 각 프로그램에는 혜택, 자격 기준, 신청 방법이 포함됩니다.',
+    metaTitle: '「{tag}」 태그 오픈소스 프로그램',
     noMatches: "검색 결과가 없습니다.",
     orderBy: "정렬",
     resetFilters: "초기화",

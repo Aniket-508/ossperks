@@ -16,7 +16,7 @@ import { i18n, isLocale } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
 import { loadOgFonts } from "@/lib/og";
 import { cliSource } from "@/lib/source";
-import { decodeTagFromPath, encodeTagForPath } from "@/lib/tag-path";
+import { decodeUrlFromPath, encodeUrlForPath } from "@/lib/url";
 
 import { buildOgContent } from "./og-content";
 import type { OgContext } from "./og-content";
@@ -47,7 +47,7 @@ const resolveTwoSegment = (slug: [string, string]): OgContext | null => {
     return { category: second, type: "category" };
   }
   if (first === "tags") {
-    return { tag: decodeTagFromPath(second), type: "tag" };
+    return { tag: decodeUrlFromPath(second), type: "tag" };
   }
   if (first === "people") {
     return { personSlug: second, type: "person" };
@@ -180,7 +180,7 @@ export const generateStaticParams = () => {
       params.push({ lang, slug: ["categories", category] });
     }
     for (const { tag } of getTagsWithProgramCounts()) {
-      params.push({ lang, slug: ["tags", encodeTagForPath(tag)] });
+      params.push({ lang, slug: ["tags", encodeUrlForPath(tag)] });
     }
     for (const personSlug of getAllPeopleSlugs()) {
       params.push({ lang, slug: ["people", personSlug] });

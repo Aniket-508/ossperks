@@ -22,6 +22,9 @@ const tags = {
     breadcrumb: "Étiquettes",
     emptyTag: "Aucun programme n’utilise encore cette étiquette.",
     intro: "{count} programmes avec cette étiquette.",
+    metaDescription:
+      'Une collection sélectionnée des meilleurs programmes open source étiquetés « {tag} ». Chaque programme présente les avantages, les critères d’éligibilité et les étapes pour postuler.',
+    metaTitle: 'Programmes open source étiquetés « {tag} »',
     noMatches: "Aucun programme ne correspond à votre recherche.",
     orderBy: "Trier par",
     resetFilters: "Réinitialiser",

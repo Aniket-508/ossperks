@@ -22,6 +22,9 @@ const tags = {
     breadcrumb: "标签",
     emptyTag: "还没有项目使用此标签。",
     intro: "带有此标签的项目共 {count} 个。",
+    metaDescription:
+      "精选带有「{tag}」标签的优质开源项目。每个条目包含福利、资格条件与申请步骤。",
+    metaTitle: "带有「{tag}」标签的开源项目",
     noMatches: "没有符合搜索条件的项目。",
     orderBy: "排序",
     resetFilters: "重置",

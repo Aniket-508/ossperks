@@ -22,6 +22,9 @@ const tags = {
     breadcrumb: "タグ",
     emptyTag: "このタグのプログラムはまだありません。",
     intro: "このタグが付いたプログラムは {count} 件です。",
+    metaDescription:
+      "「{tag}」タグの厳選オープンソースプログラム集です。各プログラムには特典、参加条件、申請手順が含まれます。",
+    metaTitle: "「{tag}」タグのオープンソースプログラム",
     noMatches: "検索に一致するプログラムがありません。",
     orderBy: "並べ替え",
     resetFilters: "リセット",

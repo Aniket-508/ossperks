@@ -19,14 +19,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { ROUTES } from "@/constants/routes";
-import { SITE } from "@/constants/site";
 import { generateLangParamsWithProgram } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
 import { withLocalePrefix } from "@/i18n/navigation";
 import { getProgram } from "@/lib/programs";
 import { getProgramPageImage, programsSource } from "@/lib/source";
-import { encodeTagForPath } from "@/lib/tag-path";
 import { getUnavatarUrl } from "@/lib/unavatar";
+import { encodeUrlForPath } from "@/lib/url";
+import { absoluteUrl } from "@/lib/utils";
 import { BreadcrumbJsonLd, ProgramJsonLd } from "@/seo/json-ld";
 import { createMetadata } from "@/seo/metadata";
 
@@ -63,7 +63,7 @@ export default async function ProgramPage({
 
   const programPath = `${ROUTES.PROGRAMS}/${program.slug}` as `/${string}`;
   const canonicalPath = withLocalePrefix(lang, programPath);
-  const shareUrl = `${SITE.URL}${canonicalPath}`;
+  const shareUrl = absoluteUrl(canonicalPath);
 
   const prevHref = prevProgram
     ? withLocalePrefix(
@@ -341,7 +341,7 @@ export default async function ProgramPage({
                     <Link
                       href={withLocalePrefix(
                         lang,
-                        `${ROUTES.TAGS}/${encodeTagForPath(tag)}` as `/${string}`,
+                        `${ROUTES.TAGS}/${encodeUrlForPath(tag)}` as `/${string}`,
                       )}
                       key={tag}
                     >

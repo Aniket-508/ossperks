@@ -12,6 +12,13 @@ import {
 } from "react";
 
 import { isEditableTarget } from "@/components/hotkeys/editable-target";
+import {
+  FacebookIcon,
+  LinkedInIcon,
+  RedditIcon,
+  WhatsAppIcon,
+  XIcon,
+} from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Kbd } from "@/components/ui/kbd";
 import {
@@ -20,15 +27,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { encodeUrlForPath } from "@/lib/url";
 import { cn } from "@/lib/utils";
-
-import {
-  FacebookIcon,
-  LinkedInIcon,
-  RedditIcon,
-  WhatsAppIcon,
-  XIcon,
-} from "../icons";
 
 export interface ProgramBottomBarLabels {
   copyLink: string;
@@ -57,8 +57,8 @@ interface ProgramBottomBarProps {
 }
 
 const buildShareUrls = (url: string, text: string) => {
-  const encodedUrl = encodeURIComponent(url);
-  const encodedText = encodeURIComponent(text);
+  const encodedUrl = encodeUrlForPath(url);
+  const encodedText = encodeUrlForPath(text);
   return {
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
     linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,

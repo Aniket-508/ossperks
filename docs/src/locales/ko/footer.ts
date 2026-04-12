@@ -22,8 +22,7 @@ const footer = {
   submit: "제출",
   tags: "태그",
   translationsBy: "번역",
-  twitter: "X (Twitter)",
+  twitter: "X (Twitter)"
 };
-
 export default footer;
 export type FooterTranslations = typeof footer;

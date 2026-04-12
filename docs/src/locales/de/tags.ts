@@ -22,6 +22,9 @@ const tags = {
     breadcrumb: "Tags",
     emptyTag: "Noch keine Programme mit diesem Tag.",
     intro: "{count} Programme mit diesem Tag.",
+    metaDescription:
+      'Eine kuratierte Auswahl der besten Open-Source-Programme mit dem Tag „{tag}". Jedes Programm umfasst Vergünstigungen, Kriterien für die Teilnahme sowie Schritte zur Bewerbung.',
+    metaTitle: 'Open-Source-Programme mit dem Tag „{tag}"',
     noMatches: "Keine Programme entsprechen deiner Suche.",
     orderBy: "Sortieren nach",
     resetFilters: "Zurücksetzen",

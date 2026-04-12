@@ -2,7 +2,6 @@ export type PaginationWindowEntry =
   | { key: string; type: "ellipsis" }
   | { key: string; page: number; type: "page" };
 
-/** Page numbers with gaps for ellipsis-style pagination UIs. */
 export const getPaginationWindow = (
   current: number,
   total: number,

@@ -10,6 +10,7 @@ import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { ROUTES } from "@/constants/routes";
 import { withLocalePrefix } from "@/i18n/navigation";
+import { encodeUrlForPath } from "@/lib/url";
 import { cn } from "@/lib/utils";
 import type { CheckTranslations } from "@/locales/en/check";
 
@@ -50,7 +51,7 @@ export const RepoCheckInput = ({
       if (!ref) {
         return;
       }
-      const search = `?provider=${encodeURIComponent(ref.provider)}&owner=${encodeURIComponent(ref.owner)}&repo=${encodeURIComponent(ref.repo)}&path=${encodeURIComponent(ref.path)}`;
+      const search = `?provider=${encodeUrlForPath(ref.provider)}&owner=${encodeUrlForPath(ref.owner)}&repo=${encodeUrlForPath(ref.repo)}&path=${encodeUrlForPath(ref.path)}`;
       router.push(`${withLocalePrefix(lang, basePath)}${search}`);
     },
     validators: {

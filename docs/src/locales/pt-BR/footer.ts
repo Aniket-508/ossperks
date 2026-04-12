@@ -22,8 +22,7 @@ const footer = {
   submit: "Enviar",
   tags: "Tags",
   translationsBy: "Traduções por",
-  twitter: "X (Twitter)",
+  twitter: "X (Twitter)"
 };
-
 export default footer;
 export type FooterTranslations = typeof footer;

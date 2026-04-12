@@ -8,11 +8,11 @@ import {
 import type { MetadataRoute } from "next";
 
 import { ROUTES } from "@/constants/routes";
-import { SITE } from "@/constants/site";
 import { i18n } from "@/i18n/config";
 import { withLocalePrefix } from "@/i18n/navigation";
 import { cliSource } from "@/lib/source";
-import { encodeTagForPath } from "@/lib/tag-path";
+import { encodeUrlForPath } from "@/lib/url";
+import { absoluteUrl } from "@/lib/utils";
 
 type ChangeFrequency = MetadataRoute.Sitemap[number]["changeFrequency"];
 
@@ -38,9 +38,9 @@ const buildAlternates = (
 ): { languages: Record<string, string> } => {
   const languages: Record<string, string> = {};
   for (const lang of i18n.languages) {
-    languages[lang] = `${SITE.URL}${withLocalePrefix(lang, path)}`;
+    languages[lang] = absoluteUrl(withLocalePrefix(lang, path));
   }
-  languages["x-default"] = `${SITE.URL}${path}`;
+  languages["x-default"] = absoluteUrl(path);
   return { languages };
 };
 
@@ -54,7 +54,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency,
       lastModified,
       priority,
-      url: `${SITE.URL}${withLocalePrefix(i18n.defaultLanguage, path)}`,
+      url: absoluteUrl(withLocalePrefix(i18n.defaultLanguage, path)),
     });
   }
 
@@ -65,7 +65,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       lastModified,
       priority: 0.8,
-      url: `${SITE.URL}${withLocalePrefix(i18n.defaultLanguage, path)}`,
+      url: absoluteUrl(withLocalePrefix(i18n.defaultLanguage, path)),
     });
 
     const checkPath =
@@ -75,7 +75,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       lastModified,
       priority: 0.7,
-      url: `${SITE.URL}${withLocalePrefix(i18n.defaultLanguage, checkPath)}`,
+      url: absoluteUrl(withLocalePrefix(i18n.defaultLanguage, checkPath)),
     });
   }
 
@@ -99,7 +99,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       lastModified,
       priority: 0.8,
-      url: `${SITE.URL}${withLocalePrefix(i18n.defaultLanguage, path)}`,
+      url: absoluteUrl(withLocalePrefix(i18n.defaultLanguage, path)),
     });
   }
 
@@ -110,18 +110,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       lastModified,
       priority: 0.8,
-      url: `${SITE.URL}${withLocalePrefix(i18n.defaultLanguage, path)}`,
+      url: absoluteUrl(withLocalePrefix(i18n.defaultLanguage, path)),
     });
   }
 
   for (const { tag } of getTagsWithProgramCounts()) {
-    const path = `${ROUTES.TAGS}/${encodeTagForPath(tag)}` as `/${string}`;
+    const path = `${ROUTES.TAGS}/${encodeUrlForPath(tag)}` as `/${string}`;
     entries.push({
       alternates: buildAlternates(path),
       changeFrequency: "weekly" as const,
       lastModified,
       priority: 0.75,
-      url: `${SITE.URL}${withLocalePrefix(i18n.defaultLanguage, path)}`,
+      url: absoluteUrl(withLocalePrefix(i18n.defaultLanguage, path)),
     });
   }
 
@@ -133,7 +133,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       lastModified,
       priority: 0.5,
-      url: `${SITE.URL}${withLocalePrefix(i18n.defaultLanguage, path)}`,
+      url: absoluteUrl(withLocalePrefix(i18n.defaultLanguage, path)),
     });
   }
 

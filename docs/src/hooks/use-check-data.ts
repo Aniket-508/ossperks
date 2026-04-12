@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import useSWR from "swr";
 
+import { encodeUrlForPath } from "@/lib/url";
 import type { CheckTranslations } from "@/locales/en/check";
 import { CheckApiErrorCode } from "@/types/check";
 import type { CheckApiErrorResponse, CheckResponse } from "@/types/check";
@@ -78,12 +79,12 @@ export const useCheckData = ({
     if (!provider || !owner || !repo) {
       return null;
     }
-    let url = `/api/check?owner=${encodeURIComponent(owner)}&repo=${encodeURIComponent(repo)}&provider=${encodeURIComponent(provider)}`;
+    let url = `/api/check?owner=${encodeUrlForPath(owner)}&repo=${encodeUrlForPath(repo)}&provider=${encodeUrlForPath(provider)}`;
     if (path) {
-      url += `&path=${encodeURIComponent(path)}`;
+      url += `&path=${encodeUrlForPath(path)}`;
     }
     if (program) {
-      url += `&program=${encodeURIComponent(program)}`;
+      url += `&program=${encodeUrlForPath(program)}`;
     }
     return url;
   }, [owner, path, program, provider, repo]);

@@ -89,7 +89,7 @@ export default async function CategoryDetailPage({
   );
   const filtered = filterSortPrograms(programs, {
     q: query.q,
-    sort: query.sort ?? null,
+    sort: query.sort,
   });
 
   const pageHeading = t.programs.category.heading.replace(

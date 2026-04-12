@@ -72,9 +72,9 @@ describe("telemetry", () => {
     });
     randomUUIDMock.mockReturnValue("machine-id");
 
-    const { track } = await importTelemetry();
+    const { capture } = await importTelemetry();
 
-    track("cli:list");
+    capture("cli:list");
 
     expect(randomUUIDMock).toHaveBeenCalledTimes(1);
     expect(writeFileSyncMock).toHaveBeenCalledWith(
@@ -100,9 +100,9 @@ describe("telemetry", () => {
     );
     randomUUIDMock.mockReturnValue("new-id");
 
-    const { track } = await importTelemetry();
+    const { capture } = await importTelemetry();
 
-    track("cli:search");
+    capture("cli:search");
 
     expect(randomUUIDMock).not.toHaveBeenCalled();
     expect(writeFileSyncMock).not.toHaveBeenCalled();
@@ -118,9 +118,9 @@ describe("telemetry", () => {
     readFileSyncMock.mockReturnValue("{not-json");
     randomUUIDMock.mockReturnValue("replacement-id");
 
-    const { track } = await importTelemetry();
+    const { capture } = await importTelemetry();
 
-    track("cli:show");
+    capture("cli:show");
 
     expect(randomUUIDMock).toHaveBeenCalledTimes(1);
     expect(writeFileSyncMock).toHaveBeenCalledWith(
@@ -141,18 +141,18 @@ describe("telemetry", () => {
       JSON.stringify({ distinctId: "persisted-id" }),
     );
 
-    const { shutdownTelemetry, track } = await importTelemetry();
+    const { flush, capture } = await importTelemetry();
 
-    track("first");
+    capture("first");
 
     expect(postHogConstructorMock).toHaveBeenCalledTimes(1);
     expect(captureMock).toHaveBeenCalledTimes(1);
 
-    await shutdownTelemetry();
+    await flush();
 
     expect(shutdownMock).toHaveBeenCalledTimes(1);
 
-    track("second");
+    capture("second");
 
     expect(postHogConstructorMock).toHaveBeenCalledTimes(1);
     expect(captureMock).toHaveBeenCalledTimes(1);

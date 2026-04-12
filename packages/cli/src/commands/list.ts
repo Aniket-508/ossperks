@@ -8,7 +8,7 @@ import type { Category } from "@ossperks/core";
 import { Command } from "commander";
 
 import { error, printProgramListTable } from "../utils/format.js";
-import { track } from "../utils/telemetry.js";
+import { capture } from "../utils/telemetry.js";
 
 export const listCommand = new Command("list")
   .alias("ls")
@@ -29,7 +29,7 @@ export const listCommand = new Command("list")
       results = getProgramsByCategory(opts.category as Category);
     }
 
-    track("cli:list", { categoryFilter: Boolean(opts.category) });
+    capture("cli:list", { categoryFilter: Boolean(opts.category) });
 
     if (opts.json) {
       console.log(JSON.stringify(results, null, 2));

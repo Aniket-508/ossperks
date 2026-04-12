@@ -27,7 +27,7 @@ import {
 } from "../utils/format.js";
 import { highlighter } from "../utils/highlighter.js";
 import { closestId } from "../utils/id.js";
-import { track } from "../utils/telemetry.js";
+import { capture } from "../utils/telemetry.js";
 import {
   buildGroupMultiselectOptions,
   printCheckResults,
@@ -185,7 +185,7 @@ const runSingleProgramBranch = (
 ): void => {
   const result = checkEligibility(targetProgram, ctx);
 
-  track("cli:check", {
+  capture("cli:check", {
     eligible: result.status === "eligible" ? 1 : 0,
     ineligible: result.status === "ineligible" ? 1 : 0,
     programFilter: true,
@@ -238,7 +238,7 @@ const runAllProgramsBranch = (
     (r) => r.result.status === "ineligible",
   ).length;
 
-  track("cli:check", {
+  capture("cli:check", {
     eligible: eligibleCount,
     ineligible: ineligibleCount,
     programFilter: Boolean(programFilterSlugs),

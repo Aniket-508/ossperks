@@ -51,7 +51,7 @@ export default async function AboutPage({
       }}
       default="none"
     >
-      <div className="view-container flex max-w-3xl flex-1 flex-col">
+      <div className="view-container flex max-w-4xl flex-1 flex-col">
         <div className="mb-10">
           <h1 className="mb-4 text-4xl font-bold">{t.about.heading}</h1>
           <p className="text-fd-muted-foreground text-lg leading-relaxed">

@@ -275,7 +275,7 @@ export default async function HomePage({
           <h2 className="mb-8 text-2xl font-bold">
             {t.home.howItWorks.heading}
           </h2>
-          <div className="mx-auto grid max-w-5xl gap-8 sm:grid-cols-3">
+          <div className="grid gap-8 sm:grid-cols-3">
             {t.home.howItWorks.steps.map((step, index) => (
               <div
                 key={step.title}

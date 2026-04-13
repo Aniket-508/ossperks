@@ -82,7 +82,7 @@ export default async function PersonPage({
         role={contact.role}
         sameAs={contact.url}
       />
-      <div className="view-container flex max-w-3xl flex-1 flex-col">
+      <div className="view-container flex max-w-4xl flex-1 flex-col">
         {/* Profile header */}
         <div className="mb-8 flex items-start gap-6">
           <Avatar className="ring-fd-primary/20 size-16 ring-2">

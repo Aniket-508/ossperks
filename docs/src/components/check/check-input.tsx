@@ -19,7 +19,6 @@ interface RepoCheckInputProps {
   translations: CheckTranslations["input"];
   basePath?: `/${string}`;
   className?: string;
-  compact?: boolean;
 }
 
 export const RepoCheckInput = ({
@@ -27,7 +26,6 @@ export const RepoCheckInput = ({
   translations,
   basePath = ROUTES.CHECK,
   className,
-  compact,
 }: RepoCheckInputProps) => {
   const router = useRouter();
 
@@ -81,13 +79,13 @@ export const RepoCheckInput = ({
               <Search className="text-fd-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
               <Input
                 type="text"
-                inputSize={compact ? "default" : "lg"}
+                inputSize="lg"
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
                 onBlur={field.handleBlur}
                 placeholder={translations.placeholder}
                 aria-invalid={field.state.meta.errors.length > 0}
-                className="pl-10"
+                className="h-10 pl-10"
               />
             </div>
             {field.state.meta.errors.length > 0 && (

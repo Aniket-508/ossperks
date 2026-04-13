@@ -7,8 +7,7 @@ import {
 import { Plus } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import type { SearchParams } from "nuqs/server";
-import { ViewTransition } from "react";
+import { Suspense, ViewTransition } from "react";
 
 import { ProgramsListing } from "@/components/programs/programs-listing";
 import { PageBreadcrumb } from "@/components/shared/page-breadcrumb";
@@ -18,7 +17,6 @@ import { generateLangParams } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
 import { withLocalePrefix } from "@/i18n/navigation";
 import { getPrograms } from "@/lib/programs";
-import { programsParamsCache } from "@/lib/search-params";
 import { BreadcrumbJsonLd, ProgramListJsonLd } from "@/seo/json-ld";
 import { createMetadata } from "@/seo/metadata";
 
@@ -26,13 +24,10 @@ export const generateStaticParams = generateLangParams;
 
 export const generateMetadata = async ({
   params,
-  searchParams,
 }: {
   params: Promise<{ lang: string }>;
-  searchParams: Promise<SearchParams>;
 }): Promise<Metadata> => {
   const { lang } = await params;
-  await programsParamsCache.parse(searchParams);
   const t = await getT(lang);
 
   const translatedPrograms = await getPrograms(lang);
@@ -49,13 +44,10 @@ export const generateMetadata = async ({
 
 export default async function ProgramsPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ lang: string }>;
-  searchParams: Promise<SearchParams>;
 }) {
   const { lang } = await params;
-  await programsParamsCache.parse(searchParams);
   const [t, translatedPrograms] = await Promise.all([
     getT(lang),
     getPrograms(lang),
@@ -131,20 +123,22 @@ export default async function ProgramsPage({
           </div>
         </div>
 
-        <ProgramsListing
-          categoryLabels={t.common.categories}
-          categories={categories}
-          lang={lang}
-          perkTypeLabels={PERK_TYPE_LABELS}
-          perkTypes={perkTypes}
-          programs={programsWithPerkTypes}
-          translations={{
-            filters: t.programs.filters,
-            learnMore: t.programs.learnMore,
-            listing: t.programs.listing,
-            more: t.programs.more,
-          }}
-        />
+        <Suspense>
+          <ProgramsListing
+            categoryLabels={t.common.categories}
+            categories={categories}
+            lang={lang}
+            perkTypeLabels={PERK_TYPE_LABELS}
+            perkTypes={perkTypes}
+            programs={programsWithPerkTypes}
+            translations={{
+              filters: t.programs.filters,
+              learnMore: t.programs.learnMore,
+              listing: t.programs.listing,
+              more: t.programs.more,
+            }}
+          />
+        </Suspense>
       </div>
     </ViewTransition>
   );

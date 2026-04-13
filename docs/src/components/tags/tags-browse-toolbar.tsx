@@ -32,7 +32,7 @@ export const TagsBrowseToolbar = ({ labels }: TagsBrowseToolbarProps) => {
   const [, startTransition] = useTransition();
   const [{ q, sort, letter }, setParams] = useQueryStates(
     tagsBrowseSearchParams,
-    { shallow: false, startTransition },
+    { shallow: true, startTransition },
   );
 
   const hasActiveFilters = Boolean(
@@ -68,18 +68,21 @@ export const TagsBrowseToolbar = ({ labels }: TagsBrowseToolbarProps) => {
           }}
           onReset={resetFilters}
           parsers={{ q: tagsBrowseSearchParams.q }}
+          shallow
           showReset={hasActiveFilters}
         />
         <ListingOrder
           labels={{ placeholder: labels.orderBy }}
           options={orderOptions}
           parsers={{ sort: tagsBrowseSearchParams.sort }}
+          shallow
         />
       </div>
 
       <LetterFilter
         labels={{ all: labels.letterAll, other: labels.letterOther }}
         parsers={tagsBrowseLetterParams}
+        shallow
       />
     </div>
   );

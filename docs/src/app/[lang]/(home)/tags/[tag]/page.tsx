@@ -1,19 +1,16 @@
 import { getProgramsByTag, getTagsWithProgramCounts } from "@ossperks/core";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import type { SearchParams } from "nuqs/server";
-import { ViewTransition } from "react";
+import { Suspense, ViewTransition } from "react";
 
-import { ProgramCard } from "@/components/programs/program-card";
-import { ProgramListToolbar } from "@/components/programs/program-list-toolbar";
+import { ProgramsFilteredGrid } from "@/components/programs/programs-filtered-grid";
+import { ProgramsListingToolbar } from "@/components/programs/programs-listing-toolbar";
 import { PageBreadcrumb } from "@/components/shared/page-breadcrumb";
 import { ROUTES } from "@/constants/routes";
 import { i18n } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
 import { withLocalePrefix } from "@/i18n/navigation";
 import { getProgram } from "@/lib/programs";
-import { filterSortPrograms } from "@/lib/programs-filter";
-import { programListParamsCache } from "@/lib/search-params";
 import { decodeUrlFromPath, encodeUrlForPath } from "@/lib/url";
 import { formatSlug } from "@/lib/utils";
 import { BreadcrumbJsonLd, CategoryProgramListJsonLd } from "@/seo/json-ld";
@@ -54,10 +51,8 @@ export const generateMetadata = async ({
 
 export default async function TagDetailPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ lang: string; tag: string }>;
-  searchParams: Promise<SearchParams>;
 }) {
   const { lang, tag: tagParam } = await params;
   const decodedTag = decodeUrlFromPath(tagParam);
@@ -65,7 +60,6 @@ export default async function TagDetailPage({
     notFound();
   }
 
-  const query = await programListParamsCache.parse(searchParams);
   const t = await getT(lang);
   const corePrograms = getProgramsByTag(decodedTag);
   const translatedPrograms = await Promise.all(
@@ -74,10 +68,6 @@ export default async function TagDetailPage({
   const programs = translatedPrograms.filter(
     (p): p is NonNullable<typeof p> => p !== undefined,
   );
-  const filtered = filterSortPrograms(programs, {
-    q: query.q,
-    sort: query.sort,
-  });
 
   const tagLabel = formatSlug(decodedTag.replaceAll(/\s+/g, "-"));
   const pageTitle = t.tags.detail.metaTitle.replace("{tag}", tagLabel);
@@ -119,7 +109,7 @@ export default async function TagDetailPage({
         categoryLabel={tagLabel}
         lang={lang}
         pageName={pageTitle}
-        programs={filtered.map((p) => ({ name: p.name, slug: p.slug }))}
+        programs={programs.map((p) => ({ name: p.name, slug: p.slug }))}
       />
       <div className="view-container flex flex-1 flex-col">
         <PageBreadcrumb
@@ -139,48 +129,30 @@ export default async function TagDetailPage({
           {pageDescription}
         </p>
 
-        <ProgramListToolbar
-          labels={{
-            orderBy: t.tags.detail.orderBy,
-            resetFilters: t.tags.detail.resetFilters,
-            searchPlaceholder,
-            sortNameAsc: t.tags.detail.sortNameAsc,
-            sortNameDesc: t.tags.detail.sortNameDesc,
-          }}
-        />
+        <Suspense>
+          <ProgramsListingToolbar
+            labels={{
+              orderBy: t.tags.detail.orderBy,
+              resetFilters: t.tags.detail.resetFilters,
+              searchPlaceholder,
+              sortNameAsc: t.tags.detail.sortNameAsc,
+              sortNameDesc: t.tags.detail.sortNameDesc,
+            }}
+          />
 
-        {filtered.length > 0 ? (
-          <div className="grid gap-4 md:grid-cols-2">
-            {filtered.map((program) => {
-              const programCategoryLabel =
-                t.common.categories[
-                  program.category as keyof typeof t.common.categories
-                ] ?? program.category;
-              const programHref = withLocalePrefix(
-                lang,
-                `${ROUTES.PROGRAMS}/${program.slug}` as `/${string}`,
-              );
-              return (
-                <ProgramCard
-                  categoryLabel={programCategoryLabel}
-                  key={program.slug}
-                  learnMore={t.programs.learnMore}
-                  more={t.programs.more}
-                  program={program}
-                  programHref={programHref}
-                />
-              );
-            })}
-          </div>
-        ) : (
-          <div className="bg-fd-muted/30 rounded-lg border border-dashed p-12 text-center">
-            <p className="text-fd-muted-foreground">
-              {programs.length === 0
+          <ProgramsFilteredGrid
+            categoryLabels={t.common.categories}
+            emptyMessage={
+              programs.length === 0
                 ? t.tags.detail.emptyTag
-                : t.tags.detail.noMatches}
-            </p>
-          </div>
-        )}
+                : t.tags.detail.noMatches
+            }
+            learnMore={t.programs.learnMore}
+            more={t.programs.more}
+            programHrefPrefix={withLocalePrefix(lang, ROUTES.PROGRAMS)}
+            programs={programs}
+          />
+        </Suspense>
       </div>
     </ViewTransition>
   );

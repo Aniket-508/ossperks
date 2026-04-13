@@ -16,10 +16,10 @@ interface ToolbarCopy {
   sortNameDesc: string;
 }
 
-export const ProgramListToolbar = ({ labels }: { labels: ToolbarCopy }) => {
+export const ProgramsListingToolbar = ({ labels }: { labels: ToolbarCopy }) => {
   const [, startTransition] = useTransition();
   const [{ q, sort }, setParams] = useQueryStates(programListSearchParams, {
-    shallow: false,
+    shallow: true,
     startTransition,
   });
 
@@ -46,12 +46,14 @@ export const ProgramListToolbar = ({ labels }: { labels: ToolbarCopy }) => {
         }}
         onReset={resetFilters}
         parsers={{ q: programListSearchParams.q }}
+        shallow
         showReset={hasActiveFilters}
       />
       <ListingOrder
         labels={{ placeholder: labels.orderBy }}
         options={orderOptions}
         parsers={{ sort: programListSearchParams.sort }}
+        shallow
       />
     </div>
   );

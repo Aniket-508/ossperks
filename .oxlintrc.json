@@ -15,7 +15,8 @@
     ".agents/**",
     ".cursor/**",
     ".changeset/**",
-    ".claude/**"
+    ".claude/**",
+    "README.md"
   ],
   "settings": {
     "react": {

@@ -57,16 +57,18 @@ export interface ListingPaginationProps {
   labels: ListingPaginationLabels;
   pageCount: number;
   parsers?: ListingPaginationParsers;
+  shallow?: boolean;
 }
 
 export const ListingPagination = ({
   labels,
   pageCount,
   parsers = tagsBrowsePaginationParams,
+  shallow = false,
 }: ListingPaginationProps) => {
   const [, startTransition] = useTransition();
   const [{ page: urlPage }, setParams] = useQueryStates(parsers, {
-    shallow: false,
+    shallow,
     startTransition,
   });
 

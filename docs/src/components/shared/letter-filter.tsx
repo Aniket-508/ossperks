@@ -17,6 +17,7 @@ export interface LetterFilterLabels {
 export interface LetterFilterProps {
   labels: LetterFilterLabels;
   parsers: LetterFilterParsers;
+  shallow?: boolean;
 }
 
 const LetterCharButton = ({
@@ -45,10 +46,14 @@ const LetterCharButton = ({
   );
 };
 
-export const LetterFilter = ({ labels, parsers }: LetterFilterProps) => {
+export const LetterFilter = ({
+  labels,
+  parsers,
+  shallow = false,
+}: LetterFilterProps) => {
   const [, startTransition] = useTransition();
   const [params, setParams] = useQueryStates(parsers, {
-    shallow: false,
+    shallow,
     startTransition,
   });
 

@@ -13,6 +13,7 @@
     ".cursor/**",
     ".changeset/**",
     ".claude/**",
+    "README.md",
   ],
   "printWidth": 80,
   "sortImports": {

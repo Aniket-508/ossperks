@@ -6,11 +6,10 @@ import {
 import type { Category } from "@ossperks/core";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import type { SearchParams } from "nuqs/server";
-import { ViewTransition } from "react";
+import { Suspense, ViewTransition } from "react";
 
-import { ProgramCard } from "@/components/programs/program-card";
-import { ProgramListToolbar } from "@/components/programs/program-list-toolbar";
+import { ProgramsFilteredGrid } from "@/components/programs/programs-filtered-grid";
+import { ProgramsListingToolbar } from "@/components/programs/programs-listing-toolbar";
 import { PageBreadcrumb } from "@/components/shared/page-breadcrumb";
 import { ROUTES } from "@/constants/routes";
 import { i18n } from "@/i18n/config";
@@ -18,8 +17,6 @@ import { formatProgramsCategoryIntro } from "@/i18n/format-programs-category-int
 import { getT } from "@/i18n/get-t";
 import { withLocalePrefix } from "@/i18n/navigation";
 import { getProgram } from "@/lib/programs";
-import { filterSortPrograms } from "@/lib/programs-filter";
-import { programListParamsCache } from "@/lib/search-params";
 import { BreadcrumbJsonLd, CategoryProgramListJsonLd } from "@/seo/json-ld";
 import { createMetadata } from "@/seo/metadata";
 
@@ -64,17 +61,14 @@ export const generateMetadata = async ({
 
 export default async function CategoryDetailPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ category: string; lang: string }>;
-  searchParams: Promise<SearchParams>;
 }) {
   const { category, lang } = await params;
   if (!VALID_CATEGORIES.has(category)) {
     notFound();
   }
 
-  const query = await programListParamsCache.parse(searchParams);
   const t = await getT(lang);
   const categoryLabel =
     t.common.categories[category as keyof typeof t.common.categories] ??
@@ -87,10 +81,6 @@ export default async function CategoryDetailPage({
   const programs = translatedPrograms.filter(
     (p): p is NonNullable<typeof p> => p !== undefined,
   );
-  const filtered = filterSortPrograms(programs, {
-    q: query.q,
-    sort: query.sort,
-  });
 
   const pageHeading = t.programs.category.heading.replace(
     "{category}",
@@ -133,7 +123,7 @@ export default async function CategoryDetailPage({
         categoryLabel={categoryLabel}
         lang={lang}
         pageName={pageHeading}
-        programs={filtered.map((p) => ({ name: p.name, slug: p.slug }))}
+        programs={programs.map((p) => ({ name: p.name, slug: p.slug }))}
       />
       <div className="view-container flex flex-1 flex-col">
         <PageBreadcrumb
@@ -158,45 +148,27 @@ export default async function CategoryDetailPage({
           )}
         </p>
 
-        <ProgramListToolbar
-          labels={{
-            ...t.categories.detail,
-            searchPlaceholder,
-          }}
-        />
+        <Suspense>
+          <ProgramsListingToolbar
+            labels={{
+              ...t.categories.detail,
+              searchPlaceholder,
+            }}
+          />
 
-        {filtered.length > 0 ? (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {filtered.map((program) => {
-              const programCategoryLabel =
-                t.common.categories[
-                  program.category as keyof typeof t.common.categories
-                ] ?? program.category;
-              const programHref = withLocalePrefix(
-                lang,
-                `${ROUTES.PROGRAMS}/${program.slug}` as `/${string}`,
-              );
-              return (
-                <ProgramCard
-                  categoryLabel={programCategoryLabel}
-                  key={program.slug}
-                  learnMore={t.programs.learnMore}
-                  more={t.programs.more}
-                  program={program}
-                  programHref={programHref}
-                />
-              );
-            })}
-          </div>
-        ) : (
-          <div className="bg-fd-muted/30 rounded-lg border border-dashed p-12 text-center">
-            <p className="text-fd-muted-foreground">
-              {programs.length === 0
+          <ProgramsFilteredGrid
+            categoryLabels={t.common.categories}
+            emptyMessage={
+              programs.length === 0
                 ? t.programs.category.empty
-                : t.categories.detail.noMatches}
-            </p>
-          </div>
-        )}
+                : t.categories.detail.noMatches
+            }
+            learnMore={t.programs.learnMore}
+            more={t.programs.more}
+            programHrefPrefix={withLocalePrefix(lang, ROUTES.PROGRAMS)}
+            programs={programs}
+          />
+        </Suspense>
       </div>
     </ViewTransition>
   );

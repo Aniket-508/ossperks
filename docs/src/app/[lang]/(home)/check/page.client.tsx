@@ -2,7 +2,6 @@
 
 import { CircleX } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import type { ReactNode } from "react";
 import { Suspense, useMemo, ViewTransition } from "react";
 
 import { RepoCheckInput } from "@/components/check/check-input";
@@ -15,7 +14,6 @@ import type { CheckTranslations } from "@/locales/en/check";
 import type { ProgramTranslationMap } from "@/types/check";
 
 interface CheckPageClientProps {
-  children?: ReactNode;
   lang: string;
   programTranslations: ProgramTranslationMap;
   translations: CheckTranslations;
@@ -58,12 +56,50 @@ const CheckSkeleton = ({ name }: { name: string }) => (
   </div>
 );
 
-const CheckPageInner = ({
-  children,
+const CheckLanding = ({
+  lang,
+  translations,
+}: {
+  lang: string;
+  translations: CheckTranslations;
+}) => (
+  <div className={CHECK_PAGE_CONTAINER}>
+    <section className="py-16 text-center sm:py-24">
+      <h1 className="mb-4 text-4xl font-bold tracking-tight">
+        {translations.heading}
+        <span className="text-fd-primary">.</span>
+      </h1>
+      <p className="text-fd-muted-foreground mx-auto mb-8 max-w-2xl">
+        {translations.description}
+      </p>
+      <RepoCheckInput lang={lang} translations={translations.input} />
+    </section>
+  </div>
+);
+
+const CheckPageFooter = ({
+  lang,
+  translations,
+}: {
+  lang: string;
+  translations: CheckTranslations;
+}) => (
+  <>
+    <Separator className="mb-8" />
+    <section className="text-center">
+      <h2 className="mb-4 text-lg font-semibold">
+        {translations.checkAnother}
+      </h2>
+      <RepoCheckInput lang={lang} translations={translations.input} />
+    </section>
+  </>
+);
+
+const CheckResultsView = ({
   lang,
   programTranslations,
   translations,
-}: Omit<CheckPageClientProps, "fallback">) => {
+}: CheckPageClientProps) => {
   const searchParams = useSearchParams();
   const provider = searchParams.get("provider") ?? DEFAULT_PROVIDER;
   const owner = searchParams.get("owner");
@@ -150,12 +186,24 @@ const CheckPageInner = ({
         lang={lang}
         translations={translations}
       />
-      {children}
+      <CheckPageFooter lang={lang} translations={translations} />
     </div>
   );
 };
 
-export const CheckPageClient = ({ ...props }: CheckPageClientProps) => (
+const CheckPageInner = (props: CheckPageClientProps) => {
+  const searchParams = useSearchParams();
+  const owner = searchParams.get("owner");
+  const repo = searchParams.get("repo");
+
+  if (!owner || !repo) {
+    return <CheckLanding lang={props.lang} translations={props.translations} />;
+  }
+
+  return <CheckResultsView {...props} />;
+};
+
+export const CheckPageClient = (props: CheckPageClientProps) => (
   <Suspense
     fallback={
       <ViewTransition exit="slide-down">

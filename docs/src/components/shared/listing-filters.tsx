@@ -11,6 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   Drawer,
   DrawerContent,
+  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
@@ -304,10 +305,15 @@ export const ListingFilters = ({
     setNestedSection(null);
   }, [draft, onApplyFacets]);
 
-  const resetDraft = useCallback(() => {
-    setDraft(emptySelection(sections));
+  const resetAll = useCallback(async () => {
+    const empty = emptySelection(sections);
+    setDraft(empty);
     setSectionSearch("");
-  }, [sections]);
+    await onApplyFacets(empty);
+    setDesktopOpen(false);
+    setMobileOpen(false);
+    setNestedSection(null);
+  }, [onApplyFacets, sections]);
 
   const toggleDraftValue = useCallback(
     (sectionId: string, key: string, checked: boolean) => {
@@ -508,7 +514,7 @@ export const ListingFilters = ({
         </div>
       </div>
       <div className="border-fd-border flex justify-end gap-2 border-t p-3">
-        <Button onClick={resetDraft} type="button" variant="outline">
+        <Button onClick={resetAll} type="button" variant="outline">
           {filters.reset}
         </Button>
         <Button onClick={applyDraft} type="button">
@@ -561,6 +567,9 @@ export const ListingFilters = ({
           <DrawerContent>
             <DrawerHeader>
               <DrawerTitle>{filters.filterButton}</DrawerTitle>
+              <DrawerDescription className="sr-only">
+                {filters.filterButton}
+              </DrawerDescription>
             </DrawerHeader>
             <div className="space-y-3 px-4 pb-2">
               {sections.map((s) => (
@@ -578,7 +587,7 @@ export const ListingFilters = ({
             <DrawerFooter className="flex-row gap-2">
               <Button
                 className="flex-1"
-                onClick={resetDraft}
+                onClick={resetAll}
                 type="button"
                 variant="outline"
               >
@@ -598,6 +607,9 @@ export const ListingFilters = ({
           <DrawerContent className="max-h-[85vh]">
             <DrawerHeader>
               <DrawerTitle>{nestedDrawerTitle}</DrawerTitle>
+              <DrawerDescription className="sr-only">
+                {nestedDrawerTitle}
+              </DrawerDescription>
             </DrawerHeader>
             <div className="border-fd-border border-b px-4 pb-2">
               <div className="relative">

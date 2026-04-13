@@ -43,22 +43,22 @@ export const Footer = ({
 
   const quickLinks = [
     {
-      external: false as const,
+      external: false,
       href: p(ROUTES.CHECK),
       label: translation.checkEligibility,
     },
     {
-      external: false as const,
+      external: false,
       href: p(ROUTES.SUBMIT_PROGRAM),
       label: translation.submit,
     },
     {
-      external: false as const,
+      external: false,
       href: p(ROUTES.ABOUT),
       label: translation.aboutUs,
     },
     {
-      external: true as const,
+      external: true,
       href: LINK.SPONSOR,
       label: translation.sponsor,
     },
@@ -75,6 +75,33 @@ export const Footer = ({
     },
   ] as const;
 
+  const socialLinks = [
+    {
+      ariaLabel: translation.rssFeed,
+      external: false,
+      href: p(ROUTES.RSS),
+      icon: RssIcon,
+    },
+    {
+      ariaLabel: translation.github,
+      external: true,
+      href: LINK.GITHUB,
+      icon: GitHubIcon,
+    },
+    {
+      ariaLabel: translation.twitter,
+      external: true,
+      href: LINK.TWITTER,
+      icon: XIcon,
+    },
+    {
+      ariaLabel: translation.llms,
+      external: false,
+      href: llmsHref,
+      icon: LlmsIcon,
+    },
+  ] as const;
+
   return (
     <footer className="border-fd-border bg-fd-background mt-auto border-t">
       <div className="view-container w-full px-4 py-14">
@@ -88,38 +115,29 @@ export const Footer = ({
               <span className="text-base">{SITE.NAME}</span>
             </Link>
             <div className="flex flex-wrap items-center gap-1">
-              <Link
-                aria-label={translation.rssFeed}
-                className={iconLinkClass}
-                href={p(ROUTES.RSS)}
-              >
-                <RssIcon className="size-4" />
-              </Link>
-              <a
-                aria-label={translation.github}
-                className={iconLinkClass}
-                href={LINK.GITHUB}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <GitHubIcon className="size-4" />
-              </a>
-              <a
-                aria-label={translation.twitter}
-                className={iconLinkClass}
-                href={LINK.TWITTER}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <XIcon className="size-4" />
-              </a>
-              <a
-                aria-label={translation.llms}
-                className={iconLinkClass}
-                href={llmsHref}
-              >
-                <LlmsIcon className="size-4" />
-              </a>
+              {socialLinks.map(({ ariaLabel, href, icon: Icon, external }) =>
+                external ? (
+                  <a
+                    key={href}
+                    aria-label={ariaLabel}
+                    className={iconLinkClass}
+                    href={href}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <Icon className="size-4" />
+                  </a>
+                ) : (
+                  <Link
+                    key={href}
+                    aria-label={ariaLabel}
+                    className={iconLinkClass}
+                    href={href}
+                  >
+                    <Icon className="size-4" />
+                  </Link>
+                ),
+              )}
             </div>
           </div>
 

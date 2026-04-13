@@ -39,7 +39,10 @@ export const HeroActions = ({
       className="shrink-0"
       nativeButton={false}
       render={
-        <Link href={withLocalePrefix(lang, ROUTES.PROGRAMS)}>
+        <Link
+          href={withLocalePrefix(lang, ROUTES.PROGRAMS)}
+          transitionTypes={["nav-forward"]}
+        >
           {browseProgramsLabel}
           <ArrowRight />
         </Link>

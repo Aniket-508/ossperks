@@ -110,6 +110,7 @@ export const Footer = ({
             <Link
               className="text-fd-foreground mb-4 inline-flex items-center gap-2.5 font-semibold tracking-tight"
               href={homeHref}
+              transitionTypes={["nav-back"]}
             >
               <LogoMark aria-hidden className="h-6 shrink-0" />
               <span className="text-base">{SITE.NAME}</span>
@@ -133,6 +134,7 @@ export const Footer = ({
                     aria-label={ariaLabel}
                     className={iconLinkClass}
                     href={href}
+                    transitionTypes={["nav-forward"]}
                   >
                     <Icon className="size-4" />
                   </Link>
@@ -146,7 +148,11 @@ export const Footer = ({
             <ul>
               {browseLinks.map(({ href, label }) => (
                 <li key={href}>
-                  <Link className={footerLinkClass} href={href}>
+                  <Link
+                    className={footerLinkClass}
+                    href={href}
+                    transitionTypes={["nav-forward"]}
+                  >
                     {label}
                   </Link>
                 </li>
@@ -169,7 +175,11 @@ export const Footer = ({
                       {label}
                     </a>
                   ) : (
-                    <Link className={footerLinkClass} href={href}>
+                    <Link
+                      className={footerLinkClass}
+                      href={href}
+                      transitionTypes={["nav-forward"]}
+                    >
                       {label}
                     </Link>
                   )}
@@ -261,6 +271,7 @@ export const Footer = ({
                   className="group/tile text-fd-muted-foreground hover:[[href]]:text-fd-foreground flex min-w-0 items-center justify-between gap-2"
                   href={item.href}
                   key={item.href}
+                  transitionTypes={["nav-forward"]}
                 >
                   <span className="truncate text-sm">{item.label}</span>
                   <hr className="border-fd-border group-hover/tile:border-fd-primary min-w-2 flex-1 border-0 border-t" />

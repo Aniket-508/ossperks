@@ -135,7 +135,7 @@ export default async function TagDetailPage({
         />
 
         <h1 className="mb-2 text-4xl font-bold">{pageTitle}</h1>
-        <p className="text-fd-muted-foreground mb-10 max-w-2xl text-lg">
+        <p className="text-fd-muted-foreground mb-10 text-lg text-balance">
           {pageDescription}
         </p>
 
@@ -150,7 +150,7 @@ export default async function TagDetailPage({
         />
 
         {filtered.length > 0 ? (
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2">
             {filtered.map((program) => {
               const programCategoryLabel =
                 t.common.categories[

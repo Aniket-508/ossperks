@@ -38,7 +38,10 @@ export const HomeCtaWithDialogs = ({
         size="lg"
         nativeButton={false}
         render={
-          <Link href={withLocalePrefix(lang, ROUTES.SUBMIT_PROGRAM)}>
+          <Link
+            href={withLocalePrefix(lang, ROUTES.SUBMIT_PROGRAM)}
+            transitionTypes={["nav-forward"]}
+          >
             {translations.submitProgram}
             <ArrowRight />
           </Link>

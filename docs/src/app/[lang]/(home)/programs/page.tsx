@@ -119,7 +119,10 @@ export default async function ProgramsPage({
               size="lg"
               nativeButton={false}
               render={
-                <Link href={withLocalePrefix(lang, ROUTES.SUBMIT_PROGRAM)}>
+                <Link
+                  href={withLocalePrefix(lang, ROUTES.SUBMIT_PROGRAM)}
+                  transitionTypes={["nav-forward"]}
+                >
                   <Plus />
                   {t.programs.submit.buttonText}
                 </Link>

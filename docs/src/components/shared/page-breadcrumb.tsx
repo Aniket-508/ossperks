@@ -39,6 +39,7 @@ export const PageBreadcrumb = ({
               aria-label={homeLabel}
               className="inline-flex items-center justify-center"
               href={homeHref}
+              transitionTypes={["nav-back"]}
             >
               <Home aria-hidden className="size-4" />
             </Link>
@@ -58,7 +59,11 @@ export const PageBreadcrumb = ({
             ) : (
               <BreadcrumbLink
                 className="text-fd-muted-foreground hover:text-fd-foreground"
-                render={<Link href={segment.href}>{segment.label}</Link>}
+                render={
+                  <Link href={segment.href} transitionTypes={["nav-back"]}>
+                    {segment.label}
+                  </Link>
+                }
               />
             )}
           </BreadcrumbItem>

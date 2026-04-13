@@ -144,7 +144,10 @@ export default async function HomePage({
               className="text-fd-primary shrink-0 max-sm:hidden"
               nativeButton={false}
               render={
-                <Link href={withLocalePrefix(lang, ROUTES.PROGRAMS)}>
+                <Link
+                  href={withLocalePrefix(lang, ROUTES.PROGRAMS)}
+                  transitionTypes={["nav-forward"]}
+                >
                   {t.home.featured.viewAll}
                   <ArrowRight />
                 </Link>
@@ -178,7 +181,10 @@ export default async function HomePage({
             className="text-fd-primary w-full shrink-0 sm:hidden"
             nativeButton={false}
             render={
-              <Link href={withLocalePrefix(lang, ROUTES.PROGRAMS)}>
+              <Link
+                href={withLocalePrefix(lang, ROUTES.PROGRAMS)}
+                transitionTypes={["nav-forward"]}
+              >
                 {t.home.featured.viewAll}
                 <ArrowRight />
               </Link>
@@ -205,7 +211,10 @@ export default async function HomePage({
               className="text-fd-primary shrink-0 max-sm:hidden"
               nativeButton={false}
               render={
-                <Link href={withLocalePrefix(lang, ROUTES.PEOPLE)}>
+                <Link
+                  href={withLocalePrefix(lang, ROUTES.PEOPLE)}
+                  transitionTypes={["nav-forward"]}
+                >
                   {t.home.people.viewAll}
                   <ArrowRight />
                 </Link>
@@ -245,7 +254,10 @@ export default async function HomePage({
             className="text-fd-primary w-full shrink-0 sm:hidden"
             nativeButton={false}
             render={
-              <Link href={withLocalePrefix(lang, ROUTES.PEOPLE)}>
+              <Link
+                href={withLocalePrefix(lang, ROUTES.PEOPLE)}
+                transitionTypes={["nav-forward"]}
+              >
                 {t.home.people.viewAll}
                 <ArrowRight />
               </Link>

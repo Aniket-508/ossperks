@@ -246,7 +246,7 @@ export default async function ProgramPage({
               <h2 className="text-fd-muted-foreground mb-3 text-sm font-medium">
                 {sec.categoryLabel}
               </h2>
-              <Link href={categoryHref}>
+              <Link href={categoryHref} transitionTypes={["nav-back"]}>
                 <Badge variant="default">{categoryLabel}</Badge>
               </Link>
             </section>
@@ -307,6 +307,7 @@ export default async function ProgramPage({
                         `${ROUTES.TAGS}/${encodeUrlForPath(tag)}` as `/${string}`,
                       )}
                       key={tag}
+                      transitionTypes={["nav-back"]}
                     >
                       <Badge variant="secondary">{tag}</Badge>
                     </Link>
@@ -321,18 +322,17 @@ export default async function ProgramPage({
           <section className="border-fd-border/60 mt-14 border-t pt-10">
             <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex min-w-0 flex-1 items-center gap-3">
-                <h2 className="text-xl font-semibold whitespace-nowrap">
+                <h2 className="truncate text-xl font-semibold">
                   {sec.similarTo.replace("{name}", program.name)}
                 </h2>
-                <div
-                  aria-hidden
-                  className="bg-fd-border/80 hidden h-px max-w-20 flex-1 sm:block"
-                />
               </div>
               <Button
                 nativeButton={false}
                 render={
-                  <Link href={withLocalePrefix(lang, ROUTES.PROGRAMS)}>
+                  <Link
+                    href={withLocalePrefix(lang, ROUTES.PROGRAMS)}
+                    transitionTypes={["nav-back"]}
+                  >
                     {sec.viewAll}
                     <ArrowRightIcon />
                   </Link>

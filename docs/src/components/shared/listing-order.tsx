@@ -58,9 +58,21 @@ export const ListingOrder = ({
         className={cn("w-auto min-w-36 max-sm:flex-1", className)}
         size="default"
       >
-        <SelectValue placeholder={labels.placeholder} />
+        <SelectValue>
+          {(value: string | null) => {
+            if (!value) {
+              return labels.placeholder;
+            }
+            return options.find((o) => o.value === value)?.label ?? value;
+          }}
+        </SelectValue>
       </SelectTrigger>
-      <SelectContent align="start" side="bottom" className="min-w-36">
+      <SelectContent
+        alignItemWithTrigger={false}
+        align="start"
+        side="bottom"
+        className="min-w-36"
+      >
         {options.map((o) => (
           <SelectItem key={o.value} value={o.value}>
             {o.label}

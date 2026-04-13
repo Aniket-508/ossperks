@@ -14,6 +14,7 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
+  DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import {
@@ -83,6 +84,7 @@ const DesktopFilterNavButton = memo(function DesktopFilterNavButton({
 
   return (
     <button
+      aria-pressed={active}
       className={cn(
         "hover:bg-fd-muted/50 text-fd-muted-foreground border-fd-border border-b px-3 py-2.5 text-left text-sm transition-colors",
         active && "bg-fd-muted/40 text-fd-foreground font-medium",
@@ -179,21 +181,25 @@ const MobileFilterSectionCard = memo(function MobileFilterSectionCard({
   }, [onOpenSection, section.id]);
 
   return (
-    <button
-      className="border-fd-border hover:bg-fd-muted/30 w-full rounded-lg border p-3 text-left transition-colors"
-      onClick={handleOpen}
-      type="button"
-    >
-      <div className="text-fd-muted-foreground mb-2 flex items-center justify-between text-xs font-medium tracking-wide uppercase">
-        <span>{section.title}</span>
-        <ChevronRight className="size-4" />
-      </div>
-      {selectedKeys.length === 0 ? (
-        <span className="text-fd-muted-foreground text-sm">
-          {section.emptySelectionLabel}
-        </span>
-      ) : (
-        <div className="flex flex-wrap gap-1.5">
+    <div className="border-fd-border hover:bg-fd-muted/30 focus-within:ring-ring rounded-lg border p-3 text-left transition-colors focus-within:ring-2">
+      <button
+        aria-label={section.title}
+        className="w-full text-left focus-visible:outline-none"
+        onClick={handleOpen}
+        type="button"
+      >
+        <div className="text-fd-muted-foreground flex items-center justify-between text-xs font-medium tracking-wide uppercase">
+          <span>{section.title}</span>
+          <ChevronRight className="size-4" />
+        </div>
+        {selectedKeys.length === 0 ? (
+          <p className="text-fd-muted-foreground mt-2 text-sm">
+            {section.emptySelectionLabel}
+          </p>
+        ) : null}
+      </button>
+      {selectedKeys.length > 0 ? (
+        <div className="mt-2 flex flex-wrap gap-1.5">
           {selectedKeys.map((key) => (
             <MobileFilterDraftChip
               chipKey={key}
@@ -205,8 +211,8 @@ const MobileFilterSectionCard = memo(function MobileFilterSectionCard({
             />
           ))}
         </div>
-      )}
-    </button>
+      ) : null}
+    </div>
   );
 });
 
@@ -397,10 +403,6 @@ export const ListingFilters = ({
     setNestedSection(null);
   }, [nestedSection, nestedSelection]);
 
-  const openMobileDrawer = useCallback(() => {
-    openMobile(true);
-  }, [openMobile]);
-
   const handleNestedDrawerOpenChange = useCallback((o: boolean) => {
     if (!o) {
       setNestedSection(null);
@@ -443,7 +445,7 @@ export const ListingFilters = ({
   const desktopSectionPlaceholder = activeConfig?.searchPlaceholder;
 
   const desktopPanel = (
-    <div className="flex max-h-[min(80vh,520px)] w-[min(100vw-2rem,560px)] min-w-0 flex-col">
+    <div className="flex max-h-[min(80vh,500px)] w-[min(100vw-2rem,560px)] min-w-0 flex-col">
       <div className="flex min-h-0 min-w-0 flex-1 overflow-hidden">
         <nav
           aria-label={filters.filterButton}
@@ -464,6 +466,7 @@ export const ListingFilters = ({
             <div className="relative">
               <Search className="text-fd-muted-foreground pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2" />
               <Input
+                aria-label={desktopSectionPlaceholder ?? filters.filterButton}
                 className="pl-9"
                 onChange={handleSectionSearchChange}
                 placeholder={desktopSectionPlaceholder}
@@ -544,16 +547,13 @@ export const ListingFilters = ({
       </div>
 
       <div className="md:hidden">
-        <Button
-          className="shrink-0"
-          onClick={openMobileDrawer}
-          type="button"
-          variant="outline"
-        >
-          <ListFilter className="size-4" />
-          {filterTriggerLabel}
-        </Button>
         <Drawer onOpenChange={openMobile} open={mobileOpen}>
+          <DrawerTrigger asChild>
+            <Button className="shrink-0" type="button" variant="outline">
+              <ListFilter className="size-4" />
+              {filterTriggerLabel}
+            </Button>
+          </DrawerTrigger>
           <DrawerContent>
             <DrawerHeader>
               <DrawerTitle>{filters.filterButton}</DrawerTitle>
@@ -599,6 +599,7 @@ export const ListingFilters = ({
               <div className="relative">
                 <Search className="text-fd-muted-foreground pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2" />
                 <Input
+                  aria-label={nestedSearchPlaceholder ?? filters.filterButton}
                   className="pl-9"
                   onChange={handleNestedSearchChange}
                   placeholder={nestedSearchPlaceholder}

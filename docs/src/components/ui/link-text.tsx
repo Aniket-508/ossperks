@@ -20,7 +20,7 @@ export const LinkText = ({
   >
     {children}
     {showExternalIcon && (
-      <ExternalLink className="size-5 shrink-0 opacity-50" />
+      <ExternalLink aria-hidden className="size-5 shrink-0 opacity-50" />
     )}
   </a>
 );

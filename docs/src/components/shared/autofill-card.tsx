@@ -88,6 +88,7 @@ export const AutofillCard = ({
             {(field) => (
               <div className="w-full">
                 <Input
+                  aria-label={t.placeholder}
                   type="url"
                   required
                   placeholder={t.placeholder}
@@ -129,12 +130,19 @@ export const AutofillCard = ({
         {/* eslint-enable react-perf/jsx-no-new-function-as-prop */}
       </form>
       {showSuccess && (
-        <p className="animate-slide-down bg-fd-muted/50 overflow-hidden py-2 text-center text-xs text-green-500">
+        <p
+          aria-live="polite"
+          className="animate-slide-down bg-fd-muted/50 overflow-hidden py-2 text-center text-xs text-green-500"
+          role="status"
+        >
           {t.success} 🥳
         </p>
       )}
       {autofillError && (
-        <p className="animate-slide-down bg-fd-muted/50 text-destructive overflow-hidden py-2 text-center text-xs">
+        <p
+          className="animate-slide-down bg-fd-muted/50 text-destructive overflow-hidden py-2 text-center text-xs"
+          role="alert"
+        >
           {autofillError} 😕
         </p>
       )}

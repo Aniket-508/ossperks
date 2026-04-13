@@ -111,8 +111,9 @@ export const ListingPagination = ({
             className={
               displayPage <= 1 ? "pointer-events-none opacity-50" : undefined
             }
-            href="#"
+            href={displayPage <= 1 ? undefined : "#"}
             onClick={displayPage <= 1 ? undefined : handlePagePrev}
+            tabIndex={displayPage <= 1 ? -1 : undefined}
             text={labels.previous}
           />
         </div>
@@ -140,8 +141,9 @@ export const ListingPagination = ({
                 ? "pointer-events-none opacity-50"
                 : undefined
             }
-            href="#"
+            href={displayPage >= pageCount ? undefined : "#"}
             onClick={displayPage >= pageCount ? undefined : handlePageNext}
+            tabIndex={displayPage >= pageCount ? -1 : undefined}
             text={labels.next}
           />
         </div>

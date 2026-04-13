@@ -35,7 +35,7 @@ export const baseOptions = (locale: string): BaseLayoutProps => ({
   nav: {
     title: (
       <>
-        <LogoMark className="h-6" />
+        <LogoMark aria-hidden className="h-6" />
         {SITE.NAME}
       </>
     ),

@@ -221,13 +221,15 @@ export const ContactSubmissionDialog = ({
                         field.handleChange(val as string);
                       return (
                         <div className="space-y-2">
-                          <Label>{t.form.programLabel}</Label>
+                          <Label htmlFor="program-slug">
+                            {t.form.programLabel}
+                          </Label>
                           <Select
                             value={field.state.value}
                             onValueChange={handleChange}
                             disabled={isSubmitting}
                           >
-                            <SelectTrigger className="w-full">
+                            <SelectTrigger className="w-full" id="program-slug">
                               <SelectValue
                                 placeholder={t.form.programPlaceholder}
                               >
@@ -249,7 +251,7 @@ export const ContactSubmissionDialog = ({
                   </form.Field>
 
                   {submissionError && (
-                    <p className="text-destructive text-sm">
+                    <p className="text-destructive text-sm" role="alert">
                       {submissionError}
                     </p>
                   )}

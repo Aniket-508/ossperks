@@ -95,6 +95,7 @@ Free tools, services, and credits offered to open-source projects and their main
 - [DeepSource](https://deepsource.com/pricing) - Free static analysis, SAST, code coverage, and automated code reviews for open source projects with unlimited public repositories and unlimited team members.
 - [SignPath](https://signpath.io/solutions/open-source-community) - Open-source projects can apply for a free code signing certificate through the SignPath Foundation, with secure signing, pipeline integrity, and full audit trails at no cost.
 - [Snyk](https://snyk.io/open-source/) - Snyk provides full Enterprise License access with unlimited usage for open-source projects, covering vulnerability scanning, dependency analysis, and security advisories.
+- [Socket](https://x.com/feross/status/2039744122261778502) - The Socket for Open Source program offers a free Team plan to open source maintainers to protect their projects from supply chain attacks.
 - [SonarSource](https://www.sonarsource.com/open-source-editions/sonarqube-cloud/) - Free static analysis for open-source projects on SonarQube Cloud, with unlimited members, feature branch analysis, and custom quality standards.
 
 ## Support
@@ -108,7 +109,6 @@ Free tools, services, and credits offered to open-source projects and their main
 - [Chromatic](https://chromatic.com/docs/open-source) - Free visual testing plan for qualifying open source projects, built by the Storybook team. Includes 35,000 Chrome snapshots per month with cross-browser testing across Chrome, Firefox, Safari, and Edge.
 - [Codecov](https://about.codecov.io/for/open-source/) - Free forever code coverage for open source projects with unlimited public repositories, PR comments, status checks, and API access. Trusted by over 60,000 OSS projects.
 - [Coveralls](https://coveralls.io/) - Free forever code coverage tracking for open source projects with support for C/C++, Go, Java, JavaScript, Python, Ruby, PHP, .NET, and more.
-
 ## Contributing
 
 Contributions welcome! Read the [contribution guidelines](CONTRIBUTING.md) first.

@@ -14,6 +14,7 @@ const footer = {
   people: "사람",
   popularCategories: "인기 카테고리:",
   productHeroiconsAnimated: "heroicons-animated",
+  productTermcn: "termcn",
   productVercelDoctor: "vercel-doctor",
   programs: "프로그램",
   quickLinks: "빠른 링크:",

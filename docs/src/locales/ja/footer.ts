@@ -14,6 +14,7 @@ const footer = {
   people: "人物",
   popularCategories: "人気のカテゴリ:",
   productHeroiconsAnimated: "heroicons-animated",
+  productTermcn: "termcn",
   productVercelDoctor: "vercel-doctor",
   programs: "プログラム",
   quickLinks: "クイックリンク:",

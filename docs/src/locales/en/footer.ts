@@ -14,6 +14,7 @@ const footer = {
   people: "People",
   popularCategories: "Popular categories:",
   productHeroiconsAnimated: "heroicons-animated",
+  productTermcn: "termcn",
   productVercelDoctor: "vercel-doctor",
   programs: "Programs",
   quickLinks: "Quick Links:",

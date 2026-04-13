@@ -14,6 +14,7 @@ const footer = {
   people: "人物",
   popularCategories: "热门分类：",
   productHeroiconsAnimated: "heroicons-animated",
+  productTermcn: "termcn",
   productVercelDoctor: "vercel-doctor",
   programs: "项目",
   quickLinks: "快捷链接：",

@@ -66,11 +66,15 @@ export const Footer = ({
 
   const otherProducts = [
     {
-      href: LINK.PRODUCT_VERCEL_DOCTOR,
+      href: LINK.TERMCN,
+      label: translation.productTermcn,
+    },
+    {
+      href: LINK.VERCEL_DOCTOR,
       label: translation.productVercelDoctor,
     },
     {
-      href: LINK.PRODUCT_HEROICONS_ANIMATED,
+      href: LINK.HEROICONS_ANIMATED,
       label: translation.productHeroiconsAnimated,
     },
   ] as const;

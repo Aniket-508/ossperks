@@ -1,20 +1,37 @@
-/* oxlint-disable vitest/prefer-called-once */
+/* oxlint-disable vitest/prefer-called-once, vitest/prefer-import-in-mock */
+import { createHash } from "node:crypto";
+
 import type * as PostHogModule from "posthog-node";
 
 const readFileSyncMock = vi.fn();
 const writeFileSyncMock = vi.fn();
-const randomUUIDMock = vi.fn();
+const mkdirSyncMock = vi.fn();
 const captureMock = vi.fn();
 const shutdownMock = vi.fn();
 const postHogConstructorMock = vi.fn();
 
-vi.mock(import("node:fs"), () => ({
+/** Matches `getAnonymousId()` in telemetry.ts for mocked hostname / userInfo. */
+const expectedDistinctId = createHash("sha256")
+  .update("test-host:test-user")
+  .digest("hex")
+  .slice(0, 16);
+
+vi.mock("node:fs", () => ({
+  mkdirSync: mkdirSyncMock,
   readFileSync: readFileSyncMock,
   writeFileSync: writeFileSyncMock,
 }));
 
-vi.mock(import("node:crypto"), () => ({
-  randomUUID: randomUUIDMock,
+vi.mock("node:os", () => ({
+  homedir: () => "/home/test",
+  hostname: () => "test-host",
+  userInfo: () => ({
+    gid: 1000,
+    homedir: "/home/test",
+    shell: "/bin/bash",
+    uid: 1000,
+    username: "test-user",
+  }),
 }));
 
 vi.mock(import("posthog-node"), () => {
@@ -49,7 +66,7 @@ describe("telemetry", () => {
 
     readFileSyncMock.mockReset();
     writeFileSyncMock.mockReset();
-    randomUUIDMock.mockReset();
+    mkdirSyncMock.mockReset();
     captureMock.mockReset();
     shutdownMock.mockReset();
     shutdownMock.mockResolvedValue(undefined as never);
@@ -66,25 +83,26 @@ describe("telemetry", () => {
     process.env = originalEnv;
   });
 
-  it("generates and persists a distinct id on first run", async () => {
+  it("writes first-run notice config on first capture when no telemetry file exists", async () => {
     readFileSyncMock.mockImplementation(() => {
       throw new Error("ENOENT");
     });
-    randomUUIDMock.mockReturnValue("machine-id");
 
     const { capture } = await importTelemetry();
 
     capture("cli:list");
 
-    expect(randomUUIDMock).toHaveBeenCalledTimes(1);
+    expect(mkdirSyncMock).toHaveBeenCalledWith(
+      "/home/test/.ossperks",
+      expect.objectContaining({ recursive: true }),
+    );
     expect(writeFileSyncMock).toHaveBeenCalledWith(
-      expect.stringContaining(".ossperks-telemetry.json"),
-      JSON.stringify({ distinctId: "machine-id" }, null, 2),
-      "utf8",
+      "/home/test/telemetry.json",
+      JSON.stringify({ enabled: true, notified: true }, null, 2),
     );
     expect(captureMock).toHaveBeenCalledWith(
       expect.objectContaining({
-        distinctId: "machine-id",
+        distinctId: expectedDistinctId,
         event: "cli:list",
         properties: expect.objectContaining({
           ci: expectedCi,
@@ -94,51 +112,50 @@ describe("telemetry", () => {
     );
   });
 
-  it("reuses a persisted distinct id instead of generating a new one", async () => {
+  it("uses hash-based distinct id when config already exists (not read from disk)", async () => {
     readFileSyncMock.mockReturnValue(
-      JSON.stringify({ distinctId: "persisted-id" }),
+      JSON.stringify({ enabled: true, notified: true }),
     );
-    randomUUIDMock.mockReturnValue("new-id");
 
     const { capture } = await importTelemetry();
 
     capture("cli:search");
 
-    expect(randomUUIDMock).not.toHaveBeenCalled();
     expect(writeFileSyncMock).not.toHaveBeenCalled();
     expect(captureMock).toHaveBeenCalledWith(
       expect.objectContaining({
-        distinctId: "persisted-id",
+        distinctId: expectedDistinctId,
         event: "cli:search",
       }),
     );
   });
 
-  it("recovers from a corrupt telemetry file by generating a replacement id", async () => {
+  it("recovers from a corrupt telemetry file and still records events", async () => {
     readFileSyncMock.mockReturnValue("{not-json");
-    randomUUIDMock.mockReturnValue("replacement-id");
 
     const { capture } = await importTelemetry();
 
     capture("cli:show");
 
-    expect(randomUUIDMock).toHaveBeenCalledTimes(1);
+    expect(mkdirSyncMock).toHaveBeenCalledWith(
+      "/home/test/.ossperks",
+      expect.objectContaining({ recursive: true }),
+    );
     expect(writeFileSyncMock).toHaveBeenCalledWith(
-      expect.stringContaining(".ossperks-telemetry.json"),
-      JSON.stringify({ distinctId: "replacement-id" }, null, 2),
-      "utf8",
+      "/home/test/telemetry.json",
+      JSON.stringify({ enabled: true, notified: true }, null, 2),
     );
     expect(captureMock).toHaveBeenCalledWith(
       expect.objectContaining({
-        distinctId: "replacement-id",
+        distinctId: expectedDistinctId,
         event: "cli:show",
       }),
     );
   });
 
-  it("does not recreate or reuse the client after shutdown", async () => {
+  it("creates a new PostHog client after flush when capture is called again", async () => {
     readFileSyncMock.mockReturnValue(
-      JSON.stringify({ distinctId: "persisted-id" }),
+      JSON.stringify({ enabled: true, notified: true }),
     );
 
     const { flush, capture } = await importTelemetry();
@@ -154,7 +171,7 @@ describe("telemetry", () => {
 
     capture("second");
 
-    expect(postHogConstructorMock).toHaveBeenCalledTimes(1);
-    expect(captureMock).toHaveBeenCalledTimes(1);
+    expect(postHogConstructorMock).toHaveBeenCalledTimes(2);
+    expect(captureMock).toHaveBeenCalledTimes(2);
   });
 });

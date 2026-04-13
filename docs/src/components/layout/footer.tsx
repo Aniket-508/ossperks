@@ -209,7 +209,7 @@ export const Footer = ({
 
         <div className="text-fd-muted-foreground mt-12 flex flex-col gap-4 pt-2 text-sm sm:flex-row sm:items-center sm:justify-between sm:gap-6">
           <p className="flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1">
-            <span className="whitespace-nowrap">
+            {/* <span className="whitespace-nowrap">
               {translation.awesomeListStarterPrefix}
               <a
                 className="text-fd-foreground font-medium underline underline-offset-4"
@@ -220,7 +220,7 @@ export const Footer = ({
                 {translation.awesomeListStarterLink}
               </a>
               .
-            </span>{" "}
+            </span>{" "} */}
             <span className="whitespace-nowrap">
               {translation.hostedOn}{" "}
               <a

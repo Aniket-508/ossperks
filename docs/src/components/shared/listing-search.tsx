@@ -2,7 +2,7 @@
 
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { SearchIcon, XIcon } from "lucide-react";
-import { debounce, useQueryStates } from "nuqs";
+import { useQueryStates } from "nuqs";
 import { useCallback, useRef, useTransition } from "react";
 
 import {
@@ -40,7 +40,6 @@ export const ListingSearch = ({
 
   const [isPending, startTransition] = useTransition();
   const [{ q }, setParams] = useQueryStates(parsers, {
-    limitUrlUpdates: debounce(300),
     shallow,
     startTransition,
   });

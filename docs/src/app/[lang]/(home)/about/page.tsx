@@ -112,7 +112,10 @@ export default async function AboutPage({
             size="lg"
             nativeButton={false}
             render={
-              <Link href={withLocalePrefix(lang, ROUTES.PROGRAMS)}>
+              <Link
+                href={withLocalePrefix(lang, ROUTES.PROGRAMS)}
+                transitionTypes={["nav-forward"]}
+              >
                 {t.about.cta.linkText}
               </Link>
             }

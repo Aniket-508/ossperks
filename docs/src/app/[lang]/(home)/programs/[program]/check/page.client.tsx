@@ -145,6 +145,7 @@ const ProgramCheckInner = ({
                   lang,
                   `${ROUTES.PROGRAMS}/${programSlug}` as `/${string}`,
                 )}
+                transitionTypes={["nav-back"]}
               >
                 <ArrowLeft />
                 {programName}
@@ -208,6 +209,7 @@ const ProgramCheckInner = ({
                 lang,
                 `${ROUTES.PROGRAMS}/${programSlug}` as `/${string}`,
               )}
+              transitionTypes={["nav-back"]}
             >
               <ArrowLeft />
               {programName}

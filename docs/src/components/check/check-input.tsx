@@ -4,7 +4,13 @@ import { parseRepoUrl } from "@ossperks/core";
 import { useForm } from "@tanstack/react-form";
 import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo } from "react";
+import {
+  addTransitionType,
+  useCallback,
+  useMemo,
+  startTransition,
+  ViewTransition,
+} from "react";
 import { z } from "zod";
 
 import { Input } from "@/components/ui/input";
@@ -13,6 +19,8 @@ import { withLocalePrefix } from "@/i18n/navigation";
 import { encodeUrlForPath } from "@/lib/url";
 import { cn } from "@/lib/utils";
 import type { CheckTranslations } from "@/locales/en/check";
+
+const TRANSITION_NAME = "repo-check-input";
 
 interface RepoCheckInputProps {
   lang: string;
@@ -50,7 +58,11 @@ export const RepoCheckInput = ({
         return;
       }
       const search = `?provider=${encodeUrlForPath(ref.provider)}&owner=${encodeUrlForPath(ref.owner)}&repo=${encodeUrlForPath(ref.repo)}&path=${encodeUrlForPath(ref.path)}`;
-      router.push(`${withLocalePrefix(lang, basePath)}${search}`);
+      const href = `${withLocalePrefix(lang, basePath)}${search}`;
+      startTransition(() => {
+        addTransitionType("nav-forward");
+        router.push(href);
+      });
     },
     validators: {
       onSubmit: schema,
@@ -73,8 +85,8 @@ export const RepoCheckInput = ({
     >
       {/* eslint-disable react-perf/jsx-no-new-function-as-prop -- TanStack Form render prop */}
       <form.Field name="url">
-        {(field) => (
-          <>
+        {(field) => {
+          const inputRow = (
             <div className="relative">
               <Search className="text-fd-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
               <Input
@@ -88,16 +100,28 @@ export const RepoCheckInput = ({
                 className="h-10 pl-10"
               />
             </div>
-            {field.state.meta.errors.length > 0 && (
-              <p className="text-destructive mt-2 text-xs">
-                {typeof field.state.meta.errors[0] === "string"
-                  ? field.state.meta.errors[0]
-                  : (field.state.meta.errors[0] as { message?: string })
-                      ?.message}
-              </p>
-            )}
-          </>
-        )}
+          );
+
+          return (
+            <>
+              <ViewTransition
+                name={TRANSITION_NAME}
+                share="morph"
+                default="none"
+              >
+                {inputRow}
+              </ViewTransition>
+              {field.state.meta.errors.length > 0 && (
+                <p className="text-destructive mt-2 text-xs">
+                  {typeof field.state.meta.errors[0] === "string"
+                    ? field.state.meta.errors[0]
+                    : (field.state.meta.errors[0] as { message?: string })
+                        ?.message}
+                </p>
+              )}
+            </>
+          );
+        }}
       </form.Field>
       {/* eslint-enable react-perf/jsx-no-new-function-as-prop */}
     </form>

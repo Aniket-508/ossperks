@@ -79,7 +79,7 @@ export default async function HomePage({
       default="none"
     >
       <FAQJsonLd />
-      <div className="view-container flex w-full flex-1 flex-col px-4 py-12">
+      <div className="view-container flex flex-1 flex-col">
         {/* Hero */}
         <section className="pt-8 pb-16 text-center sm:pt-24 sm:pb-32">
           <h1 className="mb-4 text-5xl font-bold tracking-tight">

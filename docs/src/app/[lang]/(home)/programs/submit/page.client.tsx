@@ -284,7 +284,7 @@ export const ProgramSubmitPageClient = ({
 
   if (step === "success") {
     return (
-      <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center px-4 py-24 text-center">
+      <div className="view-container py-24 flex flex-1 flex-col items-center justify-center text-center">
         <CheckCircle2 className="mb-4 size-16 text-green-500" />
         <h1 className="mb-2 text-2xl font-bold">{t.success.heading}</h1>
         <p className="text-fd-muted-foreground mb-6">{t.success.message}</p>

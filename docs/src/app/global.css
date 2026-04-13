@@ -146,7 +146,7 @@
     @apply font-sans;
   }
   .view-container {
-    @apply max-w-layout mx-auto;
+    @apply max-w-layout mx-auto w-full px-4 py-12;
   }
 }
 

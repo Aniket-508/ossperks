@@ -96,7 +96,7 @@ export default async function ProgramsPage({
           slug: p.slug,
         }))}
       />
-      <div className="mx-auto flex w-full max-w-(--fd-layout-width) flex-1 flex-col px-4 py-12">
+      <div className="view-container flex flex-1 flex-col">
         <PageBreadcrumb
           homeHref={withLocalePrefix(lang, ROUTES.HOME)}
           homeLabel={t.common.breadcrumbHome}

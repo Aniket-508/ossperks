@@ -4,7 +4,7 @@ import {
   getProgramsByCategory,
   programs as allPrograms,
 } from "@ossperks/core";
-import { ArrowRightIcon, ListTodoIcon } from "lucide-react";
+import { ArrowRightIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -13,7 +13,7 @@ import { ViewTransition } from "react";
 import { PersonCard } from "@/components/people/person-card";
 import { ProgramBottomBar } from "@/components/programs/program-bottom-bar";
 import { ProgramCard } from "@/components/programs/program-card";
-import { ProgramStickyHeader } from "@/components/programs/program-sticky-header";
+import { ProgramHeader } from "@/components/programs/program-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -126,159 +126,131 @@ export default async function ProgramPage({
         lang={lang}
       />
       <ProgramJsonLd lang={lang} program={program} />
-      <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 py-12">
+      <div className="view-container flex flex-1 flex-col">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_300px]">
-          <ProgramStickyHeader
-            applyUrl={applyUrl}
-            bottomBar={
-              <ProgramBottomBar
-                labels={{
-                  copyLink: sec.copyLink,
-                  copyLinkTooltip: sec.copyLinkTooltip,
-                  linkCopied: sec.linkCopied,
-                  linkCopiedTooltip: sec.linkCopiedTooltip,
-                  nextProgram: sec.nextProgram,
-                  nextProgramTooltip: sec.nextProgramTooltip,
-                  previousProgram: sec.previousProgram,
-                  previousProgramTooltip: sec.previousProgramTooltip,
-                  share: sec.share,
-                  shareOnFacebook: sec.shareOnFacebook,
-                  shareOnLinkedIn: sec.shareOnLinkedIn,
-                  shareOnReddit: sec.shareOnReddit,
-                  shareOnWhatsApp: sec.shareOnWhatsApp,
-                  shareOnX: sec.shareOnX,
-                }}
-                nextHref={nextHref}
-                prevHref={prevHref}
-                shareText={program.name}
-                shareUrl={shareUrl}
-              />
-            }
-            checkHref={checkHref}
-            contentSlot={
+          <div className="flex flex-col">
+            <ProgramHeader
+              labels={{
+                apply: {
+                  short: sec.applyShort,
+                  text: t.programs.applyNow,
+                },
+                by: t.programs.by,
+                check: {
+                  short: sec.checkShort,
+                  text: sec.checkEligibility,
+                },
+              }}
+              name={program.name}
+              description={program.description}
+              provider={program.provider}
+              url={program.url}
+              applyUrl={applyUrl}
+              checkHref={checkHref}
+            />
+
+            <Separator className="mb-10" />
+
+            <section className="mb-10">
+              <h2 className="mb-4 text-xl font-semibold" id="perks">
+                {sec.perks}
+              </h2>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {program.perks.map((perk) => (
+                  <Card key={perk.title}>
+                    <CardHeader>
+                      <CardTitle className="text-base">{perk.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-fd-muted-foreground text-sm">
+                        {perk.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </section>
+
+            <Separator className="mb-10" />
+
+            <section className="mb-10">
+              <h2 className="mb-4 text-xl font-semibold" id="eligibility">
+                {sec.eligibility}
+              </h2>
+              <ul className="text-fd-foreground list-inside list-disc space-y-2">
+                {program.eligibility.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </section>
+
+            {program.requirements && program.requirements.length > 0 ? (
               <>
                 <Separator className="mb-10" />
-
                 <section className="mb-10">
-                  <h2 className="mb-4 text-xl font-semibold" id="perks">
-                    {sec.perks}
-                  </h2>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {program.perks.map((perk) => (
-                      <Card key={perk.title}>
-                        <CardHeader>
-                          <CardTitle className="text-base">
-                            {perk.title}
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <p className="text-fd-muted-foreground text-sm">
-                            {perk.description}
-                          </p>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </section>
-
-                <Separator className="mb-10" />
-
-                <section className="mb-10">
-                  <h2 className="mb-4 text-xl font-semibold" id="eligibility">
-                    {sec.eligibility}
+                  <h2 className="mb-4 text-xl font-semibold" id="requirements">
+                    {sec.requirements}
                   </h2>
                   <ul className="text-fd-foreground list-inside list-disc space-y-2">
-                    {program.eligibility.map((item) => (
+                    {program.requirements.map((item) => (
                       <li key={item}>{item}</li>
                     ))}
                   </ul>
                 </section>
-
-                {program.requirements && program.requirements.length > 0 ? (
-                  <>
-                    <Separator className="mb-10" />
-                    <section className="mb-10">
-                      <h2
-                        className="mb-4 text-xl font-semibold"
-                        id="requirements"
-                      >
-                        {sec.requirements}
-                      </h2>
-                      <ul className="text-fd-foreground list-inside list-disc space-y-2">
-                        {program.requirements.map((item) => (
-                          <li key={item}>{item}</li>
-                        ))}
-                      </ul>
-                    </section>
-                  </>
-                ) : null}
-
-                {program.applicationProcess &&
-                program.applicationProcess.length > 0 ? (
-                  <>
-                    <Separator className="mb-10" />
-                    <section className="mb-10">
-                      <h2
-                        className="mb-4 text-xl font-semibold"
-                        id="how-to-apply"
-                      >
-                        {sec.howToApply}
-                      </h2>
-                      <ol className="text-fd-foreground list-inside list-decimal space-y-2">
-                        {program.applicationProcess.map((step) => (
-                          <li key={step}>{step}</li>
-                        ))}
-                      </ol>
-                    </section>
-                  </>
-                ) : null}
               </>
-            }
-            introSlot={
+            ) : null}
+
+            {program.applicationProcess &&
+            program.applicationProcess.length > 0 ? (
               <>
-                <p className="text-fd-muted-foreground text-lg">
-                  {t.programs.by} {program.provider}
-                </p>
-                <p className="text-fd-foreground mt-4">{program.description}</p>
-                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                  <Button
-                    nativeButton={false}
-                    render={
-                      <a
-                        href={applyUrl}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        {t.programs.applyNow}
-                        <ArrowRightIcon />
-                      </a>
-                    }
-                    size="sm"
-                    variant="default"
-                  />
-                  <Button
-                    nativeButton={false}
-                    render={
-                      <Link href={checkHref}>
-                        <ListTodoIcon />
-                        {sec.checkEligibility}
-                      </Link>
-                    }
-                    size="sm"
-                    variant="outline"
-                  />
-                </div>
+                <Separator className="mb-10" />
+                <section className="mb-10">
+                  <h2 className="mb-4 text-xl font-semibold" id="how-to-apply">
+                    {sec.howToApply}
+                  </h2>
+                  <ol className="text-fd-foreground list-inside list-decimal space-y-2">
+                    {program.applicationProcess.map((step) => (
+                      <li key={step}>{step}</li>
+                    ))}
+                  </ol>
+                </section>
               </>
-            }
-            labels={{
-              applyShort: sec.applyShort,
-              checkShort: sec.checkShort,
-            }}
-            programName={program.name}
-            programUrl={program.url}
-          />
+            ) : null}
 
-          <aside className="space-y-8 lg:sticky lg:top-16 lg:self-start">
+            <ProgramBottomBar
+              labels={{
+                copyLink: sec.copyLink,
+                copyLinkTooltip: sec.copyLinkTooltip,
+                linkCopied: sec.linkCopied,
+                linkCopiedTooltip: sec.linkCopiedTooltip,
+                nextProgram: sec.nextProgram,
+                nextProgramTooltip: sec.nextProgramTooltip,
+                previousProgram: sec.previousProgram,
+                previousProgramTooltip: sec.previousProgramTooltip,
+                share: sec.share,
+                shareOnFacebook: sec.shareOnFacebook,
+                shareOnLinkedIn: sec.shareOnLinkedIn,
+                shareOnReddit: sec.shareOnReddit,
+                shareOnWhatsApp: sec.shareOnWhatsApp,
+                shareOnX: sec.shareOnX,
+              }}
+              nextHref={nextHref}
+              prevHref={prevHref}
+              shareText={program.name}
+              shareUrl={shareUrl}
+            />
+          </div>
+
+          <aside className="-mt-4 space-y-8 pt-4 lg:sticky lg:top-(--header-height) lg:self-start">
+            <section>
+              <h2 className="text-fd-muted-foreground mb-3 text-sm font-medium">
+                {sec.categoryLabel}
+              </h2>
+              <Link href={categoryHref}>
+                <Badge variant="default">{categoryLabel}</Badge>
+              </Link>
+            </section>
+
             {people.length > 0 ? (
               <section>
                 <h2 className="text-fd-muted-foreground mb-3 text-sm font-medium">
@@ -312,15 +284,6 @@ export default async function ProgramPage({
                 </div>
               </section>
             ) : null}
-
-            <section>
-              <h2 className="text-fd-muted-foreground mb-3 text-sm font-medium">
-                {sec.categoryLabel}
-              </h2>
-              <Link href={categoryHref}>
-                <Badge variant="default">{categoryLabel}</Badge>
-              </Link>
-            </section>
 
             {program.duration ? (
               <section>

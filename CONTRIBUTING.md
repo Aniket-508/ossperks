@@ -8,7 +8,7 @@ To suggest a new OSS perk program, please submit a pull request with a single JS
 
 ### Add the program data
 
-Create a JSON file at `packages/core/src/programs/<slug>.json` following the existing schema:
+Create a JSON file at `packages/data/src/programs/<slug>.json` following the existing schema:
 
 ```json
 {
@@ -39,7 +39,7 @@ pnpm --filter @ossperks/core validate
 > - The README entry in the appropriate category
 > - The English MDX documentation page
 > - Translated MDX files for all 8 supported locales
-> - The `programs.generated.ts` barrel file
+> - The `packages/data/src/programs.generated.ts` barrel file
 
 ### What makes a program "awesome"?
 

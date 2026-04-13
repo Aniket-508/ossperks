@@ -15,8 +15,8 @@ import React, { useCallback, useMemo, useRef, useState } from "react";
 import { z } from "zod";
 
 import { ContactFields } from "@/components/people/contact-fields";
-import { AutofillCard } from "@/components/programs/autofill-card";
 import { TagsInput } from "@/components/programs/tags-input";
+import { AutofillCard } from "@/components/shared/autofill-card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -284,7 +284,7 @@ export const ProgramSubmitPageClient = ({
 
   if (step === "success") {
     return (
-      <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center px-4 py-24 text-center">
+      <div className="view-container flex flex-1 flex-col items-center justify-center py-24 text-center">
         <CheckCircle2 className="mb-4 size-16 text-green-500" />
         <h1 className="mb-2 text-2xl font-bold">{t.success.heading}</h1>
         <p className="text-fd-muted-foreground mb-6">{t.success.message}</p>
@@ -310,7 +310,10 @@ export const ProgramSubmitPageClient = ({
             <Button
               nativeButton={false}
               render={
-                <Link href={withLocalePrefix(lang, ROUTES.PROGRAMS)}>
+                <Link
+                  href={withLocalePrefix(lang, ROUTES.PROGRAMS)}
+                  transitionTypes={["nav-back"]}
+                >
                   {t.success.close}
                 </Link>
               }
@@ -329,7 +332,10 @@ export const ProgramSubmitPageClient = ({
           size="sm"
           nativeButton={false}
           render={
-            <Link href={withLocalePrefix(lang, ROUTES.PROGRAMS)}>
+            <Link
+              href={withLocalePrefix(lang, ROUTES.PROGRAMS)}
+              transitionTypes={["nav-back"]}
+            >
               <ArrowLeft />
               {t.backToAll}
             </Link>

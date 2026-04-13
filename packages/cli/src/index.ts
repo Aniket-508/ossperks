@@ -9,9 +9,7 @@ import { showCommand } from "./commands/show.js";
 import { checkForUpdates } from "./utils/check-updates.js";
 import { printBanner, printUsage } from "./utils/intro-banner.js";
 import { printCta } from "./utils/outro-cta.js";
-import { shutdownTelemetry } from "./utils/telemetry.js";
-
-export const name = "ossperks";
+import { captureError, flush } from "./utils/telemetry.js";
 
 const program = new Command()
   .name("ossperks")
@@ -51,11 +49,14 @@ const run = async (): Promise<void> => {
   printBanner();
   try {
     await program.parseAsync(process.argv);
-  } catch (error: unknown) {
-    console.error(error);
-    process.exitCode = 1;
+  } catch (error) {
+    const command = process.argv[2] ?? "unknown";
+    captureError(command, error);
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(`\n  error: ${message}\n`);
+    process.exit(1);
   } finally {
-    await shutdownTelemetry();
+    await flush();
   }
 };
 

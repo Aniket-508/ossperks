@@ -1,6 +1,6 @@
+import type { Program } from "@ossperks/data";
 import spdxLicenseList from "spdx-license-list";
 
-import type { Program } from "./schema";
 import type {
   EligibilityReason,
   EligibilityResult,

@@ -4,7 +4,7 @@ import { Command } from "commander";
 
 import { programDetail, error } from "../utils/format.js";
 import { closestId } from "../utils/id.js";
-import { track } from "../utils/telemetry.js";
+import { capture } from "../utils/telemetry.js";
 
 export const showCommand = new Command("show")
   .alias("info")
@@ -49,7 +49,7 @@ export const showCommand = new Command("show")
       process.exit(1);
     }
 
-    track("cli:show");
+    capture("cli:show");
 
     if (opts.json) {
       console.log(JSON.stringify(program, null, 2));

@@ -349,9 +349,29 @@ checksums:
     categories/security: 4b34923fef858a2b9a4a914c3e822889
     categories/testing: 3995ed6be6e0469dd69f1bf5f75aace9
   38f3f6f082a8baf255d7f5f4c9bcf41e:
-    builtBy: 06fb87953cf485b8d7ac27a00d215e03
+    aboutUs: 7ed93e7bbfca42a405d61ea3c2791aae
+    awesomeListStarterLink: de390cd66d16d0540bd45283905c7d71
+    awesomeListStarterPrefix: 7fac0c792a23312c0e09a9f6b88243de
+    browse: 62d62ebff215d0d6748d4a2cd8a33cdc
+    categories: fd4e44f3b1b2bba9ca45f3aef963d042
+    checkEligibility: 28f31946f7dea47b007b070621ec4723
+    cli: 6bfaaf925aa1c902820f2059a234e467
+    github: 6e1cf3c00fa6fbe24afcc78ea3b5f3e4
     hostedOn: 7de04c9ccf729a5278c6adc66fb18ed0
     llms: 1f43c95ec700ff16152f324118a82aa8
+    madeBy: 5e6e4642cc3bcc6f49bbbcd9268d2ddc
+    otherProducts: 5b59d21f09d3f00e52a98a51490030dc
+    people: 3252cfea4b28953da45166db271641f8
+    popularCategories: 6593f13801606cb1a29c4485d1c0ecb8
+    productHeroiconsAnimated: 8de3630e6f131109d5b97a16c8830226
+    productTermcn: 2dfaa27b7da38509efc3a54f25ad7ac5
+    productVercelDoctor: 904d88865e291211638f83093968fd17
+    programs: 3ff9bc9b9ee8c56caf847534a993799a
+    quickLinks: 2b90eb45629dd96d70aac9bf5a30b446
+    rssFeed: c8d4f514c93c0c88d370a26d0f710d18
+    sponsor: 9ca42fc60a0967462da1ea8aff1799b7
+    submit: 7c91ef5f747eea9f77a9c4f23e19fb2e
+    tags: 97813c8ae67d69575fd04e35a88aed0c
     translationsBy: a1f77585306b3120262252c70f5be7ab
     twitter: 8ab47cae854e4f275b97d7e19aeb15dc
   f083f23053563fa26a106c2575589011:

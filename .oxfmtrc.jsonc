@@ -9,6 +9,11 @@
     "**/tsconfig.tsbuildinfo",
     "docs/content/programs/**",
     "docs/src/locales/**",
+    ".agents/**",
+    ".cursor/**",
+    ".changeset/**",
+    ".claude/**",
+    "README.md",
   ],
   "printWidth": 80,
   "sortImports": {

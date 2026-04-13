@@ -4,6 +4,8 @@ import { LINK } from "@/constants/links";
 import { SITE } from "@/constants/site";
 import { i18n } from "@/i18n/config";
 import { withLocalePrefix } from "@/i18n/navigation";
+import { encodeUrlForPath } from "@/lib/url";
+import { absoluteUrl } from "@/lib/utils";
 
 const LOCALE_TO_BCP47: Record<string, string> = {
   de: "de-DE",
@@ -49,13 +51,19 @@ const SoftwareSourceCodeJsonLd = () => {
     author: {
       "@type": "Person",
       name: SITE.AUTHOR.NAME,
-      url: LINK.TWITTER,
+      url: LINK.PORTFOLIO,
     },
     codeRepository: LINK.GITHUB,
+    dateModified: new Date().toISOString().split("T")[0],
     description: SITE.DESCRIPTION.LONG,
     isAccessibleForFree: true,
-    keywords: SITE.KEYWORDS.join(", "),
+    keywords: SITE.KEYWORDS,
     license: LINK.LICENSE,
+    maintainer: {
+      "@type": "Person",
+      name: SITE.AUTHOR.NAME,
+      url: LINK.PORTFOLIO,
+    },
     name: SITE.NAME,
     offers: {
       "@type": "Offer",
@@ -63,7 +71,7 @@ const SoftwareSourceCodeJsonLd = () => {
       price: "0",
       priceCurrency: "USD",
     },
-    programmingLanguage: ["TypeScript", "JavaScript"],
+    programmingLanguage: ["TypeScript", "React", "JavaScript"],
     runtimePlatform: "Node.js",
     url: SITE.URL,
   };
@@ -75,9 +83,14 @@ const OrganizationJsonLd = () => {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    logo: `${SITE.URL}${SITE.OG_IMAGE}`,
+    founder: {
+      "@type": "Person",
+      name: SITE.AUTHOR.NAME,
+      url: LINK.PORTFOLIO,
+    },
+    logo: SITE.OG_IMAGE,
     name: SITE.NAME,
-    sameAs: [LINK.GITHUB, LINK.TWITTER],
+    sameAs: [LINK.GITHUB, LINK.TWITTER, LINK.PORTFOLIO],
     url: SITE.URL,
   };
 
@@ -129,7 +142,7 @@ const BreadcrumbJsonLd = ({
     "@type": "BreadcrumbList",
     itemListElement: items.map((item, index) => ({
       "@type": "ListItem",
-      item: `${SITE.URL}${withLocalePrefix(lang, item.path)}`,
+      item: absoluteUrl(withLocalePrefix(lang, item.path)),
       name: item.name,
       position: index + 1,
     })),
@@ -144,7 +157,9 @@ const ProgramJsonLd = ({
   lang: string;
   program: Program;
 }) => {
-  const programUrl = `${SITE.URL}${withLocalePrefix(lang, `/programs/${program.slug}`)}`;
+  const programUrl = absoluteUrl(
+    withLocalePrefix(lang, `/programs/${program.slug}`),
+  );
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -179,7 +194,7 @@ const ProgramListJsonLd = ({
     itemListElement: programs.map((program, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      url: `${SITE.URL}${withLocalePrefix(lang, `/programs/${program.slug}`)}`,
+      url: absoluteUrl(withLocalePrefix(lang, `/programs/${program.slug}`)),
     })),
     name: "Open Source Programs",
     numberOfItems: programs.length,
@@ -189,12 +204,14 @@ const ProgramListJsonLd = ({
 
 const PersonPageJsonLd = ({
   name,
+  profilePageUrl,
   role,
-  url,
+  sameAs,
 }: {
   name: string;
+  profilePageUrl?: string;
   role?: string;
-  url?: string;
+  sameAs?: string;
 }) => {
   const jsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",
@@ -204,8 +221,11 @@ const PersonPageJsonLd = ({
   if (role) {
     jsonLd.jobTitle = role;
   }
-  if (url) {
-    jsonLd.url = url;
+  if (profilePageUrl) {
+    jsonLd.url = profilePageUrl;
+  }
+  if (sameAs) {
+    jsonLd.sameAs = sameAs;
   }
   return <JsonLdScript data={jsonLd} />;
 };
@@ -231,10 +251,84 @@ const CategoryProgramListJsonLd = ({
     hasPart: programs.map((program) => ({
       "@type": "SoftwareApplication",
       name: program.name,
-      url: `${SITE.URL}${withLocalePrefix(lang, `/programs/${program.slug}`)}`,
+      url: absoluteUrl(withLocalePrefix(lang, `/programs/${program.slug}`)),
     })),
     name: pageName,
     numberOfItems: programs.length,
+  };
+  return <JsonLdScript data={jsonLd} />;
+};
+
+const CategoriesIndexItemListJsonLd = ({
+  lang,
+  listName,
+  categories,
+}: {
+  lang: string;
+  listName: string;
+  categories: { label: string; slug: string }[];
+}) => {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: categories.map((row, index) => ({
+      "@type": "ListItem",
+      name: row.label,
+      position: index + 1,
+      url: absoluteUrl(withLocalePrefix(lang, `/categories/${row.slug}`)),
+    })),
+    name: listName,
+    numberOfItems: categories.length,
+  };
+  return <JsonLdScript data={jsonLd} />;
+};
+
+const TagsIndexItemListJsonLd = ({
+  lang,
+  listName,
+  tags,
+}: {
+  lang: string;
+  listName: string;
+  tags: { tag: string }[];
+}) => {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: tags.map((row, index) => ({
+      "@type": "ListItem",
+      name: row.tag,
+      position: index + 1,
+      url: absoluteUrl(
+        withLocalePrefix(lang, `/tags/${encodeUrlForPath(row.tag)}`),
+      ),
+    })),
+    name: listName,
+    numberOfItems: tags.length,
+  };
+  return <JsonLdScript data={jsonLd} />;
+};
+
+const PeopleIndexItemListJsonLd = ({
+  lang,
+  listName,
+  people,
+}: {
+  lang: string;
+  listName: string;
+  people: { name: string; slug: string }[];
+}) => {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: people.map((row, index) => ({
+      "@type": "ListItem",
+      name: row.name,
+      position: index + 1,
+      url: absoluteUrl(withLocalePrefix(lang, `/people/${row.slug}`)),
+    })),
+    name: listName,
+    numberOfItems: people.length,
   };
   return <JsonLdScript data={jsonLd} />;
 };
@@ -257,5 +351,8 @@ export {
   ProgramJsonLd,
   ProgramListJsonLd,
   CategoryProgramListJsonLd,
+  CategoriesIndexItemListJsonLd,
+  TagsIndexItemListJsonLd,
+  PeopleIndexItemListJsonLd,
   PersonPageJsonLd,
 };

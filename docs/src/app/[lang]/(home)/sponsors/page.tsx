@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ViewTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -34,93 +35,107 @@ export default async function SponsorsPage({
   const t = await getT(lang);
 
   return (
-    <div className="container mx-auto flex w-full flex-1 flex-col px-4 py-12">
-      <div className="mb-10">
-        <h1 className="mb-4 text-4xl font-bold">{t.sponsors.heading}</h1>
-        <p className="text-fd-muted-foreground text-lg leading-relaxed">
-          {t.sponsors.intro}
-        </p>
+    <ViewTransition
+      enter={{
+        default: "none",
+        "nav-back": "nav-back",
+        "nav-forward": "nav-forward",
+      }}
+      exit={{
+        default: "none",
+        "nav-back": "nav-back",
+        "nav-forward": "nav-forward",
+      }}
+      default="none"
+    >
+      <div className="view-container flex flex-1 flex-col">
+        <div className="mb-10">
+          <h1 className="mb-4 text-4xl font-bold">{t.sponsors.heading}</h1>
+          <p className="text-fd-muted-foreground text-lg leading-relaxed">
+            {t.sponsors.intro}
+          </p>
+        </div>
+
+        <Separator className="mb-10" />
+
+        <section className="mb-10">
+          <h2 className="mb-6 text-2xl font-semibold">
+            {t.sponsors.tiers.gold.name}
+          </h2>
+          <p className="text-fd-muted-foreground mb-4">
+            {t.sponsors.tiers.gold.description}
+          </p>
+          <Card>
+            <CardContent>
+              <p className="text-fd-muted-foreground text-center">
+                {t.sponsors.tiers.empty.replace(
+                  "{tier}",
+                  t.sponsors.tiers.gold.name.toLowerCase(),
+                )}
+              </p>
+            </CardContent>
+          </Card>
+        </section>
+
+        <section className="mb-10">
+          <h2 className="mb-6 text-2xl font-semibold">
+            {t.sponsors.tiers.silver.name}
+          </h2>
+          <p className="text-fd-muted-foreground mb-4">
+            {t.sponsors.tiers.silver.description}
+          </p>
+          <Card>
+            <CardContent>
+              <p className="text-fd-muted-foreground text-center">
+                {t.sponsors.tiers.empty.replace(
+                  "{tier}",
+                  t.sponsors.tiers.silver.name.toLowerCase(),
+                )}
+              </p>
+            </CardContent>
+          </Card>
+        </section>
+
+        <section className="mb-10">
+          <h2 className="mb-6 text-2xl font-semibold">
+            {t.sponsors.tiers.bronze.name}
+          </h2>
+          <p className="text-fd-muted-foreground mb-4">
+            {t.sponsors.tiers.bronze.description}
+          </p>
+          <Card>
+            <CardContent>
+              <p className="text-fd-muted-foreground text-center">
+                {t.sponsors.tiers.empty.replace(
+                  "{tier}",
+                  t.sponsors.tiers.bronze.name.toLowerCase(),
+                )}
+              </p>
+            </CardContent>
+          </Card>
+        </section>
+
+        <Separator className="mb-10" />
+
+        <section>
+          <h2 className="mb-4 text-2xl font-semibold">
+            {t.sponsors.cta.heading}
+          </h2>
+          <p className="text-fd-muted-foreground mb-4">
+            {t.sponsors.cta.description}
+          </p>
+          <Button
+            variant="default"
+            size="lg"
+            nativeButton={false}
+            render={
+              <a href={LINK.SPONSOR} target="_blank" rel="noopener noreferrer">
+                {t.sponsors.cta.linkText}
+              </a>
+            }
+          />
+        </section>
       </div>
-
-      <Separator className="mb-10" />
-
-      <section className="mb-10">
-        <h2 className="mb-6 text-2xl font-semibold">
-          {t.sponsors.tiers.gold.name}
-        </h2>
-        <p className="text-fd-muted-foreground mb-4">
-          {t.sponsors.tiers.gold.description}
-        </p>
-        <Card>
-          <CardContent>
-            <p className="text-fd-muted-foreground text-center">
-              {t.sponsors.tiers.empty.replace(
-                "{tier}",
-                t.sponsors.tiers.gold.name.toLowerCase(),
-              )}
-            </p>
-          </CardContent>
-        </Card>
-      </section>
-
-      <section className="mb-10">
-        <h2 className="mb-6 text-2xl font-semibold">
-          {t.sponsors.tiers.silver.name}
-        </h2>
-        <p className="text-fd-muted-foreground mb-4">
-          {t.sponsors.tiers.silver.description}
-        </p>
-        <Card>
-          <CardContent>
-            <p className="text-fd-muted-foreground text-center">
-              {t.sponsors.tiers.empty.replace(
-                "{tier}",
-                t.sponsors.tiers.silver.name.toLowerCase(),
-              )}
-            </p>
-          </CardContent>
-        </Card>
-      </section>
-
-      <section className="mb-10">
-        <h2 className="mb-6 text-2xl font-semibold">
-          {t.sponsors.tiers.bronze.name}
-        </h2>
-        <p className="text-fd-muted-foreground mb-4">
-          {t.sponsors.tiers.bronze.description}
-        </p>
-        <Card>
-          <CardContent>
-            <p className="text-fd-muted-foreground text-center">
-              {t.sponsors.tiers.empty.replace(
-                "{tier}",
-                t.sponsors.tiers.bronze.name.toLowerCase(),
-              )}
-            </p>
-          </CardContent>
-        </Card>
-      </section>
-
-      <Separator className="mb-10" />
-
-      <section>
-        <h2 className="mb-4 text-2xl font-semibold">
-          {t.sponsors.cta.heading}
-        </h2>
-        <p className="text-fd-muted-foreground mb-4">
-          {t.sponsors.cta.description}
-        </p>
-        <Button
-          variant="default"
-          size="lg"
-          nativeButton={false}
-          render={
-            <a href={LINK.SPONSOR} target="_blank" rel="noopener noreferrer">
-              {t.sponsors.cta.linkText}
-            </a>
-          }
-        />
-      </section>
-    </div>
+    </ViewTransition>
   );
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ViewTransition } from "react";
 
 import { generateLangParams } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
@@ -32,10 +33,24 @@ export default async function ProgramSubmitPage({
   const t = await getT(lang);
 
   return (
-    <ProgramSubmitPageClient
-      lang={lang}
-      translations={t.programs.submit}
-      categoryLabels={t.common.categories}
-    />
+    <ViewTransition
+      enter={{
+        default: "none",
+        "nav-back": "nav-back",
+        "nav-forward": "nav-forward",
+      }}
+      exit={{
+        default: "none",
+        "nav-back": "nav-back",
+        "nav-forward": "nav-forward",
+      }}
+      default="none"
+    >
+      <ProgramSubmitPageClient
+        lang={lang}
+        translations={t.programs.submit}
+        categoryLabels={t.common.categories}
+      />
+    </ViewTransition>
   );
 }

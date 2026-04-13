@@ -1,4 +1,5 @@
 const common = {
+  breadcrumbHome: "Startseite",
   categories: {
     ai: "KI & Machine Learning",
     analytics: "Analytics",

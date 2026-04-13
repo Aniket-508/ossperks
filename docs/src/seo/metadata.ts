@@ -4,6 +4,7 @@ import { LINK } from "@/constants/links";
 import { SITE } from "@/constants/site";
 import { i18n } from "@/i18n/config";
 import { withLocalePrefix } from "@/i18n/navigation";
+import { absoluteUrl } from "@/lib/utils";
 
 const ogLocaleMap: Record<string, string> = {
   de: "de_DE",
@@ -29,7 +30,7 @@ const buildAlternates = (lang: string, path: `/${string}`) => {
 };
 
 interface CreateMetadataOptions {
-  description: string;
+  description?: string;
   lang: string;
   noIndex?: boolean;
   ogDescription?: string;
@@ -76,7 +77,7 @@ export const createMetadata = (options: CreateMetadataOptions): Metadata => {
       siteName: SITE.NAME,
       title: resolvedTitle,
       type: ogType,
-      url: `${SITE.URL}${alternates.canonical}`,
+      url: absoluteUrl(alternates.canonical),
     },
     title,
     twitter: {

@@ -4,6 +4,9 @@ const withMDX = createMDX();
 
 /** @type {import('next').NextConfig} */
 const config = {
+  experimental: {
+    viewTransition: true,
+  },
   images: {
     remotePatterns: [
       { hostname: "unavatar.io", pathname: "/**", protocol: "https" },
@@ -11,7 +14,7 @@ const config = {
   },
   reactStrictMode: true,
   serverExternalPackages: ["license-similarity"],
-  transpilePackages: ["@ossperks/core"],
+  transpilePackages: ["@ossperks/core", "@ossperks/data"],
 };
 
 export default withMDX(config);

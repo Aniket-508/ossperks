@@ -9,7 +9,7 @@ import { Command } from "commander";
 
 import { header, printProgramListTable } from "../utils/format.js";
 import { highlighter } from "../utils/highlighter.js";
-import { track } from "../utils/telemetry.js";
+import { capture } from "../utils/telemetry.js";
 
 const printCategoriesTable = (categories: Category[]): void => {
   header(`${categories.length} categories`);
@@ -70,7 +70,7 @@ const runInteractiveCategories = async (): Promise<void> => {
     process.exit(0);
   }
 
-  track("cli:categories", { interactive: true });
+  capture("cli:categories", { interactive: true });
 
   const category = chosen as Category;
   const programsInCat = getProgramsByCategory(category);
@@ -90,7 +90,7 @@ export const categoriesCommand = new Command("categories")
     const categories = getCategories();
 
     if (opts.json) {
-      track("cli:categories");
+      capture("cli:categories");
       console.log(
         JSON.stringify(
           categories.map((c) => ({
@@ -110,6 +110,6 @@ export const categoriesCommand = new Command("categories")
       return;
     }
 
-    track("cli:categories");
+    capture("cli:categories");
     printCategoriesTable(categories);
   });

@@ -18,7 +18,7 @@ export const HeroActions = ({
   browseProgramsLabel,
   inputTranslations,
 }: HeroActionsProps) => (
-  <div className="mx-auto flex w-full max-w-2xl flex-col items-center gap-4 sm:flex-row">
+  <div className="mx-auto flex w-full max-w-2xl flex-col items-start gap-4 sm:flex-row">
     <RepoCheckInput
       lang={lang}
       translations={inputTranslations}
@@ -39,7 +39,10 @@ export const HeroActions = ({
       className="shrink-0"
       nativeButton={false}
       render={
-        <Link href={withLocalePrefix(lang, ROUTES.PROGRAMS)}>
+        <Link
+          href={withLocalePrefix(lang, ROUTES.PROGRAMS)}
+          transitionTypes={["nav-forward"]}
+        >
           {browseProgramsLabel}
           <ArrowRight />
         </Link>

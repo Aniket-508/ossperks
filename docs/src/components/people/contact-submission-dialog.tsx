@@ -8,7 +8,7 @@ import { z } from "zod";
 
 import { ContactFields } from "@/components/people/contact-fields";
 import type { ContactFieldsTranslations } from "@/components/people/contact-fields";
-import { AutofillCard } from "@/components/programs/autofill-card";
+import { AutofillCard } from "@/components/shared/autofill-card";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -221,13 +221,15 @@ export const ContactSubmissionDialog = ({
                         field.handleChange(val as string);
                       return (
                         <div className="space-y-2">
-                          <Label>{t.form.programLabel}</Label>
+                          <Label htmlFor="program-slug">
+                            {t.form.programLabel}
+                          </Label>
                           <Select
                             value={field.state.value}
                             onValueChange={handleChange}
                             disabled={isSubmitting}
                           >
-                            <SelectTrigger className="w-full">
+                            <SelectTrigger className="w-full" id="program-slug">
                               <SelectValue
                                 placeholder={t.form.programPlaceholder}
                               >
@@ -249,7 +251,7 @@ export const ContactSubmissionDialog = ({
                   </form.Field>
 
                   {submissionError && (
-                    <p className="text-destructive text-sm">
+                    <p className="text-destructive text-sm" role="alert">
                       {submissionError}
                     </p>
                   )}

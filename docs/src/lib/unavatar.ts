@@ -1,7 +1,5 @@
-/**
- * Map URL hostnames to unavatar.io provider names.
- * @see https://unavatar.io/
- */
+import { encodeUrlForPath } from "./url";
+
 const HOST_TO_PROVIDER: Record<string, string> = {
   "bsky.app": "bluesky",
   "deviantart.com": "deviantart",
@@ -59,7 +57,7 @@ export const getUnavatarUrl = (profileUrl: string): string | null => {
     if (!pathname) {
       return null;
     }
-    const key = encodeURIComponent(pathname);
+    const key = encodeUrlForPath(pathname);
     return `${UNAVATAR_BASE}/${provider}/${key}`;
   } catch {
     return null;

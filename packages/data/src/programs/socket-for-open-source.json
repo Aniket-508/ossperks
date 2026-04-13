@@ -1,0 +1,33 @@
+{
+  "slug": "socket-for-open-source",
+  "name": "Socket for Open Source",
+  "provider": "Socket",
+  "url": "https://x.com/feross/status/2039744122261778502",
+  "applicationUrl": "mailto:support@socket.dev",
+  "category": "security",
+  "contact": {
+    "name": "Feross",
+    "role": "Founder & CEO",
+    "url": "https://x.com/feross"
+  },
+  "description": "The Socket for Open Source program offers a free Team plan to open source maintainers to protect their projects from supply chain attacks.",
+  "perks": [
+    {
+      "title": "Dependency Scanning",
+      "description": "Full dependency scanning across your project."
+    },
+    {
+      "title": "Real-time Alerts",
+      "description": "Real-time alerts for malicious packages in your dependency tree."
+    },
+    {
+      "title": "PR Security Checks",
+      "description": "Check every PR to ensure no malicious dependencies are added, including those from outside contributors."
+    }
+  ],
+  "eligibility": ["Must be an open source maintainer."],
+  "applicationProcess": [
+    "Send an email to support[at]socket[dot]dev to get set up."
+  ],
+  "tags": ["security", "community", "ci-cd", "monitoring"]
+}

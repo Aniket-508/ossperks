@@ -2,15 +2,17 @@ import {
   getCategories,
   getPeople,
   getPersonSlug,
+  getTagsWithProgramCounts,
   programs,
 } from "@ossperks/core";
 import type { MetadataRoute } from "next";
 
 import { ROUTES } from "@/constants/routes";
-import { SITE } from "@/constants/site";
 import { i18n } from "@/i18n/config";
 import { withLocalePrefix } from "@/i18n/navigation";
 import { cliSource } from "@/lib/source";
+import { encodeUrlForPath } from "@/lib/url";
+import { absoluteUrl } from "@/lib/utils";
 
 type ChangeFrequency = MetadataRoute.Sitemap[number]["changeFrequency"];
 
@@ -23,6 +25,8 @@ const STATIC_PATHS: {
   { changeFrequency: "monthly", path: ROUTES.ABOUT, priority: 0.5 },
   { changeFrequency: "weekly", path: ROUTES.CHECK, priority: 0.7 },
   { changeFrequency: "weekly", path: ROUTES.PROGRAMS, priority: 0.9 },
+  { changeFrequency: "weekly", path: ROUTES.CATEGORIES, priority: 0.85 },
+  { changeFrequency: "weekly", path: ROUTES.TAGS, priority: 0.85 },
   { changeFrequency: "monthly", path: ROUTES.SUBMIT_PROGRAM, priority: 0.6 },
   { changeFrequency: "weekly", path: ROUTES.PEOPLE, priority: 0.7 },
   { changeFrequency: "monthly", path: ROUTES.SPONSORS, priority: 0.5 },
@@ -34,9 +38,9 @@ const buildAlternates = (
 ): { languages: Record<string, string> } => {
   const languages: Record<string, string> = {};
   for (const lang of i18n.languages) {
-    languages[lang] = `${SITE.URL}${withLocalePrefix(lang, path)}`;
+    languages[lang] = absoluteUrl(withLocalePrefix(lang, path));
   }
-  languages["x-default"] = `${SITE.URL}${path}`;
+  languages["x-default"] = absoluteUrl(path);
   return { languages };
 };
 
@@ -50,7 +54,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency,
       lastModified,
       priority,
-      url: `${SITE.URL}${withLocalePrefix(i18n.defaultLanguage, path)}`,
+      url: absoluteUrl(withLocalePrefix(i18n.defaultLanguage, path)),
     });
   }
 
@@ -61,7 +65,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       lastModified,
       priority: 0.8,
-      url: `${SITE.URL}${withLocalePrefix(i18n.defaultLanguage, path)}`,
+      url: absoluteUrl(withLocalePrefix(i18n.defaultLanguage, path)),
     });
 
     const checkPath =
@@ -71,7 +75,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       lastModified,
       priority: 0.7,
-      url: `${SITE.URL}${withLocalePrefix(i18n.defaultLanguage, checkPath)}`,
+      url: absoluteUrl(withLocalePrefix(i18n.defaultLanguage, checkPath)),
     });
   }
 
@@ -95,18 +99,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       lastModified,
       priority: 0.8,
-      url: `${SITE.URL}${withLocalePrefix(i18n.defaultLanguage, path)}`,
+      url: absoluteUrl(withLocalePrefix(i18n.defaultLanguage, path)),
     });
   }
 
   for (const category of getCategories()) {
-    const path = `${ROUTES.PROGRAMS_CATEGORY}/${category}` as `/${string}`;
+    const path = `${ROUTES.CATEGORIES}/${category}` as `/${string}`;
     entries.push({
       alternates: buildAlternates(path),
       changeFrequency: "weekly" as const,
       lastModified,
       priority: 0.8,
-      url: `${SITE.URL}${withLocalePrefix(i18n.defaultLanguage, path)}`,
+      url: absoluteUrl(withLocalePrefix(i18n.defaultLanguage, path)),
+    });
+  }
+
+  for (const { tag } of getTagsWithProgramCounts()) {
+    const path = `${ROUTES.TAGS}/${encodeUrlForPath(tag)}` as `/${string}`;
+    entries.push({
+      alternates: buildAlternates(path),
+      changeFrequency: "weekly" as const,
+      lastModified,
+      priority: 0.75,
+      url: absoluteUrl(withLocalePrefix(i18n.defaultLanguage, path)),
     });
   }
 
@@ -118,7 +133,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       lastModified,
       priority: 0.5,
-      url: `${SITE.URL}${withLocalePrefix(i18n.defaultLanguage, path)}`,
+      url: absoluteUrl(withLocalePrefix(i18n.defaultLanguage, path)),
     });
   }
 

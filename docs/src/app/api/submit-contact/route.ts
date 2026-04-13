@@ -27,7 +27,7 @@ const createContactPR = async (
   githubToken: string,
 ) => {
   const octokit = new Octokit({ auth: githubToken });
-  const filePath = `packages/core/src/programs/${submission.programSlug}.json`;
+  const filePath = `packages/data/src/programs/${submission.programSlug}.json`;
   const branchName = `add-contact-${submission.programSlug}-${Date.now()}`;
 
   const { data: ref } = await octokit.git.getRef({

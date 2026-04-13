@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import type { ReactNode } from "react";
 
-import { RootProvider } from "@/components/root-provider";
+import { HotkeysProvider } from "@/components/providers/hotkeys-provider";
+import { RootProvider } from "@/components/providers/root-provider";
 import { generateLangParams, isLocale } from "@/i18n/config";
 import { provider } from "@/i18n/ui";
 import { publicSans } from "@/lib/fonts";
@@ -32,7 +33,9 @@ export default async function Layout({
       </head>
       <body className="flex min-h-screen flex-col">
         <NuqsAdapter>
-          <RootProvider i18n={provider(lang)}>{children}</RootProvider>
+          <HotkeysProvider>
+            <RootProvider i18n={provider(lang)}>{children}</RootProvider>
+          </HotkeysProvider>
         </NuqsAdapter>
         <Analytics />
       </body>

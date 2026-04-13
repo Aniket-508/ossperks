@@ -26,7 +26,11 @@ export const FieldError = ({ errors }: { errors: unknown[] }) => {
   if (!message) {
     return null;
   }
-  return <p className="text-destructive text-xs">{message}</p>;
+  return (
+    <p aria-live="polite" className="text-destructive text-xs" role="alert">
+      {message}
+    </p>
+  );
 };
 
 interface TextFieldProps {

@@ -11,7 +11,7 @@ const packageJson = JSON.parse(
 const sharedConfig = {
   banner: { js: "#!/usr/bin/env node" },
   deps: {
-    alwaysBundle: ["@ossperks/core"],
+    alwaysBundle: ["@ossperks/core", "@ossperks/data"],
     externals: ["license-similarity"],
     onlyBundle: false,
   },

@@ -8,7 +8,7 @@ import {
   printProgramListTable,
   programDetail,
 } from "../utils/format.js";
-import { track } from "../utils/telemetry.js";
+import { capture } from "../utils/telemetry.js";
 
 const matchesQuery = (p: Program, q: string): boolean =>
   p.name.toLowerCase().includes(q) ||
@@ -54,7 +54,7 @@ const runInteractiveSearch = async (): Promise<void> => {
     process.exit(0);
   }
 
-  track("cli:search", { interactive: true, queryLength: 0, resultCount: 1 });
+  capture("cli:search", { interactive: true, queryLength: 0, resultCount: 1 });
 
   const program = getProgramBySlug(chosen);
   if (program) {
@@ -81,7 +81,7 @@ export const searchCommand = new Command("search")
     const q = query.toLowerCase();
     const results = programs.filter((p) => matchesQuery(p, q));
 
-    track("cli:search", {
+    capture("cli:search", {
       queryLength: query.length,
       resultCount: results.length,
     });

@@ -7,6 +7,7 @@
   "category": "security",
   "contact": {
     "name": "Feross",
+    "role": "Founder & CEO",
     "url": "https://x.com/feross"
   },
   "description": "The Socket for Open Source program offers a free Team plan to open source maintainers to protect their projects from supply chain attacks.",

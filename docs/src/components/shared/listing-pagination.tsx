@@ -1,7 +1,7 @@
 "use client";
 
 import { useQueryStates } from "nuqs";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useTransition } from "react";
 
 import {
   Pagination,
@@ -64,8 +64,10 @@ export const ListingPagination = ({
   pageCount,
   parsers = tagsBrowsePaginationParams,
 }: ListingPaginationProps) => {
+  const [, startTransition] = useTransition();
   const [{ page: urlPage }, setParams] = useQueryStates(parsers, {
     shallow: false,
+    startTransition,
   });
 
   const displayPage = urlPage ?? 1;

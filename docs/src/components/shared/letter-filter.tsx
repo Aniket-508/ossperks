@@ -1,7 +1,7 @@
 "use client";
 
 import { useQueryStates } from "nuqs";
-import { useCallback } from "react";
+import { useCallback, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import type { LetterFilterParsers } from "@/lib/search-params";
@@ -46,8 +46,10 @@ const LetterCharButton = ({
 };
 
 export const LetterFilter = ({ labels, parsers }: LetterFilterProps) => {
+  const [, startTransition] = useTransition();
   const [params, setParams] = useQueryStates(parsers, {
     shallow: false,
+    startTransition,
   });
 
   const letter = params.letter ?? "";

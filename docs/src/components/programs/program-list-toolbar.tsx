@@ -1,7 +1,7 @@
 "use client";
 
 import { useQueryStates } from "nuqs";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useTransition } from "react";
 
 import { ListingOrder } from "@/components/shared/listing-order";
 import type { ListingOrderOption } from "@/components/shared/listing-order";
@@ -17,8 +17,10 @@ interface ToolbarCopy {
 }
 
 export const ProgramListToolbar = ({ labels }: { labels: ToolbarCopy }) => {
+  const [, startTransition] = useTransition();
   const [{ q, sort }, setParams] = useQueryStates(programListSearchParams, {
     shallow: false,
+    startTransition,
   });
 
   const hasActiveFilters = Boolean(q.trim() || sort);

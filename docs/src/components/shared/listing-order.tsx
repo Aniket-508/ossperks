@@ -1,7 +1,7 @@
 "use client";
 
 import { useQueryStates } from "nuqs";
-import { useCallback } from "react";
+import { useCallback, useTransition } from "react";
 
 import {
   Select,
@@ -30,6 +30,7 @@ export interface ListingOrderProps {
   labels: { placeholder: string };
   options: ListingOrderOption[];
   parsers: ListingOrderParsers;
+  shallow?: boolean;
 }
 
 export const ListingOrder = ({
@@ -37,9 +38,12 @@ export const ListingOrder = ({
   labels,
   options,
   parsers,
+  shallow = false,
 }: ListingOrderProps) => {
+  const [, startTransition] = useTransition();
   const [{ sort }, setParams] = useQueryStates(parsers, {
-    shallow: false,
+    shallow,
+    startTransition,
   });
 
   const handleValueChange = useCallback(

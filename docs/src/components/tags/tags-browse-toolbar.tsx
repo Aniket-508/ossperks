@@ -1,7 +1,7 @@
 "use client";
 
 import { useQueryStates } from "nuqs";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useTransition } from "react";
 
 import { LetterFilter } from "@/components/shared/letter-filter";
 import { ListingOrder } from "@/components/shared/listing-order";
@@ -29,9 +29,10 @@ interface TagsBrowseToolbarProps {
 }
 
 export const TagsBrowseToolbar = ({ labels }: TagsBrowseToolbarProps) => {
+  const [, startTransition] = useTransition();
   const [{ q, sort, letter }, setParams] = useQueryStates(
     tagsBrowseSearchParams,
-    { shallow: false },
+    { shallow: false, startTransition },
   );
 
   const hasActiveFilters = Boolean(

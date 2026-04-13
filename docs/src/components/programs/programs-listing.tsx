@@ -2,7 +2,7 @@
 
 import type { Category, PerkType } from "@ossperks/core";
 import { useQueryStates } from "nuqs";
-import { useCallback, useMemo, ViewTransition } from "react";
+import { useCallback, useMemo, useTransition, ViewTransition } from "react";
 
 import { ProgramCard } from "@/components/programs/program-card";
 import type { ProgramsListingCopy } from "@/components/programs/programs-listing-types";
@@ -17,6 +17,7 @@ import {
 } from "@/lib/programs-filter";
 import type { ProgramWithPerkTypes } from "@/lib/programs-filter";
 import { programsFacetParams, programsSearchParams } from "@/lib/search-params";
+import { cn } from "@/lib/utils";
 
 export type { ProgramsListingCopy } from "@/components/programs/programs-listing-types";
 
@@ -39,10 +40,14 @@ export const ProgramsListing = ({
   categoryLabels,
   perkTypeLabels,
 }: ProgramsListingProps) => {
+  const [isPending, startTransition] = useTransition();
   const [
     { q, sort, categories: urlCategories, types: urlTypes, tags: urlTags },
     setParams,
-  ] = useQueryStates(programsSearchParams, { shallow: false });
+  ] = useQueryStates(programsSearchParams, {
+    shallow: true,
+    startTransition,
+  });
 
   const filtered = useMemo(
     () =>
@@ -144,6 +149,7 @@ export const ProgramsListing = ({
             }}
             onReset={resetAll}
             parsers={{ q: programsSearchParams.q }}
+            shallow
             showReset={hasActiveFilters}
           />
         </div>
@@ -152,6 +158,7 @@ export const ProgramsListing = ({
             labels={{ placeholder: translations.listing.orderBy }}
             options={orderOptions}
             parsers={{ sort: programsSearchParams.sort }}
+            shallow
           />
           <ListingFilters
             labels={filterLabels}
@@ -170,7 +177,12 @@ export const ProgramsListing = ({
         </p>
       )}
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div
+        className={cn(
+          "grid gap-4 transition-opacity sm:grid-cols-2",
+          isPending && "pointer-events-none opacity-60",
+        )}
+      >
         {filtered.map((program) => {
           const categoryLabel =
             categoryLabels[program.category] ?? program.category;

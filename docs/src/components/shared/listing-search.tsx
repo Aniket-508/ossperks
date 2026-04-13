@@ -2,8 +2,8 @@
 
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { SearchIcon, XIcon } from "lucide-react";
-import { useQueryStates } from "nuqs";
-import { useCallback, useRef } from "react";
+import { debounce, useQueryStates } from "nuqs";
+import { useCallback, useRef, useTransition } from "react";
 
 import {
   Input,
@@ -19,6 +19,7 @@ export interface ListingSearchProps {
   labels: { resetLabel: string; searchPlaceholder: string };
   onReset?: () => void;
   parsers: { q: ListingQParser };
+  shallow?: boolean;
   showReset?: boolean;
 }
 
@@ -27,6 +28,7 @@ export const ListingSearch = ({
   labels,
   onReset,
   parsers,
+  shallow = false,
   showReset,
 }: ListingSearchProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -36,7 +38,12 @@ export const ListingSearch = ({
     inputRef.current?.focus();
   });
 
-  const [{ q }, setParams] = useQueryStates(parsers, { shallow: false });
+  const [isPending, startTransition] = useTransition();
+  const [{ q }, setParams] = useQueryStates(parsers, {
+    limitUrlUpdates: debounce(300),
+    shallow,
+    startTransition,
+  });
 
   const handleQueryChange = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +54,7 @@ export const ListingSearch = ({
   );
 
   return (
-    <InputRoot className={cn("flex-1", className)}>
+    <InputRoot className={cn("flex-1", isPending && "opacity-60", className)}>
       <InputIcon render={<SearchIcon />} />
       <Input
         ref={inputRef}

@@ -3,7 +3,7 @@
 import type { Category, PerkType } from "@ossperks/core";
 import { ChevronRight, ListFilter, Search, XIcon } from "lucide-react";
 import { useQueryStates } from "nuqs";
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState, useTransition } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -49,6 +49,7 @@ export interface ListingFiltersProps {
   labels: ListingFiltersLabels;
   parsers: ProgramsFacetParsers;
   sections: ListingFilterSectionConfig[];
+  shallow?: boolean;
 }
 
 type Selection = Record<string, string[]>;
@@ -220,9 +221,12 @@ export const ListingFilters = ({
   labels: filters,
   parsers,
   sections,
+  shallow = true,
 }: ListingFiltersProps) => {
+  const [, startTransition] = useTransition();
   const [facetState, setParams] = useQueryStates(parsers, {
-    shallow: false,
+    shallow,
+    startTransition,
   });
 
   const applied = useMemo((): Selection => {

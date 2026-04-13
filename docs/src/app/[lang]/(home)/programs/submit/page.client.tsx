@@ -310,7 +310,10 @@ export const ProgramSubmitPageClient = ({
             <Button
               nativeButton={false}
               render={
-                <Link href={withLocalePrefix(lang, ROUTES.PROGRAMS)}>
+                <Link
+                  href={withLocalePrefix(lang, ROUTES.PROGRAMS)}
+                  transitionTypes={["nav-back"]}
+                >
                   {t.success.close}
                 </Link>
               }
@@ -329,7 +332,10 @@ export const ProgramSubmitPageClient = ({
           size="sm"
           nativeButton={false}
           render={
-            <Link href={withLocalePrefix(lang, ROUTES.PROGRAMS)}>
+            <Link
+              href={withLocalePrefix(lang, ROUTES.PROGRAMS)}
+              transitionTypes={["nav-back"]}
+            >
               <ArrowLeft />
               {t.backToAll}
             </Link>

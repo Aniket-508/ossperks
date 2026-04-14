@@ -9,11 +9,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ViewTransition } from "react";
 
-import { HeroActions } from "@/components/home/hero-actions";
-import { HomeCtaWithDialogs } from "@/components/home/home-cta-with-dialogs";
+import { RepoCheckInput } from "@/components/check/check-input";
+import { ContactSubmissionDialog } from "@/components/people/contact-submission-dialog";
 import { PersonCard } from "@/components/people/person-card";
 import { ProgramCard } from "@/components/programs/program-card";
 import { Button } from "@/components/ui/button";
+import type { ButtonProps } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ROUTES } from "@/constants/routes";
 import { generateLangParams } from "@/i18n/config";
@@ -21,6 +22,7 @@ import { getT } from "@/i18n/get-t";
 import { withLocalePrefix } from "@/i18n/navigation";
 import { getFeaturedPrograms } from "@/lib/programs";
 import { getUnavatarUrl } from "@/lib/unavatar";
+import { cn } from "@/lib/utils";
 import { FAQJsonLd } from "@/seo/json-ld";
 import { createMetadata } from "@/seo/metadata";
 
@@ -64,6 +66,30 @@ export default async function HomePage({
     { label: t.home.stats.people, value: people.length },
   ];
 
+  const renderCta = (
+    href: `/${string}`,
+    label: string,
+    variant: ButtonProps["variant"] = "default",
+    size: ButtonProps["size"] = "lg",
+    className?: string,
+  ) => (
+    <Button
+      variant={variant}
+      size={size}
+      className={cn("shrink-0", className)}
+      nativeButton={false}
+      render={
+        <Link
+          href={withLocalePrefix(lang, href)}
+          transitionTypes={["nav-forward"]}
+        >
+          {label}
+          <ArrowRight />
+        </Link>
+      }
+    />
+  );
+
   return (
     <ViewTransition
       enter={{
@@ -87,11 +113,23 @@ export default async function HomePage({
             <span className="text-fd-primary">.</span>
           </h1>
           <p className="text-fd-muted-foreground mb-8">{t.home.description}</p>
-          <HeroActions
-            lang={lang}
-            browseProgramsLabel={t.home.hero.browsePrograms}
-            inputTranslations={t.check.input}
-          />
+          <div className="mx-auto flex w-full max-w-2xl flex-col items-center gap-4 sm:flex-row sm:items-start">
+            <RepoCheckInput
+              lang={lang}
+              translations={t.check.input}
+              className="max-w-none"
+            />
+
+            <div className="flex w-full items-center gap-3 sm:w-auto sm:flex-col sm:gap-1">
+              <div className="bg-fd-border h-px flex-1 sm:h-auto sm:min-h-2 sm:w-px sm:flex-none" />
+              <span className="text-fd-muted-foreground shrink-0 text-xs font-medium uppercase">
+                or
+              </span>
+              <div className="bg-fd-border h-px flex-1 sm:h-auto sm:min-h-2 sm:w-px sm:flex-none" />
+            </div>
+
+            {renderCta(ROUTES.PROGRAMS, t.home.hero.browsePrograms)}
+          </div>
         </section>
 
         <Separator />
@@ -138,21 +176,13 @@ export default async function HomePage({
         <section className="space-y-4 py-16">
           <div className="flex items-center justify-between gap-2">
             <h2 className="text-2xl font-bold">{t.home.featured.heading}</h2>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-fd-primary shrink-0 max-sm:hidden"
-              nativeButton={false}
-              render={
-                <Link
-                  href={withLocalePrefix(lang, ROUTES.PROGRAMS)}
-                  transitionTypes={["nav-forward"]}
-                >
-                  {t.home.featured.viewAll}
-                  <ArrowRight />
-                </Link>
-              }
-            />
+            {renderCta(
+              ROUTES.PROGRAMS,
+              t.home.featured.viewAll,
+              "ghost",
+              "sm",
+              "text-fd-primary max-sm:hidden",
+            )}
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             {featured.map((program) => {
@@ -176,20 +206,13 @@ export default async function HomePage({
               );
             })}
           </div>
-          <Button
-            variant="ghost"
-            className="text-fd-primary w-full shrink-0 sm:hidden"
-            nativeButton={false}
-            render={
-              <Link
-                href={withLocalePrefix(lang, ROUTES.PROGRAMS)}
-                transitionTypes={["nav-forward"]}
-              >
-                {t.home.featured.viewAll}
-                <ArrowRight />
-              </Link>
-            }
-          />
+          {renderCta(
+            ROUTES.PROGRAMS,
+            t.home.featured.viewAll,
+            "ghost",
+            "sm",
+            "text-fd-primary w-full sm:hidden",
+          )}
         </section>
 
         <Separator />
@@ -205,21 +228,13 @@ export default async function HomePage({
                 {t.home.people.description}
               </p>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-fd-primary shrink-0 max-sm:hidden"
-              nativeButton={false}
-              render={
-                <Link
-                  href={withLocalePrefix(lang, ROUTES.PEOPLE)}
-                  transitionTypes={["nav-forward"]}
-                >
-                  {t.home.people.viewAll}
-                  <ArrowRight />
-                </Link>
-              }
-            />
+            {renderCta(
+              ROUTES.PEOPLE,
+              t.home.people.viewAll,
+              "ghost",
+              "sm",
+              "text-fd-primary max-sm:hidden",
+            )}
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {people.slice(0, 3).map(({ contact, provider }) => {
@@ -249,20 +264,13 @@ export default async function HomePage({
               );
             })}
           </div>
-          <Button
-            variant="ghost"
-            className="text-fd-primary w-full shrink-0 sm:hidden"
-            nativeButton={false}
-            render={
-              <Link
-                href={withLocalePrefix(lang, ROUTES.PEOPLE)}
-                transitionTypes={["nav-forward"]}
-              >
-                {t.home.people.viewAll}
-                <ArrowRight />
-              </Link>
-            }
-          />
+          {renderCta(
+            ROUTES.PEOPLE,
+            t.home.people.viewAll,
+            "ghost",
+            "sm",
+            "text-fd-primary w-full sm:hidden",
+          )}
         </section>
 
         <Separator />
@@ -296,12 +304,25 @@ export default async function HomePage({
         <Separator />
 
         {/* CTA */}
-        <HomeCtaWithDialogs
-          lang={lang}
-          programOptions={programOptions}
-          translations={t.home.cta}
-          contactDialogTranslations={t.people.submit}
-        />
+        <section className="pt-16 pb-8 text-center">
+          <h2 className="mb-2 text-2xl font-bold">{t.home.cta.heading}</h2>
+          <p className="text-fd-muted-foreground mx-auto mb-6 max-w-lg">
+            {t.home.cta.description}
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            {renderCta(ROUTES.SUBMIT_PROGRAM, t.home.cta.submitProgram)}
+            <ContactSubmissionDialog
+              trigger={
+                <Button variant="outline" size="lg">
+                  {t.home.cta.submitContact}
+                  <ArrowRight />
+                </Button>
+              }
+              programs={programOptions}
+              translations={t.people.submit}
+            />
+          </div>
+        </section>
       </div>
     </ViewTransition>
   );

@@ -77,7 +77,11 @@ export const ProgramHeader = ({
       <Button
         nativeButton={false}
         render={
-          <Link href={checkHref} tabIndex={tabIndex}>
+          <Link
+            href={checkHref}
+            tabIndex={tabIndex}
+            transitionTypes={["nav-forward"]}
+          >
             <ListTodoIcon />
             {checkLabel}
           </Link>

@@ -2,7 +2,7 @@ import type { EligibilityStatus, RepoProvider } from "@ossperks/core";
 import { CircleAlert, CircleCheck, CircleX } from "lucide-react";
 
 export const CHECK_PAGE_CONTAINER =
-  "container max-w-4xl flex-1 flex flex-col w-full py-12 px-4 mx-auto";
+  "view-container max-w-4xl flex-1 flex flex-col";
 
 export const DEFAULT_PROVIDER: RepoProvider = "github";
 

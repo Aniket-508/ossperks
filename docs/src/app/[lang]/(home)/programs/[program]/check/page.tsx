@@ -3,12 +3,11 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ViewTransition } from "react";
 
+import { CheckPageClient } from "@/components/check/check-page-client";
 import { generateLangParamsWithProgram } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
 import { getProgram, getSingleProgramTranslation } from "@/lib/programs";
 import { createMetadata } from "@/seo/metadata";
-
-import { ProgramCheckPageClient } from "./page.client";
 
 export const generateStaticParams = () =>
   generateLangParamsWithProgram(getAllProgramSlugs);
@@ -64,10 +63,9 @@ export default async function ProgramCheckPage({
       }}
       default="none"
     >
-      <ProgramCheckPageClient
+      <CheckPageClient
         lang={lang}
-        programName={program.name}
-        programSlug={programSlug}
+        program={{ name: program.name, slug: programSlug }}
         programTranslations={programTranslations}
         translations={t.check}
       />

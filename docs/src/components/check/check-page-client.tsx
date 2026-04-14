@@ -23,6 +23,7 @@ import {
 import { cn } from "@/lib/utils";
 import type { CheckTranslations } from "@/locales/en/check";
 import type {
+  CheckResult,
   CheckUrlSearchParams,
   ProgramTranslationMap,
   TranslatedCheckResult,
@@ -49,7 +50,7 @@ const programCheckPath = (slug: string): `/${string}` =>
   `${ROUTES.PROGRAMS}/${slug}/check` as `/${string}`;
 
 const applyTranslations = (
-  result: TranslatedCheckResult,
+  result: CheckResult,
   programTranslations: ProgramTranslationMap,
   slug: string,
   lang: string,

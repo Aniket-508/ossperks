@@ -1,10 +1,8 @@
 import {
   getAllProgramSlugs,
   getPeopleByProgramSlug,
-  getProgramsByCategory,
   programs as allPrograms,
 } from "@ossperks/core";
-import { ArrowRightIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -12,10 +10,9 @@ import { ViewTransition } from "react";
 
 import { PersonCard } from "@/components/people/person-card";
 import { ProgramBottomBar } from "@/components/programs/program-bottom-bar";
-import { ProgramCard } from "@/components/programs/program-card";
 import { ProgramHeader } from "@/components/programs/program-header";
+import { SimilarPrograms } from "@/components/programs/similar-programs";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { ROUTES } from "@/constants/routes";
@@ -40,6 +37,7 @@ export default async function ProgramPage({
     getProgram(programSlug, lang),
     getT(lang),
   ]);
+
   if (!program) {
     notFound();
   }
@@ -82,16 +80,6 @@ export default async function ProgramPage({
   const checkHref = withLocalePrefix(
     lang,
     `${ROUTES.PROGRAMS}/${program.slug}/check`,
-  );
-
-  const similarRaw = getProgramsByCategory(program.category)
-    .filter((p) => p.slug !== program.slug)
-    .slice(0, 3);
-  const similarProgramsResolved = await Promise.all(
-    similarRaw.map((p) => getProgram(p.slug, lang)),
-  );
-  const similarPrograms = similarProgramsResolved.filter(
-    (p): p is NonNullable<typeof p> => p !== null,
   );
 
   const sec = t.programs.sections;
@@ -318,54 +306,17 @@ export default async function ProgramPage({
           </aside>
         </div>
 
-        {similarPrograms.length > 0 ? (
-          <section className="border-fd-border/60 mt-14 border-t pt-10">
-            <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex min-w-0 flex-1 items-center gap-3">
-                <h2 className="truncate text-xl font-semibold">
-                  {sec.similarTo.replace("{name}", program.name)}
-                </h2>
-              </div>
-              <Button
-                nativeButton={false}
-                render={
-                  <Link
-                    href={withLocalePrefix(lang, ROUTES.PROGRAMS)}
-                    transitionTypes={["nav-back"]}
-                  >
-                    {sec.viewAll}
-                    <ArrowRightIcon />
-                  </Link>
-                }
-                size="sm"
-                variant="ghost"
-                className="text-fd-primary"
-              />
-            </div>
-            <div className="grid gap-4 md:grid-cols-3">
-              {similarPrograms.map((p) => {
-                const similarCategoryLabel =
-                  t.common.categories[
-                    p.category as keyof typeof t.common.categories
-                  ] ?? p.category;
-                const programHref = withLocalePrefix(
-                  lang,
-                  `${ROUTES.PROGRAMS}/${p.slug}` as `/${string}`,
-                );
-                return (
-                  <ProgramCard
-                    categoryLabel={similarCategoryLabel}
-                    key={p.slug}
-                    learnMore={t.programs.learnMore}
-                    more={t.programs.more}
-                    program={p}
-                    programHref={programHref}
-                  />
-                );
-              })}
-            </div>
-          </section>
-        ) : null}
+        <SimilarPrograms
+          program={program}
+          lang={lang}
+          labels={{
+            categories: t.common.categories,
+            learnMore: t.programs.learnMore,
+            more: t.programs.more,
+            similarTo: sec.similarTo,
+            viewAll: sec.viewAll,
+          }}
+        />
       </div>
     </ViewTransition>
   );

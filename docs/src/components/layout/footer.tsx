@@ -110,16 +110,16 @@ export const Footer = ({
     <footer className="border-fd-border bg-fd-background mt-auto border-t">
       <div className="view-container w-full px-4 py-14">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-16 md:gap-6">
-          <div className="col-span-full md:col-span-6">
+          <div className="col-span-full flex flex-row items-center justify-between gap-4 sm:flex-col sm:items-start sm:justify-start md:col-span-6">
             <Link
-              className="text-fd-foreground mb-4 inline-flex items-center gap-2.5 font-semibold tracking-tight"
+              className="text-fd-foreground inline-flex items-center gap-2.5 font-semibold tracking-tight max-sm:flex-1"
               href={homeHref}
               transitionTypes={["nav-back"]}
             >
               <LogoMark aria-hidden className="h-6 shrink-0" />
               <span className="text-base">{SITE.NAME}</span>
             </Link>
-            <div className="flex flex-wrap items-center gap-1">
+            <div className="flex flex-wrap items-center gap-1 max-sm:flex-1 sm:-ms-3">
               {socialLinks.map(({ ariaLabel, href, icon: Icon, external }) =>
                 external ? (
                   <a
@@ -279,7 +279,7 @@ export const Footer = ({
                 >
                   <span className="truncate text-sm">{item.label}</span>
                   <hr className="border-fd-border group-hover/tile:border-fd-primary min-w-2 flex-1 border-0 border-t" />
-                  <span className="text-fd-muted-foreground shrink-0 text-xs tabular-nums max-sm:hidden">
+                  <span className="text-fd-muted-foreground shrink-0 text-xs tabular-nums">
                     {item.count}
                   </span>
                 </Link>

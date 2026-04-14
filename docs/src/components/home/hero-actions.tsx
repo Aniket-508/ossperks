@@ -18,7 +18,7 @@ export const HeroActions = ({
   browseProgramsLabel,
   inputTranslations,
 }: HeroActionsProps) => (
-  <div className="mx-auto flex w-full max-w-2xl flex-col items-start gap-4 sm:flex-row">
+  <div className="mx-auto flex w-full max-w-2xl flex-col items-center gap-4 sm:flex-row sm:items-start">
     <RepoCheckInput
       lang={lang}
       translations={inputTranslations}

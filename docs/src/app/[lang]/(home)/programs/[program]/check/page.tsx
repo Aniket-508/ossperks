@@ -6,6 +6,7 @@ import { ViewTransition } from "react";
 import { CheckPageClient } from "@/components/check/check-page-client";
 import { generateLangParamsWithProgram } from "@/i18n/config";
 import { getT } from "@/i18n/get-t";
+import { parseCheckUrlSearch } from "@/lib/check";
 import { getProgram, getSingleProgramTranslation } from "@/lib/programs";
 import { createMetadata } from "@/seo/metadata";
 
@@ -36,15 +37,19 @@ export const generateMetadata = async ({
 
 export default async function ProgramCheckPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ lang: string; program: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { lang, program: programSlug } = await params;
-  const [program, t, programTranslations] = await Promise.all([
+  const [program, t, programTranslations, sp] = await Promise.all([
     getProgram(programSlug, lang),
     getT(lang),
     getSingleProgramTranslation(programSlug, lang),
+    searchParams,
   ]);
+
   if (!program) {
     notFound();
   }
@@ -68,6 +73,7 @@ export default async function ProgramCheckPage({
         program={{ name: program.name, slug: programSlug }}
         programTranslations={programTranslations}
         translations={t.check}
+        searchParams={parseCheckUrlSearch(sp)}
       />
     </ViewTransition>
   );

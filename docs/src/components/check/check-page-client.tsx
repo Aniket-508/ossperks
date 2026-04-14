@@ -2,8 +2,7 @@
 
 import { ArrowLeft, CircleX } from "lucide-react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { Suspense, useMemo, ViewTransition } from "react";
+import { useMemo, ViewTransition } from "react";
 
 import { RepoCheckInput } from "@/components/check/check-input";
 import { CheckResults } from "@/components/check/check-results";
@@ -24,6 +23,7 @@ import {
 import { cn } from "@/lib/utils";
 import type { CheckTranslations } from "@/locales/en/check";
 import type {
+  CheckUrlSearchParams,
   ProgramTranslationMap,
   TranslatedCheckResult,
 } from "@/types/check";
@@ -32,20 +32,44 @@ export interface CheckPageClientProps {
   lang: string;
   programTranslations: ProgramTranslationMap;
   translations: CheckTranslations;
-  /** When set, the per-program check route (single-result UI, scoped API). */
+  searchParams: CheckUrlSearchParams;
   program?: { name: string; slug: string };
 }
 
-const CheckPageFallback = () => (
-  <div className={cn(CHECK_PAGE_CONTAINER, "animate-pulse py-28 sm:py-36")}>
-    <div className="mb-8">
-      <div className="bg-fd-muted mx-auto mb-4 h-10 w-72" />
-      <div className="bg-fd-muted mx-auto mb-2 h-5 max-w-2xl" />
-      <div className="bg-fd-muted mx-auto h-5 max-w-xl" />
-    </div>
-    <div className="bg-fd-muted mx-auto h-12 w-full max-w-2xl" />
-  </div>
-);
+type Program = NonNullable<CheckPageClientProps["program"]>;
+
+const repoNameFromParams = ({
+  path,
+  owner,
+  repo,
+}: Pick<CheckUrlSearchParams, "path" | "owner" | "repo">): string =>
+  path ?? [owner, repo].filter(Boolean).join("/");
+
+const programCheckPath = (slug: string): `/${string}` =>
+  `${ROUTES.PROGRAMS}/${slug}/check` as `/${string}`;
+
+const applyTranslations = (
+  result: TranslatedCheckResult,
+  programTranslations: ProgramTranslationMap,
+  slug: string,
+  lang: string,
+  reasonTranslations: CheckTranslations["reasons"],
+): TranslatedCheckResult => {
+  const pt = programTranslations[slug];
+  return {
+    ...result,
+    name: pt?.name ?? result.name,
+    reasons: translateReasons(
+      result.reasons,
+      pt?.eligibility ?? [],
+      reasonTranslations,
+      {
+        canTranslateRuleReasons: pt?.hasEligibilityParity ?? false,
+        formatNumber: (value) => new Intl.NumberFormat(lang).format(value),
+      },
+    ),
+  };
+};
 
 const CheckSkeleton = ({ name }: { name: string }) => (
   <div className={cn(CHECK_PAGE_CONTAINER, "animate-pulse")}>
@@ -84,6 +108,116 @@ const ProgramCheckSkeleton = ({ name }: { name: string }) => (
   </div>
 );
 
+const CheckAnotherSection = ({
+  lang,
+  translations,
+  basePath,
+}: {
+  lang: string;
+  translations: CheckTranslations;
+  basePath?: `/${string}`;
+}) => (
+  <section className="text-center">
+    <h2 className="mb-4 text-lg font-semibold">{translations.checkAnother}</h2>
+    <RepoCheckInput
+      basePath={basePath}
+      lang={lang}
+      translations={translations.input}
+    />
+  </section>
+);
+
+const CheckErrorSection = ({
+  lang,
+  translations,
+  error,
+  basePath,
+}: {
+  lang: string;
+  translations: CheckTranslations;
+  error: string;
+  basePath?: `/${string}`;
+}) => (
+  <div className={CHECK_PAGE_CONTAINER}>
+    <div className="border border-red-500/20 bg-red-500/5 p-8 text-center">
+      <CircleX className="mx-auto mb-4 size-10 text-red-500" />
+      <h1 className="mb-2 text-xl font-semibold">{translations.checkFailed}</h1>
+      <p className="text-fd-muted-foreground mb-6">{error}</p>
+      <RepoCheckInput
+        basePath={basePath}
+        lang={lang}
+        translations={translations.input}
+      />
+    </div>
+  </div>
+);
+
+const ProgramBackLink = ({
+  lang,
+  program,
+}: {
+  lang: string;
+  program: Program;
+}) => {
+  const href = withLocalePrefix(
+    lang,
+    `${ROUTES.PROGRAMS}/${program.slug}` as `/${string}`,
+  );
+  return (
+    <div className="mb-6">
+      <Button
+        variant="link"
+        size="sm"
+        nativeButton={false}
+        render={
+          <Link href={href} transitionTypes={["nav-back"]}>
+            <ArrowLeft />
+            {program.name}
+          </Link>
+        }
+      />
+    </div>
+  );
+};
+
+const ProgramResultCard = ({
+  result,
+  translations,
+}: {
+  result: TranslatedCheckResult;
+  translations: CheckTranslations;
+}) => {
+  const { icon: Icon, color, ring } = STATUS_CONFIG[result.status];
+  const label = translations[STATUS_LABELS[result.status]];
+  const uniqueReasons = [...new Set(result.reasons)].filter(Boolean);
+
+  return (
+    <Card className={ring}>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Icon className={`size-5 ${color}`} />
+          <span className={color}>{label}</span>
+        </CardTitle>
+      </CardHeader>
+      {uniqueReasons.length > 0 && (
+        <CardContent className="pt-0">
+          <ul className="space-y-1">
+            {uniqueReasons.map((reason) => (
+              <li
+                key={reason}
+                className="text-fd-muted-foreground flex items-center gap-2 text-sm"
+              >
+                <span className="bg-fd-muted-foreground/50 size-1 shrink-0" />
+                {reason}
+              </li>
+            ))}
+          </ul>
+        </CardContent>
+      )}
+    </Card>
+  );
+};
+
 const CheckLanding = ({
   lang,
   translations,
@@ -105,78 +239,47 @@ const CheckLanding = ({
   </div>
 );
 
-const CheckPageFooter = ({
+const ProgramCheckLanding = ({
   lang,
-  basePath,
+  program,
   translations,
 }: {
   lang: string;
-  basePath?: `/${string}`;
-  translations: CheckTranslations;
-}) => (
-  <>
-    <Separator className="mb-8" />
-    <section className="text-center">
-      <h2 className="mb-4 text-lg font-semibold">
-        {translations.checkAnother}
-      </h2>
-      <RepoCheckInput
-        basePath={basePath}
-        lang={lang}
-        translations={translations.input}
-      />
-    </section>
-  </>
-);
-
-const ProgramResultCard = ({
-  result,
-  translations,
-}: {
-  result: TranslatedCheckResult;
+  program: Program;
   translations: CheckTranslations;
 }) => {
-  const config = STATUS_CONFIG[result.status];
-  const Icon = config.icon;
-  const label = translations[STATUS_LABELS[result.status]];
+  const heading = translations.checkProgram.replace("{program}", program.name);
+  const checkBasePath = programCheckPath(program.slug);
 
   return (
-    <Card className={config.ring}>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Icon className={`size-5 ${config.color}`} />
-          <span className={config.color}>{label}</span>
-        </CardTitle>
-      </CardHeader>
-      {result.reasons.length > 0 && (
-        <CardContent className="pt-0">
-          <ul className="space-y-1">
-            {[...new Set(result.reasons)].filter(Boolean).map((reason) => (
-              <li
-                key={reason}
-                className="text-fd-muted-foreground flex items-center gap-2 text-sm"
-              >
-                <span className="bg-fd-muted-foreground/50 size-1 shrink-0" />
-                {reason}
-              </li>
-            ))}
-          </ul>
-        </CardContent>
-      )}
-    </Card>
+    <div className={CHECK_PAGE_CONTAINER}>
+      <ProgramBackLink lang={lang} program={program} />
+      <section className="py-16 text-center sm:py-24">
+        <h1 className="mb-4 text-4xl font-bold tracking-tight">
+          {heading}
+          <span className="text-fd-primary">.</span>
+        </h1>
+        <p className="text-fd-muted-foreground mx-auto mb-8 max-w-2xl">
+          {translations.programCheckDescription}
+        </p>
+        <RepoCheckInput
+          basePath={checkBasePath}
+          lang={lang}
+          translations={translations.input}
+        />
+      </section>
+    </div>
   );
 };
 
-const GlobalCheckResultsView = ({
+const CheckResultsView = ({
   lang,
   programTranslations,
   translations,
+  searchParams,
 }: CheckPageClientProps) => {
-  const searchParams = useSearchParams();
-  const provider = searchParams.get("provider") ?? DEFAULT_PROVIDER;
-  const owner = searchParams.get("owner");
-  const path = searchParams.get("path");
-  const repo = searchParams.get("repo");
+  const { owner, path, provider: urlProvider, repo } = searchParams;
+  const provider = urlProvider ?? DEFAULT_PROVIDER;
 
   const { data, error, loading } = useCheckData({
     owner,
@@ -186,69 +289,54 @@ const GlobalCheckResultsView = ({
     translations,
   });
 
-  const repoName = path ?? [owner, repo].filter(Boolean).join("/");
+  const repoName = repoNameFromParams({ owner, path, repo });
 
-  const currentData = useMemo(() => {
+  const translatedData = useMemo(() => {
     if (
       !data ||
       data.repo.owner !== owner ||
-      data.repo.path !== (path ?? [owner, repo].filter(Boolean).join("/")) ||
+      data.repo.path !== repoName ||
       data.repo.provider !== provider ||
       data.repo.repo !== repo
     ) {
       return null;
     }
-    return data;
-  }, [data, owner, path, provider, repo]);
 
-  const translatedData = useMemo(() => {
-    if (!currentData) {
-      return null;
-    }
     return {
-      ...currentData,
-      results: currentData.results.map((result) => {
-        const programTranslation = programTranslations[result.slug];
-        return {
-          ...result,
-          name: programTranslation?.name ?? result.name,
-          reasons: translateReasons(
-            result.reasons,
-            programTranslation?.eligibility ?? [],
-            translations.reasons,
-            {
-              canTranslateRuleReasons:
-                programTranslation?.hasEligibilityParity ?? false,
-              formatNumber: (value) =>
-                new Intl.NumberFormat(lang).format(value),
-            },
-          ),
-        };
-      }),
+      ...data,
+      results: data.results.map((result) =>
+        applyTranslations(
+          result,
+          programTranslations,
+          result.slug,
+          lang,
+          translations.reasons,
+        ),
+      ),
     };
-  }, [currentData, lang, programTranslations, translations.reasons]);
+  }, [
+    data,
+    owner,
+    provider,
+    repo,
+    repoName,
+    lang,
+    programTranslations,
+    translations.reasons,
+  ]);
 
-  if (loading) {
+  if (loading || !translatedData) {
     return <CheckSkeleton name={repoName} />;
   }
 
   if (error) {
     return (
-      <div className={CHECK_PAGE_CONTAINER}>
-        <div className="border border-red-500/20 bg-red-500/5 p-8 text-center">
-          <CircleX className="mx-auto mb-4 size-10 text-red-500" />
-          <h1 className="mb-2 text-xl font-semibold">
-            {translations.checkFailed}
-          </h1>
-          <p className="text-fd-muted-foreground mb-6">{error}</p>
-          <RepoCheckInput lang={lang} translations={translations.input} />
-        </div>
-      </div>
+      <CheckErrorSection
+        lang={lang}
+        translations={translations}
+        error={error}
+      />
     );
-  }
-
-  if (!translatedData) {
-    return <CheckSkeleton name={repoName} />;
   }
 
   return (
@@ -258,7 +346,8 @@ const GlobalCheckResultsView = ({
         lang={lang}
         translations={translations}
       />
-      <CheckPageFooter lang={lang} translations={translations} />
+      <Separator className="mb-8" />
+      <CheckAnotherSection lang={lang} translations={translations} />
     </div>
   );
 };
@@ -268,12 +357,10 @@ const ProgramCheckResultsView = ({
   program,
   programTranslations,
   translations,
-}: CheckPageClientProps & { program: { name: string; slug: string } }) => {
-  const searchParams = useSearchParams();
-  const provider = searchParams.get("provider") ?? DEFAULT_PROVIDER;
-  const owner = searchParams.get("owner");
-  const path = searchParams.get("path");
-  const repo = searchParams.get("repo");
+  searchParams,
+}: CheckPageClientProps & { program: Program }) => {
+  const { owner, path, provider: urlProvider, repo } = searchParams;
+  const provider = urlProvider ?? DEFAULT_PROVIDER;
 
   const { data, error, loading } = useCheckData({
     owner,
@@ -284,69 +371,23 @@ const ProgramCheckResultsView = ({
     translations,
   });
 
+  const checkBasePath = programCheckPath(program.slug);
   const heading = translations.checkProgram.replace("{program}", program.name);
+  const repoName = repoNameFromParams({ owner, path, repo });
 
   const translatedResult = useMemo((): TranslatedCheckResult | null => {
     const match = data?.results[0];
     if (!match) {
       return null;
     }
-    const pt = programTranslations[program.slug];
-    return {
-      ...match,
-      name: pt?.name ?? match.name,
-      reasons: translateReasons(
-        match.reasons,
-        pt?.eligibility ?? [],
-        translations.reasons,
-        {
-          canTranslateRuleReasons: pt?.hasEligibilityParity ?? false,
-          formatNumber: (value) => new Intl.NumberFormat(lang).format(value),
-        },
-      ),
-    };
-  }, [data, lang, program.slug, programTranslations, translations.reasons]);
-
-  const checkBasePath =
-    `${ROUTES.PROGRAMS}/${program.slug}/check` as `/${string}`;
-  const programHref = withLocalePrefix(
-    lang,
-    `${ROUTES.PROGRAMS}/${program.slug}` as `/${string}`,
-  );
-
-  if (!owner || !repo) {
-    return (
-      <div className={CHECK_PAGE_CONTAINER}>
-        <div className="mb-6">
-          <Button
-            variant="link"
-            size="sm"
-            nativeButton={false}
-            render={
-              <Link href={programHref} transitionTypes={["nav-back"]}>
-                <ArrowLeft />
-                {program.name}
-              </Link>
-            }
-          />
-        </div>
-        <section className="py-16 text-center sm:py-24">
-          <h1 className="mb-4 text-4xl font-bold tracking-tight">
-            {heading}
-            <span className="text-fd-primary">.</span>
-          </h1>
-          <p className="text-fd-muted-foreground mx-auto mb-8 max-w-2xl">
-            {translations.programCheckDescription}
-          </p>
-          <RepoCheckInput
-            basePath={checkBasePath}
-            lang={lang}
-            translations={translations.input}
-          />
-        </section>
-      </div>
+    return applyTranslations(
+      match,
+      programTranslations,
+      program.slug,
+      lang,
+      translations.reasons,
     );
-  }
+  }, [data, lang, program.slug, programTranslations, translations.reasons]);
 
   if (loading) {
     return <ProgramCheckSkeleton name={program.name} />;
@@ -354,40 +395,18 @@ const ProgramCheckResultsView = ({
 
   if (error) {
     return (
-      <div className={CHECK_PAGE_CONTAINER}>
-        <div className="border border-red-500/20 bg-red-500/5 p-8 text-center">
-          <CircleX className="mx-auto mb-4 size-10 text-red-500" />
-          <h1 className="mb-2 text-xl font-semibold">
-            {translations.checkFailed}
-          </h1>
-          <p className="text-fd-muted-foreground mb-6">{error}</p>
-          <RepoCheckInput
-            basePath={checkBasePath}
-            lang={lang}
-            translations={translations.input}
-          />
-        </div>
-      </div>
+      <CheckErrorSection
+        lang={lang}
+        translations={translations}
+        error={error}
+        basePath={checkBasePath}
+      />
     );
   }
 
-  const repoName = path ?? [owner, repo].filter(Boolean).join("/");
-
   return (
     <div className={CHECK_PAGE_CONTAINER}>
-      <div className="mb-6">
-        <Button
-          variant="link"
-          size="sm"
-          nativeButton={false}
-          render={
-            <Link href={programHref} transitionTypes={["nav-back"]}>
-              <ArrowLeft />
-              {program.name}
-            </Link>
-          }
-        />
-      </div>
+      <ProgramBackLink lang={lang} program={program} />
 
       <div className="mb-8">
         <h1 className="mb-2 text-3xl font-bold">{heading}</h1>
@@ -409,53 +428,41 @@ const ProgramCheckResultsView = ({
 
       <Separator className="my-8" />
 
-      <section className="text-center">
-        <h2 className="mb-4 text-lg font-semibold">
-          {translations.checkAnother}
-        </h2>
-        <RepoCheckInput
-          basePath={checkBasePath}
-          lang={lang}
-          translations={translations.input}
-        />
-      </section>
+      <CheckAnotherSection
+        lang={lang}
+        translations={translations}
+        basePath={checkBasePath}
+      />
     </div>
   );
 };
 
 const CheckPageInner = (props: CheckPageClientProps) => {
-  const searchParams = useSearchParams();
-  const owner = searchParams.get("owner");
-  const repo = searchParams.get("repo");
+  const { lang, program, translations, searchParams } = props;
+  const { owner, repo } = searchParams;
+  const hasRepo = Boolean(owner && repo);
 
-  if (props.program) {
-    return <ProgramCheckResultsView {...props} program={props.program} />;
+  if (program) {
+    return hasRepo ? (
+      <ProgramCheckResultsView {...props} program={program} />
+    ) : (
+      <ProgramCheckLanding
+        lang={lang}
+        program={program}
+        translations={translations}
+      />
+    );
   }
 
-  if (!owner || !repo) {
-    return <CheckLanding lang={props.lang} translations={props.translations} />;
-  }
-
-  return <GlobalCheckResultsView {...props} />;
-};
-
-export const CheckPageClient = (props: CheckPageClientProps) => {
-  const { program } = props;
-  return (
-    <Suspense
-      fallback={
-        <ViewTransition exit="slide-down">
-          {program ? (
-            <ProgramCheckSkeleton name={program.name} />
-          ) : (
-            <CheckPageFallback />
-          )}
-        </ViewTransition>
-      }
-    >
-      <ViewTransition default="none" enter="slide-up">
-        <CheckPageInner {...props} />
-      </ViewTransition>
-    </Suspense>
+  return hasRepo ? (
+    <CheckResultsView {...props} />
+  ) : (
+    <CheckLanding lang={lang} translations={translations} />
   );
 };
+
+export const CheckPageClient = (props: CheckPageClientProps) => (
+  <ViewTransition default="none" enter="slide-up">
+    <CheckPageInner {...props} />
+  </ViewTransition>
+);

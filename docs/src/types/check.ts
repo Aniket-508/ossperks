@@ -59,3 +59,10 @@ export interface ProgramTranslation {
 }
 
 export type ProgramTranslationMap = Record<string, ProgramTranslation>;
+
+export interface CheckUrlSearchParams {
+  owner: string | null;
+  path: string | null;
+  provider: string | null;
+  repo: string | null;
+}

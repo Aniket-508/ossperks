@@ -6,14 +6,16 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   LinkIcon,
+  EllipsisIcon,
+  ShareIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { addTransitionType, startTransition, useCallback } from "react";
 
 import {
-  FacebookIcon,
   BlueskyIcon,
+  FacebookIcon,
   HackerNewsIcon,
   LinkedInIcon,
   MastodonIcon,
@@ -23,6 +25,12 @@ import {
   XIcon,
 } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Kbd } from "@/components/ui/kbd";
 import {
   Tooltip,
@@ -37,6 +45,7 @@ import { cn } from "@/lib/utils";
 const buildShareItems = (url: string, text: string) => {
   const encodedUrl = encodeUrlForPath(url);
   const encodedText = encodeUrlForPath(text);
+
   return [
     {
       Icon: XIcon,
@@ -83,6 +92,11 @@ const buildShareItems = (url: string, text: string) => {
       label: "shareOnMastodon" as const,
       url: `https://share.joinmastodon.org/#text=${encodedText}:${encodedUrl}`,
     },
+    {
+      Icon: EllipsisIcon,
+      label: "shareMore" as const,
+      url: "#",
+    },
   ];
 };
 
@@ -105,6 +119,7 @@ interface ProgramBottomBarLabels {
   shareOnBluesky: string;
   shareOnHackerNews: string;
   shareOnMastodon: string;
+  shareMore: string;
 }
 
 interface ProgramBottomBarProps {
@@ -127,6 +142,19 @@ export const ProgramBottomBar = ({
   const router = useRouter();
   const [copied, copy] = useCopyToClipboard();
   const shareItems = buildShareItems(shareUrl, shareText);
+
+  const handleShareNative = useCallback(async () => {
+    if (typeof navigator !== "undefined" && navigator.share) {
+      try {
+        await navigator.share({
+          title: shareText,
+          url: shareUrl,
+        });
+      } catch {
+        // User cancelled or error
+      }
+    }
+  }, [shareText, shareUrl]);
 
   const handleCopy = useCallback(async () => {
     await copy(shareUrl, 2000);
@@ -271,8 +299,60 @@ export const ProgramBottomBar = ({
             <span className="text-fd-muted-foreground hidden text-xs font-medium sm:inline">
               {labels.share}:
             </span>
-            <div className="flex flex-wrap items-center gap-1">
-              {shareItems.map((item) => (
+            <div className="flex flex-wrap items-center gap-1 max-sm:hidden">
+              {shareItems.map((item) => {
+                if (item.url === "#") {
+                  return (
+                    <Tooltip key={item.url}>
+                      <TooltipTrigger
+                        render={
+                          <Button
+                            aria-label={labels.shareMore}
+                            onClick={handleShareNative}
+                            size="icon-sm"
+                            variant="ghost"
+                          >
+                            <span className="sr-only">{labels.shareMore}</span>
+                            <item.Icon />
+                          </Button>
+                        }
+                      />
+                      <TooltipContent>{labels.shareMore}</TooltipContent>
+                    </Tooltip>
+                  );
+                }
+
+                return (
+                  <Tooltip key={item.url}>
+                    <TooltipTrigger
+                      render={
+                        <Button
+                          aria-label={labels[item.label]}
+                          nativeButton={false}
+                          render={
+                            <a
+                              href={item.url}
+                              rel="noopener noreferrer"
+                              target="_blank"
+                            >
+                              <span className="sr-only">
+                                {labels[item.label]}
+                              </span>
+                              <item.Icon />
+                            </a>
+                          }
+                          size="icon-sm"
+                          variant="ghost"
+                        />
+                      }
+                    />
+                    <TooltipContent>{labels[item.label]}</TooltipContent>
+                  </Tooltip>
+                );
+              })}
+            </div>
+            <div className="flex flex-wrap items-center gap-1 sm:hidden">
+              {shareItems.slice(0, 3).map((item) => (
                 <Tooltip key={item.url}>
                   <TooltipTrigger
                     render={
@@ -299,6 +379,56 @@ export const ProgramBottomBar = ({
                   <TooltipContent>{labels[item.label]}</TooltipContent>
                 </Tooltip>
               ))}
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  render={
+                    <Button
+                      aria-label={labels.share}
+                      className="sm:hidden"
+                      size="icon-sm"
+                      variant="ghost"
+                    >
+                      <ShareIcon />
+                    </Button>
+                  }
+                />
+                <DropdownMenuContent align="end" className="w-fit">
+                  {shareItems.slice(3).map((item) => {
+                    if (item.url === "#") {
+                      return (
+                        <DropdownMenuItem
+                          key={item.url}
+                          // oxlint-disable-next-line react_perf/jsx-no-new-function-as-prop
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleShareNative();
+                          }}
+                        >
+                          <EllipsisIcon />
+                          {labels.shareMore}
+                        </DropdownMenuItem>
+                      );
+                    }
+
+                    return (
+                      <DropdownMenuItem
+                        key={item.url}
+                        nativeButton={false}
+                        render={
+                          <a
+                            href={item.url}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                          >
+                            <item.Icon />
+                            {labels[item.label]}
+                          </a>
+                        }
+                      />
+                    );
+                  })}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         </div>

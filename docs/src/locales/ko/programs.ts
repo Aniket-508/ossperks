@@ -58,6 +58,7 @@ const programs = {
     previousProgramTooltip: "이전 프로그램",
     requirements: "요구 사항",
     share: "공유",
+    shareMore: "추가 공유 옵션",
     shareOnFacebook: "Facebook에 공유",
     shareOnLinkedIn: "LinkedIn에 공유",
     shareOnReddit: "Reddit에 공유",

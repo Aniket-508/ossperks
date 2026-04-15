@@ -58,6 +58,7 @@ const programs = {
     previousProgramTooltip: "上一个项目",
     requirements: "要求",
     share: "分享",
+    shareMore: "更多分享选项",
     shareOnFacebook: "分享到 Facebook",
     shareOnLinkedIn: "分享到 LinkedIn",
     shareOnReddit: "分享到 Reddit",

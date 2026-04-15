@@ -58,6 +58,7 @@ const programs = {
     previousProgramTooltip: "Vorheriges Programm",
     requirements: "Anforderungen",
     share: "Teilen",
+    shareMore: "Weitere Sharing-Optionen",
     shareOnFacebook: "Auf Facebook teilen",
     shareOnLinkedIn: "Auf LinkedIn teilen",
     shareOnReddit: "Auf Reddit teilen",

@@ -58,6 +58,7 @@ const programs = {
     previousProgramTooltip: "前のプログラム",
     requirements: "要件",
     share: "共有",
+    shareMore: "その他の共有オプション",
     shareOnFacebook: "Facebookで共有",
     shareOnLinkedIn: "LinkedInで共有",
     shareOnReddit: "Redditで共有",

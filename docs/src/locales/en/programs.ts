@@ -60,6 +60,7 @@ const programs = {
     previousProgramTooltip: "Previous program",
     requirements: "Requirements",
     share: "Share",
+    shareMore: "More sharing options",
     shareOnFacebook: "Share on Facebook",
     shareOnLinkedIn: "Share on LinkedIn",
     shareOnReddit: "Share on Reddit",

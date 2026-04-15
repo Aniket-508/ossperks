@@ -1,20 +1,24 @@
 "use client";
 
 import { useHotkey } from "@tanstack/react-hotkeys";
-import { ChevronLeft, ChevronRight, Link2 } from "lucide-react";
+import {
+  CheckIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  LinkIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  addTransitionType,
-  startTransition,
-  useCallback,
-  useState,
-} from "react";
+import { addTransitionType, startTransition, useCallback } from "react";
 
 import {
   FacebookIcon,
+  BlueskyIcon,
+  HackerNewsIcon,
   LinkedInIcon,
+  MastodonIcon,
   RedditIcon,
+  ThreadsIcon,
   WhatsAppIcon,
   XIcon,
 } from "@/components/icons";
@@ -26,10 +30,63 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { encodeUrlForPath } from "@/lib/url";
 import { cn } from "@/lib/utils";
 
-export interface ProgramBottomBarLabels {
+const buildShareItems = (url: string, text: string) => {
+  const encodedUrl = encodeUrlForPath(url);
+  const encodedText = encodeUrlForPath(text);
+  return [
+    {
+      Icon: XIcon,
+      label: "shareOnX" as const,
+      url: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`,
+    },
+    {
+      Icon: LinkedInIcon,
+      label: "shareOnLinkedIn" as const,
+      url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+    },
+    {
+      Icon: RedditIcon,
+      label: "shareOnReddit" as const,
+      url: `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedText}`,
+    },
+    {
+      Icon: FacebookIcon,
+      label: "shareOnFacebook" as const,
+      url: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+    },
+    {
+      Icon: WhatsAppIcon,
+      label: "shareOnWhatsApp" as const,
+      url: `https://wa.me/?text=${encodedText}%20${encodedUrl}`,
+    },
+    {
+      Icon: ThreadsIcon,
+      label: "shareOnThreads" as const,
+      url: `https://threads.net/intent/post?url=${encodedUrl}&text=${encodedText}`,
+    },
+    {
+      Icon: BlueskyIcon,
+      label: "shareOnBluesky" as const,
+      url: `https://bsky.app/intent/compose?text=${encodedText}&url=${encodedUrl}`,
+    },
+    {
+      Icon: HackerNewsIcon,
+      label: "shareOnHackerNews" as const,
+      url: `https://news.ycombinator.com/submitlink?u=${encodedUrl}&t=${encodedText}`,
+    },
+    {
+      Icon: MastodonIcon,
+      label: "shareOnMastodon" as const,
+      url: `https://share.joinmastodon.org/#text=${encodedText}:${encodedUrl}`,
+    },
+  ];
+};
+
+interface ProgramBottomBarLabels {
   copyLink: string;
   copyLinkTooltip: string;
   linkCopied: string;
@@ -44,6 +101,10 @@ export interface ProgramBottomBarLabels {
   shareOnReddit: string;
   shareOnWhatsApp: string;
   shareOnX: string;
+  shareOnThreads: string;
+  shareOnBluesky: string;
+  shareOnHackerNews: string;
+  shareOnMastodon: string;
 }
 
 interface ProgramBottomBarProps {
@@ -55,18 +116,6 @@ interface ProgramBottomBarProps {
   shareUrl: string;
 }
 
-const buildShareUrls = (url: string, text: string) => {
-  const encodedUrl = encodeUrlForPath(url);
-  const encodedText = encodeUrlForPath(text);
-  return {
-    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
-    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
-    reddit: `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedText}`,
-    twitter: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`,
-    whatsapp: `https://wa.me/?text=${encodedText}%20${encodedUrl}`,
-  };
-};
-
 export const ProgramBottomBar = ({
   className,
   labels,
@@ -76,18 +125,12 @@ export const ProgramBottomBar = ({
   shareUrl,
 }: ProgramBottomBarProps) => {
   const router = useRouter();
-  const [copied, setCopied] = useState(false);
-  const shareUrls = buildShareUrls(shareUrl, shareText);
+  const [copied, copy] = useCopyToClipboard();
+  const shareItems = buildShareItems(shareUrl, shareText);
 
   const handleCopy = useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2000);
-    } catch {
-      setCopied(false);
-    }
-  }, [shareUrl]);
+    await copy(shareUrl, 2000);
+  }, [copy, shareUrl]);
 
   useHotkey("C", async (e) => {
     e.preventDefault();
@@ -131,12 +174,15 @@ export const ProgramBottomBar = ({
                 render={
                   <Button
                     aria-label={labels.copyLink}
-                    className="shrink-0"
                     onClick={handleCopy}
                     size="icon-sm"
                     variant="outline"
                   >
-                    <Link2 className="size-4" />
+                    {copied ? (
+                      <CheckIcon className="text-green-500" />
+                    ) : (
+                      <LinkIcon />
+                    )}
                   </Button>
                 }
               />
@@ -160,7 +206,7 @@ export const ProgramBottomBar = ({
                       nativeButton={false}
                       render={
                         <Link href={prevHref} transitionTypes={["nav-back"]}>
-                          <ChevronLeft className="size-4" />
+                          <ChevronLeftIcon />
                         </Link>
                       }
                       size="icon-sm"
@@ -173,7 +219,7 @@ export const ProgramBottomBar = ({
                       size="icon-sm"
                       variant="outline"
                     >
-                      <ChevronLeft className="size-4" />
+                      <ChevronLeftIcon />
                     </Button>
                   )
                 }
@@ -194,7 +240,7 @@ export const ProgramBottomBar = ({
                       nativeButton={false}
                       render={
                         <Link href={nextHref} transitionTypes={["nav-forward"]}>
-                          <ChevronRight className="size-4" />
+                          <ChevronRightIcon />
                         </Link>
                       }
                       size="icon-sm"
@@ -207,7 +253,7 @@ export const ProgramBottomBar = ({
                       size="icon-sm"
                       variant="outline"
                     >
-                      <ChevronRight className="size-4" />
+                      <ChevronRightIcon />
                     </Button>
                   )
                 }
@@ -226,129 +272,33 @@ export const ProgramBottomBar = ({
               {labels.share}:
             </span>
             <div className="flex flex-wrap items-center gap-1">
-              <Tooltip>
-                <TooltipTrigger
-                  render={
-                    <Button
-                      aria-label={labels.shareOnX}
-                      nativeButton={false}
-                      render={
-                        <a
-                          href={shareUrls.twitter}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          <span className="sr-only">{labels.shareOnX}</span>
-                          <XIcon />
-                        </a>
-                      }
-                      size="icon-sm"
-                      variant="ghost"
-                    />
-                  }
-                />
-                <TooltipContent>{labels.shareOnX}</TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger
-                  render={
-                    <Button
-                      aria-label={labels.shareOnLinkedIn}
-                      nativeButton={false}
-                      render={
-                        <a
-                          href={shareUrls.linkedin}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          <span className="sr-only">
-                            {labels.shareOnLinkedIn}
-                          </span>
-                          <LinkedInIcon />
-                        </a>
-                      }
-                      size="icon-sm"
-                      variant="ghost"
-                    />
-                  }
-                />
-                <TooltipContent>{labels.shareOnLinkedIn}</TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger
-                  render={
-                    <Button
-                      aria-label={labels.shareOnReddit}
-                      nativeButton={false}
-                      render={
-                        <a
-                          href={shareUrls.reddit}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          <span className="sr-only">
-                            {labels.shareOnReddit}
-                          </span>
-                          <RedditIcon />
-                        </a>
-                      }
-                      size="icon-sm"
-                      variant="ghost"
-                    />
-                  }
-                />
-                <TooltipContent>{labels.shareOnReddit}</TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger
-                  render={
-                    <Button
-                      aria-label={labels.shareOnFacebook}
-                      nativeButton={false}
-                      render={
-                        <a
-                          href={shareUrls.facebook}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          <span className="sr-only">
-                            {labels.shareOnFacebook}
-                          </span>
-                          <FacebookIcon />
-                        </a>
-                      }
-                      size="icon-sm"
-                      variant="ghost"
-                    />
-                  }
-                />
-                <TooltipContent>{labels.shareOnFacebook}</TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger
-                  render={
-                    <Button
-                      aria-label={labels.shareOnWhatsApp}
-                      nativeButton={false}
-                      render={
-                        <a
-                          href={shareUrls.whatsapp}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          <span className="sr-only">
-                            {labels.shareOnWhatsApp}
-                          </span>
-                          <WhatsAppIcon />
-                        </a>
-                      }
-                      size="icon-sm"
-                      variant="ghost"
-                    />
-                  }
-                />
-                <TooltipContent>{labels.shareOnWhatsApp}</TooltipContent>
-              </Tooltip>
+              {shareItems.map((item) => (
+                <Tooltip key={item.url}>
+                  <TooltipTrigger
+                    render={
+                      <Button
+                        aria-label={labels[item.label]}
+                        nativeButton={false}
+                        render={
+                          <a
+                            href={item.url}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                          >
+                            <span className="sr-only">
+                              {labels[item.label]}
+                            </span>
+                            <item.Icon />
+                          </a>
+                        }
+                        size="icon-sm"
+                        variant="ghost"
+                      />
+                    }
+                  />
+                  <TooltipContent>{labels[item.label]}</TooltipContent>
+                </Tooltip>
+              ))}
             </div>
           </div>
         </div>

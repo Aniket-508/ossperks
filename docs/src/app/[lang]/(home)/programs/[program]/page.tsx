@@ -216,9 +216,13 @@ export default async function ProgramPage({
                 previousProgram: sec.previousProgram,
                 previousProgramTooltip: sec.previousProgramTooltip,
                 share: sec.share,
+                shareOnBluesky: sec.shareOnBluesky,
                 shareOnFacebook: sec.shareOnFacebook,
+                shareOnHackerNews: sec.shareOnHackerNews,
                 shareOnLinkedIn: sec.shareOnLinkedIn,
+                shareOnMastodon: sec.shareOnMastodon,
                 shareOnReddit: sec.shareOnReddit,
+                shareOnThreads: sec.shareOnThreads,
                 shareOnWhatsApp: sec.shareOnWhatsApp,
                 shareOnX: sec.shareOnX,
               }}

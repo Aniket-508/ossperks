@@ -101,7 +101,7 @@ export default async function PersonPage({
             <h1 className="text-3xl font-bold">{contact.name}</h1>
             <p className="text-fd-muted-foreground mt-1">{roleText}</p>
             <div className="mt-3 flex items-center gap-3">
-              {contact.url && isTwitterUrl && (
+              {isTwitterUrl && (
                 <a
                   href={contact.url}
                   target="_blank"

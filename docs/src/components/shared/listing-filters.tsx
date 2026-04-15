@@ -540,7 +540,7 @@ export const ListingFilters = ({
           <PopoverTrigger
             render={
               <Button className="shrink-0" type="button" variant="outline">
-                <ListFilter className="size-4" />
+                <ListFilter />
                 {filterTriggerLabel}
               </Button>
             }
@@ -560,7 +560,7 @@ export const ListingFilters = ({
         <Drawer onOpenChange={openMobile} open={mobileOpen}>
           <DrawerTrigger asChild>
             <Button className="shrink-0" type="button" variant="outline">
-              <ListFilter className="size-4" />
+              <ListFilter />
               {filterTriggerLabel}
             </Button>
           </DrawerTrigger>

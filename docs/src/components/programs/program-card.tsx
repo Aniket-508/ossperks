@@ -1,9 +1,13 @@
+"use client";
+
 import type { Program } from "@ossperks/core";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { useCallback } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { trackEvent } from "@/lib/events";
 
 export interface ProgramCardProps {
   program: Program;
@@ -22,11 +26,23 @@ export const ProgramCard = ({
 }: ProgramCardProps) => {
   const extraPerks = program.perks.length - 2;
 
+  const handleViewProgram = useCallback(() => {
+    trackEvent({
+      name: "view_program",
+      properties: {
+        name: program.name,
+        provider: program.provider,
+        slug: program.slug,
+      },
+    });
+  }, [program]);
+
   return (
     <Link
       href={programHref}
       className="group block"
       transitionTypes={["nav-forward"]}
+      onClick={handleViewProgram}
     >
       <Card className="hover:bg-fd-accent h-full transition-colors">
         <CardHeader>

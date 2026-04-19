@@ -1,10 +1,14 @@
+"use client";
+
 import type { Contact } from "@ossperks/core";
 import { cva } from "class-variance-authority";
 import type { VariantProps } from "class-variance-authority";
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
+import { useCallback } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { trackEvent } from "@/lib/events";
 import { cn } from "@/lib/utils";
 
 const personCardPartVariants = cva("", {
@@ -53,7 +57,15 @@ interface PersonCardProps extends Pick<
 
 export const PersonCard = (props: PersonCardProps) => {
   const { href, avatarUrl, contact, subtitle, variant } = props;
-  const initial = contact.name.charAt(0).toUpperCase();
+  const { name, url } = contact;
+  const initial = name.charAt(0).toUpperCase();
+
+  const handleViewPerson = useCallback(() => {
+    trackEvent({
+      name: "view_person",
+      properties: { name, ...(url ? { url } : {}) },
+    });
+  }, [name, url]);
 
   const avatar = (
     <Avatar
@@ -63,7 +75,7 @@ export const PersonCard = (props: PersonCardProps) => {
           "ring-fd-primary/20 group-hover:ring-fd-primary/40 transition-all",
       )}
     >
-      {avatarUrl ? <AvatarImage alt={contact.name} src={avatarUrl} /> : null}
+      {avatarUrl ? <AvatarImage alt={name} src={avatarUrl} /> : null}
       <AvatarFallback
         className={personCardPartVariants({ part: "fallback", variant })}
       >
@@ -78,12 +90,13 @@ export const PersonCard = (props: PersonCardProps) => {
         className="group block"
         href={href}
         transitionTypes={["nav-forward"]}
+        onClick={handleViewPerson}
       >
         <div className="ring-foreground/10 hover:bg-fd-accent flex flex-col items-center gap-3 rounded-xl p-8 ring-1 transition-colors">
           {avatar}
           <div className="text-center">
             <p className={personCardPartVariants({ part: "name", variant })}>
-              {contact.name}
+              {name}
             </p>
             {subtitle ? (
               <p className="text-fd-muted-foreground text-sm">{subtitle}</p>
@@ -95,12 +108,17 @@ export const PersonCard = (props: PersonCardProps) => {
   }
 
   return (
-    <Link className="group block" href={href} transitionTypes={["nav-forward"]}>
+    <Link
+      className="group block"
+      href={href}
+      transitionTypes={["nav-forward"]}
+      onClick={handleViewPerson}
+    >
       <div className="ring-foreground/10 hover:bg-fd-accent flex items-center gap-4 rounded-xl p-4 ring-1 transition-colors">
         {avatar}
         <div className="min-w-0 flex-1">
           <p className={personCardPartVariants({ part: "name", variant })}>
-            {contact.name}
+            {name}
           </p>
           {subtitle ? (
             <p className="text-fd-muted-foreground truncate text-sm">
@@ -108,7 +126,7 @@ export const PersonCard = (props: PersonCardProps) => {
             </p>
           ) : null}
         </div>
-        {contact.url ? (
+        {url ? (
           <ExternalLink className="text-fd-muted-foreground group-hover:text-fd-foreground size-4 shrink-0 transition-colors" />
         ) : null}
       </div>

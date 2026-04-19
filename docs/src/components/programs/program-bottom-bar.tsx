@@ -39,6 +39,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
+import { trackEvent } from "@/lib/events";
 import { encodeUrlForPath } from "@/lib/url";
 import { cn } from "@/lib/utils";
 
@@ -158,7 +159,30 @@ export const ProgramBottomBar = ({
 
   const handleCopy = useCallback(async () => {
     await copy(shareUrl, 2000);
+    trackEvent({ name: "copy_link", properties: { url: shareUrl } });
   }, [copy, shareUrl]);
+
+  const handleNavigatePreviousProgram = useCallback(() => {
+    if (!prevHref) {
+      return;
+    }
+    trackEvent({ name: "navigate_previous_program" });
+    startTransition(() => {
+      addTransitionType("nav-back");
+      router.push(prevHref);
+    });
+  }, [prevHref, router]);
+
+  const handleNavigateNextProgram = useCallback(() => {
+    if (!nextHref) {
+      return;
+    }
+    trackEvent({ name: "navigate_next_program" });
+    startTransition(() => {
+      addTransitionType("nav-forward");
+      router.push(nextHref);
+    });
+  }, [nextHref, router]);
 
   useHotkey("C", async (e) => {
     e.preventDefault();
@@ -166,25 +190,13 @@ export const ProgramBottomBar = ({
   });
 
   useHotkey("ArrowLeft", (e) => {
-    if (!prevHref) {
-      return;
-    }
     e.preventDefault();
-    startTransition(() => {
-      addTransitionType("nav-back");
-      router.push(prevHref);
-    });
+    handleNavigatePreviousProgram();
   });
 
   useHotkey("ArrowRight", (e) => {
-    if (!nextHref) {
-      return;
-    }
     e.preventDefault();
-    startTransition(() => {
-      addTransitionType("nav-forward");
-      router.push(nextHref);
-    });
+    handleNavigateNextProgram();
   });
 
   return (
@@ -334,6 +346,13 @@ export const ProgramBottomBar = ({
                               href={item.url}
                               rel="noopener noreferrer"
                               target="_blank"
+                              onClick={() =>
+                                // oxlint-disable-next-line react_perf/jsx-no-new-function-as-prop
+                                trackEvent({
+                                  name: "share_click",
+                                  properties: { platform: item.label },
+                                })
+                              }
                             >
                               <span className="sr-only">
                                 {labels[item.label]}

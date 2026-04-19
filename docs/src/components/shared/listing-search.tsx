@@ -11,6 +11,7 @@ import {
   InputIcon,
   InputRoot,
 } from "@/components/ui/input";
+import { trackEvent } from "@/lib/events";
 import type { ListingQParser } from "@/lib/search-params";
 import { cn } from "@/lib/utils";
 
@@ -47,6 +48,9 @@ export const ListingSearch = ({
   const handleQueryChange = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value: next } = e.target;
+      if (next.length >= 2) {
+        trackEvent({ name: "search_programs", properties: { query: next } });
+      }
       await setParams({ q: next === "" ? null : next });
     },
     [setParams],

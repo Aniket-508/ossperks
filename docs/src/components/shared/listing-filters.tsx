@@ -23,6 +23,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { trackEvent } from "@/lib/events";
 import type { ProgramsFacetParsers } from "@/lib/search-params";
 import { cn } from "@/lib/utils";
 
@@ -244,10 +245,23 @@ export const ListingFilters = ({
 
   const onApplyFacets = useCallback(
     async (next: Selection) => {
+      const categories = next.categories as Category[];
+      const tags = next.tags as string[];
+      const types = next.types as PerkType[];
+      if (categories.length > 0 || tags.length > 0 || types.length > 0) {
+        trackEvent({
+          name: "filter_programs",
+          properties: {
+            categories: categories.join(","),
+            tags: tags.join(","),
+            types: types.join(","),
+          },
+        });
+      }
       await setParams({
-        categories: (next.categories ?? []) as Category[],
-        tags: next.tags ?? [],
-        types: (next.types ?? []) as PerkType[],
+        categories,
+        tags,
+        types,
       });
     },
     [setParams],

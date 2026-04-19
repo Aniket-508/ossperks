@@ -2,10 +2,12 @@
 
 import { ArrowRightIcon, ListTodoIcon } from "lucide-react";
 import Link from "next/link";
+import { useCallback } from "react";
 
 import { Button } from "@/components/ui/button";
 import { LinkText } from "@/components/ui/link-text";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
+import { trackEvent } from "@/lib/events";
 import { cn } from "@/lib/utils";
 
 export interface ProgramHeaderLabels {
@@ -52,6 +54,10 @@ export const ProgramHeader = ({
       threshold: 0,
     });
 
+  const handleApplyProgram = useCallback(() => {
+    trackEvent({ name: "apply_program", properties: { url: applyUrl } });
+  }, [applyUrl]);
+
   const ctaButtons = (
     applyLabel: string,
     checkLabel: string,
@@ -66,6 +72,7 @@ export const ProgramHeader = ({
             rel="noopener noreferrer"
             tabIndex={tabIndex}
             target="_blank"
+            onClick={handleApplyProgram}
           >
             {applyLabel}
             <ArrowRightIcon />

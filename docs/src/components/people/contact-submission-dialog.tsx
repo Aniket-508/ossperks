@@ -30,6 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useSubmission } from "@/hooks/use-submission";
+import { trackEvent } from "@/lib/events";
 import { canSubmitSelector } from "@/lib/utils";
 
 interface ContactSubmissionTranslations {
@@ -112,6 +113,13 @@ export const ContactSubmissionDialog = ({
       url: "",
     },
     onSubmit: async ({ value }) => {
+      trackEvent({
+        name: "submit_contact",
+        properties: {
+          name: value.name,
+          ...(value.url ? { url: value.url } : {}),
+        },
+      });
       const payload: Record<string, unknown> = {
         name: value.name,
         programSlug: value.programSlug,

@@ -43,6 +43,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ROUTES } from "@/constants/routes";
 import { useSubmission } from "@/hooks/use-submission";
 import { withLocalePrefix } from "@/i18n/navigation";
+import { trackEvent } from "@/lib/events";
 import { canSubmitSelector } from "@/lib/utils";
 import type { ProgramsTranslations } from "@/locales/en/programs";
 
@@ -195,6 +196,21 @@ export const ProgramSubmitPageClient = ({
 
       const res = await submit(payload);
       if (res.success) {
+        trackEvent({
+          name: "submit_program",
+          properties: { name: value.name, provider: value.provider },
+        });
+        if (hasContact && value.contactName.trim()) {
+          trackEvent({
+            name: "submit_contact",
+            properties: {
+              name: value.contactName,
+              ...(value.contactUrl.trim()
+                ? { url: value.contactUrl.trim() }
+                : {}),
+            },
+          });
+        }
         setResult({ prNumber: res.prNumber, prUrl: res.prUrl });
         setStep("success");
       }

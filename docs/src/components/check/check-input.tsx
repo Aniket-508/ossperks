@@ -16,6 +16,7 @@ import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { ROUTES } from "@/constants/routes";
 import { withLocalePrefix } from "@/i18n/navigation";
+import { trackEvent } from "@/lib/events";
 import { encodeUrlForPath } from "@/lib/url";
 import { cn } from "@/lib/utils";
 import type { CheckTranslations } from "@/locales/en/check";
@@ -57,6 +58,10 @@ export const RepoCheckInput = ({
       if (!ref) {
         return;
       }
+      trackEvent({
+        name: "check_eligibility",
+        properties: { provider: ref.provider, repo: ref.repo },
+      });
       const search = `?provider=${encodeUrlForPath(ref.provider)}&owner=${encodeUrlForPath(ref.owner)}&repo=${encodeUrlForPath(ref.repo)}&path=${encodeUrlForPath(ref.path)}`;
       const href = `${withLocalePrefix(lang, basePath)}${search}`;
       startTransition(() => {

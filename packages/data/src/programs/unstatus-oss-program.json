@@ -1,0 +1,27 @@
+{
+  "slug": "unstatus-oss-program",
+  "name": "Unstatus OSS Program",
+  "provider": "Unstatus",
+  "url": "https://unstatus.app/oss",
+  "category": "devtools",
+  "contact": {
+    "name": "Lasse Vestergaard",
+    "url": "https://x.com/lassevjl"
+  },
+  "description": "Unstatus Scale plan for qualifying open-source projects.",
+  "perks": [
+    {
+      "title": "6 months of the Scale plan",
+      "description": "$49/month in credits"
+    }
+  ],
+  "eligibility": [
+    "Must be an active open-source project.",
+    "Must answer why does the project qualify."
+  ],
+  "applicationProcess": [
+    "Submit the application form through the Unstatus OSS program page.",
+    "Unstatus reviews the application for eligibility."
+  ],
+  "tags": ["status-page", "monitoring", "open-source", "developer-tools"]
+}

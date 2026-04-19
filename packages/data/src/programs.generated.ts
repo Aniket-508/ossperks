@@ -44,6 +44,7 @@ import socketForOpenSource from "./programs/socket-for-open-source.json" with { 
 import sonarcloud from "./programs/sonarcloud.json" with { type: "json" };
 import sourcery from "./programs/sourcery.json" with { type: "json" };
 import stainlessOpenSourceProgram from "./programs/stainless-open-source-program.json" with { type: "json" };
+import unstatusOssProgram from "./programs/unstatus-oss-program.json" with { type: "json" };
 import upstash from "./programs/upstash.json" with { type: "json" };
 import vercel from "./programs/vercel.json" with { type: "json" };
 import zulip from "./programs/zulip.json" with { type: "json" };
@@ -95,6 +96,7 @@ export const rawPrograms = [
   sonarcloud,
   sourcery,
   stainlessOpenSourceProgram,
+  unstatusOssProgram,
   upstash,
   vercel,
   zulip,

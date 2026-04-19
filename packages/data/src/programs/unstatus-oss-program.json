@@ -3,7 +3,7 @@
   "name": "Unstatus OSS Program",
   "provider": "Unstatus",
   "url": "https://unstatus.app/oss",
-  "category": "devtools",
+  "category": "monitoring",
   "contact": {
     "name": "Lasse Vestergaard",
     "url": "https://x.com/lassevjl"
